@@ -1,7 +1,9 @@
+// app/upgrade/page.tsx
 import Link from "next/link";
 import PreviewInsightsLink from "./PreviewInsightsLink";
 import UpgradeClient from "./UpgradeClient";
 import PersonalizedTeaser from "./PersonalizedTeaser";
+import CheckoutButton from "./CheckoutButton";
 
 export const metadata = {
   title: "Premium | Havenly",
@@ -48,7 +50,7 @@ export default function UpgradePage() {
             <li>• Write anytime (always available)</li>
             <li>• Gentle prompts to begin</li>
             <li>• Your entries stay private</li>
-            <li>• Simple weekly progress snapshot</li>
+            <li>• 3 AI reflections per month</li>
           </ul>
 
           <div className="mt-6">
@@ -65,37 +67,32 @@ export default function UpgradePage() {
           <div className="flex items-start justify-between">
             <h2 className="text-lg font-semibold text-white">Premium</h2>
             <span className="rounded-full border border-emerald-500/30 px-3 py-1 text-xs text-emerald-200">
-              Coming soon
+              $30 / month
             </span>
           </div>
 
+          <p className="mt-1 text-sm text-slate-400">
+            Unlimited reflections and deeper insights across time.
+          </p>
+
           <ul className="mt-5 space-y-2 text-sm text-slate-200">
+            <li>• Unlimited AI reflections</li>
             <li>• Pattern clarity across time</li>
-            <li>• Deeper reflections when you want them</li>
-            <li>• Weekly & monthly summaries</li>
-            <li>• “Why does this keep happening?” insights</li>
+            <li>• Weekly &amp; monthly summaries</li>
+            <li>• "Why does this keep happening?" insights</li>
+            <li>• Cancel anytime</li>
           </ul>
 
           <div className="mt-6 flex flex-wrap gap-3">
-            <button
-              disabled
-              className="cursor-not-allowed rounded-full bg-emerald-500/60 px-5 py-2.5 text-sm font-semibold text-slate-950 opacity-60"
-            >
-              Premium (coming soon)
-            </button>
-
+            <CheckoutButton />
             <PreviewInsightsLink />
           </div>
 
           <p className="mt-4 text-xs text-slate-400">
-            Payments are temporarily disabled while we finalize stability.
+            Secure checkout via Stripe. Cancel anytime from your billing page.
           </p>
         </div>
       </div>
-
-      <p className="text-xs text-slate-500">
-        Insight previews are the main upgrade teaser while checkout is disabled.
-      </p>
     </main>
   );
 }
