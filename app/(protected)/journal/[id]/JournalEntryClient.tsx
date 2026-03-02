@@ -1,7 +1,9 @@
+// app/(protected)/journal/[id]/JournalEntryClient.tsx
 "use client";
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { useUserPlan } from "@/app/components/useUserPlan";
 import UpgradeTriggerModal from "@/app/components/UpgradeTriggerModal";
 
 type JournalEntry = {
@@ -11,6 +13,7 @@ type JournalEntry = {
   created_at: string;
 };
 
+// field names match AI output
 type Reflection = {
   summary: string;
   corepattern?: string;
@@ -42,11 +45,6 @@ function getReflectionApiUrl() {
   return debug === "1" ? "/api/ai/reflection?debug=1" : "/api/ai/reflection";
 }
 
-type ReflectionApiOk = {
-  reflection: Reflection;
-  remainingCredits: number | null;
-};
-
 export default function JournalEntryClient({
   entry,
   initialReflection,
@@ -54,19 +52,23 @@ export default function JournalEntryClient({
   entry: JournalEntry;
   initialReflection?: Reflection | null;
 }) {
+  const { planType, credits, loading, refresh } = useUserPlan();
+
   const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   const [busy, setBusy] = useState(false);
   const [reflection, setReflection] = useState<Reflection | null>(initialReflection ?? null);
   const [error, setError] = useState<string | null>(null);
   const [showUpgrade, setShowUpgrade] = useState(false);
 
-  const [remainingCredits, setRemainingCredits] = useState<number | null>(null);
-  const [planLabel, setPlanLabel] = useState<"Free" | "Premium">("Free");
+  const readablePlan = useMemo(() => {
+    if (planType === "PREMIUM") return "Premium";
+    if (planType === "TRIAL") return "Trial";
+    return "Free";
+  }, [planType]);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const isUnlimited = planType === "PREMIUM" || planType === "TRIAL";
 
   const keyPattern = useMemo(() => {
     const core = (reflection?.corepattern || "").trim();
@@ -92,13 +94,12 @@ export default function JournalEntryClient({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           entryId: entry.id,
+          // IMPORTANT: server will load title/content itself; we only send entryId
         }),
       });
 
       if (res.status === 402) {
         setShowUpgrade(true);
-        setRemainingCredits(0);
-        setPlanLabel("Free");
         return;
       }
 
@@ -108,17 +109,11 @@ export default function JournalEntryClient({
         return;
       }
 
-      const j = (await res.json()) as ReflectionApiOk;
-
+      const j = await res.json().catch(() => ({}));
       setReflection(j?.reflection || null);
 
-      if (j.remainingCredits === null) {
-        setPlanLabel("Premium");
-        setRemainingCredits(null);
-      } else {
-        setPlanLabel("Free");
-        setRemainingCredits(j.remainingCredits);
-      }
+      // Refresh authoritative plan/credits (same source as Dashboard)
+      await refresh();
     } catch {
       setError("We couldn't generate a reflection right now.");
     } finally {
@@ -148,22 +143,27 @@ export default function JournalEntryClient({
           <div>
             <h2 className="text-lg font-semibold">AI Reflection</h2>
 
+            {/* Use the SAME source of truth as Dashboard */}
             {mounted && (
               <p className="mt-1 text-sm text-white/70">
-                Plan: <span className="text-emerald-300">{planLabel}</span>
-                {remainingCredits === null ? (
-                  <span className="text-white/50"> · Unlimited</span>
-                ) : (
+                Plan: <span className="text-emerald-300">{readablePlan}</span>
+                {!isUnlimited ? (
                   <>
                     {" "}
                     · Reflections left:{" "}
-                    <span className="text-emerald-300">{remainingCredits}</span>
+                    <span className="text-emerald-300">{loading ? "…" : credits}</span>
+                    {credits === 0 && (
+                      <span className="ml-2 text-xs text-white/50">(resets next month)</span>
+                    )}
                   </>
+                ) : (
+                  <span className="text-white/50"> · Unlimited</span>
                 )}
               </p>
             )}
           </div>
 
+          {/* keep disabled when reflection exists */}
           <button
             onClick={generateReflection}
             disabled={busy || !!reflection}
@@ -175,7 +175,11 @@ export default function JournalEntryClient({
 
         {error && <p className="mt-4 text-sm text-red-300">{error}</p>}
 
-        {reflection && (
+        {!reflection ? (
+          <p className="mt-4 text-sm text-white/60">
+            When you're ready, Havenly will reflect back themes, emotions, and a gentle next step.
+          </p>
+        ) : (
           <div className="mt-5 space-y-4 text-sm text-white/80">
             <div className="rounded-xl border border-slate-800 bg-slate-950/40 p-4">
               <p className="whitespace-pre-wrap text-white/90">{reflection.summary}</p>
