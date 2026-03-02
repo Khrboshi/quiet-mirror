@@ -1,4 +1,3 @@
-// app/upgrade/page.tsx
 import Link from "next/link";
 import PreviewInsightsLink from "./PreviewInsightsLink";
 import UpgradeClient from "./UpgradeClient";
@@ -66,8 +65,8 @@ export default function UpgradePage() {
         <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-6">
           <div className="flex items-start justify-between">
             <h2 className="text-lg font-semibold text-white">Premium</h2>
-            <span className="rounded-full border border-emerald-500/30 px-3 py-1 text-xs text-emerald-200">
-              $30 / month
+            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-400">
+              Coming soon
             </span>
           </div>
 
