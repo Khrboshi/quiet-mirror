@@ -1,5 +1,6 @@
 // app/api/ai/reflection/route.ts
 import { NextResponse } from "next/server";
+import Stripe from "stripe";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { ensureCreditsFresh } from "@/lib/creditRules";
 import { generateReflectionFromEntry } from "@/lib/ai/generateReflection";
@@ -156,6 +157,34 @@ function extractAnchorsForDebug(entry: string): string[] {
   return anchors.slice(0, 5);
 }
 
+// Stripe: treat user as Premium ONLY if Stripe says they have an active/trialing subscription.
+const stripe =
+  process.env.STRIPE_SECRET_KEY && process.env.STRIPE_SECRET_KEY !== "placeholder"
+    ? new Stripe(process.env.STRIPE_SECRET_KEY)
+    : null;
+
+async function hasActiveStripeSubscription(stripeCustomerId: string | null): Promise<boolean> {
+  if (!stripeCustomerId) return false;
+  if (!stripe) {
+    console.error("[reflection] STRIPE_SECRET_KEY not configured; treating as non-premium");
+    return false;
+  }
+
+  try {
+    const subs = await stripe.subscriptions.list({
+      customer: stripeCustomerId,
+      status: "all",
+      limit: 10,
+    });
+
+    return subs.data.some((s) => s.status === "active" || s.status === "trialing");
+  } catch (err) {
+    console.error("[reflection] Stripe subscription check failed:", err);
+    // Fail closed: if Stripe check fails, do NOT grant Premium.
+    return false;
+  }
+}
+
 export async function POST(req: Request) {
   const supabase = await createServerSupabase();
 
@@ -177,8 +206,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Missing entryId" }, { status: 400, headers: noStoreHeaders() });
   }
 
-  // ✅ CRITICAL: Do NOT trust content/title from the client.
-  // Always load the entry from the database for this user + entryId.
+  // ✅ Load entry server-side (do NOT trust client content)
   const { data: entry, error: entryErr } = await supabase
     .from("journal_entries")
     .select("id,title,content,ai_response")
@@ -211,6 +239,7 @@ export async function POST(req: Request) {
 
   const url = new URL(req.url);
   const debugEnabled = url.searchParams.get("debug") === "1";
+
   const fp = debugEnabled ? contentFingerprint(content) : undefined;
   const snippet = debugEnabled ? content.slice(0, 120) : undefined;
   const domain = debugEnabled ? detectDomain(`${title}\n${content}`) : undefined;
@@ -220,8 +249,10 @@ export async function POST(req: Request) {
     console.log("[reflection] entryId=", entryId, "fp=", fp, "domain=", domain, "anchors=", anchors);
   }
 
+  // Credits bookkeeping (FREE reset etc.)
   await ensureCreditsFresh({ supabase, userId });
 
+  // Load plan type (still used for TRIAL behavior and UI, but NOT authoritative for Premium unlimited)
   const { data: creditsRow, error: creditsErr } = await supabase
     .from("user_credits")
     .select("plan_type")
@@ -233,11 +264,32 @@ export async function POST(req: Request) {
   }
 
   const planType = normalizePlan((creditsRow as any)?.plan_type);
-  const isUnlimited = planType === "PREMIUM" || planType === "TRIAL";
+
+  // Load Stripe customer id (server-side)
+  const { data: profileRow, error: profileErr } = await supabase
+    .from("profiles")
+    .select("stripe_customer_id")
+    .eq("id", userId)
+    .maybeSingle();
+
+  if (profileErr) {
+    console.error("[reflection] failed to read profiles:", profileErr);
+  }
+
+  const stripeCustomerId =
+    profileRow && typeof (profileRow as any).stripe_customer_id === "string"
+      ? String((profileRow as any).stripe_customer_id)
+      : null;
+
+  // ✅ Stripe-authoritative Premium
+  const stripePremium = await hasActiveStripeSubscription(stripeCustomerId);
+
+  // TRIAL remains unlimited if you use it internally.
+  // Premium unlimited is ONLY when Stripe says active/trialing.
+  const isUnlimited = stripePremium || planType === "TRIAL";
 
   let remainingAfterConsume: number | null = null;
 
-  // Consume credits ONLY after we know the entry is valid & owned by user.
   if (!isUnlimited) {
     const consumed = await consumeOneCredit(supabase, userId);
     if (isConsumeFail(consumed)) {
@@ -307,7 +359,16 @@ export async function POST(req: Request) {
     };
 
     if (debugEnabled) {
-      payload.debug = { entryId, fp, snippet, domain, anchors };
+      payload.debug = {
+        entryId,
+        fp,
+        snippet,
+        domain,
+        anchors,
+        stripeCustomerIdPresent: Boolean(stripeCustomerId),
+        stripePremium,
+        planType,
+      };
     }
 
     return NextResponse.json(payload, { headers: noStoreHeaders() });
