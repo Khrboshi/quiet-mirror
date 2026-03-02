@@ -43,7 +43,7 @@ export default function CheckoutButton() {
         disabled={loading}
         className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-6 py-2.5 text-sm font-semibold text-slate-950 hover:bg-emerald-400 disabled:opacity-60 disabled:cursor-not-allowed"
       >
-        {loading ? "Redirecting to checkout..." : "Upgrade to Premium - $30/mo"}
+        {loading ? "Redirecting to checkout..." : "Upgrade to Premium"}
       </button>
 
       {error && (
