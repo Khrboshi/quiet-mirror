@@ -188,6 +188,15 @@ async function hasActiveStripeSubscription(stripeCustomerId: string | null): Pro
   }
 }
 
+function safeParseJson(value: unknown): any | null {
+  if (typeof value !== "string") return null;
+  try {
+    return JSON.parse(value);
+  } catch {
+    return null;
+  }
+}
+
 export async function POST(req: Request) {
   const supabase = await createServerSupabase();
 
@@ -224,6 +233,21 @@ export async function POST(req: Request) {
 
   if (!entry?.id) {
     return NextResponse.json({ error: "Entry not found" }, { status: 404, headers: noStoreHeaders() });
+  }
+
+  // ✅ If reflection already exists and is valid JSON, return it WITHOUT charging credits again.
+  const existingReflection = safeParseJson((entry as any).ai_response);
+  if (existingReflection) {
+    return NextResponse.json(
+      {
+        reflection: existingReflection,
+        // We don't know remaining credits without calling credit RPC; returning null avoids leaking.
+        // UI stays correct because it already knows plan/credits from prior call.
+        remainingCredits: null,
+        cached: true,
+      },
+      { headers: noStoreHeaders() }
+    );
   }
 
   const content = typeof (entry as any)?.content === "string" ? String((entry as any).content).trim() : "";
@@ -280,7 +304,6 @@ export async function POST(req: Request) {
   const stripePremium = await hasActiveStripeSubscription(stripeCustomerId);
 
   // ✅ If Stripe is NOT premium, force downgrade any stale PREMIUM credits row.
-  // This prevents leftover 9999 credits from acting as unlimited.
   if (!stripePremium && planType === "PREMIUM") {
     const nowIso = new Date().toISOString();
     const { error: downgradeErr } = await supabase
@@ -304,7 +327,6 @@ export async function POST(req: Request) {
   await ensureCreditsFresh({ supabase, userId });
 
   // TRIAL remains unlimited if you use it internally.
-  // Premium unlimited is ONLY when Stripe says active/trialing.
   const isUnlimited = stripePremium || planType === "TRIAL";
 
   let remainingAfterConsume: number | null = null;
@@ -321,7 +343,7 @@ export async function POST(req: Request) {
   }
 
   try {
-    // ─── Cross-journal memory — fetch themes from last 5 reflections ──────────
+    // Cross-journal memory — fetch themes from last 5 reflections
     let recentThemes: string[] = [];
     try {
       const { data: recentEntries } = await supabase
@@ -344,7 +366,6 @@ export async function POST(req: Request) {
         recentThemes = [...new Set(recentThemes)].slice(0, 5);
       }
     } catch {}
-    // ─────────────────────────────────────────────────────────────────────────
 
     const reflection = await generateReflectionFromEntry({
       content,
