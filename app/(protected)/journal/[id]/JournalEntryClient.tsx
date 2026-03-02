@@ -1,8 +1,7 @@
-// app/(protected)/journal/[id]/JournalEntryClient.tsx
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import UpgradeTriggerModal from "@/app/components/UpgradeTriggerModal";
 
 type JournalEntry = {
@@ -12,7 +11,6 @@ type JournalEntry = {
   created_at: string;
 };
 
-// field names match AI output
 type Reflection = {
   summary: string;
   corepattern?: string;
@@ -56,18 +54,19 @@ export default function JournalEntryClient({
   entry: JournalEntry;
   initialReflection?: Reflection | null;
 }) {
+  const [mounted, setMounted] = useState(false);
+
   const [busy, setBusy] = useState(false);
   const [reflection, setReflection] = useState<Reflection | null>(initialReflection ?? null);
   const [error, setError] = useState<string | null>(null);
   const [showUpgrade, setShowUpgrade] = useState(false);
 
-  // Authoritative display state comes from the reflection API response.
-  // null = unlimited (Premium), number = free credits left.
   const [remainingCredits, setRemainingCredits] = useState<number | null>(null);
   const [planLabel, setPlanLabel] = useState<"Free" | "Premium">("Free");
-  const [planKnown, setPlanKnown] = useState(false);
 
-  const readablePlan = useMemo(() => planLabel, [planLabel]);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const keyPattern = useMemo(() => {
     const core = (reflection?.corepattern || "").trim();
@@ -81,36 +80,6 @@ export default function JournalEntryClient({
     return questionsHeading(n);
   }, [reflection?.questions?.length]);
 
-  const planLine = useMemo(() => {
-    if (!planKnown) {
-      return (
-        <>
-          Plan: <span className="text-emerald-300">…</span>
-        </>
-      );
-    }
-
-    const isUnlimited = remainingCredits === null;
-
-    return (
-      <>
-        Plan: <span className="text-emerald-300">{readablePlan}</span>
-        {isUnlimited ? (
-          <span className="text-white/50"> · Unlimited</span>
-        ) : (
-          <>
-            {" "}
-            · Reflections left:{" "}
-            <span className="text-emerald-300">{remainingCredits}</span>
-            {remainingCredits === 0 && (
-              <span className="ml-2 text-xs text-white/50">(resets next month)</span>
-            )}
-          </>
-        )}
-      </>
-    );
-  }, [planKnown, readablePlan, remainingCredits]);
-
   async function generateReflection() {
     if (busy) return;
 
@@ -123,18 +92,13 @@ export default function JournalEntryClient({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           entryId: entry.id,
-          // Server no longer trusts these, but keeping them does not hurt and avoids breaking older deployments.
-          content: entry.content,
-          title: entry.title ?? "",
         }),
       });
 
       if (res.status === 402) {
         setShowUpgrade(true);
-        // Plan is known (Free) if we hit a limit.
-        setPlanKnown(true);
-        setPlanLabel("Free");
         setRemainingCredits(0);
+        setPlanLabel("Free");
         return;
       }
 
@@ -148,20 +112,12 @@ export default function JournalEntryClient({
 
       setReflection(j?.reflection || null);
 
-      // ✅ Authoritative plan display derived from remainingCredits
-      if (j && typeof j.remainingCredits !== "undefined") {
-        setPlanKnown(true);
-        setRemainingCredits(j.remainingCredits);
-
-        if (j.remainingCredits === null) {
-          setPlanLabel("Premium");
-        } else {
-          setPlanLabel("Free");
-        }
+      if (j.remainingCredits === null) {
+        setPlanLabel("Premium");
+        setRemainingCredits(null);
       } else {
-        // If API ever changes, fail closed to Free
-        setPlanKnown(true);
         setPlanLabel("Free");
+        setRemainingCredits(j.remainingCredits);
       }
     } catch {
       setError("We couldn't generate a reflection right now.");
@@ -192,7 +148,20 @@ export default function JournalEntryClient({
           <div>
             <h2 className="text-lg font-semibold">AI Reflection</h2>
 
-            <p className="mt-1 text-sm text-white/70">{planLine}</p>
+            {mounted && (
+              <p className="mt-1 text-sm text-white/70">
+                Plan: <span className="text-emerald-300">{planLabel}</span>
+                {remainingCredits === null ? (
+                  <span className="text-white/50"> · Unlimited</span>
+                ) : (
+                  <>
+                    {" "}
+                    · Reflections left:{" "}
+                    <span className="text-emerald-300">{remainingCredits}</span>
+                  </>
+                )}
+              </p>
+            )}
           </div>
 
           <button
@@ -206,11 +175,7 @@ export default function JournalEntryClient({
 
         {error && <p className="mt-4 text-sm text-red-300">{error}</p>}
 
-        {!reflection ? (
-          <p className="mt-4 text-sm text-white/60">
-            When you're ready, Havenly will reflect back themes, emotions, and a gentle next step.
-          </p>
-        ) : (
+        {reflection && (
           <div className="mt-5 space-y-4 text-sm text-white/80">
             <div className="rounded-xl border border-slate-800 bg-slate-950/40 p-4">
               <p className="whitespace-pre-wrap text-white/90">{reflection.summary}</p>
@@ -227,7 +192,9 @@ export default function JournalEntryClient({
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="rounded-xl border border-slate-800 bg-slate-950/40 p-4">
-                <h3 className="text-xs font-semibold uppercase tracking-wide text-white/70">Themes</h3>
+                <h3 className="text-xs font-semibold uppercase tracking-wide text-white/70">
+                  Themes
+                </h3>
                 <ul className="mt-2 list-disc space-y-1 pl-5">
                   {reflection.themes.map((t, i) => (
                     <li key={`${t}-${i}`}>{t}</li>
