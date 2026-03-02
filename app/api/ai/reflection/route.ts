@@ -117,7 +117,9 @@ type Domain = "WORK" | "RELATIONSHIP" | "FITNESS" | "GENERAL";
 function detectDomain(text: string): Domain {
   const s = (text || "").toLowerCase();
   const fitness =
-    /run|running|\bkm\b|workout|training|exercise|gym|lift|lifting|cardio|pace|steps|sore|recovery|rest|sleep|hydration/.test(s);
+    /run|running|\bkm\b|workout|training|exercise|gym|lift|lifting|cardio|pace|steps|sore|recovery|rest|sleep|hydration/.test(
+      s
+    );
   const work = /colleague|coworker|manager|team|meeting|work|office|client|boss/.test(s);
   const rel = /partner|wife|husband|girlfriend|boyfriend|relationship|love|date|argue|fight|gift/.test(s);
   if (fitness && !work && !rel) return "FITNESS";
@@ -141,7 +143,11 @@ function extractAnchorsForDebug(entry: string): string[] {
     if (anchors.length >= 3) break;
   }
   if (anchors.length < 2) {
-    const sentences = t.split(/\n|[.!?]/).map((s) => s.trim()).filter(Boolean).slice(0, 4);
+    const sentences = t
+      .split(/\n|[.!?]/)
+      .map((s) => s.trim())
+      .filter(Boolean)
+      .slice(0, 4);
     for (const s of sentences) {
       add(s.length > 110 ? s.slice(0, 110).trim() : s);
       if (anchors.length >= 2) break;
@@ -165,17 +171,35 @@ export async function POST(req: Request) {
   const userId = user.id;
 
   const body = await req.json().catch(() => ({}));
-
   const entryId = typeof body?.entryId === "string" ? body.entryId.trim() : "";
-  const content = typeof body?.content === "string" ? body.content.trim() : "";
-  const title = typeof body?.title === "string" ? body.title.trim() : "";
 
   if (!entryId) {
     return NextResponse.json({ error: "Missing entryId" }, { status: 400, headers: noStoreHeaders() });
   }
 
+  // ✅ CRITICAL: Do NOT trust content/title from the client.
+  // Always load the entry from the database for this user + entryId.
+  const { data: entry, error: entryErr } = await supabase
+    .from("journal_entries")
+    .select("id,title,content,ai_response")
+    .eq("id", entryId)
+    .eq("user_id", userId)
+    .maybeSingle();
+
+  if (entryErr) {
+    console.error("[reflection] failed to read journal_entries:", entryErr);
+    return NextResponse.json({ error: "Failed to load entry" }, { status: 500, headers: noStoreHeaders() });
+  }
+
+  if (!entry?.id) {
+    return NextResponse.json({ error: "Entry not found" }, { status: 404, headers: noStoreHeaders() });
+  }
+
+  const content = typeof (entry as any)?.content === "string" ? String((entry as any).content).trim() : "";
+  const title = typeof (entry as any)?.title === "string" ? String((entry as any).title).trim() : "";
+
   if (!content) {
-    return NextResponse.json({ error: "Missing content" }, { status: 400, headers: noStoreHeaders() });
+    return NextResponse.json({ error: "Entry has no content" }, { status: 400, headers: noStoreHeaders() });
   }
 
   if (content.length > 20000) {
@@ -213,6 +237,7 @@ export async function POST(req: Request) {
 
   let remainingAfterConsume: number | null = null;
 
+  // Consume credits ONLY after we know the entry is valid & owned by user.
   if (!isUnlimited) {
     const consumed = await consumeOneCredit(supabase, userId);
     if (isConsumeFail(consumed)) {
@@ -239,7 +264,7 @@ export async function POST(req: Request) {
       if (recentEntries) {
         for (const row of recentEntries) {
           try {
-            const parsed = JSON.parse(row.ai_response);
+            const parsed = JSON.parse((row as any).ai_response);
             if (Array.isArray(parsed?.themes)) {
               recentThemes.push(...parsed.themes.slice(0, 2));
             }
@@ -289,6 +314,7 @@ export async function POST(req: Request) {
   } catch (err) {
     console.error("[reflection] generation failed:", err);
 
+    // Best-effort refund if generation fails after consuming
     if (!isUnlimited && remainingAfterConsume !== null) {
       try {
         await supabase
