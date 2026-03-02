@@ -41,7 +41,7 @@ export default function JournalForm(_props: Props) {
 
     const nextTitle = qpTitle || (qpMood ? `Mood: ${qpMood}` : "");
     const nextContent =
-      qpPrompt || (qpMood ? `Right now I’m feeling ${qpMood}.\n\n` : "");
+      qpPrompt || (qpMood ? `Right now I'm feeling ${qpMood}.\n\n` : "");
 
     setTitle((prev) => (prev.trim() ? prev : nextTitle));
     setContent((prev) => (prev.trim() ? prev : nextContent));
@@ -105,7 +105,9 @@ export default function JournalForm(_props: Props) {
         sessionStorage.setItem("havenly:insight_stage", String(next));
       } catch {}
 
-      const id = json?.id;
+      // ✅ FIX: API returns { success: true, entry: data }
+      // The ID is at json.entry.id, not json.id
+      const id = json?.entry?.id;
       if (id) {
         router.push(`/journal/${id}`);
         router.refresh();
