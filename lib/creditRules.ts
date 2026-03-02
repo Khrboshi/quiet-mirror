@@ -78,8 +78,13 @@ async function ensureCreditRowExists(params: {
 }
 
 /**
- * ✅ Monthly reset (FREE only) using updated_at UTC month.
+ * ✅ Credit normalization + monthly reset (FREE only).
  * SAFE to call multiple times.
+ *
+ * Critical protection:
+ * - If a user is FREE but has a large remaining_credits value (e.g. 9999 from a prior PREMIUM state),
+ *   clamp it back down immediately to the FREE cap. Otherwise they effectively stay "unlimited"
+ *   until the next month boundary.
  */
 export async function ensureCreditsFresh(params: {
   supabase: SupabaseClient;
@@ -92,9 +97,26 @@ export async function ensureCreditsFresh(params: {
   const { row, err } = await getCreditsRow({ supabase, userId });
   if (err || !row) return;
 
+  // PREMIUM/TRIAL: do nothing here
   if (row.plan_type === "PREMIUM" || row.plan_type === "TRIAL") return;
 
   const now = new Date();
+
+  // ✅ Clamp abnormal FREE credit balances immediately (e.g., leftover 9999)
+  if (row.remaining_credits > FREE_MONTHLY_CREDITS) {
+    await supabase
+      .from("user_credits")
+      .update({
+        remaining_credits: FREE_MONTHLY_CREDITS,
+        updated_at: now.toISOString(),
+        renewal_date: null,
+      } as any)
+      .eq("user_id", userId);
+
+    return;
+  }
+
+  // Monthly reset for FREE tier
   if (!row.updated_at || !isSameUtcMonth(row.updated_at, now)) {
     await supabase
       .from("user_credits")
