@@ -188,13 +188,14 @@ async function hasActiveStripeSubscription(stripeCustomerId: string | null): Pro
   }
 }
 
-function safeParseJson(value: unknown): any | null {
-  if (typeof value !== "string") return null;
+function tryParseReflection(aiResponse: unknown) {
+  if (typeof aiResponse !== "string") return null;
   try {
-    return JSON.parse(value);
-  } catch {
-    return null;
-  }
+    const parsed = JSON.parse(aiResponse);
+    // minimal sanity check
+    if (parsed && typeof parsed === "object" && typeof parsed.summary === "string") return parsed;
+  } catch {}
+  return null;
 }
 
 export async function POST(req: Request) {
@@ -235,21 +236,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Entry not found" }, { status: 404, headers: noStoreHeaders() });
   }
 
-  // ✅ If reflection already exists and is valid JSON, return it WITHOUT charging credits again.
-  const existingReflection = safeParseJson((entry as any).ai_response);
-  if (existingReflection) {
-    return NextResponse.json(
-      {
-        reflection: existingReflection,
-        // We don't know remaining credits without calling credit RPC; returning null avoids leaking.
-        // UI stays correct because it already knows plan/credits from prior call.
-        remainingCredits: null,
-        cached: true,
-      },
-      { headers: noStoreHeaders() }
-    );
-  }
-
   const content = typeof (entry as any)?.content === "string" ? String((entry as any).content).trim() : "";
   const title = typeof (entry as any)?.title === "string" ? String((entry as any).title).trim() : "";
 
@@ -266,6 +252,26 @@ export async function POST(req: Request) {
 
   const url = new URL(req.url);
   const debugEnabled = url.searchParams.get("debug") === "1";
+
+  // ✅ IDempotency: if reflection already exists, return it immediately.
+  // No credits consumed. No new AI call. No new usage insert.
+  const existing = tryParseReflection((entry as any)?.ai_response);
+  if (existing) {
+    const payload: any = { reflection: existing, remainingCredits: null };
+
+    if (debugEnabled) {
+      payload.debug = {
+        entryId,
+        fp: contentFingerprint(content),
+        snippet: content.slice(0, 120),
+        domain: detectDomain(`${title}\n${content}`),
+        anchors: extractAnchorsForDebug(content),
+        servedFromCache: true,
+      };
+    }
+
+    return NextResponse.json(payload, { headers: noStoreHeaders() });
+  }
 
   const fp = debugEnabled ? contentFingerprint(content) : undefined;
   const snippet = debugEnabled ? content.slice(0, 120) : undefined;
@@ -327,6 +333,7 @@ export async function POST(req: Request) {
   await ensureCreditsFresh({ supabase, userId });
 
   // TRIAL remains unlimited if you use it internally.
+  // Premium unlimited is ONLY when Stripe says active/trialing.
   const isUnlimited = stripePremium || planType === "TRIAL";
 
   let remainingAfterConsume: number | null = null;
@@ -343,7 +350,7 @@ export async function POST(req: Request) {
   }
 
   try {
-    // Cross-journal memory — fetch themes from last 5 reflections
+    // ─── Cross-journal memory — fetch themes from last 5 reflections ──────────
     let recentThemes: string[] = [];
     try {
       const { data: recentEntries } = await supabase
@@ -366,6 +373,7 @@ export async function POST(req: Request) {
         recentThemes = [...new Set(recentThemes)].slice(0, 5);
       }
     } catch {}
+    // ─────────────────────────────────────────────────────────────────────────
 
     const reflection = await generateReflectionFromEntry({
       content,
@@ -408,6 +416,7 @@ export async function POST(req: Request) {
         stripeCustomerIdPresent: Boolean(stripeCustomerId),
         stripePremium,
         planType,
+        servedFromCache: false,
       };
     }
 
