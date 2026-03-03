@@ -87,12 +87,3 @@ export default async function PremiumInsightPreviewPage() {
     </main>
   );
 }
-```
-
-Commit message: `Speed up insights preview — remove redundant getSession call`
-
----
-
-Now paste the contents of your tools page so I can fix that too before you deploy:
-```
-app/(protected)/tools/page.tsx
