@@ -198,6 +198,73 @@ function tryParseReflection(aiResponse: unknown) {
   return null;
 }
 
+// ---------- NEW: Free vs Premium shaping ----------
+function pickString(v: any) {
+  return typeof v === "string" ? v : "";
+}
+function pickArray(v: any) {
+  return Array.isArray(v) ? v : [];
+}
+
+function toFreeReflection(full: any) {
+  const themes = pickArray(full?.themes).filter((x) => typeof x === "string").slice(0, 2);
+
+  const insight =
+    pickString(full?.keyInsight) ||
+    pickString(full?.insight) ||
+    pickString(full?.emotionalInsight) ||
+    pickString(full?.reflection) ||
+    "";
+
+  const q =
+    pickArray(full?.questions).filter((x) => typeof x === "string")[0] ||
+    pickString(full?.question) ||
+    "";
+
+  return {
+    tier: "FREE" as const,
+    summary: pickString(full?.summary),
+    themes,
+    insight,
+    question: q,
+  };
+}
+
+function premiumLockedPreview(full: any) {
+  const topTheme = pickArray(full?.themes).filter((x) => typeof x === "string")[0] || "a recurring theme";
+
+  return {
+    locked: true,
+    blocks: [
+      {
+        id: "patterns",
+        title: "Recurring patterns over time",
+        teaser: `We’re starting to detect a repeating theme: “${topTheme}”.`,
+      },
+      {
+        id: "trend",
+        title: "Emotional trend timeline",
+        teaser: "See how your emotions shift across entries and what triggers changes.",
+      },
+      {
+        id: "weekly",
+        title: "Weekly clarity summary",
+        teaser: "Get a weekly snapshot of what showed up most—and what helped.",
+      },
+      {
+        id: "monthly",
+        title: "Monthly insight report",
+        teaser: "A clear report of themes, growth markers, and next focus areas.",
+      },
+    ],
+    cta: {
+      label: "Unlock deeper insights",
+      href: "/upgrade",
+    },
+  };
+}
+// -------------------------------------------------
+
 export async function POST(req: Request) {
   const supabase = await createServerSupabase();
 
@@ -253,32 +320,12 @@ export async function POST(req: Request) {
   const url = new URL(req.url);
   const debugEnabled = url.searchParams.get("debug") === "1";
 
-  // ✅ IDempotency: if reflection already exists, return it immediately.
-  // No credits consumed. No new AI call. No new usage insert.
-  const existing = tryParseReflection((entry as any)?.ai_response);
-  if (existing) {
-    const payload: any = { reflection: existing, remainingCredits: null };
-
-    if (debugEnabled) {
-      payload.debug = {
-        entryId,
-        fp: contentFingerprint(content),
-        snippet: content.slice(0, 120),
-        domain: detectDomain(`${title}\n${content}`),
-        anchors: extractAnchorsForDebug(content),
-        servedFromCache: true,
-      };
-    }
-
-    return NextResponse.json(payload, { headers: noStoreHeaders() });
-  }
-
   const fp = debugEnabled ? contentFingerprint(content) : undefined;
   const snippet = debugEnabled ? content.slice(0, 120) : undefined;
   const domain = debugEnabled ? detectDomain(`${title}\n${content}`) : undefined;
   const anchors = debugEnabled ? extractAnchorsForDebug(content) : undefined;
 
-  // Load current plan row
+  // Load current plan row (still used for housekeeping + stale row fixes)
   const { data: creditsRow, error: creditsErr } = await supabase
     .from("user_credits")
     .select("plan_type")
@@ -332,9 +379,41 @@ export async function POST(req: Request) {
   // Credits bookkeeping (FREE reset etc.)
   await ensureCreditsFresh({ supabase, userId });
 
-  // TRIAL remains unlimited if you use it internally.
+  const effectiveTier: "FREE" | "PREMIUM" = stripePremium ? "PREMIUM" : "FREE";
+
+  // ✅ IDempotency AFTER we know tier:
+  // If reflection already exists, serve shaped version without consuming credits.
+  const existingFull = tryParseReflection((entry as any)?.ai_response);
+  if (existingFull) {
+    const payload: any = {
+      reflection:
+        effectiveTier === "FREE"
+          ? toFreeReflection(existingFull)
+          : { ...existingFull, tier: "PREMIUM" as const },
+      premiumPreview: effectiveTier === "FREE" ? premiumLockedPreview(existingFull) : null,
+      remainingCredits: null,
+    };
+
+    if (debugEnabled) {
+      payload.debug = {
+        entryId,
+        fp,
+        snippet,
+        domain,
+        anchors,
+        stripeCustomerIdPresent: Boolean(stripeCustomerId),
+        stripePremium,
+        planType,
+        effectiveTier,
+        servedFromCache: true,
+      };
+    }
+
+    return NextResponse.json(payload, { headers: noStoreHeaders() });
+  }
+
   // Premium unlimited is ONLY when Stripe says active/trialing.
-  const isUnlimited = stripePremium || planType === "TRIAL";
+  const isUnlimited = stripePremium;
 
   let remainingAfterConsume: number | null = null;
 
@@ -375,16 +454,18 @@ export async function POST(req: Request) {
     } catch {}
     // ─────────────────────────────────────────────────────────────────────────
 
-    const reflection = await generateReflectionFromEntry({
+    // Generate full reflection (we save full regardless of tier)
+    const reflectionFull = await generateReflectionFromEntry({
       content,
       title,
-      plan: isUnlimited ? "PREMIUM" : "FREE",
+      plan: effectiveTier,
       recentThemes,
     });
 
+    // Save full reflection
     const { error: updErr } = await supabase
       .from("journal_entries")
-      .update({ ai_response: JSON.stringify(reflection) })
+      .update({ ai_response: JSON.stringify(reflectionFull) })
       .eq("id", entryId)
       .eq("user_id", userId);
 
@@ -392,6 +473,7 @@ export async function POST(req: Request) {
       console.error("[reflection] journal_entries update failed:", updErr);
     }
 
+    // Track usage
     const { error: usageErr } = await supabase.from("reflection_usage").insert({
       user_id: userId,
       date: new Date().toISOString().slice(0, 10),
@@ -402,8 +484,12 @@ export async function POST(req: Request) {
     }
 
     const payload: any = {
-      reflection,
-      remainingCredits: isUnlimited ? null : remainingAfterConsume,
+      reflection:
+        effectiveTier === "FREE"
+          ? toFreeReflection(reflectionFull)
+          : { ...reflectionFull, tier: "PREMIUM" as const },
+      premiumPreview: effectiveTier === "FREE" ? premiumLockedPreview(reflectionFull) : null,
+      remainingCredits: effectiveTier === "FREE" ? remainingAfterConsume : null,
     };
 
     if (debugEnabled) {
@@ -416,6 +502,7 @@ export async function POST(req: Request) {
         stripeCustomerIdPresent: Boolean(stripeCustomerId),
         stripePremium,
         planType,
+        effectiveTier,
         servedFromCache: false,
       };
     }
