@@ -17,7 +17,10 @@ type InvoiceItem = {
   invoice_pdf: string | null;
 };
 
-function formatMoney(cents: number | null | undefined, currency: string | null | undefined) {
+function formatMoney(
+  cents: number | null | undefined,
+  currency: string | null | undefined
+) {
   const cur = (currency || "usd").toUpperCase();
   const value = (cents ?? 0) / 100;
   try {
@@ -32,7 +35,11 @@ function formatMoney(cents: number | null | undefined, currency: string | null |
 
 function formatDateFromUnixSeconds(sec: number) {
   const d = new Date(sec * 1000);
-  return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "2-digit" });
+  return d.toLocaleDateString(undefined, {
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+  });
 }
 
 export default function TransactionsPage() {
@@ -47,6 +54,11 @@ export default function TransactionsPage() {
   const [invLoading, setInvLoading] = useState(true);
   const [invError, setInvError] = useState<string | null>(null);
   const [invoices, setInvoices] = useState<InvoiceItem[]>([]);
+
+  const goToPortal = () => {
+    // IMPORTANT: full navigation (no fetch, no Link) to avoid CORS issues.
+    window.location.href = "/api/stripe/portal?returnUrl=/settings/transactions";
+  };
 
   useEffect(() => {
     let alive = true;
@@ -133,12 +145,13 @@ export default function TransactionsPage() {
           )}
 
           <div className="mt-5 flex flex-wrap gap-3">
-            <Link
-              href="/api/stripe/portal?returnUrl=/settings/transactions"
+            <button
+              type="button"
+              onClick={goToPortal}
               className="rounded-md bg-emerald-500 px-4 py-2 text-sm font-medium text-black hover:bg-emerald-400"
             >
               Manage subscription
-            </Link>
+            </button>
 
             {showUpgrade ? (
               <Link
@@ -157,9 +170,7 @@ export default function TransactionsPage() {
             </Link>
           </div>
 
-          <p className="mt-4 text-xs text-slate-500">
-            Billing is managed securely by Stripe.
-          </p>
+          <p className="mt-4 text-xs text-slate-500">Billing is managed securely by Stripe.</p>
         </div>
 
         {/* Payment history */}
@@ -197,8 +208,9 @@ export default function TransactionsPage() {
                   {invoices.map((inv) => {
                     const url = inv.hosted_invoice_url || inv.invoice_pdf;
                     const amount =
-                      (inv.amount_paid && inv.amount_paid > 0 ? inv.amount_paid : inv.amount_due) ??
-                      0;
+                      (inv.amount_paid && inv.amount_paid > 0
+                        ? inv.amount_paid
+                        : inv.amount_due) ?? 0;
 
                     return (
                       <tr key={inv.id} className="border-t border-white/10">
@@ -234,12 +246,14 @@ export default function TransactionsPage() {
           )}
 
           <div className="mt-4 flex gap-3">
-            <Link
-              href="/api/stripe/portal?returnUrl=/settings/transactions"
+            <button
+              type="button"
+              onClick={goToPortal}
               className="rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-white/10"
             >
               Open Stripe portal
-            </Link>
+            </button>
+
             <Link
               href="/settings/billing"
               className="rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-white/10"
