@@ -7,15 +7,13 @@ import UpgradeIntentTracker from "@/app/components/UpgradeIntentTracker";
 
 export default async function PremiumInsightPreviewPage() {
   const supabase = createServerSupabase();
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
 
-  if (!session?.user) redirect("/magic-login");
+  // ✅ Use getUser() once — middleware already validated session
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/magic-login");
 
   return (
     <main className="mx-auto max-w-4xl px-6 py-20 text-slate-200">
-      {/* Track that the user reached the premium teaser */}
       <UpgradeIntentTracker source="insights-preview" />
 
       <header className="mb-10">
@@ -32,7 +30,6 @@ export default async function PremiumInsightPreviewPage() {
         <h2 className="mb-3 text-sm font-semibold text-emerald-300">
           Example insight (Premium)
         </h2>
-
         <div className="relative overflow-hidden rounded-xl border border-slate-800 bg-slate-950/70 p-5">
           <div className="space-y-3 blur-sm select-none">
             <p className="text-sm">
@@ -48,14 +45,12 @@ export default async function PremiumInsightPreviewPage() {
               emotionally stretched.
             </p>
           </div>
-
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="rounded-full bg-slate-900/80 px-4 py-2 text-xs text-slate-300">
               Premium insight preview
             </span>
           </div>
         </div>
-
         <p className="mt-4 text-xs text-slate-400">
           Premium insights are generated from multiple entries over time — never
           from a single moment.
@@ -81,7 +76,6 @@ export default async function PremiumInsightPreviewPage() {
         >
           Unlock Premium insights
         </Link>
-
         <Link href="/dashboard" className="text-sm text-slate-400 hover:underline">
           Back to dashboard
         </Link>
@@ -93,3 +87,12 @@ export default async function PremiumInsightPreviewPage() {
     </main>
   );
 }
+```
+
+Commit message: `Speed up insights preview — remove redundant getSession call`
+
+---
+
+Now paste the contents of your tools page so I can fix that too before you deploy:
+```
+app/(protected)/tools/page.tsx
