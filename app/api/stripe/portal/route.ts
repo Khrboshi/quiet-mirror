@@ -1,81 +1,96 @@
+// app/api/stripe/portal/route.ts
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-import { createServerSupabase } from "@/lib/supabase/server";
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
 
 export const dynamic = "force-dynamic";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-async function getPortalUrl(returnUrl?: string) {
-  const supabase = createServerSupabase();
+function createSupabase() {
+  const cookieStore = cookies();
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  if (!session?.user) {
-    return { error: "Unauthorized", status: 401 as const };
-  }
-
-  const { data: profile, error: profErr } = await supabase
-    .from("profiles")
-    .select("stripe_customer_id")
-    .eq("id", session.user.id)
-    .maybeSingle();
-
-  if (profErr) {
-    return { error: profErr.message, status: 500 as const };
-  }
-
-  if (!profile?.stripe_customer_id) {
-    return { error: "No Stripe customer found for this user.", status: 400 as const };
-  }
-
-  const finalReturnUrl =
-    returnUrl ||
-    process.env.STRIPE_PORTAL_RETURN_URL ||
-    "https://havenly-2-1.vercel.app/settings/billing";
-
-  const portalSession = await stripe.billingPortal.sessions.create({
-    customer: String(profile.stripe_customer_id),
-    return_url: finalReturnUrl,
-  });
-
-  return { url: portalSession.url, status: 200 as const };
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll(cookiesToSet) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, options)
+            );
+          } catch {
+            // Server Components might block setting cookies; safe to ignore here.
+          }
+        },
+      },
+    }
+  );
 }
 
 export async function GET(req: Request) {
   try {
-    const { searchParams } = new URL(req.url);
-    const returnUrl = searchParams.get("returnUrl") || undefined;
+    const supabase = createSupabase();
 
-    const result = await getPortalUrl(returnUrl);
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-    if (!("url" in result)) {
-      return NextResponse.json({ error: result.error }, { status: result.status });
+    if (!user) {
+      return NextResponse.redirect(new URL("/magic-login", req.url), 303);
     }
 
-    return NextResponse.redirect(result.url, 303);
-  } catch (e: any) {
-    console.error("[portal] GET error:", e?.message || e);
-    return NextResponse.json({ error: "Portal error" }, { status: 500 });
-  }
-}
+    // Read the entire row so we don't fail if a specific column doesn't exist.
+    const { data: profile, error: profErr } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", user.id)
+      .maybeSingle();
 
-export async function POST(req: Request) {
-  try {
-    const body = await req.json().catch(() => ({}));
-    const returnUrl = body?.returnUrl as string | undefined;
-
-    const result = await getPortalUrl(returnUrl);
-
-    if (!("url" in result)) {
-      return NextResponse.json({ error: result.error }, { status: result.status });
+    if (profErr || !profile) {
+      return NextResponse.json({ error: "Profile not found." }, { status: 400 });
     }
 
-    return NextResponse.json({ url: result.url });
+    // Try common field names (use whichever exists in your schema)
+    const stripeCustomerId =
+      (profile as any).stripe_customer_id ||
+      (profile as any).stripeCustomerId ||
+      (profile as any).stripe_customer ||
+      (profile as any).customer_id ||
+      (profile as any).stripeCustomer;
+
+    if (!stripeCustomerId) {
+      return NextResponse.json(
+        {
+          error:
+            "No Stripe customer id stored for this user. Add profiles.stripe_customer_id and re-run checkout (or backfill the value).",
+        },
+        { status: 400 }
+      );
+    }
+
+    const url = new URL(req.url);
+    const returnUrlParam = url.searchParams.get("returnUrl") || undefined;
+
+    const return_url =
+      returnUrlParam ||
+      process.env.STRIPE_PORTAL_RETURN_URL ||
+      "https://havenly-2-1.vercel.app/settings/billing";
+
+    const session = await stripe.billingPortal.sessions.create({
+      customer: String(stripeCustomerId),
+      return_url,
+    });
+
+    // IMPORTANT: redirect the browser to Stripe portal
+    return NextResponse.redirect(session.url!, 303);
   } catch (e: any) {
-    console.error("[portal] POST error:", e?.message || e);
+    console.error("[portal] error:", e?.message || e);
     return NextResponse.json({ error: "Portal error" }, { status: 500 });
   }
 }
