@@ -24,17 +24,15 @@ export default function Navbar() {
     setMobileOpen(false);
   }, [pathname]);
 
-  // Do not mutate inline style; use class toggling
   useEffect(() => {
     if (mobileOpen) document.body.classList.add("overflow-hidden");
     else document.body.classList.remove("overflow-hidden");
     return () => document.body.classList.remove("overflow-hidden");
   }, [mobileOpen]);
 
-  // ✅ Prefetch common authed routes right after login
   useEffect(() => {
     if (!isLoggedIn) return;
-    const routes = ["/dashboard", "/journal", "/tools", "/insights"];
+    const routes = ["/dashboard", "/journal", "/tools", "/insights", "/settings"];
     routes.forEach((r) => router.prefetch(r));
   }, [isLoggedIn, router]);
 
@@ -55,6 +53,7 @@ export default function Navbar() {
     { href: "/journal", label: "Journal" },
     { href: "/tools", label: "Tools" },
     { href: "/insights", label: "Insights" },
+    { href: "/settings", label: "Settings" },
     { href: "/install", label: "Install" },
   ];
 
