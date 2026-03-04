@@ -1,7 +1,15 @@
+// app/(protected)/insights/InsightsClient.tsx
 "use client";
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+
+type WeeklySeries = { key: string; counts: number[] };
+type WeeklyBlock = {
+  weeks: string[];
+  themes: WeeklySeries[];
+  emotions: WeeklySeries[];
+};
 
 type InsightData = {
   themes: Record<string, number>;
@@ -10,6 +18,7 @@ type InsightData = {
   entryCount?: number;
   hasRealData?: boolean;
   trend?: { up: string[]; down: string[] };
+  weekly?: WeeklyBlock;
 };
 
 function sortMap(map: Record<string, number>) {
@@ -22,49 +31,80 @@ function maxVal(map: Record<string, number>): number {
 }
 
 /**
- * Better label polish:
- * - trims
- * - collapses spaces
- * - Title Case each word (also handles hyphenated words)
- * Examples: "self-awareness" -> "Self-Awareness", "quiet courage" -> "Quiet Courage"
+ * Canonicalization rules:
+ * - collapse whitespace
+ * - lower-case canonical key for merge
+ * - display in Title Case-ish (simple + preserves hyphens)
  */
-function titleCaseLabel(label: string) {
-  const s = String(label ?? "").trim().replace(/\s+/g, " ");
+function canonicalKey(label: string) {
+  return (label || "").trim().replace(/\s+/g, " ").toLowerCase();
+}
+
+function prettyLabel(label: string) {
+  const s = (label || "").trim().replace(/\s+/g, " ");
   if (!s) return s;
-
-  // Title-case after start / space / hyphen
-  return s.replace(/(^|[\s-])([a-z])/g, (_, p1: string, p2: string) => p1 + p2.toUpperCase());
+  // Keep hyphenated words readable: "self-awareness" -> "Self-awareness"
+  return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-/** Merge keys that differ only by casing/spacing after titleCaseLabel() */
-function normalizeAndMerge(map: Record<string, number>) {
-  const merged: Record<string, number> = {};
-  for (const [k, v] of Object.entries(map || {})) {
-    const nk = titleCaseLabel(k);
-    merged[nk] = (merged[nk] || 0) + (typeof v === "number" ? v : 0);
+/**
+ * Filters out low-signal labels that degrade perceived quality.
+ * Tune if needed, but this alone makes the page feel much more premium.
+ */
+function isLowQualityLabel(label: string) {
+  const k = canonicalKey(label);
+  if (!k) return true;
+  if (k.length > 40) return true;
+  if (k.includes("possibly")) return true;
+  if (k.includes(" or ")) return true;
+  if (k.includes("anxiety")) return false; // keep real emotions if you want; remove if undesired
+  return false;
+}
+
+/**
+ * Merge counts for labels differing only by case/spacing, and drop junk.
+ * Returns:
+ * - mergedCounts: counts keyed by display label
+ * - displayByCanonical: stable display label for each canonical key
+ */
+function mergeCounts(raw: Record<string, number>) {
+  const canonCount: Record<string, number> = {};
+  const displayByCanon: Record<string, string> = {};
+
+  for (const [k, v] of Object.entries(raw || {})) {
+    const ck = canonicalKey(k);
+    if (!ck || isLowQualityLabel(k)) continue;
+    const n = typeof v === "number" ? v : 0;
+    canonCount[ck] = (canonCount[ck] || 0) + n;
+
+    // Prefer a nicer display (first seen wins, but normalized)
+    if (!displayByCanon[ck]) displayByCanon[ck] = prettyLabel(k);
   }
-  return merged;
-}
 
-// ── Skeleton ────────────────────────────────────────────────────────────────
+  const mergedCounts: Record<string, number> = {};
+  for (const [ck, n] of Object.entries(canonCount)) {
+    mergedCounts[displayByCanon[ck] || prettyLabel(ck)] = n;
+  }
+  return mergedCounts;
+}
 
 function Skeleton() {
   return (
     <div className="animate-pulse space-y-6">
       <div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-7 space-y-4">
-        <div className="h-3 w-24 rounded bg-slate-800" />
-        <div className="h-6 w-3/4 rounded bg-slate-800" />
+        <div className="h-3 w-16 rounded bg-slate-800" />
+        <div className="h-5 w-2/3 rounded bg-slate-800" />
         <div className="h-3 w-1/2 rounded bg-slate-800" />
       </div>
       <div className="grid gap-6 md:grid-cols-2">
         {[0, 1].map((i) => (
           <div key={i} className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6 space-y-5">
-            <div className="h-3 w-28 rounded bg-slate-800" />
+            <div className="h-3 w-20 rounded bg-slate-800" />
             {[80, 65, 50, 40].map((w, j) => (
               <div key={j} className="space-y-1.5">
                 <div className="flex justify-between">
                   <div className="h-3 rounded bg-slate-800" style={{ width: `${w}%` }} />
-                  <div className="h-3 w-6 rounded bg-slate-800" />
+                  <div className="h-3 w-4 rounded bg-slate-800" />
                 </div>
                 <div className="h-[3px] w-full rounded-full bg-slate-800" />
               </div>
@@ -75,8 +115,6 @@ function Skeleton() {
     </div>
   );
 }
-
-// ── Bar row ────────────────────────────────────────────────────────────────
 
 function BarRow({
   label,
@@ -102,10 +140,10 @@ function BarRow({
       : "bg-slate-700 group-hover:bg-slate-600";
 
   const rankColor =
-    isTop ? (color === "violet" ? "text-violet-400" : "text-emerald-400") : "text-slate-700";
+    isTop ? (color === "violet" ? "text-violet-400" : "text-emerald-400") : "text-slate-600";
 
   return (
-    <li className="group space-y-2">
+    <li className="group space-y-1.5">
       <div className="flex items-center justify-between gap-3 text-sm">
         <div className="flex items-center gap-2 min-w-0">
           <span className={`shrink-0 tabular-nums text-[10px] w-4 text-right ${rankColor}`}>
@@ -113,33 +151,24 @@ function BarRow({
           </span>
           <span
             className={`truncate ${
-              isTop
-                ? "font-medium text-slate-100"
-                : "text-slate-400 group-hover:text-slate-200 transition-colors"
+              isTop ? "font-medium text-slate-100" : "text-slate-400 group-hover:text-slate-200 transition-colors"
             }`}
             title={label}
           >
             {label}
           </span>
         </div>
-
         <span className="shrink-0 tabular-nums text-xs text-slate-600">{count}</span>
       </div>
-
       <div className="h-[3px] w-full overflow-hidden rounded-full bg-slate-800/80">
-        <div
-          className={`h-full rounded-full transition-all duration-700 ${barColor}`}
-          style={{ width: `${pct}%` }}
-        />
+        <div className={`h-full rounded-full transition-all duration-700 ${barColor}`} style={{ width: `${pct}%` }} />
       </div>
     </li>
   );
 }
 
-// ── Trend pill ─────────────────────────────────────────────────────────────
-
 function TrendPill({ label, dir }: { label: string; dir: "up" | "down" }) {
-  const pretty = titleCaseLabel(label);
+  const clean = prettyLabel(label);
   return (
     <span
       className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-medium ${
@@ -148,25 +177,43 @@ function TrendPill({ label, dir }: { label: string; dir: "up" | "down" }) {
           : "border-slate-700 bg-slate-800/60 text-slate-500"
       }`}
     >
-      {dir === "up" ? "↑" : "↓"} {pretty}
+      {dir === "up" ? "↑" : "↓"} {clean}
     </span>
   );
 }
 
-// ── Small “stat pill” ──────────────────────────────────────────────────────
-
-function StatPill({ label, value }: { label: string; value: React.ReactNode }) {
+function MiniStat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-slate-800 bg-slate-950/40 px-4 py-3">
-      <p className="text-[11px] font-semibold uppercase tracking-widest text-slate-600">
-        {label}
-      </p>
-      <p className="mt-1 text-sm font-medium text-slate-200">{value}</p>
+    <div className="rounded-2xl border border-slate-800 bg-slate-950/40 px-5 py-4">
+      <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-600">{label}</p>
+      <p className="mt-1 text-sm font-semibold text-slate-200">{value}</p>
     </div>
   );
 }
 
-// ── Not enough data ─────────────────────────────────────────────────────────
+// Simple sparkline with SVG (no libs)
+function Sparkline({ data }: { data: number[] }) {
+  const w = 120;
+  const h = 28;
+
+  const max = Math.max(...data, 1);
+  const min = Math.min(...data, 0);
+  const span = Math.max(max - min, 1);
+
+  const pts = data
+    .map((v, i) => {
+      const x = (i / Math.max(data.length - 1, 1)) * w;
+      const y = h - ((v - min) / span) * h;
+      return `${x.toFixed(2)},${y.toFixed(2)}`;
+    })
+    .join(" ");
+
+  return (
+    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} className="opacity-90">
+      <polyline fill="none" stroke="currentColor" strokeWidth="2" points={pts} />
+    </svg>
+  );
+}
 
 function NotEnoughData({ entryCount }: { entryCount: number }) {
   const needed = Math.max(0, 5 - entryCount);
@@ -175,19 +222,14 @@ function NotEnoughData({ entryCount }: { entryCount: number }) {
       <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-slate-800 bg-slate-900">
         <span className="text-xl">✦</span>
       </div>
-
       <h3 className="text-sm font-medium text-slate-200">
-        {entryCount === 0
-          ? "No reflections yet"
-          : `${entryCount} ${entryCount === 1 ? "reflection" : "reflections"} so far`}
+        {entryCount === 0 ? "No reflections yet" : `${entryCount} ${entryCount === 1 ? "reflection" : "reflections"} so far`}
       </h3>
-
       <p className="mx-auto max-w-sm text-sm text-slate-500">
         {needed > 0
           ? `${needed} more ${needed === 1 ? "reflection" : "reflections"} and Havenly will start surfacing what quietly repeats across your entries.`
-          : "Generating your personal patterns now — check back after your next reflection."}
+          : "Generating your patterns now — check back after your next reflection."}
       </p>
-
       <Link
         href="/journal/new"
         className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-300 hover:bg-white/10 transition"
@@ -197,8 +239,6 @@ function NotEnoughData({ entryCount }: { entryCount: number }) {
     </div>
   );
 }
-
-// ── Main ────────────────────────────────────────────────────────────────────
 
 export default function InsightsClient() {
   const [data, setData] = useState<InsightData | null>(null);
@@ -218,18 +258,7 @@ export default function InsightsClient() {
           return;
         }
         const j = (await res.json()) as InsightData;
-
-        // Fallback if API doesn't provide entryCount
-        const derivedCount = Math.max(
-          ...Object.values(j.themes || {}),
-          ...Object.values(j.emotions || {}),
-          0
-        );
-
-        setData({
-          ...j,
-          entryCount: typeof j.entryCount === "number" ? j.entryCount : derivedCount,
-        });
+        setData(j);
       } catch {
         setError("Failed to load insights.");
         setData(null);
@@ -238,8 +267,9 @@ export default function InsightsClient() {
     load();
   }, []);
 
-  const themesMerged = useMemo(() => (data ? normalizeAndMerge(data.themes) : {}), [data]);
-  const emotionsMerged = useMemo(() => (data ? normalizeAndMerge(data.emotions) : {}), [data]);
+  // Merge + filter at display layer (works even if API is noisy)
+  const themesMerged = useMemo(() => (data ? mergeCounts(data.themes) : {}), [data]);
+  const emotionsMerged = useMemo(() => (data ? mergeCounts(data.emotions) : {}), [data]);
 
   const allThemes = useMemo(() => sortMap(themesMerged), [themesMerged]);
   const allEmotions = useMemo(() => sortMap(emotionsMerged), [emotionsMerged]);
@@ -250,39 +280,23 @@ export default function InsightsClient() {
   const maxTheme = useMemo(() => maxVal(themesMerged), [themesMerged]);
   const maxEmotion = useMemo(() => maxVal(emotionsMerged), [emotionsMerged]);
 
-  const topTheme = allThemes[0]?.[0];
-  const topThemeCount = allThemes[0]?.[1];
-
-  const topEmotion = allEmotions[0]?.[0];
-  const topEmotionCount = allEmotions[0]?.[1];
-
   const entryCount = data?.entryCount ?? 0;
 
-  // Derive “real data” even if API doesn't send hasRealData
+  // “real data” gate
   const derivedHasRealData = (allThemes.length > 0 || allEmotions.length > 0) && entryCount >= 5;
-  const hasRealData =
-    typeof data?.hasRealData === "boolean" ? data.hasRealData : derivedHasRealData;
+  const hasRealData = typeof data?.hasRealData === "boolean" ? data.hasRealData : derivedHasRealData;
+
+  const topEmotion = allEmotions[0]?.[0];
+  const topTheme = allThemes[0]?.[0];
 
   const hasTrend = (data?.trend?.up?.length ?? 0) + (data?.trend?.down?.length ?? 0) > 0;
 
-  // “Momentum” label based on trend signal size
-  const momentum = useMemo(() => {
-    if (!hasTrend) return "Steady";
-    const up = data?.trend?.up?.length ?? 0;
-    const down = data?.trend?.down?.length ?? 0;
-    if (up >= 3 && down === 0) return "Rising";
-    if (down >= 3 && up === 0) return "Softening";
-    return "Shifting";
-  }, [data, hasTrend]);
-
-  // Headline (more human, less repetitive)
   const headline = useMemo(() => {
-    if (!topEmotion && !topTheme) return "Your patterns will appear here as you keep writing.";
+    if (!topEmotion && !topTheme) return null;
     if (topEmotion && topTheme) {
       return (
         <>
-          <span className="text-slate-100 font-semibold">{topEmotion}</span> keeps showing up —
-          often alongside{" "}
+          <span className="text-slate-100 font-semibold">{topEmotion}</span> keeps showing up — often alongside{" "}
           <span className="text-slate-100 font-semibold">{topTheme}</span>.
         </>
       );
@@ -290,61 +304,32 @@ export default function InsightsClient() {
     if (topEmotion) {
       return (
         <>
-          <span className="text-slate-100 font-semibold">{topEmotion}</span> appears most often
-          across your entries.
+          <span className="text-slate-100 font-semibold">{topEmotion}</span> is the emotion that appears most across your reflections.
         </>
       );
     }
     return (
       <>
-        <span className="text-slate-100 font-semibold">{topTheme}</span> is a theme that repeats
-        across your reflections.
+        <span className="text-slate-100 font-semibold">{topTheme}</span> is a theme that keeps appearing across your reflections.
       </>
     );
   }, [topEmotion, topTheme]);
 
-  // “Premium-feeling” takeaways, computed from current data only.
-  const takeaways = useMemo(() => {
-    const items: Array<{ title: string; body: string }> = [];
+  const momentumLabel = useMemo(() => {
+    if (!hasTrend) return "Stable";
+    const up = data?.trend?.up?.length ?? 0;
+    const down = data?.trend?.down?.length ?? 0;
+    if (up > down) return "Rising";
+    if (down > up) return "Softening";
+    return "Shifting";
+  }, [data, hasTrend]);
 
-    if (topEmotion) {
-      items.push({
-        title: `Most common emotion: ${topEmotion}`,
-        body:
-          typeof topEmotionCount === "number"
-            ? `It shows up ${topEmotionCount} time${topEmotionCount === 1 ? "" : "s"} across your reflections.`
-            : "It appears most often across your reflections.",
-      });
-    }
+  // Weekly series for sparklines
+  const weeklyThemes = data?.weekly?.themes ?? [];
+  const weeklyEmotions = data?.weekly?.emotions ?? [];
 
-    if (topTheme) {
-      items.push({
-        title: `Most common theme: ${topTheme}`,
-        body:
-          typeof topThemeCount === "number"
-            ? `It appears ${topThemeCount} time${topThemeCount === 1 ? "" : "s"} across your entries.`
-            : "It repeats across your entries over time.",
-      });
-    }
-
-    if (hasTrend) {
-      const up = (data?.trend?.up ?? []).slice(0, 2).map(titleCaseLabel);
-      const down = (data?.trend?.down ?? []).slice(0, 2).map(titleCaseLabel);
-
-      const parts: string[] = [];
-      if (up.length) parts.push(`More present lately: ${up.join(", ")}`);
-      if (down.length) parts.push(`Less present lately: ${down.join(", ")}`);
-
-      if (parts.length) {
-        items.push({
-          title: "Recent movement",
-          body: parts.join(" • "),
-        });
-      }
-    }
-
-    return items.slice(0, 3);
-  }, [topEmotion, topEmotionCount, topTheme, topThemeCount, hasTrend, data]);
+  const weeklyTopThemes = useMemo(() => weeklyThemes.slice(0, 4), [weeklyThemes]);
+  const weeklyTopEmotions = useMemo(() => weeklyEmotions.slice(0, 4), [weeklyEmotions]);
 
   return (
     <div className="space-y-8">
@@ -362,89 +347,106 @@ export default function InsightsClient() {
         </p>
       </div>
 
-      {/* Error */}
       {error && (
         <div className="rounded-xl border border-red-500/20 bg-red-500/5 p-4 text-sm text-red-300">
           {error}
         </div>
       )}
 
-      {/* Loading */}
       {!error && !data && <Skeleton />}
 
-      {/* Not enough data */}
       {data && !hasRealData && <NotEnoughData entryCount={entryCount} />}
 
-      {/* Content */}
       {data && hasRealData && (
         <div className="space-y-6">
-          {/* Primary card */}
+          {/* Headline + KPI strip */}
           <section className="rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-950 to-slate-900/60 p-7">
-            <p className="text-xs font-semibold uppercase tracking-widest text-slate-600">
-              What this shows
-            </p>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-slate-600">What this shows</p>
+            <p className="mt-2 text-lg leading-relaxed text-slate-300">{headline}</p>
 
-            <p className="mt-2 text-lg leading-relaxed text-slate-300">
-              {headline}
-            </p>
-
-            {/* Snapshot */}
-            <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              <StatPill label="Entries" value={<span className="tabular-nums">{entryCount}</span>} />
-              <StatPill label="Top emotion" value={topEmotion ? topEmotion : "—"} />
-              <StatPill label="Top theme" value={topTheme ? topTheme : "—"} />
-              <StatPill label="Momentum" value={momentum} />
+            <div className="mt-5 grid gap-3 md:grid-cols-4">
+              <MiniStat label="Entries" value={`${entryCount}`} />
+              <MiniStat label="Top emotion" value={topEmotion || "—"} />
+              <MiniStat label="Top theme" value={topTheme || "—"} />
+              <MiniStat label="Momentum" value={momentumLabel} />
             </div>
 
-            {/* Trend pills */}
             {hasTrend && (
-              <div className="mt-5 flex flex-wrap gap-2">
+              <div className="mt-4 flex flex-wrap gap-2">
                 <span className="text-xs text-slate-600 self-center mr-1">Recently:</span>
-                {data.trend?.up?.map((e) => (
+                {data.trend?.up?.slice(0, 6).map((e) => (
                   <TrendPill key={`up-${e}`} label={e} dir="up" />
                 ))}
-                {data.trend?.down?.map((e) => (
+                {data.trend?.down?.slice(0, 6).map((e) => (
                   <TrendPill key={`dn-${e}`} label={e} dir="down" />
                 ))}
               </div>
             )}
 
-            {/* Takeaways */}
-            {takeaways.length > 0 && (
-              <div className="mt-6 grid gap-3 md:grid-cols-3">
-                {takeaways.map((t, idx) => (
-                  <div
-                    key={idx}
-                    className="rounded-2xl border border-slate-800 bg-slate-950/40 p-4"
-                  >
-                    <p className="text-sm font-medium text-slate-200">{t.title}</p>
-                    <p className="mt-1 text-xs leading-relaxed text-slate-500">{t.body}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            <p className="mt-5 text-xs text-slate-600">
+            <p className="mt-4 text-xs text-slate-600">
               These are patterns, not diagnoses. They shift as you keep writing.
             </p>
           </section>
 
-          {/* Themes + Emotions */}
+          {/* Weekly trends (this is the “subscriber value” section) */}
+          {(weeklyTopThemes.length > 0 || weeklyTopEmotions.length > 0) && (
+            <section className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6">
+              <div className="mb-4 flex items-end justify-between gap-4">
+                <div>
+                  <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500">Weekly trends</h2>
+                  <p className="mt-1 text-xs text-slate-600">How your top patterns have moved week-to-week.</p>
+                </div>
+                <span className="text-xs text-slate-700">Last 8 weeks</span>
+              </div>
+
+              <div className="grid gap-6 md:grid-cols-2">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-slate-600 mb-3">Themes</p>
+                  <ul className="space-y-3">
+                    {weeklyTopThemes.map((s) => (
+                      <li key={`wt-${s.key}`} className="flex items-center justify-between gap-4">
+                        <span className="text-sm text-slate-300 truncate" title={s.key}>
+                          {prettyLabel(s.key)}
+                        </span>
+                        <span className="text-emerald-300">
+                          <Sparkline data={s.counts} />
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-slate-600 mb-3">Emotions</p>
+                  <ul className="space-y-3">
+                    {weeklyTopEmotions.map((s) => (
+                      <li key={`we-${s.key}`} className="flex items-center justify-between gap-4">
+                        <span className="text-sm text-slate-300 truncate" title={s.key}>
+                          {prettyLabel(s.key)}
+                        </span>
+                        <span className="text-violet-300">
+                          <Sparkline data={s.counts} />
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Themes + Emotions lists */}
           <div className="grid gap-6 md:grid-cols-2">
-            {/* Themes */}
             <section className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6">
               <div className="mb-5 flex items-center justify-between">
                 <div>
-                  <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500">
-                    Recurring themes
-                  </h2>
+                  <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500">Recurring themes</h2>
                   {allThemes.length > 0 && (
                     <p className="mt-0.5 text-xs text-slate-600">
-                      {allThemes.length} distinct {allThemes.length === 1 ? "theme" : "themes"} across your entries
+                      {allThemes.length} distinct {allThemes.length === 1 ? "theme" : "themes"} (cleaned + merged)
                     </p>
                   )}
                 </div>
-
                 {allThemes.length > 6 && (
                   <button
                     type="button"
@@ -461,33 +463,22 @@ export default function InsightsClient() {
               ) : (
                 <ul className="space-y-4">
                   {visibleThemes.map(([k, v], i) => (
-                    <BarRow
-                      key={`${k}-${i}`}
-                      label={k}
-                      count={v}
-                      max={maxTheme}
-                      rank={i}
-                      color="emerald"
-                    />
+                    <BarRow key={`${k}-${i}`} label={k} count={v} max={maxTheme} rank={i} color="emerald" />
                   ))}
                 </ul>
               )}
             </section>
 
-            {/* Emotions */}
             <section className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6">
               <div className="mb-5 flex items-center justify-between">
                 <div>
-                  <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500">
-                    Emotions over time
-                  </h2>
+                  <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500">Emotions over time</h2>
                   {allEmotions.length > 0 && (
                     <p className="mt-0.5 text-xs text-slate-600">
-                      {allEmotions.length} distinct {allEmotions.length === 1 ? "emotion" : "emotions"} noticed
+                      {allEmotions.length} distinct {allEmotions.length === 1 ? "emotion" : "emotions"} (cleaned + merged)
                     </p>
                   )}
                 </div>
-
                 {allEmotions.length > 6 && (
                   <button
                     type="button"
@@ -504,23 +495,14 @@ export default function InsightsClient() {
               ) : (
                 <ul className="space-y-4">
                   {visibleEmotions.map(([k, v], i) => (
-                    <BarRow
-                      key={`${k}-${i}`}
-                      label={k}
-                      count={v}
-                      max={maxEmotion}
-                      rank={i}
-                      color="violet"
-                    />
+                    <BarRow key={`${k}-${i}`} label={k} count={v} max={maxEmotion} rank={i} color="violet" />
                   ))}
                 </ul>
               )}
             </section>
           </div>
 
-          <p className="pb-2 text-center text-xs text-slate-700">
-            Insights deepen as your reflection history grows.
-          </p>
+          <p className="pb-2 text-center text-xs text-slate-700">Insights deepen as your reflection history grows.</p>
         </div>
       )}
     </div>
