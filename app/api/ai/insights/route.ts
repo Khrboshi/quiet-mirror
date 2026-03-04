@@ -45,19 +45,40 @@ function parseAiResponse(raw: any) {
   }
 }
 
-/**
- * Trend computed from recent vs previous windows.
- * We keep it stable by using entry windows (not time) since created_at might be missing/unstable in some setups.
- */
+function sortMap(map: Record<string, number>) {
+  return Object.entries(map).sort((a, b) => b[1] - a[1]);
+}
+
+function weekStartISO(d: Date) {
+  // Monday-based week start
+  const x = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+  const day = x.getUTCDay(); // 0=Sun ... 6=Sat
+  const diff = (day === 0 ? -6 : 1) - day; // shift to Monday
+  x.setUTCDate(x.getUTCDate() + diff);
+  return x.toISOString().slice(0, 10); // YYYY-MM-DD
+}
+
+function buildWeekKeys(lastNWeeks: number) {
+  const keys: string[] = [];
+  const now = new Date();
+  // start from current week start
+  const start = new Date(Date.parse(weekStartISO(now) + "T00:00:00.000Z"));
+  for (let i = lastNWeeks - 1; i >= 0; i--) {
+    const d = new Date(start);
+    d.setUTCDate(d.getUTCDate() - i * 7);
+    keys.push(d.toISOString().slice(0, 10));
+  }
+  return keys;
+}
+
 function computeTrend(opts: {
   rows: Array<{ created_at?: string | null; ai_response: any }>;
   recentN?: number;
   takeTop?: number;
 }) {
   const recentN = opts.recentN ?? 10;
-  const takeTop = opts.takeTop ?? 6;
+  const takeTop = opts.takeTop ?? 8;
 
-  // Sort newest-first if created_at exists, otherwise keep DB order as-is.
   const sorted = [...opts.rows].sort((a, b) => {
     const ta = a.created_at ? Date.parse(a.created_at) : 0;
     const tb = b.created_at ? Date.parse(b.created_at) : 0;
@@ -74,17 +95,13 @@ function computeTrend(opts: {
     const parsed = parseAiResponse(row.ai_response);
     if (!parsed) return;
 
-    const themes = asArray(parsed?.themes);
-    const emotions = asArray(parsed?.emotions);
-
-    for (const t of themes) inc(target, t);
-    for (const e of emotions) inc(target, e);
+    for (const t of asArray(parsed?.themes)) inc(target, t);
+    for (const e of asArray(parsed?.emotions)) inc(target, e);
   }
 
   for (const r of recent) addFromRow(freqRecent, r);
   for (const r of prev) addFromRow(freqPrev, r);
 
-  // Delta = recent - prev
   const keys = new Set([...Object.keys(freqRecent), ...Object.keys(freqPrev)]);
   const deltas = Array.from(keys).map((k) => ({
     k,
@@ -99,7 +116,7 @@ function computeTrend(opts: {
 
   const down = deltas
     .filter((x) => x.d < 0)
-    .sort((a, b) => a.d - b.d) // most negative first
+    .sort((a, b) => a.d - b.d)
     .slice(0, takeTop)
     .map((x) => x.k);
 
@@ -123,7 +140,6 @@ export async function GET() {
     return NextResponse.json({ error: "Premium required" }, { status: 402 });
   }
 
-  // Pull ai_response + created_at (for trend ordering)
   const { data: rows, error } = await supabase
     .from("journal_entries")
     .select("ai_response, created_at")
@@ -144,6 +160,15 @@ export async function GET() {
 
   let parsedCount = 0;
 
+  // Weekly buckets (last 8 weeks)
+  const weekKeys = buildWeekKeys(8);
+  const weeklyThemes: Record<string, Record<string, number>> = {};
+  const weeklyEmotions: Record<string, Record<string, number>> = {};
+  for (const wk of weekKeys) {
+    weeklyThemes[wk] = {};
+    weeklyEmotions[wk] = {};
+  }
+
   for (const row of rows || []) {
     const parsed = parseAiResponse((row as any).ai_response);
     if (!parsed) continue;
@@ -156,17 +181,25 @@ export async function GET() {
     for (const item of t) inc(themes, item);
     for (const item of e) inc(emotions, item);
 
-    // Optional: support different key names if you add them later in your AI output
     const cp =
       asArray(parsed?.corepatterns) ||
       asArray(parsed?.core_patterns) ||
       asArray(parsed?.corePatterns);
 
     for (const item of cp) inc(corepatterns, item);
+
+    // weekly
+    const ca = (row as any).created_at ? new Date((row as any).created_at) : null;
+    if (ca) {
+      const wk = weekStartISO(ca);
+      if (weeklyThemes[wk]) {
+        for (const item of t) inc(weeklyThemes[wk], item);
+        for (const item of e) inc(weeklyEmotions[wk], item);
+      }
+    }
   }
 
   const entryCount = parsedCount;
-
   const hasRealData =
     entryCount >= 5 &&
     (Object.keys(themes).length > 0 || Object.keys(emotions).length > 0);
@@ -177,6 +210,20 @@ export async function GET() {
     takeTop: 8,
   });
 
+  // Pick top items overall, then build per-week series arrays
+  const topThemeKeys = sortMap(themes).slice(0, 5).map(([k]) => k);
+  const topEmotionKeys = sortMap(emotions).slice(0, 5).map(([k]) => k);
+
+  const seriesThemes = topThemeKeys.map((k) => ({
+    key: k,
+    counts: weekKeys.map((wk) => weeklyThemes[wk]?.[k] || 0),
+  }));
+
+  const seriesEmotions = topEmotionKeys.map((k) => ({
+    key: k,
+    counts: weekKeys.map((wk) => weeklyEmotions[wk]?.[k] || 0),
+  }));
+
   return NextResponse.json(
     {
       themes,
@@ -185,6 +232,11 @@ export async function GET() {
       entryCount,
       hasRealData,
       trend,
+      weekly: {
+        weeks: weekKeys, // YYYY-MM-DD week starts (Mon)
+        themes: seriesThemes, // [{ key, counts: [..8] }]
+        emotions: seriesEmotions, // [{ key, counts: [..8] }]
+      },
     },
     { headers: { "Cache-Control": "no-store, max-age=0" } }
   );
