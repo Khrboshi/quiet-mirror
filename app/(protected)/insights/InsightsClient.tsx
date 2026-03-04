@@ -10,7 +10,8 @@ type InsightData = {
   themes: Record<string, number>;
   emotions: Record<string, number>;
   corepatterns?: Record<string, number>;
-  entryCount?: number;
+  entryCount?: number;      // entries WITH reflections
+  totalEntryCount?: number; // ALL entries
   hasRealData?: boolean;
   firstEntryDate?: string | null;
   lastEntryDate?: string | null;
@@ -538,7 +539,8 @@ export default function InsightsClient() {
 
   const topEmotion = allEmotions[0]?.[0];
   const topTheme = allThemes[0]?.[0];
-  const entryCount = data?.entryCount ?? 0;
+  const entryCount = data?.entryCount ?? 0;           // reflected entries
+  const totalEntryCount = data?.totalEntryCount ?? entryCount; // all entries
   const hasRealData = data?.hasRealData ?? false;
   const hasTrend =
     (data?.trend?.up?.length ?? 0) + (data?.trend?.down?.length ?? 0) > 0;
@@ -593,8 +595,11 @@ export default function InsightsClient() {
         <h1 className="text-3xl font-semibold text-slate-100">Insights</h1>
         <p className="mt-1 text-sm text-slate-500">
           What Havenly has noticed across your reflections
-          {entryCount > 0 && (
-            <> — <span className="text-slate-400">{entryCount} {entryCount === 1 ? "entry" : "entries"}</span></>
+          {totalEntryCount > 0 && (
+            <> — <span className="text-slate-400">{totalEntryCount} {totalEntryCount === 1 ? "entry" : "entries"}</span></>
+          )}
+          {entryCount > 0 && entryCount < totalEntryCount && (
+            <span className="text-slate-600"> · {entryCount} reflected</span>
           )}
           {data?.firstEntryDate && data?.lastEntryDate && (
             <span className="text-slate-600">
@@ -625,7 +630,7 @@ export default function InsightsClient() {
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             <StatCard
               label="Entries"
-              value={String(entryCount)}
+              value={String(totalEntryCount)}
               sub={data.firstEntryDate ? `Since ${friendlyDate(data.firstEntryDate)}` : undefined}
             />
             <StatCard
