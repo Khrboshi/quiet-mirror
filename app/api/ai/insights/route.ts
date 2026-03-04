@@ -26,9 +26,6 @@ async function getUserPlanType(
 }
 
 // ─── Fallback pollution filter ────────────────────────────────────────────────
-// These exact strings are injected by domain template fallbacks. They appear
-// identically across many entries, making them look like "top patterns" when
-// they are not personal insights. We strip them before counting.
 const FALLBACK_THEMES = new Set([
   "self-awareness", "processing", "presence",
   "consistency", "recovery", "self-respect", "motivation",
@@ -40,15 +37,24 @@ const FALLBACK_EMOTIONS = new Set([
   "pride", "tiredness", "determination",
   "frustration", "hurt", "longing", "confusion",
 ]);
+// All 4 domain template fallback corepatterns — exact match (case-insensitive prefix)
 const FALLBACK_COREPATTERNS = new Set([
-  "you're in the middle of something — not at the beginning, not at the end, just present with it.",
-  "you're proud of progress, but still learning the line between healthy challenge and unnecessary pressure.",
-  "you're navigating a tension between your professional self-worth and external expectations.",
-  "you're trying to protect your self-respect while staying connected to someone who matters.",
+  "you're in the middle of something",
+  "you're proud of progress, but still learning the line",
+  "you're navigating a tension between your professional self-worth",
+  "you're trying to protect your self-respect while staying connected",
 ]);
 
 const isFallback = (set: Set<string>, k: string) =>
   set.has(k.toLowerCase().trim());
+
+function isFallbackCP(k: string): boolean {
+  const lower = k.toLowerCase().trim();
+  for (const prefix of FALLBACK_COREPATTERNS) {
+    if (lower.startsWith(prefix)) return true;
+  }
+  return false;
+}
 
 function display(k: string) {
   const t = k.trim();
@@ -179,7 +185,7 @@ export async function GET() {
     if (
       cp.length >= 20 &&
       cp.length <= 200 &&
-      !isFallback(FALLBACK_COREPATTERNS, cp)
+      !isFallbackCP(cp)
     ) {
       const d = display(cp);
       corepatterns[d] = (corepatterns[d] || 0) + 1;
@@ -255,12 +261,19 @@ export async function GET() {
   const hasRealData =
     Object.keys(themes).length >= 2 || Object.keys(emotions).length >= 2;
 
+  // Total entries (including those not yet reflected on)
+  const { count: totalEntryCount } = await supabase
+    .from("journal_entries")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", session.user.id);
+
   return NextResponse.json(
     {
       themes,
       emotions,
       corepatterns,
-      entryCount,
+      entryCount,           // entries WITH reflections (used for pattern quality gate)
+      totalEntryCount: totalEntryCount ?? entryCount, // ALL entries (shown in header)
       hasRealData,
       firstEntryDate: firstEntryDate?.toISOString() ?? null,
       lastEntryDate: lastEntryDate?.toISOString() ?? null,
