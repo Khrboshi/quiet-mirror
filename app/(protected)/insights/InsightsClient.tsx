@@ -23,6 +23,12 @@ type InsightData = {
   momentum?: string;
 };
 
+type SummaryState =
+  | { status: "idle" }
+  | { status: "loading" }
+  | { status: "ready"; text: string; generatedAt: string; cached: boolean }
+  | { status: "error"; message: string };
+
 function sortMap(m: Record<string, number>) {
   return Object.entries(m).sort((a, b) => b[1] - a[1]);
 }
@@ -364,7 +370,130 @@ function WeeklyTrends({
   );
 }
 
-// ─── Main ─────────────────────────────────────────────────────────────────────
+// ─── Weekly AI Summary ────────────────────────────────────────────────────────
+
+function WeeklySummarySection({ hasRealData }: { hasRealData: boolean }) {
+  const [state, setState] = useState<SummaryState>({ status: "idle" });
+
+  async function fetchSummary(force = false) {
+    setState({ status: "loading" });
+    try {
+      // If force-regenerate, clear cache first
+      if (force) {
+        await fetch("/api/ai/weekly-summary", { method: "POST" });
+      }
+      const res = await fetch("/api/ai/weekly-summary", { cache: "no-store" });
+      if (!res.ok) {
+        const j = await res.json().catch(() => ({} as any));
+        setState({ status: "error", message: j?.error || "Couldn't generate summary." });
+        return;
+      }
+      const j = await res.json();
+      setState({
+        status: "ready",
+        text: j.summary,
+        generatedAt: j.generatedAt,
+        cached: j.cached,
+      });
+    } catch {
+      setState({ status: "error", message: "Network error. Try again in a moment." });
+    }
+  }
+
+  // Auto-fetch on mount if data is ready
+  useEffect(() => {
+    if (hasRealData) fetchSummary();
+  }, [hasRealData]);
+
+  const generatedLabel = useMemo(() => {
+    if (state.status !== "ready") return null;
+    const d = new Date(state.generatedAt);
+    return d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+  }, [state]);
+
+  return (
+    <section className="rounded-2xl border border-slate-700/60 bg-gradient-to-br from-slate-900 to-slate-950 p-6 md:p-7">
+      <div className="mb-4 flex items-center justify-between gap-4">
+        <div>
+          <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500">
+            What Havenly has noticed
+          </h2>
+          <p className="mt-0.5 text-xs text-slate-700">
+            A personal summary generated from your reflection history.
+          </p>
+        </div>
+
+        {state.status === "ready" && (
+          <button
+            type="button"
+            onClick={() => fetchSummary(true)}
+            className="shrink-0 text-xs text-slate-600 hover:text-slate-400 transition"
+            title="Regenerate summary"
+          >
+            ↻ Refresh
+          </button>
+        )}
+      </div>
+
+      {/* Idle / not enough data */}
+      {state.status === "idle" && !hasRealData && (
+        <p className="text-sm text-slate-600">
+          Generate a few more reflections and Havenly will write a personal summary of what it's noticed.
+        </p>
+      )}
+
+      {/* Loading */}
+      {state.status === "loading" && (
+        <div className="space-y-2.5 animate-pulse">
+          <div className="h-3.5 w-full rounded bg-slate-800" />
+          <div className="h-3.5 w-5/6 rounded bg-slate-800" />
+          <div className="h-3.5 w-4/5 rounded bg-slate-800" />
+          <div className="mt-2 h-3.5 w-full rounded bg-slate-800" />
+          <div className="h-3.5 w-3/4 rounded bg-slate-800" />
+        </div>
+      )}
+
+      {/* Error */}
+      {state.status === "error" && (
+        <div className="space-y-3">
+          <p className="text-sm text-slate-500">{state.message}</p>
+          <button
+            type="button"
+            onClick={() => fetchSummary()}
+            className="text-xs font-medium text-emerald-500 hover:text-emerald-400 transition"
+          >
+            Try again →
+          </button>
+        </div>
+      )}
+
+      {/* Ready */}
+      {state.status === "ready" && (
+        <div className="space-y-4">
+          {/* Split paragraphs for better readability */}
+          {state.text.split(/\n\n+/).filter(Boolean).map((para, i) => (
+            <p
+              key={i}
+              className={`leading-relaxed ${
+                i === 0 ? "text-base text-slate-200" : "text-sm text-slate-400"
+              }`}
+            >
+              {para}
+            </p>
+          ))}
+
+          <div className="flex items-center gap-3 pt-1 border-t border-slate-800">
+            <span className="text-xs text-slate-700">
+              Generated {generatedLabel}{state.cached ? " · cached" : ""}
+            </span>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
+
 
 export default function InsightsClient() {
   const [data, setData] = useState<InsightData | null>(null);
@@ -518,6 +647,9 @@ export default function InsightsClient() {
               accent={mColor}
             />
           </div>
+
+          {/* ── Weekly AI summary ── */}
+          <WeeklySummarySection hasRealData={hasRealData} />
 
           {/* ── Narrative headline ── */}
           <section className="rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-950 to-slate-900/40 p-7">
