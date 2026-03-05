@@ -317,19 +317,33 @@ type QualityResult = { pass: true } | { pass: false; reasons: string[] };
 
 // FIX: comprehensive banned openers list — every template phrase found in Phase 2 audit
 const BANNED_SUMMARY_OPENERS = [
+  // WORK
   "a workplace moment that left a mark",
   "something from work got under your skin",
+  "something happened at work",
+  // RELATIONSHIP
   "something in this connection left you unsettled",
   "something in this connection",
   "a gap between you and someone who matters",
+  "a connection that matters",
+  // GENERAL
   "something is sitting with you",
   "something you haven't fully named yet",
+  "something you haven't fully",
   "something important is asking",
+  "something is asking to be noticed",
+  "something quiet",
+  // FITNESS
   "pride mixed with fatigue",
+  "something happened in training today",
+  "something happened in training",
+  "something happened in your workout",
+  // Cross-domain generic
   "something happened today that",
   "today was one of those days",
   "a moment felt important",
-  "something is asking to be noticed",
+  "something left a mark",
+  "something worth sitting with",
 ];
 
 function qualityCheck(
@@ -441,74 +455,55 @@ function buildSystemPrompt(plan: "FREE" | "PREMIUM", domain: Domain, short: bool
 
   const domainGuidance: Record<Domain, string> = {
     WORK: `DOMAIN: WORK
-Name the exact workplace dynamic from this entry.
-"What you're carrying:" MUST describe what literally happened: who dismissed what, what was said or done, how the person responded.
-"What's really happening:" must name what was touched — dignity, competence, recognition, belonging, or fairness.
+Name the exact workplace dynamic from this entry. Use the person's actual words.
+"What you're carrying:" must open with what specifically happened — name the event, not the category.
+"What's really happening:" must name what was touched: dignity, competence, recognition, belonging, or fairness.
 
-EXAMPLES of strong openers:
-  "What you're carrying: You presented your idea in the meeting and watched your manager repeat it three minutes later to a room that suddenly lit up — and you smiled."
-  "What you're carrying: You did the whole shared report alone, nobody asked you to, nobody thanked you, and you're only now letting yourself feel that."
+FORMULA: "What you're carrying: You [specific action from entry] — and [what the person did/felt in response]."
+Example shape (not words to copy): "You did X, nobody Y, and you Z." Fill in from THIS entry only.
 
-BANNED openers — forbidden, no exceptions:
-  - "A workplace moment that left a mark"
-  - "Something from work got under your skin"
-  - Any opener beginning with "Something [generic adjective]"
-
-RULE: If the entry describes a specific moment — a meeting, a decision, a task, a conversation — name that moment. Don't summarise it into a category.
+HARD RULE: "What you're carrying:" must contain at least one concrete detail from the entry (a person, an action, an object, a response). If it contains zero concrete details — rewrite it.
 Do NOT drift into relationship or fitness language.`,
 
     RELATIONSHIP: `DOMAIN: RELATIONSHIP
-Name the specific relational dynamic — who, what happened, and what the gap was between what was needed and what occurred.
-"What you're carrying:" MUST name who it involves and what specifically happened between them.
-"What's really happening:" must name the gap — attention, presence, reciprocity, desire, or being truly seen.
+Name the specific relational dynamic from this entry — who, what happened, and what was left unsaid.
+"What you're carrying:" must name who it involves and what specifically happened or didn't happen.
+"What's really happening:" must name the actual gap: attention, presence, desire, reciprocity, or being seen.
 
-EXAMPLES of strong openers:
-  "What you're carrying: You and him spent the whole evening in the same room and barely spoke — not because of a fight, but because there was nothing, and that quiet is starting to feel like an answer."
-  "What you're carrying: You washed the dishes, went quiet, didn't say any of the things that were actually happening inside you — and you already know you're going to be in this exact same fight in two weeks."
+FORMULA: "What you're carrying: You and [who] [what happened] — and [what you did or didn't do/say]."
+Example shape (not words to copy): "You X and he Y — and you went quiet about Z." Fill in from THIS entry only.
 
-BANNED openers — forbidden, no exceptions:
-  - "Something in this connection left you unsettled"
-  - "A gap between you and someone who matters"
-  - Any opener beginning with "Something [generic]"
-
-RULE: If the entry contains a vivid specific phrase — "wanted not needed", "the same fight again", "miles apart", "strange quiet" — that phrase belongs in your summary verbatim or near-verbatim.`,
+HARD RULE: If the person used a vivid phrase — name it directly in your summary. "Wanted not needed", "miles apart", "the same fight again" — these belong in your words, not paraphrased away.`,
 
     FITNESS: `DOMAIN: FITNESS
-Stay strictly in the physical/training lane.
-"What you're carrying:" must describe the actual training experience — what they did, how the body felt, the gap between performance and internal experience.
-"What's really happening:" must be about the body, energy, self-expectation, or the relationship with training.
+Stay strictly in the physical/training lane. Name exactly what happened with the body or routine.
+"What you're carrying:" must describe the actual experience — what they did (or didn't do), and what they felt about it.
+"What's really happening:" must be about the body, energy, self-expectation, or the inner voice around training.
 
-CRITICAL — EMOTION MATCHING RULE (read this carefully):
-  SKIPPED or AVOIDED exercise → assign: guilt, resistance, avoidance, relief, self-doubt, exhaustion
-  NEVER assign "pride" for a skipped session. This is the most common error.
-  
-  COMPLETED exercise, felt good → pride, accomplishment, satisfaction, determination are valid
-  COMPLETED exercise, felt empty or numb → emptiness, confusion, disconnection, flatness are correct
-  
-  Read the entry. Match the emotions to what was ACTUALLY described, not what is typical for the domain.
+FORMULA: "What you're carrying: You [specific action: skipped/ran/completed X] — and [specific emotional response]."
+Example shape (not words to copy): "You skipped X for the Y time and came home and Z." Fill in from THIS entry only.
 
-BANNED phrase: "Pride mixed with fatigue" — only valid if the entry explicitly expresses BOTH pride AND tiredness after COMPLETING a session. Otherwise completely banned.
+CRITICAL — EMOTION RULE:
+  SKIPPED or AVOIDED → guilt, resistance, self-doubt, exhaustion. NEVER pride.
+  COMPLETED, felt good → pride, satisfaction, determination are valid.
+  COMPLETED, felt empty → emptiness, confusion, disconnection.
+  Match emotions to what ACTUALLY happened. Read the entry first.
 
-Do NOT mention colleagues, partners, or conflict unless explicitly present in the entry.`,
+BANNED: "Pride mixed with fatigue" — only if entry explicitly states both. Otherwise forbidden.
+BANNED: "Something happened in training today" — too vague, always forbidden.`,
 
     GENERAL: `DOMAIN: GENERAL
-This entry doesn't fit a specific life domain — it's about the person's inner state, a pattern, or something they're sitting with.
-"What you're carrying:" must describe what the person ACTUALLY wrote — their specific situation, using their words.
-"What's really happening:" MUST echo their specific phrasing. The most vivid phrase from the entry belongs here.
+This entry is about the person's inner state, a pattern, or something they're processing.
+"What you're carrying:" must open with their specific situation — their exact words or a close echo.
+"What's really happening:" must name the specific dynamic they're in — name it from their language, not a therapy label.
 
-EXAMPLES of strong openers:
-  "What you're carrying: You've been saying 'fine' for so long that you're not sure what the alternative feels like — and somewhere in that gap between 'okay' and 'fine' is something you keep not looking at."
-  "What you're carrying: You caught yourself laughing at something that wasn't funny because the room needed it — and then noticed that you do this constantly, smoothly, automatically."
-  "What you're carrying: You slept 8 hours and woke up more exhausted than when you lay down — the kind of tired that isn't about the body."
+FORMULA: "What you're carrying: You [specific thing they described doing/feeling/noticing] — and [the emotional truth underneath it]."
+Example shape (not words to copy): "You've been X for so long that Y — and in the gap between those two things is Z." Fill in from THIS entry only.
 
-BANNED openers — forbidden, no exceptions:
-  - "Something is sitting with you — not fully named yet"
-  - "Something you haven't fully named yet"
-  - "Something important is asking for clarity"
-  - "Something is asking to be noticed"
-  - ANY opener beginning with "Something [generic]"
+HARD RULE: The most specific or unusual phrase the person used MUST appear verbatim (or near-verbatim) in your summary or corepattern. If they wrote "editing myself before I even speak" or "performing a version of myself" — those exact words belong in your response.
 
-RULE: The most specific or unusual phrase the person used MUST appear verbatim (or near-verbatim) in your summary or corepattern. Paraphrasing away their vivid language is not allowed.`,
+BANNED: "Something is sitting with you", "Something you haven't fully named", "Something important is asking" — all forbidden.
+BANNED: Any "What you're carrying:" that contains zero words from the actual entry.`,
   };
 
   const shortGuidance = short
@@ -535,16 +530,19 @@ Before you write "What you're carrying:", ask yourself:
 "Could I paste this exact opener onto 5 different journal entries about [this domain] and have it still sound plausible?"
 If yes — it is a template. Do not write it. Start with the entry's actual situation.
 
-ABSOLUTELY BANNED summary phrases — these will fail quality check:
+ABSOLUTELY BANNED summary phrases — these will fail quality check and trigger a retry:
 - "A workplace moment that left a mark"
-- "Something in this connection left you unsettled"  
+- "Something from work got under your skin"
+- "Something in this connection left you unsettled"
 - "Something is sitting with you"
-- "Pride mixed with fatigue" (unless both pride AND fatigue are explicit in entry)
+- "Something you haven't fully named"
+- "Something happened in training today"
+- "Pride mixed with fatigue" (unless both are explicit)
 - "Something important is asking for clarity"
 - "Something happened today that"
-- "Something you haven't fully named"
 - "A moment felt important"
-- Any opener beginning with "Something [generic adjective]" or "A [generic noun] left a mark"
+- ANY "What you're carrying:" that starts with "Something [adjective/verb]" — always forbidden
+- ANY "What you're carrying:" that contains zero words from the actual entry
 
 ${domainGuidance[domain]}
 ${shortGuidance}
@@ -651,11 +649,12 @@ export async function generateReflectionFromEntry(input: Input): Promise<Reflect
     ? `RECENT PATTERN CONTEXT (reference only if genuinely relevant to this specific entry):\n${recentThemes.map((t, i) => `${i + 1}) ${t}`).join("\n")}\n\n`
     : "";
 
-  // FIX: user prompt now leads with a hard anchor constraint before
-  // showing the anchors and entry — makes anchor inclusion feel mandatory.
-  const userPrompt = `${memoryBlock}MANDATORY ANCHOR RULE: At least one phrase from the ANCHORS below must appear verbatim (or near-verbatim) inside "What you're carrying:" or "What's really happening:". These are the person's exact words — use them, don't paraphrase them away.
-
+  const userPrompt = `${memoryBlock}THE PERSON'S EXACT WORDS (use at least one verbatim in your summary):
 ${anchorsBlock}
+
+REMINDER: "What you're carrying:" must open with a concrete detail from this entry — not a generic label.
+Bad: "What you're carrying: Something from work got under your skin."
+Good: "What you're carrying: You did the shared report alone, nobody thanked you, and you're still carrying that silence."
 
 ${entryText}`.trim();
 
@@ -669,11 +668,11 @@ ${entryText}`.trim();
     },
     {
       temperature: 0.3,
-      note: `RETRY — quality check failed. Open "What you're carrying:" with the specific situation from THIS entry. Use at least one ANCHOR phrase verbatim. Domain: ${domain}. Banned phrases still banned. Return ONLY valid JSON.`,
+      note: `RETRY — your previous "What you're carrying:" was rejected as a generic template. It must open with what SPECIFICALLY happened in this entry — name the action, the person, the moment. Use at least one phrase from THE PERSON'S EXACT WORDS above. Domain: ${domain}. All banned phrases still apply. Return ONLY valid JSON.`,
     },
     {
-      temperature: 0.15,
-      note: `FINAL ATTEMPT. Domain: ${domain}. "What you're carrying:" must begin with what literally happened in this entry. Include at least one ANCHOR phrase verbatim. No generic openers. No banned phrases. Return ONLY valid JSON.`,
+      temperature: 0.2,
+      note: `FINAL ATTEMPT — "What you're carrying:" has failed twice for being generic. THIS TIME: start by reading the entry, pick the most specific thing the person described (an action, a phrase, a moment), and open with that. Example of what's needed: "What you're carrying: You [specific thing from entry]." The person's exact words are listed above — use them. Domain: ${domain}. Return ONLY valid JSON.`,
     },
   ];
 
