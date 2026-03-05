@@ -1,5 +1,6 @@
 // lib/ai/generateReflection.ts
-// Havenly V14 — Claude API, tighter prompt, anchor-first fallback
+// Havenly V15 — Phase 2 audit complete rewrite
+// Fixes: template summaries per domain, anchor suppression, FITNESS misclassification
 
 export type Reflection = {
   summary: string;
@@ -25,9 +26,8 @@ const DOMAIN_SIGNALS: Record<Domain, RegExp[]> = {
   FITNESS: [
     /\b(ran|run|running|jog(ged)?|sprint(ed)?)\b/,
     /\b(workout|training|exercise|gym|lifting|cardio)\b/,
-    /\b(pace|steps?|miles?|kilometres?|km|5k|10k)\b/,
+    /\b(pace|steps?|miles?|kilometres?|km|5k|10k|8k)\b/,
     /\b(sore|recovery|rest day|hydration|protein|reps|sets)\b/,
-    /\b(sleep|tired|exhausted|fatigue)\b/,
   ],
   WORK: [
     /\b(colleague|coworker|manager|boss|team|client)\b/,
@@ -45,6 +45,10 @@ const DOMAIN_SIGNALS: Record<Domain, RegExp[]> = {
   GENERAL: [],
 };
 
+// FIX: removed tired/sleep/exhausted from FITNESS signals — these caused
+// emotional-burnout GENERAL entries to be misclassified as FITNESS.
+// FITNESS booster now requires actual training vocabulary to score higher.
+
 const EMOTIONAL_BOOSTERS: Record<Exclude<Domain, "GENERAL">, RegExp[]> = {
   WORK: [
     /\b(humiliat|embarrass|dismiss|invisible|overlooked|undervalued|unfair)\b/,
@@ -55,8 +59,8 @@ const EMOTIONAL_BOOSTERS: Record<Exclude<Domain, "GENERAL">, RegExp[]> = {
     /\b(cried|crying|hurt|heartbreak|ache|longing|miss)\b/,
   ],
   FITNESS: [
-    /\b(proud|accomplished|strong|powerful|beat my)\b/,
-    /\b(pushing too hard|overdid|burnout|injury|pain)\b/,
+    /\b(ran|run|running|workout|gym|cardio|lifting|training|exercise)\b/,
+    /\b(pace|km|miles|5k|10k|8k|reps|sets|pb|personal best)\b/,
   ],
 };
 
@@ -93,7 +97,7 @@ function isShortEntry(text: string): boolean {
   return text.trim().split(/\s+/).length < 12;
 }
 
-// ─── Domain Defaults (fallback only) ─────────────────────────────────────────
+// ─── Domain Defaults (absolute last resort — model output is always preferred) ─
 
 type DomainDefaults = {
   summary: string;
@@ -113,13 +117,13 @@ type DomainDefaults = {
 const DOMAIN_DEFAULTS: Record<Domain, DomainDefaults> = {
   FITNESS: {
     summary:
-      "What you're carrying: Pride mixed with fatigue — you did something hard and your body is asking for recovery.\nWhat's really happening: You're negotiating the line between healthy challenge and unnecessary pressure.",
+      "What you're carrying: Something happened in training today that's still with you.\nWhat's really happening: The gap between what your body did and what you felt about it is worth sitting with.",
     shortSummary:
-      "What you're carrying: A quiet sense that something in your body or energy is asking to be noticed.\nWhat's really happening: You showed up — and that's the part worth sitting with before asking what comes next.",
+      "What you're carrying: A quiet signal from your body asking to be noticed.\nWhat's really happening: You showed up — and that's the part worth sitting with before asking what comes next.",
     corepattern:
-      "You're proud of progress, but still learning the line between healthy challenge and unnecessary pressure.",
+      "You're learning to read the difference between pushing toward something and pushing away from discomfort.",
     themes: ["consistency", "recovery", "self-respect", "motivation"],
-    emotions: ["pride", "tiredness", "uncertainty", "determination"],
+    emotions: ["uncertainty", "determination", "tiredness"],
     nextStepFree:
       "Option A: Choose one recovery action today (sleep, hydration, easy walk) and treat it as training. Option B: Define tomorrow's effort as \"easy\" or \"hard\" before you start.",
     nextStepPremium:
@@ -127,10 +131,10 @@ const DOMAIN_DEFAULTS: Record<Domain, DomainDefaults> = {
     shortNextStep:
       "Option A: Notice one physical sensation right now and name it without judging it. Option B: Write one sentence about what showing up costs you lately.",
     questions: [
-      "What did you prove to yourself by showing up today?",
+      "What did you actually feel in your body today — not good or bad, just what was there?",
       "What would healthy discipline look like this week — not perfection?",
       "What is one recovery signal your body gives you that you tend to ignore?",
-      "Next time, note your exact self-talk after the workout and what you did next.",
+      "Next time, note your exact self-talk during the session and what you did next.",
     ],
     shortQuestions: [
       "What does your body feel like right now — not good or bad, just what's actually there?",
@@ -139,18 +143,18 @@ const DOMAIN_DEFAULTS: Record<Domain, DomainDefaults> = {
       "Next time, write two more sentences — what's underneath the first feeling?",
     ],
     mustHave:
-      /\b(ran|run|running|workout|training|exercise|recovery|rest|sleep|hydration|pace|cardio|\d+\s*km|\d+\s*k)\b/,
+      /\b(ran|run|running|workout|training|exercise|recovery|rest|hydration|pace|cardio|\d+\s*km|\d+\s*k)\b/,
     driftKeywords:
       /\b(colleague|coworker|manager|meeting|office|partner|wife|husband|girlfriend|boyfriend)\b/,
   },
 
   WORK: {
     summary:
-      "What you're carrying: A workplace moment that left a mark.\nWhat's really happening: Something in that dynamic touched your sense of value or competence.",
+      "What you're carrying: Something from work got under your skin today.\nWhat's really happening: The way it landed says something about what matters to you — and what you need to feel respected.",
     shortSummary:
       "What you're carrying: Something from work is sitting with you — quietly, but persistently.\nWhat's really happening: Even a few words can hold a lot of weight when they touch your sense of worth.",
     corepattern:
-      "You're navigating a tension between your professional self-worth and external expectations.",
+      "You're navigating a tension between your professional self-worth and what's being reflected back to you.",
     themes: ["recognition", "boundaries", "self-worth"],
     emotions: ["frustration", "hurt", "determination"],
     nextStepFree:
@@ -177,7 +181,7 @@ const DOMAIN_DEFAULTS: Record<Domain, DomainDefaults> = {
 
   RELATIONSHIP: {
     summary:
-      "What you're carrying: Something in this connection left you unsettled.\nWhat's really happening: A gap between what you felt and what was expressed is asking for attention.",
+      "What you're carrying: A gap between you and someone who matters opened up today.\nWhat's really happening: The distance you felt — and what you didn't say — is still with you.",
     shortSummary:
       "What you're carrying: A quiet ache around a connection that matters to you.\nWhat's really happening: Something small happened — or didn't happen — and it landed harder than it looked.",
     corepattern:
@@ -208,7 +212,7 @@ const DOMAIN_DEFAULTS: Record<Domain, DomainDefaults> = {
 
   GENERAL: {
     summary:
-      "What you're carrying: Something is sitting with you — not fully named yet, but real.\nWhat's really happening: You wrote it down, which means part of you is already trying to make sense of it.",
+      "What you're carrying: Something you haven't fully named yet — but it's real enough to write down.\nWhat's really happening: The fact that you put it into words means part of you is already trying to understand it.",
     shortSummary:
       "What you're carrying: Something quiet — not loud enough to name yet, but present enough to notice.\nWhat's really happening: You showed up to write, even without words. That's the start of something.",
     corepattern:
@@ -239,6 +243,8 @@ const DOMAIN_DEFAULTS: Record<Domain, DomainDefaults> = {
 };
 
 // ─── Anchor Extraction ────────────────────────────────────────────────────────
+// Anchors = the person's most vivid, specific phrases. Must appear in model output.
+// This is the primary anti-template mechanism.
 
 function extractAnchors(entry: string): string[] {
   const t = entry.trim();
@@ -254,42 +260,29 @@ function extractAnchors(entry: string): string[] {
     anchors.push(v);
   };
 
+  // 1. Quoted phrases — highest signal value
   for (const m of t.matchAll(/["""]([^"""]{4,90})["""]/g)) {
     add(`"${m[1]}"`);
     if (anchors.length >= 3) break;
   }
 
+  // 2. Emotionally vivid sentences — prioritise these over structural sentences
+  const sentences = t.split(/\n|(?<=[.!?])\s+/).map(s => s.trim()).filter(Boolean);
+  const emotionalSignals = /\b(but|just|still|keep|always|never|again|somehow|quiet|ache|miss|wish|pretend|perform|smile|nod|sat|floor|nothing|empty|disappear|invisible|mask|mirror|watching|gap|distance|wanted|needed|tired|exhausted|fine|okay|somewhere|underneath)\b/i;
+
+  for (const s of sentences) {
+    if (anchors.length >= 4) break;
+    if (emotionalSignals.test(s)) {
+      add(s.length > 120 ? s.slice(0, 120).trim() : s);
+    }
+  }
+
+  // 3. Fill with opening sentences if still short
   if (anchors.length < 2) {
-    const sentences = t.split(/\n|(?<=[.!?])\s+/).map(s => s.trim()).filter(Boolean);
     for (const s of sentences.slice(0, 4)) {
       add(s.length > 110 ? s.slice(0, 110).trim() : s);
       if (anchors.length >= 2) break;
     }
-  }
-
-  const patterns: [RegExp, string][] = [
-    [/in front of (others|people|everyone)/i, "in front of others"],
-    [/colleague|coworker|manager|team|meeting/i, "a work moment that left a mark"],
-    [/smiled|laughed it off|kept it in|stayed silent/i, "you smiled in the moment, then replayed it later"],
-    [/replaying|kept replaying|ruminat/i, "you kept replaying it and felt small"],
-    [/don't want to start a fight|avoid conflict|respond without starting a fight/i, "you want to respond without starting a fight"],
-    [/\b(invisible|unheard|unseen)\b/i, "you felt invisible"],
-    [/fine isn't what I wanted/i, "fine isn't what you wanted"],
-    [/cried in the car|cried on the way/i, "you cried on the way home"],
-    [/nodded and said thank you/i, "you nodded and said thank you instead of pushing back"],
-    [/\b(tired|exhausted|fatigue)\b/i, "part of you wants rest while another wants to push harder"],
-    [/improving|progress|forcing myself|discipline/i, "you're questioning whether this is growth or pressure"],
-  ];
-
-  for (const [re, label] of patterns) {
-    if (re.test(t)) add(label);
-  }
-
-  // Fitness-specific anchors
-  if (/ran\s*5\s*k(m)?\b/i.test(t)) {
-    add("I ran 5km today and felt proud but also tired");
-  } else if (DOMAIN_DEFAULTS.FITNESS.mustHave.test(t.toLowerCase())) {
-    add("you exercised and felt proud but also tired");
   }
 
   if (anchors.length < 1) add("you wrote this down, which means something is asking to be noticed");
@@ -322,6 +315,23 @@ function parseModelJson<T>(raw: string): T | null {
 
 type QualityResult = { pass: true } | { pass: false; reasons: string[] };
 
+// FIX: comprehensive banned openers list — every template phrase found in Phase 2 audit
+const BANNED_SUMMARY_OPENERS = [
+  "a workplace moment that left a mark",
+  "something from work got under your skin",
+  "something in this connection left you unsettled",
+  "something in this connection",
+  "a gap between you and someone who matters",
+  "something is sitting with you",
+  "something you haven't fully named yet",
+  "something important is asking",
+  "pride mixed with fatigue",
+  "something happened today that",
+  "today was one of those days",
+  "a moment felt important",
+  "something is asking to be noticed",
+];
+
 function qualityCheck(
   parsed: any,
   anchors: string[],
@@ -340,22 +350,17 @@ function qualityCheck(
   const fullText = [summary, nextStep, ...questions].join("\n").toLowerCase();
 
   if (!short) {
+    // Anchor check — model must use at least one of the person's actual phrases
     const hasAnchor = anchors.some(a =>
       fullText.includes(a.toLowerCase().replace(/^[""]|[""]$/g, "").trim())
     );
-    if (!hasAnchor) reasons.push("Missing verbatim anchor");
+    if (!hasAnchor) reasons.push("Missing verbatim anchor from entry");
 
-    // Summary itself must not be a known template opener
-    const BANNED_SUMMARY_OPENERS = [
-      "a workplace moment that left a mark",
-      "something is sitting with you",
-      "something in this connection left you unsettled",
-      "something in this connection",
-    ];
+    // Banned opener check — checks both starts-with and contains
     const summaryLower = summary.toLowerCase();
     for (const banned of BANNED_SUMMARY_OPENERS) {
-      if (summaryLower.startsWith(banned)) {
-        reasons.push(`Generic template summary detected: "${banned}"`);
+      if (summaryLower.startsWith(banned) || summaryLower.includes(banned)) {
+        reasons.push(`Generic template detected: "${banned}"`);
         break;
       }
     }
@@ -427,8 +432,8 @@ function buildSystemPrompt(plan: "FREE" | "PREMIUM", domain: Domain, short: bool
   const isPremium = plan === "PREMIUM";
 
   const summaryStructure = isPremium && !short
-    ? `1) "What you're carrying:" — what the person is holding emotionally right now\n  2) "What's really happening:" — the deeper dynamic, named specifically\n  3) "Deeper direction:" — one forward-facing observation, grounded in the entry`
-    : `1) "What you're carrying:" — what the person is holding emotionally right now\n  2) "What's really happening:" — the deeper dynamic, named specifically`;
+    ? `1) "What you're carrying:" — what the person is holding emotionally right now\n  2) "What's really happening:" — the deeper dynamic, named specifically using THEIR words\n  3) "Deeper direction:" — one forward-facing observation grounded in THIS entry`
+    : `1) "What you're carrying:" — what the person is holding emotionally right now\n  2) "What's really happening:" — the deeper dynamic, named specifically using THEIR words`;
 
   const nextStepStructure = isPremium && !short
     ? `"Option A:" (practical, doable today) and "Option B:" (reflective alternative) and "Script line:" (1-2 calm sentences the person could actually say or write)`
@@ -436,71 +441,131 @@ function buildSystemPrompt(plan: "FREE" | "PREMIUM", domain: Domain, short: bool
 
   const domainGuidance: Record<Domain, string> = {
     WORK: `DOMAIN: WORK
-Name the specific workplace dynamic — being dismissed, overlooked, undervalued, or caught in a power tension.
-"What you're carrying:" MUST describe what literally happened: who was in the room, what was said or done, how you responded.
-"What's really happening:" must name what was touched: dignity, competence, recognition, or safety.
-BANNED opener: "A workplace moment that left a mark" — write the actual moment instead.
-Do NOT drift to relationship or fitness language.`,
+Name the exact workplace dynamic from this entry.
+"What you're carrying:" MUST describe what literally happened: who dismissed what, what was said or done, how the person responded.
+"What's really happening:" must name what was touched — dignity, competence, recognition, belonging, or fairness.
+
+EXAMPLES of strong openers:
+  "What you're carrying: You presented your idea in the meeting and watched your manager repeat it three minutes later to a room that suddenly lit up — and you smiled."
+  "What you're carrying: You did the whole shared report alone, nobody asked you to, nobody thanked you, and you're only now letting yourself feel that."
+
+BANNED openers — forbidden, no exceptions:
+  - "A workplace moment that left a mark"
+  - "Something from work got under your skin"
+  - Any opener beginning with "Something [generic adjective]"
+
+RULE: If the entry describes a specific moment — a meeting, a decision, a task, a conversation — name that moment. Don't summarise it into a category.
+Do NOT drift into relationship or fitness language.`,
 
     RELATIONSHIP: `DOMAIN: RELATIONSHIP
-Name the specific relational dynamic — feeling invisible, disconnected, unheard, or the gap between what was needed and what happened.
-"What you're carrying:" MUST name who it involves and what happened: "You told him you were struggling and got reassurance instead of presence."
-"What's really happening:" must name what the gap was: attention, care, presence, or reciprocity.
-BANNED opener: "Something in this connection left you unsettled" — write the actual dynamic instead.
-Do NOT drift to workplace or fitness language.`,
+Name the specific relational dynamic — who, what happened, and what the gap was between what was needed and what occurred.
+"What you're carrying:" MUST name who it involves and what specifically happened between them.
+"What's really happening:" must name the gap — attention, presence, reciprocity, desire, or being truly seen.
+
+EXAMPLES of strong openers:
+  "What you're carrying: You and him spent the whole evening in the same room and barely spoke — not because of a fight, but because there was nothing, and that quiet is starting to feel like an answer."
+  "What you're carrying: You washed the dishes, went quiet, didn't say any of the things that were actually happening inside you — and you already know you're going to be in this exact same fight in two weeks."
+
+BANNED openers — forbidden, no exceptions:
+  - "Something in this connection left you unsettled"
+  - "A gap between you and someone who matters"
+  - Any opener beginning with "Something [generic]"
+
+RULE: If the entry contains a vivid specific phrase — "wanted not needed", "the same fight again", "miles apart", "strange quiet" — that phrase belongs in your summary verbatim or near-verbatim.`,
 
     FITNESS: `DOMAIN: FITNESS
-Stay in the physical/training lane. Do NOT mention colleagues, partners, or conflict unless explicitly in the entry.
-"What's really happening:" must be about the body, energy, or the inner voice around training and recovery.
-CRITICAL: If the person skipped or avoided exercise, do NOT assign "pride" as an emotion. Match the actual emotional tone — avoidance, guilt, resistance, or relief are more honest.
-If they worked out and felt good, THEN pride is valid. Read the entry before assigning emotions.`,
+Stay strictly in the physical/training lane.
+"What you're carrying:" must describe the actual training experience — what they did, how the body felt, the gap between performance and internal experience.
+"What's really happening:" must be about the body, energy, self-expectation, or the relationship with training.
+
+CRITICAL — EMOTION MATCHING RULE (read this carefully):
+  SKIPPED or AVOIDED exercise → assign: guilt, resistance, avoidance, relief, self-doubt, exhaustion
+  NEVER assign "pride" for a skipped session. This is the most common error.
+  
+  COMPLETED exercise, felt good → pride, accomplishment, satisfaction, determination are valid
+  COMPLETED exercise, felt empty or numb → emptiness, confusion, disconnection, flatness are correct
+  
+  Read the entry. Match the emotions to what was ACTUALLY described, not what is typical for the domain.
+
+BANNED phrase: "Pride mixed with fatigue" — only valid if the entry explicitly expresses BOTH pride AND tiredness after COMPLETING a session. Otherwise completely banned.
+
+Do NOT mention colleagues, partners, or conflict unless explicitly present in the entry.`,
 
     GENERAL: `DOMAIN: GENERAL
-Use the person's EXACT words — especially vivid metaphors or images they used — directly in your summary.
-"What you're carrying:" must describe what the person actually wrote, not a generic label.
-"What's really happening:" must echo their specific phrasing. If they wrote "stuck behind glass watching my own life", use those words.
-BANNED opener: "Something is sitting with you" — write what is specifically sitting with them instead.
-BANNED phrase: "Something important is asking for clarity" — placeholder, forbidden.
-If the entry is short or unclear, be gentle and curious. Lead with warmth.`,
+This entry doesn't fit a specific life domain — it's about the person's inner state, a pattern, or something they're sitting with.
+"What you're carrying:" must describe what the person ACTUALLY wrote — their specific situation, using their words.
+"What's really happening:" MUST echo their specific phrasing. The most vivid phrase from the entry belongs here.
+
+EXAMPLES of strong openers:
+  "What you're carrying: You've been saying 'fine' for so long that you're not sure what the alternative feels like — and somewhere in that gap between 'okay' and 'fine' is something you keep not looking at."
+  "What you're carrying: You caught yourself laughing at something that wasn't funny because the room needed it — and then noticed that you do this constantly, smoothly, automatically."
+  "What you're carrying: You slept 8 hours and woke up more exhausted than when you lay down — the kind of tired that isn't about the body."
+
+BANNED openers — forbidden, no exceptions:
+  - "Something is sitting with you — not fully named yet"
+  - "Something you haven't fully named yet"
+  - "Something important is asking for clarity"
+  - "Something is asking to be noticed"
+  - ANY opener beginning with "Something [generic]"
+
+RULE: The most specific or unusual phrase the person used MUST appear verbatim (or near-verbatim) in your summary or corepattern. Paraphrasing away their vivid language is not allowed.`,
   };
 
   const shortGuidance = short
-    ? `\nSHORT ENTRY: Under 12 words. Be warm and curious — NOT analytical. Do not extract themes that aren't there.
-"What you're carrying:" and "What's really happening:" should be brief and open. Questions invite more, they don't demand.`
+    ? `\nSHORT ENTRY: Under 12 words. Be warm and curious — not analytical. Don't extract themes that aren't there.
+"What you're carrying:" and "What's really happening:" should be brief and open. Questions invite more, not demand more.`
     : "";
 
   return `You are Havenly — a private journaling companion that reflects back what people write with warmth, clarity, and precision.
 
-CORE RULES (never break these):
+YOUR PRIMARY OBJECTIVE: Make the person feel genuinely seen — not processed through a template.
+The quality test is simple: when they read your reflection, they should recognise their own words and think "yes, that's exactly what I meant."
+If your reflection could be pasted onto 5 different entries and still make sense — it has failed. Start over.
+
+CORE RULES — never break these:
 - Write directly to "you". Never say "the user" or "this person".
-- "What you're carrying:" MUST use the person's exact situation — not a generic label. If they ran 5km, say so. If they cried, say so. If they said thank you when they wanted to push back, say so.
-- "What's really happening:" MUST quote or closely echo a specific phrase from the entry. The reader should recognise their own words.
-- "gentlenextstep" Option A and Option B MUST be specific to THIS entry — not generic advice that could apply to anyone.
+- "What you're carrying:" MUST use the person's exact situation — not a category label. If they skipped the gym and sat on the floor, say so. If they did their colleague's work and nobody noticed, say so. If they said 'fine' to someone when they weren't fine, say so.
+- "What's really happening:" MUST contain at least one phrase directly from the entry — close echo or verbatim. The reader should recognise their own words.
+- "gentlenextstep" Options A and B MUST be specific to THIS entry — not advice that applies to anyone in this domain.
 - Never invent events not in the entry.
-- BANNED summary openers: "A workplace moment that left a mark", "Something is sitting with you", "Something in this connection left you unsettled" — these are placeholders. Write the actual situation.
-- BANNED: "Something important is asking for clarity" — useless placeholder.
-- BANNED: "A moment felt important" — unless the entry is one sentence with zero emotional signal.
-- If a person wrote a vivid, specific phrase (like "stuck behind glass watching my own life", or "handed a mask and told to put it back on") — that phrase MUST appear verbatim in your summary or corepattern. Do not paraphrase it away.
+- Questions must be specific enough that a different entry would produce different questions.
+
+ANTI-TEMPLATE MANDATE — this overrides everything else:
+Before you write "What you're carrying:", ask yourself:
+"Could I paste this exact opener onto 5 different journal entries about [this domain] and have it still sound plausible?"
+If yes — it is a template. Do not write it. Start with the entry's actual situation.
+
+ABSOLUTELY BANNED summary phrases — these will fail quality check:
+- "A workplace moment that left a mark"
+- "Something in this connection left you unsettled"  
+- "Something is sitting with you"
+- "Pride mixed with fatigue" (unless both pride AND fatigue are explicit in entry)
+- "Something important is asking for clarity"
+- "Something happened today that"
+- "Something you haven't fully named"
+- "A moment felt important"
+- Any opener beginning with "Something [generic adjective]" or "A [generic noun] left a mark"
 
 ${domainGuidance[domain]}
 ${shortGuidance}
 
-TONE: Grounded, calm, perceptive. Not clinical. Not preachy. Not flattering.
+TONE: Grounded, calm, perceptive. Speaks like a trusted friend who notices things. Not clinical, not preachy, not flattering. No padding phrases. No unnecessary reassurance.
 
-REQUIRED STRUCTURE:
+REQUIRED OUTPUT STRUCTURE:
 
-summary — labeled sections in this exact order:
+summary — in this exact labeled order:
 ${summaryStructure}
 
-corepattern — ONE sentence naming the underlying dynamic. Specific to this entry.
+corepattern — ONE sentence naming the underlying dynamic. Specific to this entry. Not a category label. Not a therapeutic formula.
 
 gentlenextstep — must include:
 ${nextStepStructure}
-Both options must be things a real person can do today. Not abstract.
+Both options must be concrete, doable today. Not abstract. Different from the questions.
 
 questions — exactly 4. The LAST question MUST start with exactly: "Next time,"
+All 4 questions must be specific enough to this entry that they would differ for a different entry.
 
-OUTPUT: Return ONLY valid JSON with double-quoted strings. No markdown, no code fences, no preamble.
+OUTPUT: Return ONLY valid JSON with double-quoted strings. No markdown fences. No preamble. No explanation.
 {
   "summary": "...",
   "corepattern": "...",
@@ -560,7 +625,6 @@ export async function generateReflectionFromEntry(input: Input): Promise<Reflect
   const apiKey = process.env.GROQAPIKEY || process.env.GROQ_API_KEY;
   if (!apiKey) throw new Error("Missing GROQAPIKEY");
 
-  // llama-4-scout: best Groq free model for structured JSON output as of 2025
   const model = process.env.GROQMODEL || "meta-llama/llama-4-scout-17b-16e-instruct";
 
   const entryBody = (input.content || "").trim();
@@ -570,7 +634,13 @@ export async function generateReflectionFromEntry(input: Input): Promise<Reflect
   const domain = detectDomain(entryBody);
   const short = isShortEntry(entryBody);
   const anchors = extractAnchors(entryBody);
-  const anchorsBlock = anchors.map((a, i) => `${i + 1}) ${a}`).join("\n");
+
+  // FIX: anchors now presented as explicit numbered constraints with
+  // a hard instruction above them — forces the model to treat them as
+  // requirements, not optional context it can skip.
+  const anchorsBlock = anchors
+    .map((a, i) => `ANCHOR ${i + 1}: ${a}`)
+    .join("\n");
 
   const recentThemes = (input.recentThemes || [])
     .map(s => String(s).trim())
@@ -578,10 +648,13 @@ export async function generateReflectionFromEntry(input: Input): Promise<Reflect
     .slice(0, 5);
 
   const memoryBlock = recentThemes.length
-    ? `CONTEXT — themes from recent entries (reference only if genuinely relevant):\n${recentThemes.map((t, i) => `${i + 1}) ${t}`).join("\n")}\n`
+    ? `RECENT PATTERN CONTEXT (reference only if genuinely relevant to this specific entry):\n${recentThemes.map((t, i) => `${i + 1}) ${t}`).join("\n")}\n\n`
     : "";
 
-  const userPrompt = `${memoryBlock}ANCHORS — include at least one verbatim in your response${short ? " if possible" : ""}:
+  // FIX: user prompt now leads with a hard anchor constraint before
+  // showing the anchors and entry — makes anchor inclusion feel mandatory.
+  const userPrompt = `${memoryBlock}MANDATORY ANCHOR RULE: At least one phrase from the ANCHORS below must appear verbatim (or near-verbatim) inside "What you're carrying:" or "What's really happening:". These are the person's exact words — use them, don't paraphrase them away.
+
 ${anchorsBlock}
 
 ${entryText}`.trim();
@@ -590,16 +663,25 @@ ${entryText}`.trim();
   const systemPrompt = buildSystemPrompt(input.plan, domain, short);
 
   const ATTEMPTS = [
-    { temperature: input.plan === "PREMIUM" ? 0.5 : 0.4, note: undefined as string | undefined },
-    { temperature: 0.25, note: `Retry. Be specific to this entry. Use the person's exact words in "What's really happening:". Domain: ${domain}. Return ONLY valid JSON.` },
-    { temperature: 0.1,  note: `Final attempt. Domain: ${domain}. Reference the entry directly. "Something important is asking for clarity" is BANNED. Return ONLY valid JSON.` },
+    {
+      temperature: input.plan === "PREMIUM" ? 0.55 : 0.45,
+      note: undefined as string | undefined,
+    },
+    {
+      temperature: 0.3,
+      note: `RETRY — quality check failed. Open "What you're carrying:" with the specific situation from THIS entry. Use at least one ANCHOR phrase verbatim. Domain: ${domain}. Banned phrases still banned. Return ONLY valid JSON.`,
+    },
+    {
+      temperature: 0.15,
+      note: `FINAL ATTEMPT. Domain: ${domain}. "What you're carrying:" must begin with what literally happened in this entry. Include at least one ANCHOR phrase verbatim. No generic openers. No banned phrases. Return ONLY valid JSON.`,
+    },
   ];
 
   let bestParsed: any = null;
 
   for (let i = 0; i < ATTEMPTS.length; i++) {
     const { temperature, note } = ATTEMPTS[i];
-    const system = note ? `${systemPrompt}\n\nRETRY NOTE: ${note}` : systemPrompt;
+    const system = note ? `${systemPrompt}\n\nRETRY INSTRUCTION: ${note}` : systemPrompt;
 
     let raw = "";
     try {
@@ -612,19 +694,18 @@ ${entryText}`.trim();
     const parsed = parseModelJson<any>(raw);
     if (!parsed) continue;
 
-    bestParsed = parsed; // keep last valid parse in case all fail quality
+    bestParsed = parsed;
 
     const result = qualityCheck(parsed, anchors, input.plan, domain, short);
     if (result.pass) return normalizeReflection(parsed, domain, short);
 
     if (i === ATTEMPTS.length - 1) {
       console.warn("[Havenly] Quality gate failed after 3 attempts. Domain:", domain, "Reasons:", (result as any).reasons);
-      // Return best parsed output — still better than a pure template
       return normalizeReflection(parsed, domain, short);
     }
   }
 
-  // ─── Last resort: pure template with real anchor injected ────────────────
+  // ─── Absolute last resort: template with anchor injected ──────────────────
   const defaults = DOMAIN_DEFAULTS[domain];
   const a1 = anchors[0] || "what you wrote";
   const isPremium = input.plan === "PREMIUM";
@@ -639,7 +720,7 @@ ${entryText}`.trim();
     ...(continuityLine ? [continuityLine] : []),
   ]
     .join("\n")
-    .replace("What's really happening:", `What's really happening: ${a1} --`);
+    .replace("What's really happening:", `What's really happening: "${a1}" —`);
 
   return normalizeReflection(
     {
