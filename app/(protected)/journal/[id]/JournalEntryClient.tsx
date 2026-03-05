@@ -88,13 +88,16 @@ export default function JournalEntryClient({
   const { planType, credits, loading, refresh } = useUserPlan();
 
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    setMounted(true);
+    if (initialReflection) setRevealed(true);
+  }, []);
 
   const [busy, setBusy] = useState(false);
   const [reflection, setReflection] = useState<Reflection | null>(initialReflection ?? null);
   const [error, setError] = useState<string | null>(null);
   const [showUpgrade, setShowUpgrade] = useState(false);
-  const [revealed, setRevealed] = useState(!!initialReflection);
+  const [revealed, setRevealed] = useState(false);
 
   const readablePlan = useMemo(() => {
     if (planType === "PREMIUM") return "Premium";
