@@ -2,7 +2,6 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
-// Defer below-the-fold markup until after initial paint.
 const HomeBelowFold = dynamic(() => import("./(home)/HomeBelowFold"), {
   ssr: false,
 });
@@ -10,128 +9,130 @@ const HomeBelowFold = dynamic(() => import("./(home)/HomeBelowFold"), {
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-hvn-bg text-hvn-text-primary bg-hvn-page-gradient">
-      {/* HERO */}
-      <section className="pt-16 pb-14 sm:pt-20 sm:pb-20">
-        <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 md:flex-row md:items-center md:justify-between">
-          {/* Left: copy */}
-          <div className="max-w-xl space-y-6">
-            <div className="inline-flex items-center rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-200">
-              Gentle AI journaling · Private by design
-            </div>
 
-            <h1 className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl">
-              A calmer way to keep up with{" "}
-              <span className="text-emerald-400">your own life.</span>
-            </h1>
+      {/* ── HERO ─────────────────────────────────────────────────────────── */}
+      <section className="relative overflow-hidden pt-16 pb-20 sm:pt-24 sm:pb-28">
 
-            <p className="text-sm leading-relaxed text-hvn-text-muted sm:text-base">
-              Havenly is your quiet corner on the internet: a private journal
-              with gentle AI reflections that help you understand how you have
-              really been doing—without turning your life into a productivity
-              project.
+        {/* Ambient glow */}
+        <div className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2 h-[500px] w-[800px] rounded-full bg-emerald-500/[0.04] blur-3xl" />
+
+        <div className="mx-auto flex max-w-6xl flex-col gap-12 px-4 md:flex-row md:items-center md:gap-16">
+
+          {/* ── Left copy ── */}
+          <div className="max-w-lg space-y-7">
+
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-emerald-500/70">
+              Private · Calm · Yours
             </p>
 
-            {/* Primary CTAs */}
-            <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:items-center">
+            <h1 className="text-balance text-4xl font-semibold leading-[1.15] tracking-tight sm:text-5xl">
+              Finally understand<br />
+              <span className="text-emerald-400">how you've really been.</span>
+            </h1>
+
+            <p className="text-base leading-relaxed text-slate-400 sm:text-[17px]">
+              Havenly is a private journal that notices what you keep coming
+              back to — and quietly reflects it back to you. No advice.
+              No pressure. Just clarity.
+            </p>
+
+            {/* CTAs */}
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <Link
                 href="/magic-login"
-                className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-slate-950 shadow-sm hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+                className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 hover:bg-emerald-400 transition-colors"
               >
-                Start free journal
+                Start for free — no card needed
               </Link>
-
               <Link
                 href="/insights/preview"
-                className="inline-flex items-center justify-center rounded-full border border-slate-600/80 bg-slate-900/70 px-5 py-2.5 text-sm font-medium text-slate-100 hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+                className="inline-flex items-center justify-center rounded-full border border-slate-700 px-6 py-3 text-sm font-medium text-slate-300 hover:bg-slate-900 transition-colors"
               >
-                See what’s coming
+                See how it works
               </Link>
             </div>
 
-            {/* Social proof / micro-copy */}
-            <div className="flex flex-col gap-1 pt-2 text-xs text-hvn-text-muted sm:flex-row sm:items-center sm:gap-3">
-              <p>No credit card required for Free plan.</p>
-              <p className="flex items-center gap-2">
-                <span className="inline-block h-1 w-1 rounded-full bg-emerald-400" />
-                Designed for busy, thoughtful people with very full lives.
-              </p>
-            </div>
-
-            {/* TRUST-PATH */}
-            <div className="mt-2 space-y-1 text-xs text-hvn-text-muted">
-              <p>
-                Your journal is meant to stay yours.{" "}
-                <span className="text-hvn-text-secondary">Private by default.</span>
-              </p>
-              <p>
-                Want the details?{" "}
-                <Link
-                  href="/privacy"
-                  className="font-medium text-emerald-400 hover:text-emerald-300 hover:underline"
-                >
-                  Read the Privacy Policy →
-                </Link>
-              </p>
+            {/* Trust signals */}
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-slate-600">
+              <span className="flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                Your entries never train AI models
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                Private by default, always
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                Free plan, no expiry
+              </span>
             </div>
           </div>
 
-          {/* Right: card mock */}
-          <div className="relative mx-auto w-full max-w-sm">
-            <div className="pointer-events-none absolute -left-4 -top-4 hidden h-20 w-20 rounded-3xl border border-emerald-500/20 bg-emerald-500/5 blur-3xl sm:block" />
+          {/* ── Right: reflection card ── */}
+          <div className="relative mx-auto w-full max-w-[360px] shrink-0">
 
-            <div className="rounded-3xl border border-hvn-card bg-slate-950/90 p-4 shadow-xl shadow-black/60 backdrop-blur">
-              <div className="mb-3 flex items-center justify-between text-xs text-hvn-text-muted">
-                <span className="inline-flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                  Today’s check-in
+            {/* Glow behind card */}
+            <div className="pointer-events-none absolute -inset-4 rounded-3xl bg-emerald-500/[0.06] blur-2xl" />
+
+            <div className="relative rounded-3xl border border-white/[0.07] bg-slate-950/95 p-5 shadow-2xl shadow-black/60 backdrop-blur">
+
+              {/* Card header */}
+              <div className="mb-4 flex items-center justify-between">
+                <span className="flex items-center gap-2 text-[11px] text-slate-500">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400/50" />
+                  March 4 · Evening check-in
                 </span>
-                <span>Private · Just for you</span>
+                <span className="text-[10px] text-slate-700">Private · Just for you</span>
               </div>
 
-              <div className="space-y-2 rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
-                <p className="text-xs font-medium text-hvn-text-primary">
-                  “I feel overwhelmed, but I am not sure if it is just work or
-                  everything at once…”
-                </p>
-                <p className="text-[11px] text-hvn-text-muted">
-                  Havenly’s AI gently reflects your words back to you, helping
-                  you notice patterns without judgment.
+              {/* Entry */}
+              <div className="rounded-2xl border border-slate-800/60 bg-slate-900/60 p-4">
+                <p className="text-[13px] leading-relaxed text-slate-200">
+                  "I keep saying I'm fine but I don't think I mean it anymore.
+                  I'm tired in a way that sleep doesn't fix."
                 </p>
               </div>
 
-              <div className="mt-4 space-y-2 rounded-2xl border border-slate-800 bg-slate-900/50 p-4 text-xs">
-                <p className="font-semibold text-emerald-300">Today you seem:</p>
-                <ul className="list-inside list-disc space-y-1 text-slate-200">
-                  <li>Carrying more than you realised.</li>
-                  <li>Trying to keep everything steady for others.</li>
-                  <li>Needing one small thing that is just for you.</li>
-                </ul>
-                <p className="pt-1 text-[11px] text-hvn-text-muted">
-                  You do not have to fix all of this today. Let us just name it
-                  together.
+              {/* Divider */}
+              <div className="my-4 flex items-center gap-3">
+                <div className="h-px flex-1 bg-slate-800/60" />
+                <span className="text-[10px] text-slate-700 uppercase tracking-widest">Havenly noticed</span>
+                <div className="h-px flex-1 bg-slate-800/60" />
+              </div>
+
+              {/* Reflection */}
+              <div className="space-y-3">
+                <p className="text-[13px] leading-relaxed text-slate-300">
+                  This tiredness sounds like it's been building quietly for a
+                  while — not just this week, but longer. There's a difference
+                  between being tired <em>from</em> things and being tired
+                  <em> of</em> things.
+                </p>
+
+                <div className="flex flex-wrap gap-1.5">
+                  <span className="rounded-full border border-violet-500/20 bg-violet-500/10 px-2.5 py-0.5 text-[11px] text-violet-300">Exhaustion</span>
+                  <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-0.5 text-[11px] text-emerald-300">Masking</span>
+                  <span className="rounded-full border border-amber-500/20 bg-amber-500/10 px-2.5 py-0.5 text-[11px] text-amber-300">Quiet signal</span>
+                </div>
+
+                <p className="text-[12px] text-slate-500 italic">
+                  What would it mean to stop saying you're fine — just for today?
                 </p>
               </div>
 
-              <div className="mt-3 flex items-center justify-between text-[11px] text-hvn-text-muted">
-                <span>Reflections that feel human.</span>
-                <Link
-                  href="/insights/preview"
-                  className="font-semibold text-emerald-400 hover:text-emerald-300"
-                >
-                  Insights coming soon →
-                </Link>
-              </div>
-
-              <div className="mt-3 rounded-2xl border border-slate-800 bg-slate-950/60 p-3 text-[11px] text-hvn-text-muted">
-                No pressure. Free stays useful on its own. “Coming soon” features
-                will unlock gradually.
+              {/* Footer */}
+              <div className="mt-4 border-t border-slate-800/40 pt-3 text-[11px] text-slate-600">
+                Patterns across 3 weeks of entries →
+                <span className="ml-1 text-emerald-600">Curiosity · Communication · Clarity</span>
               </div>
             </div>
           </div>
+
         </div>
       </section>
 
-      {/* BELOW THE FOLD */}
+      {/* ── BELOW THE FOLD ───────────────────────────────────────────────── */}
       <HomeBelowFold />
     </div>
   );
