@@ -250,7 +250,7 @@ export default function JournalEntryClient({
 
         {/* ── Reflection body ───────────────────────────────────────────── */}
         {reflection && (
-          <div className="divide-y divide-white/5">
+          <div className="divide-y divide-white/5" suppressHydrationWarning>
 
             {/* ── What you're carrying ─────────────────────────────────── */}
             {parsedSummary && (
