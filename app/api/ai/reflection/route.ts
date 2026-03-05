@@ -5,12 +5,10 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { ensureCreditsFresh } from "@/lib/creditRules";
 import { generateReflectionFromEntry } from "@/lib/ai/generateReflection";
 
-// Hard-disable caching
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 export const runtime = "nodejs";
 
-// Keep this in sync with your FREE tier limit:
 const FREE_MONTHLY_CREDITS = 3;
 
 type PlanType = "FREE" | "TRIAL" | "PREMIUM";
@@ -56,7 +54,6 @@ async function consumeOneCredit(supabase: any, userId: string): Promise<ConsumeR
   let rpcData: any = null;
   let rpcErr: any = null;
 
-  // Attempt 1: RPC expects p_user_id + p_amount
   const first = await supabase.rpc("consume_reflection_credit", {
     p_user_id: userId,
     p_amount: 1,
@@ -65,7 +62,6 @@ async function consumeOneCredit(supabase: any, userId: string): Promise<ConsumeR
   rpcData = first?.data;
   rpcErr = first?.error;
 
-  // Attempt 2: RPC expects only p_amount (user inferred via auth.uid())
   if (rpcErr && isParamMismatchError(String(rpcErr.message || ""))) {
     const second = await supabase.rpc("consume_reflection_credit", {
       p_amount: 1,
@@ -76,15 +72,12 @@ async function consumeOneCredit(supabase: any, userId: string): Promise<ConsumeR
 
   if (rpcErr) {
     const msg = String(rpcErr.message || "");
-
     if (msg.toLowerCase().includes("not_authenticated")) {
       return { ok: false, status: 401, error: "Unauthorized" };
     }
-
     if (isNoCreditsError(msg)) {
       return { ok: false, status: 402, error: "Reflection limit reached" };
     }
-
     console.error("[reflection] consume_reflection_credit rpc error:", rpcErr);
     return { ok: false, status: 500, error: "Failed to consume credits" };
   }
@@ -121,9 +114,7 @@ type Domain = "WORK" | "RELATIONSHIP" | "FITNESS" | "GENERAL";
 function detectDomain(text: string): Domain {
   const s = (text || "").toLowerCase();
   const fitness =
-    /run|running|\bkm\b|workout|training|exercise|gym|lift|lifting|cardio|pace|steps|sore|recovery|rest|sleep|hydration/.test(
-      s
-    );
+    /run|running|\bkm\b|workout|training|exercise|gym|lift|lifting|cardio|pace|steps|sore|recovery|rest|sleep|hydration/.test(s);
   const work = /colleague|coworker|manager|team|meeting|work|office|client|boss/.test(s);
   const rel = /partner|wife|husband|girlfriend|boyfriend|relationship|love|date|argue|fight|gift/.test(s);
   if (fitness && !work && !rel) return "FITNESS";
@@ -147,11 +138,7 @@ function extractAnchorsForDebug(entry: string): string[] {
     if (anchors.length >= 3) break;
   }
   if (anchors.length < 2) {
-    const sentences = t
-      .split(/\n|[.!?]/)
-      .map((s) => s.trim())
-      .filter(Boolean)
-      .slice(0, 4);
+    const sentences = t.split(/\n|[.!?]/).map((s) => s.trim()).filter(Boolean).slice(0, 4);
     for (const s of sentences) {
       add(s.length > 110 ? s.slice(0, 110).trim() : s);
       if (anchors.length >= 2) break;
@@ -160,7 +147,6 @@ function extractAnchorsForDebug(entry: string): string[] {
   return anchors.slice(0, 5);
 }
 
-// Stripe: treat user as Premium ONLY if Stripe says they have an active/trialing subscription.
 const stripe =
   process.env.STRIPE_SECRET_KEY && process.env.STRIPE_SECRET_KEY !== "placeholder"
     ? new Stripe(process.env.STRIPE_SECRET_KEY)
@@ -172,18 +158,15 @@ async function hasActiveStripeSubscription(stripeCustomerId: string | null): Pro
     console.error("[reflection] STRIPE_SECRET_KEY not configured; treating as non-premium");
     return false;
   }
-
   try {
     const subs = await stripe.subscriptions.list({
       customer: stripeCustomerId,
       status: "all",
       limit: 10,
     });
-
     return subs.data.some((s) => s.status === "active" || s.status === "trialing");
   } catch (err) {
     console.error("[reflection] Stripe subscription check failed:", err);
-    // Fail closed
     return false;
   }
 }
@@ -192,7 +175,6 @@ function tryParseReflection(aiResponse: unknown) {
   if (typeof aiResponse !== "string") return null;
   try {
     const parsed = JSON.parse(aiResponse);
-    // minimal sanity check — must have summary and at least themes or emotions
     if (
       parsed &&
       typeof parsed === "object" &&
@@ -226,7 +208,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Missing entryId" }, { status: 400, headers: noStoreHeaders() });
   }
 
-  // ✅ Load entry server-side (do NOT trust client content)
   const { data: entry, error: entryErr } = await supabase
     .from("journal_entries")
     .select("id,title,content,ai_response")
@@ -265,7 +246,6 @@ export async function POST(req: Request) {
   const domain = debugEnabled ? detectDomain(`${title}\n${content}`) : undefined;
   const anchors = debugEnabled ? extractAnchorsForDebug(content) : undefined;
 
-  // Load current plan row (still used for housekeeping + stale row fixes)
   const { data: creditsRow, error: creditsErr } = await supabase
     .from("user_credits")
     .select("plan_type")
@@ -278,7 +258,6 @@ export async function POST(req: Request) {
 
   let planType = normalizePlan((creditsRow as any)?.plan_type);
 
-  // Load Stripe customer id
   const { data: profileRow, error: profileErr } = await supabase
     .from("profiles")
     .select("stripe_customer_id")
@@ -296,7 +275,6 @@ export async function POST(req: Request) {
 
   const stripePremium = await hasActiveStripeSubscription(stripeCustomerId);
 
-  // ✅ If Stripe is NOT premium, force downgrade any stale PREMIUM credits row.
   if (!stripePremium && planType === "PREMIUM") {
     const nowIso = new Date().toISOString();
     const { error: downgradeErr } = await supabase
@@ -316,41 +294,27 @@ export async function POST(req: Request) {
     }
   }
 
-  // Credits bookkeeping (FREE reset etc.)
   await ensureCreditsFresh({ supabase, userId });
 
   const effectiveTier: "FREE" | "PREMIUM" = stripePremium ? "PREMIUM" : "FREE";
 
-  // ✅ Idempotency AFTER we know tier:
-  // If reflection already exists, serve it without consuming credits.
   const existingFull = tryParseReflection((entry as any)?.ai_response);
   if (existingFull) {
     const payload: any = {
       reflection: existingFull,
       remainingCredits: null,
     };
-
     if (debugEnabled) {
       payload.debug = {
-        entryId,
-        fp,
-        snippet,
-        domain,
-        anchors,
+        entryId, fp, snippet, domain, anchors,
         stripeCustomerIdPresent: Boolean(stripeCustomerId),
-        stripePremium,
-        planType,
-        effectiveTier,
-        servedFromCache: true,
+        stripePremium, planType, effectiveTier, servedFromCache: true,
       };
     }
-
     return NextResponse.json(payload, { headers: noStoreHeaders() });
   }
 
-  // Premium unlimited is ONLY when Stripe says active/trialing.
   const isUnlimited = stripePremium;
-
   let remainingAfterConsume: number | null = null;
 
   if (!isUnlimited) {
@@ -365,7 +329,6 @@ export async function POST(req: Request) {
   }
 
   try {
-    // ─── Cross-journal memory — fetch themes from last 5 reflections ──────────
     let recentThemes: string[] = [];
     try {
       const { data: recentEntries } = await supabase
@@ -388,10 +351,7 @@ export async function POST(req: Request) {
         recentThemes = [...new Set(recentThemes)].slice(0, 5);
       }
     } catch {}
-    // ─────────────────────────────────────────────────────────────────────────
 
-    // Generate reflection — always use the full shape regardless of tier.
-    // The UI (JournalEntryClient) displays the full Reflection type for all users.
     const reflection = await generateReflectionFromEntry({
       content,
       title,
@@ -399,7 +359,6 @@ export async function POST(req: Request) {
       recentThemes,
     });
 
-    // Save full reflection
     const { error: updErr } = await supabase
       .from("journal_entries")
       .update({ ai_response: JSON.stringify(reflection) })
@@ -410,7 +369,6 @@ export async function POST(req: Request) {
       console.error("[reflection] journal_entries update failed:", updErr);
     }
 
-    // Track usage
     const { error: usageErr } = await supabase.from("reflection_usage").insert({
       user_id: userId,
       date: new Date().toISOString().slice(0, 10),
@@ -427,16 +385,9 @@ export async function POST(req: Request) {
 
     if (debugEnabled) {
       payload.debug = {
-        entryId,
-        fp,
-        snippet,
-        domain,
-        anchors,
+        entryId, fp, snippet, domain, anchors,
         stripeCustomerIdPresent: Boolean(stripeCustomerId),
-        stripePremium,
-        planType,
-        effectiveTier,
-        servedFromCache: false,
+        stripePremium, planType, effectiveTier, servedFromCache: false,
       };
     }
 
@@ -444,7 +395,6 @@ export async function POST(req: Request) {
   } catch (err) {
     console.error("[reflection] generation failed:", err);
 
-    // Best-effort refund if generation fails after consuming
     if (!isUnlimited && remainingAfterConsume !== null) {
       try {
         await supabase
