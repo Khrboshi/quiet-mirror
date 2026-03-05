@@ -4,13 +4,13 @@ import Link from "next/link";
 export default function HomeBelowFold() {
   return (
     <>
-      
+      {/* WHO IT'S FOR */}
       <section className="border-y border-slate-800/60 bg-slate-950/80">
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-7 text-xs sm:flex-row sm:items-center sm:justify-between">
           <p className="font-medium text-slate-500">Written for people who are:</p>
           <div className="flex flex-wrap gap-2">
             {[
-              "Always \"on\", rarely checked in with themselves",
+              'Always "on", rarely checked in with themselves',
               "Good at caring for others, hard on themselves",
               "Wanting to understand themselves, not optimise",
             ].map((label) => (
@@ -25,6 +25,7 @@ export default function HomeBelowFold() {
         </div>
       </section>
 
+      {/* HOW IT WORKS */}
       <section className="border-b border-slate-800/60 bg-slate-950/90 py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4">
           <div className="mb-10 max-w-lg">
@@ -32,8 +33,8 @@ export default function HomeBelowFold() {
               A practice that fits around your life
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-slate-500">
-              No streaks to maintain. No goals to set. Just a quiet place to be
-              honest -- and something that pays attention.
+              No streaks to maintain. No goals to set. Just a quiet place to
+              be honest &mdash; and something that pays attention.
             </p>
           </div>
 
@@ -41,20 +42,20 @@ export default function HomeBelowFold() {
             {[
               {
                 step: "1",
-                title: "Write what's actually happening",
-                body: "Open Havenly and write for a few minutes -- messy, incomplete, honest. This space is for you, not for an audience.",
+                title: "One sentence is enough",
+                body: "You don't need to be a writer. Just open Havenly and say what's actually going on. Messy, incomplete &mdash; it doesn't matter. Havenly pays attention so you don't have to.",
                 accent: "text-emerald-400",
               },
               {
                 step: "2",
                 title: "Havenly reflects it back",
-                body: "Havenly reads what you wrote and offers a gentler version of what it heard -- the emotions underneath, the patterns surfacing.",
+                body: "Havenly reads what you wrote and offers a gentler version of what it heard &mdash; the emotions underneath, the patterns surfacing, the things you couldn't quite name.",
                 accent: "text-violet-400",
               },
               {
                 step: "3",
                 title: "Start seeing what repeats",
-                body: "Over weeks, Havenly shows you what keeps coming up -- what drains you, what lifts you, what you keep circling back to.",
+                body: "Over weeks, Havenly shows you what keeps coming up &mdash; what drains you, what lifts you, what you keep circling back to without realising it.",
                 accent: "text-amber-400",
               },
             ].map(({ step, title, body, accent }) => (
@@ -66,18 +67,22 @@ export default function HomeBelowFold() {
                   {step}
                 </p>
                 <h3 className="mt-2 text-sm font-medium text-white">{title}</h3>
-                <p className="mt-2 text-xs leading-relaxed text-slate-500">{body}</p>
+                <p
+                  className="mt-2 text-xs leading-relaxed text-slate-500"
+                  dangerouslySetInnerHTML={{ __html: body }}
+                />
               </div>
             ))}
           </div>
         </div>
       </section>
 
+      {/* WHAT HAVENLY SHOWS YOU */}
       <section className="border-b border-slate-800/60 bg-slate-950 py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4">
           <div className="mb-10 max-w-lg">
             <h2 className="text-2xl font-semibold text-white sm:text-3xl">
-              What Havenly actually shows you
+              Your hidden patterns &mdash; finally visible
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-slate-500">
               Not summaries of your day. The things that are harder to see
@@ -88,52 +93,64 @@ export default function HomeBelowFold() {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {[
               {
-                label: "Your top emotion this month",
-                example: "Curiosity -- 14 times across 22 entries",
+                label: "What you feel most",
+                example: "Curiosity &mdash; 14 times across 22 entries",
                 color: "border-violet-500/20 bg-violet-500/5",
                 tag: "text-violet-400",
+                premium: false,
               },
               {
-                label: "The theme that keeps appearing",
-                example: "Communication -- in 10 of your last 15 entries",
+                label: "What keeps coming back",
+                example: "Communication &mdash; in 10 of your last 15 entries",
                 color: "border-emerald-500/20 bg-emerald-500/5",
                 tag: "text-emerald-400",
+                premium: false,
               },
               {
-                label: "Your core pattern right now",
-                example: "\"You're trying to make sense of the moment while protecting your self-respect.\"",
+                label: "Your hidden pattern right now",
+                example: '"You\'re trying to make sense of the moment while protecting your self-respect."',
                 color: "border-amber-500/20 bg-amber-500/5",
                 tag: "text-amber-400",
+                premium: true,
               },
               {
-                label: "What's been lifting lately",
-                example: "Hope, Openness, and Curiosity all trending up",
+                label: "What\'s shifting in you",
+                example: "Hope, Openness, and Curiosity all rising &mdash; something is lifting",
                 color: "border-sky-500/20 bg-sky-500/5",
                 tag: "text-sky-400",
+                premium: true,
               },
               {
-                label: "Your weekly pattern summary",
-                example: "A personal paragraph written just for you -- what Havenly noticed this week",
+                label: "Your weekly mirror",
+                example: "A personal paragraph written just for you &mdash; what Havenly noticed this week across all your entries",
                 color: "border-rose-500/20 bg-rose-500/5",
                 tag: "text-rose-400",
+                premium: true,
               },
               {
                 label: "Questions worth sitting with",
-                example: "\"What would it mean to stop saying you're fine -- just for today?\"",
+                example: '"What would it mean to stop saying you\'re fine &mdash; just for today?"',
                 color: "border-slate-500/20 bg-slate-500/5",
                 tag: "text-slate-400",
+                premium: false,
               },
-            ].map(({ label, example, color, tag }) => (
+            ].map(({ label, example, color, tag, premium }) => (
               <div
                 key={label}
-                className={`rounded-2xl border p-5 ${color}`}
+                className={`relative rounded-2xl border p-5 ${color}`}
               >
+                {premium && (
+                  <span className="absolute right-3 top-3 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-widest text-emerald-400">
+                    Premium
+                  </span>
+                )}
                 <p className={`text-[10px] font-semibold uppercase tracking-widest ${tag}`}>
                   {label}
                 </p>
-                <p className="mt-2 text-xs leading-relaxed text-slate-400 italic">
-                  {example}
-                </p>
+                <p
+                  className="mt-2 text-xs leading-relaxed text-slate-400 italic"
+                  dangerouslySetInnerHTML={{ __html: example }}
+                />
               </div>
             ))}
           </div>
@@ -143,22 +160,22 @@ export default function HomeBelowFold() {
               href="/insights/preview"
               className="inline-flex items-center gap-2 text-sm font-medium text-emerald-400 hover:text-emerald-300 transition-colors"
             >
-              See a full example of insights →
+              See a full example of insights &rarr;
             </Link>
           </div>
         </div>
       </section>
 
+      {/* PLANS */}
       <section className="border-b border-slate-800/60 bg-slate-950 py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4">
           <div className="mb-10 max-w-lg">
             <h2 className="text-2xl font-semibold text-white sm:text-3xl">
-              Start free. Stay free as long as you like.
+              Start free. Upgrade when it earns it.
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-slate-500">
-              The free plan is genuinely useful on its own. Premium adds
-              deeper patterns and weekly summaries -- only worth it if it
-              genuinely helps you.
+              Free is where you put thoughts down. Premium is where they start
+              making sense.
             </p>
           </div>
 
@@ -170,10 +187,11 @@ export default function HomeBelowFold() {
                 Free
               </p>
               <p className="mt-1 text-2xl font-semibold text-white">
-                Always free
+                The perfect private space to vent
               </p>
               <p className="mt-2 text-sm text-slate-500">
-                A private space to write and reflect -- no commitment needed.
+                A calm place to write honestly &mdash; no commitment, no pressure,
+                no audience.
               </p>
 
               <ul className="mt-5 space-y-2.5 text-sm text-slate-400">
@@ -184,7 +202,7 @@ export default function HomeBelowFold() {
                   "Basic pattern insights",
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2">
-                    <span className="mt-0.5 text-emerald-600">✓</span>
+                    <span className="mt-0.5 text-emerald-600">&#10003;</span>
                     {f}
                   </li>
                 ))}
@@ -203,7 +221,7 @@ export default function HomeBelowFold() {
               </div>
             </div>
 
-            {/* Premium -- early access, no price shown */}
+            {/* Premium */}
             <div className="relative flex flex-col rounded-2xl border border-emerald-500/25 bg-emerald-500/[0.04] p-6">
               <div className="absolute right-4 top-4 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-widest text-emerald-400">
                 Early access
@@ -213,24 +231,24 @@ export default function HomeBelowFold() {
                 Premium
               </p>
               <p className="mt-1 text-2xl font-semibold text-white">
-                Deeper clarity
+                The roadmap to understanding yourself
               </p>
               <p className="mt-2 text-sm text-slate-400">
                 For people who want to genuinely understand their patterns
-                -- not just track them.
+                &mdash; not just track them.
               </p>
 
               <ul className="mt-5 space-y-2.5 text-sm text-slate-300">
                 {[
                   "Everything in Free",
-                  "Unlimited AI reflections",
-                  "Full pattern insights across time",
+                  "Unlimited reflections",
+                  "Full hidden pattern insights",
                   "Weekly personal summary from Havenly",
-                  "\"Why does this keep happening?\" insights",
+                  '"Why does this keep happening?" insights',
                   "Cancel anytime",
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2">
-                    <span className="mt-0.5 text-emerald-400">✓</span>
+                    <span className="mt-0.5 text-emerald-400">&#10003;</span>
                     {f}
                   </li>
                 ))}
@@ -252,7 +270,7 @@ export default function HomeBelowFold() {
               </div>
 
               <p className="mt-3 text-center text-xs text-slate-700">
-                Secure checkout via Stripe · Cancel anytime
+                Secure checkout via Stripe &middot; Cancel anytime
               </p>
             </div>
 
@@ -260,6 +278,7 @@ export default function HomeBelowFold() {
         </div>
       </section>
 
+      {/* FAQ */}
       <section className="bg-slate-950 py-14">
         <div className="mx-auto max-w-3xl px-4">
           <h2 className="text-xl font-semibold text-white sm:text-2xl">
@@ -270,7 +289,7 @@ export default function HomeBelowFold() {
             {[
               {
                 q: "Is this therapy?",
-                a: "No. Havenly is a journaling companion -- it can sit alongside therapy, coaching, or your own personal practices, but it is not a clinical tool and can't replace professional support.",
+                a: "No. Havenly is a journaling companion &mdash; it can sit alongside therapy, coaching, or your own personal practices, but it is not a clinical tool and can't replace professional support.",
               },
               {
                 q: "Do I have to write every day?",
@@ -278,28 +297,32 @@ export default function HomeBelowFold() {
               },
               {
                 q: "What happens to my journal entries?",
-                a: "They're yours. Stored securely, never used to train AI models, never shared. Havenly is built around the idea that your inner life belongs to you -- not the internet.",
+                a: "They're yours. Stored securely, never used to train AI models, never shared. Havenly is built around the idea that your inner life belongs to you &mdash; not the internet.",
               },
               {
                 q: "What makes Premium worth it?",
-                a: "The free plan gives you good reflections. Premium gives you the full picture -- what repeats across weeks and months, a personal weekly summary written just for you, and deeper pattern insights. Worth it if you genuinely want to understand yourself better.",
+                a: "Free gives you a private space to write and reflect. Premium gives you the full picture &mdash; what repeats across weeks and months, a personal weekly summary written just for you, and the hidden patterns you can't see from inside them.",
               },
             ].map(({ q, a }) => (
               <div key={q} className="border-b border-slate-800/60 pb-5">
                 <p className="font-medium text-white">{q}</p>
-                <p className="mt-2 text-sm leading-relaxed text-slate-500">{a}</p>
+                <p
+                  className="mt-2 text-sm leading-relaxed text-slate-500"
+                  dangerouslySetInnerHTML={{ __html: a }}
+                />
               </div>
             ))}
           </div>
 
           <div className="mt-10 text-xs text-slate-700">
             <Link href="/privacy" className="text-emerald-600 hover:text-emerald-500 transition-colors">
-              Read the Privacy Policy →
+              Read the Privacy Policy &rarr;
             </Link>
           </div>
         </div>
       </section>
 
+      {/* FINAL CTA */}
       <section className="bg-slate-950 border-t border-slate-800/60 py-14">
         <div className="mx-auto max-w-3xl px-4 text-center space-y-5">
           <h2 className="text-2xl font-semibold text-white sm:text-3xl">
@@ -314,7 +337,7 @@ export default function HomeBelowFold() {
               href="/magic-login"
               className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-7 py-3 text-sm font-semibold text-slate-950 hover:bg-emerald-400 shadow-lg shadow-emerald-500/20 transition-colors"
             >
-              Start for free -- no card needed
+              Start for free &mdash; no card needed
             </Link>
             <Link
               href="/about"
