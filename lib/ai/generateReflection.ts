@@ -897,10 +897,13 @@ function qualityCheck(
   const BANNED_QUESTION_PATTERNS = [
     /prioritize your emotional well-being/i,
     /how can you prepare yourself/i,
+    /feel more grounded and prepared/i,
     /take care of yourself/i,
     /practice self-care/i,
     /what could be causing your (pain|symptoms)/i,
     /what do you think (is|could be) causing/i,
+    /how can you better (manage|cope|handle)/i,
+    /what steps can you take to/i,
   ];
   for (const q of questions) {
     const qs = String(q);
