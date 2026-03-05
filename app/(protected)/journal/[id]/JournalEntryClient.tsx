@@ -32,9 +32,11 @@ function parseSummary(summary: string): { carrying: string; happening: string; d
 
 // ─── Next step parser: splits Option A, Option B, Script line
 function parseNextStep(step: string): { optionA: string; optionB: string; script: string } {
+  if (!step) return { optionA: "", optionB: "", script: "" };
   const optionA = step.match(/Option A:\s*(.+?)(?=Option B:|Script line:|$)/is)?.[1]?.trim() ?? "";
   const optionB = step.match(/Option B:\s*(.+?)(?=Script line:|$)/is)?.[1]?.trim() ?? "";
-  const script = step.match(/Script line:\s*[""]?(.+?)[""]?\s*$/is)?.[1]?.trim() ?? "";
+  const scriptRaw = step.match(/Script line:\s*[""\u201c\u2018]?(.+?)[""\u201d\u2019]?\s*$/is)?.[1]?.trim() ?? "";
+  const script = scriptRaw.replace(/^["\u201c\u2018]|["\u201d\u2019]$/g, "").trim();
   return { optionA, optionB, script };
 }
 
@@ -305,7 +307,7 @@ export default function JournalEntryClient({
                   Themes
                 </p>
                 <div className="flex flex-wrap gap-1.5">
-                  {reflection.themes.map((t, i) => (
+                  {reflection.themes.filter(Boolean).map((t, i) => (
                     <span
                       key={`${t}-${i}`}
                       className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-white/60"
@@ -320,7 +322,7 @@ export default function JournalEntryClient({
                   Emotions
                 </p>
                 <div className="flex flex-wrap gap-1.5">
-                  {reflection.emotions.map((e, i) => (
+                  {reflection.emotions.filter(Boolean).map((e, i) => (
                     <span
                       key={`${e}-${i}`}
                       className={`rounded-full border px-2.5 py-1 text-xs ${emotionClass(e)}`}
@@ -368,7 +370,7 @@ export default function JournalEntryClient({
                   {questionsTitle}
                 </p>
                 <ol className="space-y-2.5">
-                  {reflection.questions.map((q, i) => (
+                  {reflection.questions.filter(Boolean).map((q, i) => (
                     <li key={`${q}-${i}`} className="flex gap-3 text-sm leading-relaxed">
                       <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-white/10 text-[10px] font-semibold text-white/30">
                         {i + 1}
