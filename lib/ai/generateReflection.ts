@@ -1,16 +1,11 @@
 // lib/ai/generateReflection.ts
-// Havenly V19 — Universal reflection engine (robust against any journaling topic)
-//
-// Upgrades vs V18:
-// - Deterministic “Entry Understanding Object” (EUO) to stabilize specificity + tone
-// - Intent-first prompting (prevents wrong tone: grief ≠ fixing; venting ≠ advice)
-// - Multi-label theme + emotion signals (still returns your existing Reflection shape)
-// - Safer, corrected parsing + fixed template-literal / regex issues from copy/paste
-// - Defaults rewritten to avoid banned-template phrases (so fallback passes quality more often)
-// - Premium enhancements: layered insight + (optional) memory/pattern lens + progress marker
-//
-// Output remains the SAME:
-// { summary, corepattern, themes, emotions, gentlenextstep, questions }
+// Havenly V19 — Universal topic coverage + premium-grade reflections
+// Goals:
+// - High specificity (must mirror user’s actual words)
+// - Premium enforcement (Deeper direction + Script line always present for PREMIUM non-short, even after fallback)
+// - Cross-domain leakage prevention (summary must stay on-domain)
+// - Safer parsing (no destructive “quote fixing”)
+// - Better domain detection (weighted scoring; removes pronoun-based relationship false positives)
 
 export type Reflection = {
   summary: string;
@@ -25,7 +20,7 @@ type Input = {
   title?: string;
   content: string;
   plan: "FREE" | "PREMIUM" | string; // accept runtime variance safely
-  recentThemes?: string[]; // user-level memory/pattern hints (strings)
+  recentThemes?: string[];
 };
 
 type Domain =
@@ -40,31 +35,8 @@ type Domain =
   | "IDENTITY"
   | "GENERAL";
 
-type Intent =
-  | "VENTING"
-  | "CLARITY"
-  | "DECISION"
-  | "REPAIR"
-  | "GRIEF_PROCESSING"
-  | "HEALTH_ANXIETY"
-  | "CREATIVE_BLOCK"
-  | "SELF_WORTH"
-  | "PLANNING"
-  | "UNKNOWN";
-
-type State =
-  | "AGITATED"
-  | "SHUTDOWN"
-  | "SHAME_SPIRAL"
-  | "FEARFUL"
-  | "SAD"
-  | "CALM"
-  | "MIXED";
-
-type WeightedSignal = { re: RegExp; w: number };
-
 /* ────────────────────────────────────────────────────────────────────────── */
-/* Plan normalization                                                         */
+/* Plan normalization                                                          */
 /* ────────────────────────────────────────────────────────────────────────── */
 
 function normalizePlan(p: unknown): "FREE" | "PREMIUM" {
@@ -79,6 +51,8 @@ function normalizePlan(p: unknown): "FREE" | "PREMIUM" {
 /* Domain Detection (weighted; avoids pronoun false positives)                 */
 /* ────────────────────────────────────────────────────────────────────────── */
 
+type WeightedSignal = { re: RegExp; w: number };
+
 const DOMAIN_SIGNALS: Record<Domain, WeightedSignal[]> = {
   FITNESS: [
     { re: /\b(ran|run|running|jog(ged)?|sprint(ed)?)\b/i, w: 2 },
@@ -92,6 +66,7 @@ const DOMAIN_SIGNALS: Record<Domain, WeightedSignal[]> = {
     { re: /\b(work|job|career|promotion|performance.?review)\b/i, w: 2 },
   ],
   RELATIONSHIP: [
+    // Removed pronoun-based heuristics (major source of false positives)
     { re: /\b(partner|wife|husband|girlfriend|boyfriend|spouse)\b/i, w: 3 },
     { re: /\b(relationship|love|date|argu(e|ed|ment)|fight|break.?up)\b/i, w: 2 },
     { re: /\b(family|friend|parents?|sibling)\b/i, w: 1 },
@@ -148,7 +123,7 @@ const EMOTIONAL_BOOSTERS: Record<Exclude<Domain, "GENERAL">, WeightedSignal[]> =
   ],
   MONEY: [
     { re: /\b(shame|embarrass|stress|panic|spiral|overwhelm|hopeless|stuck)\b/i, w: 1 },
-    { re: /\b(can't afford|cannot afford|no money|broke|debt|behind|late|overdue)\b/i, w: 1 },
+    { re: /\b(can't afford|no money|broke|debt|behind|late|overdue)\b/i, w: 1 },
   ],
   HEALTH: [
     { re: /\b(scared|terrified|anxious|worried|uncertain|diagnosis|results)\b/i, w: 1 },
@@ -167,7 +142,7 @@ const EMOTIONAL_BOOSTERS: Record<Exclude<Domain, "GENERAL">, WeightedSignal[]> =
     { re: /\b(inspiration|flow|finally|breakthrough|proud|finished)\b/i, w: 1 },
   ],
   IDENTITY: [
-    { re: /\b(lost|confused|don't know|do not know|unsure|searching|hollow|empty)\b/i, w: 1 },
+    { re: /\b(lost|confused|don't know|unsure|searching|hollow|empty)\b/i, w: 1 },
     { re: /\b(changed|changing|different|anymore|used to|used to be)\b/i, w: 1 },
   ],
 };
@@ -194,6 +169,7 @@ function scoreDomain(text: string): Record<Domain, number> {
     }
     scores[domain] = sum;
   }
+
   return scores;
 }
 
@@ -234,246 +210,7 @@ function isShortEntry(text: string): boolean {
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
-/* EUO: deterministic entry understanding object                               */
-/* ────────────────────────────────────────────────────────────────────────── */
-
-type EUO = {
-  anchors: string[]; // verbatim
-  facts: string[]; // extracted without guessing
-  themes: string[]; // multi-label hints (not the final Reflection themes)
-  emotions: string[]; // multi-label hints (not the final Reflection emotions)
-  intent: Intent;
-  state: State;
-  tensions: string[];
-  needs: string[];
-  sensitivities: {
-    userSaysDontFix?: boolean; // e.g., "I don't want to feel better"
-    griefTone?: boolean;
-    medicalUncertainty?: boolean;
-  };
-};
-
-const FACT_PATTERNS: RegExp[] = [
-  /\b(today|yesterday|tonight|this morning|this week|this month|on Sundays?)\b/i,
-  /\b(can't afford|cannot afford|behind|overdue|rent|mortgage|bills?)\b/i,
-  /\b(test results?|doctor wants me to come in|appointment|scan|blood)\b/i,
-  /\b(yelled|snapped|argued|fight|broke up)\b/i,
-];
-
-const EMOTION_LEXICON: { tag: string; re: RegExp }[] = [
-  { tag: "anxiety", re: /\b(anxious|anxiety|worried|worry|panic|panicked|scared|terrified)\b/i },
-  { tag: "shame", re: /\b(shame|ashamed|embarrass|pretend|performing|failing)\b/i },
-  { tag: "sadness", re: /\b(sad|cry|crying|tears|heartbreak|grief|miss|missing|hollow|empty)\b/i },
-  { tag: "anger", re: /\b(angry|rage|furious|yelled|snapped|irritat|resent)\b/i },
-  { tag: "overwhelm", re: /\b(overwhelm|too much|can't do this|exhausted|burnout|tired)\b/i },
-  { tag: "numbness", re: /\b(numb|nothing|flat|shut down|can't feel)\b/i },
-  { tag: "hope", re: /\b(hope|relief|better|progress|proud)\b/i },
-];
-
-const THEME_LEXICON: { tag: string; re: RegExp }[] = [
-  { tag: "safety", re: /\b(safe|safety|security|rent|money|home|stable)\b/i },
-  { tag: "control", re: /\b(control|out of control|can't|unable|stuck)\b/i },
-  { tag: "belonging", re: /\b(belong|alone|lonely|unseen|unheard|disconnected)\b/i },
-  { tag: "self-worth", re: /\b(worth|good enough|failing|not good|never as good)\b/i },
-  { tag: "boundaries", re: /\b(boundary|boundaries|overstep|respect|dismiss)\b/i },
-  { tag: "uncertainty", re: /\b(uncertain|unknown|don't know|unsure|waiting)\b/i },
-  { tag: "avoidance", re: /\b(avoid|avoiding|can't start|procrastinat|staring at)\b/i },
-  { tag: "repair", re: /\b(apolog|make it right|repair|hurt him|hurt her)\b/i },
-];
-
-function uniq(arr: string[], max = 8): string[] {
-  const out: string[] = [];
-  const seen = new Set<string>();
-  for (const x of arr) {
-    const k = x.trim().toLowerCase();
-    if (!k || seen.has(k)) continue;
-    seen.add(k);
-    out.push(x.trim());
-    if (out.length >= max) break;
-  }
-  return out;
-}
-
-function inferIntent(text: string, domain: Domain): Intent {
-  const s = text.toLowerCase();
-
-  if (/\bi don't want to feel better\b/i.test(text) || domain === "GRIEF") return "GRIEF_PROCESSING";
-  if (domain === "HEALTH" && /\b(test results?|doctor wants me to come in|scared|terrified)\b/i.test(text))
-    return "HEALTH_ANXIETY";
-  if (domain === "CREATIVE" && /\b(blank page|staring|block|stuck)\b/i.test(text)) return "CREATIVE_BLOCK";
-  if (/\bshould i\b|\bwhat do i do\b|\bhow do i\b|\bnext step\b/i.test(text)) return "CLARITY";
-  if (/\bdecide|decision|choose|which one|either\b/i.test(text)) return "DECISION";
-  if (/\byelled|snapped|said something|hurt\b/i.test(text)) return "REPAIR";
-  if (/\bplan|schedule|tomorrow|this week|budget|steps\b/i.test(text)) return "PLANNING";
-  if (/\bpretend|performing|never as good|failing|broken\b/i.test(text)) return "SELF_WORTH";
-  if (/\bjust need to\b|\bi'm tired of\b|\bi can't\b|\bvent\b/i.test(text)) return "VENTING";
-
-  return "UNKNOWN";
-}
-
-function inferState(text: string): State {
-  const s = text.toLowerCase();
-
-  if (/\b(shame|ashamed|embarrass|pretend|performing|failing)\b/i.test(text)) return "SHAME_SPIRAL";
-  if (/\b(scared|terrified|panic|worried|anxious)\b/i.test(text)) return "FEARFUL";
-  if (/\b(angry|rage|furious|yelled|snapped)\b/i.test(text)) return "AGITATED";
-  if (/\b(numb|flat|shut down|can't feel|empty)\b/i.test(text)) return "SHUTDOWN";
-  if (/\b(grief|miss|cry|sad|heartbreak)\b/i.test(text)) return "SAD";
-  if (/\b(calm|okay|fine)\b/i.test(text)) return "CALM";
-
-  return "MIXED";
-}
-
-function deriveNeeds(domain: Domain, intent: Intent, themes: string[], emotions: string[]): string[] {
-  const needs: string[] = [];
-  const add = (n: string) => needs.push(n);
-
-  if (themes.includes("safety") || domain === "MONEY") add("safety");
-  if (themes.includes("control") || intent === "DECISION") add("control");
-  if (themes.includes("belonging") || domain === "RELATIONSHIP") add("connection");
-  if (themes.includes("self-worth") || intent === "SELF_WORTH") add("dignity");
-  if (domain === "WORK") add("respect");
-  if (domain === "HEALTH") add("reassurance");
-  if (domain === "GRIEF") add("meaning");
-  if (domain === "PARENTING") add("repair");
-  if (domain === "CREATIVE") add("permission");
-
-  if (emotions.includes("overwhelm")) add("rest");
-
-  return uniq(needs, 6);
-}
-
-function deriveTensions(domain: Domain, intent: Intent, themes: string[]): string[] {
-  const t: string[] = [];
-  const add = (x: string) => t.push(x);
-
-  if (domain === "MONEY") add("security vs pride");
-  if (domain === "WORK") add("recognition vs self-protection");
-  if (domain === "RELATIONSHIP") add("connection vs self-respect");
-  if (domain === "HEALTH") add("certainty vs waiting");
-  if (domain === "CREATIVE") add("expression vs judgment");
-  if (domain === "IDENTITY") add("authenticity vs approval");
-  if (domain === "PARENTING") add("patience vs depletion");
-  if (domain === "GRIEF") add("love vs moving forward");
-
-  if (themes.includes("control") && themes.includes("uncertainty")) add("control vs uncertainty");
-
-  return uniq(t, 5);
-}
-
-function extractFacts(entry: string): string[] {
-  const facts: string[] = [];
-  const t = entry.trim();
-  const lines = t.split("\n").map((l) => l.trim()).filter(Boolean);
-  const joined = lines.join(" ");
-
-  // pull up to 3 “fact-ish” snippets without guessing
-  for (const re of FACT_PATTERNS) {
-    const m = joined.match(re);
-    if (m?.[0]) facts.push(m[0]);
-  }
-
-  // also capture numbers/currency if present
-  for (const m of joined.matchAll(/\b(\$|€|£)?\s?\d{1,3}(?:,\d{3})*(?:\.\d+)?\b/g)) {
-    facts.push(m[0]);
-    if (facts.length >= 4) break;
-  }
-
-  return uniq(facts, 5);
-}
-
-/* ────────────────────────────────────────────────────────────────────────── */
-/* Anchor Extraction (better quotes support)                                   */
-/* ────────────────────────────────────────────────────────────────────────── */
-
-function extractAnchors(entry: string): string[] {
-  const t = entry.trim();
-  const seen = new Set<string>();
-  const anchors: string[] = [];
-
-  const add = (s: string) => {
-    const v = s.trim();
-    if (!v) return;
-    const key = v.toLowerCase().replace(/\s+/g, " ");
-    if (seen.has(key)) return;
-    seen.add(key);
-    anchors.push(v);
-  };
-
-  // 1) Quoted phrases — high signal (supports smart quotes)
-  for (const m of t.matchAll(/["“”]([^"“”]{4,120})["“”]/g)) {
-    add(`"${m[1]}"`);
-    if (anchors.length >= 3) break;
-  }
-
-  // 2) Split on sentence end
-  const lines = t.split("\n").map((l) => l.trim()).filter(Boolean);
-  const joined = lines.join(" ");
-  const sentences = joined.split(/(?<=[.!?])\s+/).map((s) => s.trim()).filter(Boolean);
-
-  const emotionalSignals =
-    /\b(but|just|still|keep|always|never|again|ache|miss|wish|pretend|perform|nothing|empty|disappear|invisible|gap|distance|wanted|needed|tired|exhausted|fine|okay|underneath|scared|afraid|worried|hopeless|stuck|alone|lost|failed)\b/i;
-
-  for (const s of sentences) {
-    if (anchors.length >= 4) break;
-    if (emotionalSignals.test(s) && s.length <= 180) add(s);
-  }
-
-  // 3) Fill with first sentences if needed
-  if (anchors.length < 2) {
-    for (const s of sentences.slice(0, 4)) {
-      if (s.length <= 180) add(s);
-      if (anchors.length >= 2) break;
-    }
-  }
-
-  if (anchors.length < 1) add("you wrote this down, which means it matters");
-
-  return anchors.slice(0, 5);
-}
-
-function buildEUO(entryBody: string, domain: Domain): EUO {
-  const anchors = extractAnchors(entryBody);
-
-  const emotionHits = uniq(
-    EMOTION_LEXICON.filter((x) => x.re.test(entryBody)).map((x) => x.tag),
-    6
-  );
-
-  const themeHits = uniq(
-    THEME_LEXICON.filter((x) => x.re.test(entryBody)).map((x) => x.tag),
-    6
-  );
-
-  const intent = inferIntent(entryBody, domain);
-  const state = inferState(entryBody);
-
-  const sensitivities = {
-    userSaysDontFix: /\bi don't want to feel better\b/i.test(entryBody),
-    griefTone: domain === "GRIEF",
-    medicalUncertainty:
-      domain === "HEALTH" && /\b(test results?|doctor wants me to come in|results back|appointment)\b/i.test(entryBody),
-  };
-
-  const needs = deriveNeeds(domain, intent, themeHits, emotionHits);
-  const tensions = deriveTensions(domain, intent, themeHits);
-  const facts = extractFacts(entryBody);
-
-  return {
-    anchors,
-    facts,
-    themes: themeHits,
-    emotions: emotionHits,
-    intent,
-    state,
-    tensions,
-    needs,
-    sensitivities,
-  };
-}
-
-/* ────────────────────────────────────────────────────────────────────────── */
-/* Defaults (rewritten to avoid banned-template phrasing)                      */
+/* Defaults                                                                     */
 /* ────────────────────────────────────────────────────────────────────────── */
 
 type DomainDefaults = {
@@ -494,59 +231,60 @@ type DomainDefaults = {
 const DOMAIN_DEFAULTS: Record<Domain, DomainDefaults> = {
   FITNESS: {
     summary:
-      "What you're carrying: Your training session left a specific feeling in your body that you’re still holding.\nWhat's really happening: The meaning you’re making from performance is shaping how you treat yourself after the workout.",
+      "What you're carrying: Something specific happened in training today that's still with you.\nWhat's really happening: The gap between what your body did and what you felt about it is worth sitting with.",
     shortSummary:
-      "What you're carrying: A small signal from your body is asking to be noticed.\nWhat's really happening: Noticing is part of training too — especially when you’re tired.",
+      "What you're carrying: A quiet signal from your body asking to be noticed.\nWhat's really happening: You showed up — and that's the part worth sitting with before asking what comes next.",
     corepattern:
-      "You’re trying to build consistency while your mind keeps turning effort into a verdict about you.",
+      "You're learning to read the difference between pushing toward something and pushing away from discomfort.",
     themes: ["consistency", "recovery", "self-respect", "motivation"],
-    emotions: ["determination", "uncertainty", "tiredness"],
+    emotions: ["uncertainty", "determination", "tiredness", "pride"],
     nextStepFree:
-      'Option A: Choose one recovery action today (sleep, hydration, easy walk) and treat it as training. Option B: Define tomorrow’s effort as "easy" or "hard" before you start.',
+      'Option A: Choose one recovery action today (sleep, hydration, easy walk) and treat it as training. Option B: Define tomorrow\'s effort as "easy" or "hard" before you start.',
     nextStepPremium:
-      'Option A: Choose one recovery action today (sleep, hydration, easy walk) and treat it as training. Option B: Define tomorrow’s effort as "easy" or "hard" before you start. Script line: "I’m building consistency — recovery counts."',
+      'Option A: Choose one recovery action today (sleep, hydration, easy walk) and treat it as training. Option B: Define tomorrow\'s effort as "easy" or "hard" before you start. Script line: "I\'m building consistency — recovery is part of my plan."',
     shortNextStep:
-      "Option A: Name one physical sensation you notice right now (no judgment). Option B: Write one sentence about what showing up costs you lately.",
+      "Option A: Notice one physical sensation right now and name it without judging it. Option B: Write one sentence about what showing up costs you lately.",
     questions: [
       "What did you actually feel in your body today — not good or bad, just what was there?",
       "What would healthy discipline look like this week — not perfection?",
-      "What recovery signal do you tend to ignore until it gets loud?",
+      "What is one recovery signal your body gives you that you tend to ignore?",
       "Next time, note your exact self-talk during the session and what you did next.",
     ],
     shortQuestions: [
-      "What does your body feel like right now — not good or bad, just what's there?",
-      "What would rest look like today that doesn’t feel like giving up?",
-      "What would you tell a friend who wrote exactly this?",
-      "Next time, write two more sentences — what’s underneath the first feeling?",
+      "What does your body feel like right now — not good or bad, just what's actually there?",
+      "What would rest look like today that doesn't feel like giving up?",
+      "What would you tell a friend who said exactly what you just wrote?",
+      "Next time, write two more sentences — what's underneath the first feeling?",
     ],
     mustHave:
       /\b(ran|run|running|workout|training|exercise|recovery|rest|hydration|pace|cardio|\d+\s*km|\d+\s*k)\b/i,
-    driftKeywords: /\b(colleague|coworker|manager|meeting|office|partner|wife|husband|girlfriend|boyfriend)\b/i,
+    driftKeywords:
+      /\b(colleague|coworker|manager|meeting|office|partner|wife|husband|girlfriend|boyfriend)\b/i,
   },
 
   WORK: {
     summary:
-      "What you're carrying: A work moment landed in a way you’re still replaying.\nWhat's really happening: When work touches your sense of respect, it rarely stays “just professional.”",
+      "What you're carrying: A specific moment at work is still sitting with you.\nWhat's really happening: The way it landed says something about what you need to feel respected.",
     shortSummary:
-      "What you're carrying: A work interaction is still echoing.\nWhat's really happening: A few words can carry a lot when they hit your sense of worth.",
+      "What you're carrying: Something from work is sitting with you — quietly, but persistently.\nWhat's really happening: Even a few words can hold a lot of weight when they touch your sense of worth.",
     corepattern:
-      "You’re balancing competence with the need to feel respected — and that tension is exhausting.",
-    themes: ["recognition", "boundaries", "self-worth"],
-    emotions: ["frustration", "hurt", "determination"],
+      "You're navigating a tension between your professional self-worth and what's being reflected back to you.",
+    themes: ["recognition", "boundaries", "self-worth", "communication"],
+    emotions: ["frustration", "hurt", "determination", "anxiety"],
     nextStepFree:
-      "Option A: Write down the one thing you wish had gone differently. Option B: Name what you’d want to say if there were no consequences.",
+      "Option A: Write down the one thing you wish had gone differently. Option B: Name what you'd want to say if there were no consequences.",
     nextStepPremium:
-      'Option A: Write down the one thing you wish had gone differently. Option B: Name what you’d want to say if there were no consequences. Script line: "I want to be clear about what I need here."',
+      'Option A: Write down the one thing you wish had gone differently. Option B: Name what you\'d want to say if there were no consequences. Script line: "I want to be clear about what I need here, without escalating."',
     shortNextStep:
-      'Option A: Finish this sentence — "What I needed in that moment was...". Option B: Write one thing you want to be different next time.',
+      'Option A: Finish this sentence — "What I actually needed in that moment was...". Option B: Write down one thing you want to be different next time.',
     questions: [
       "What felt most dismissed — your idea, your effort, or your presence?",
-      "What would a calm, direct version of yourself say in that moment?",
-      "What boundary would protect you without escalating?",
+      "What would a calm, direct version of you say in one sentence?",
+      "What boundary, if stated clearly, would protect you without escalating?",
       "Next time, write down the exact words exchanged and your immediate reaction.",
     ],
     shortQuestions: [
-      "What’s the one word that best describes how that made you feel?",
+      "What's the one word that best describes how that made you feel?",
       "If a colleague described the same situation, what would you tell them?",
       "What would it look like to protect yourself here without escalating?",
       "Next time, write more — what happened just before, and just after?",
@@ -557,30 +295,30 @@ const DOMAIN_DEFAULTS: Record<Domain, DomainDefaults> = {
 
   RELATIONSHIP: {
     summary:
-      "What you're carrying: A moment with someone important left you feeling a certain kind of distance.\nWhat's really happening: What went unsaid is part of what’s hurting.",
+      "What you're carrying: A specific moment in a relationship is still with you.\nWhat's really happening: The distance you felt — and what you didn't say — is still there.",
     shortSummary:
-      "What you're carrying: A relationship feeling is still lingering.\nWhat's really happening: Something small can land big when it touches your need to be seen.",
+      "What you're carrying: A quiet ache around a connection that matters to you.\nWhat's really happening: Something small happened — or didn't happen — and it landed harder than it looked.",
     corepattern:
-      "You’re trying to stay connected while protecting your self-respect at the same time.",
-    themes: ["connection", "visibility", "self-worth"],
-    emotions: ["hurt", "longing", "confusion"],
+      "You're trying to protect your self-respect while staying connected to someone who matters.",
+    themes: ["connection", "communication", "needs", "self-worth"],
+    emotions: ["hurt", "longing", "confusion", "anger"],
     nextStepFree:
-      "Option A: Name the feeling in one sentence without blaming anyone. Option B: Ask yourself what you most needed in that moment.",
+      "Option A: Name the feeling in one sentence without assigning blame. Option B: Ask yourself what you most needed in that moment.",
     nextStepPremium:
-      'Option A: Name the feeling in one sentence without blaming anyone. Option B: Ask yourself what you most needed in that moment. Script line: "I want to understand this before I respond."',
+      'Option A: Name the feeling in one sentence without assigning blame. Option B: Ask yourself what you most needed in that moment. Script line: "I want to understand what I needed before I decide what to do."',
     shortNextStep:
-      'Option A: Finish this sentence — "What I needed was...". Option B: Notice whether you want to speak, or simply to be seen.',
+      'Option A: Finish this sentence — "What I actually needed was...". Option B: Notice whether you want to say something, or just to be seen.',
     questions: [
       "What exactly did that moment trigger — anger, shame, fear, or something else?",
-      "What’s the most generous interpretation that still respects your feelings?",
-      "What would you ask for if you knew you’d be heard without judgment?",
+      "What would you ask for if you knew you'd be heard without judgment?",
+      "What's the most generous interpretation that still respects your feelings?",
       "Next time, paste the exact words that stung and what you did immediately after.",
     ],
     shortQuestions: [
-      "What’s the feeling underneath this — loneliness, disappointment, fear, or something else?",
-      "Who came to mind when you wrote this?",
-      "What would it feel like to say this out loud to someone safe?",
-      "Next time, write two more sentences — what happened right before the feeling arrived?",
+      "What's the feeling underneath the low — is it loneliness, disappointment, or something else?",
+      "Who or what came to mind when you wrote this?",
+      "What would it feel like to say this feeling out loud to someone safe?",
+      "Next time, write two more sentences — what happened before this feeling arrived?",
     ],
     mustHave:
       /\b(partner|wife|husband|girlfriend|boyfriend|relationship|family|friend|love|date|argu(e|ed|ment)|fight|break.?up)\b/i,
@@ -589,29 +327,29 @@ const DOMAIN_DEFAULTS: Record<Domain, DomainDefaults> = {
 
   MONEY: {
     summary:
-      "What you're carrying: Money pressure is forcing you to look at a hard number or deadline.\nWhat's really happening: It’s not only logistics — it’s your sense of safety and dignity getting squeezed.",
+      "What you're carrying: There's a specific money pressure sitting on you right now.\nWhat's really happening: Money stress is rarely just about money — it touches your sense of safety and control.",
     shortSummary:
-      "What you're carrying: A money worry is front and center today.\nWhat's really happening: The number is tied to how secure you feel.",
+      "What you're carrying: Something about money is pressing on you today.\nWhat's really happening: The number isn't just a number — it's connected to how secure you feel.",
     corepattern:
-      "You’re carrying the gap between what you have, what you need, and what you think that gap says about you.",
+      "You're managing the gap between what you have, what you need, and what you think that says about you.",
     themes: ["security", "control", "shame", "planning"],
-    emotions: ["anxiety", "shame", "overwhelm"],
+    emotions: ["anxiety", "shame", "overwhelm", "fear"],
     nextStepFree:
-      "Option A: Write down the most urgent money fact — just the fact, not the spiral. Option B: Name one piece of control you do have today.",
+      "Option A: Write down the one financial fact that feels most urgent right now — just the fact, not the spiral. Option B: Name one thing in this situation you actually do have control over.",
     nextStepPremium:
-      'Option A: Write down the most urgent money fact — just the fact, not the spiral. Option B: Name one piece of control you do have today. Script line: "I’m handling one concrete thing at a time."',
+      'Option A: Write down the one financial fact that feels most urgent right now — just the fact, not the spiral. Option B: Name one action you can take today that reduces the pressure even 5%. Script line: "I\'m dealing with one thing at a time — today\'s thing is clear."',
     shortNextStep:
-      "Option A: Name the feeling under the money stress (fear, shame, pressure). Option B: Write one sentence about what “enough” would mean for you right now.",
+      "Option A: Name the feeling underneath the money stress — is it fear, shame, or something else? Option B: Write one sentence about what 'enough' would look like for you.",
     questions: [
-      "What’s the specific fear underneath this — consequences, judgment, or losing stability?",
-      "What’s one small step today that moves toward the problem (not away)?",
-      "When did money last feel manageable — what was different then?",
-      "Next time, write the exact thought that triggered the spiral and what followed.",
+      "What's the specific fear underneath this — running out, falling behind, or being judged?",
+      "What's one small thing you could do today that would move toward, not away from, the problem?",
+      "What would 'stabilized' look like in the next 7 days — not solved, just stabilized?",
+      "Next time, write down the exact thought that triggered the spiral and what followed.",
     ],
     shortQuestions: [
       "Is this about a specific number, or the feeling behind it?",
-      "What would feel like “safer” right now — not solved, just safer?",
-      "What would you tell someone you care about in this exact situation?",
+      "What would feel like enough safety right now — not solved, just safer?",
+      "What would you tell someone you care about who was in this exact situation?",
       "Next time, note whether the feeling is about the present, the past, or the future.",
     ],
     mustHave:
@@ -621,27 +359,27 @@ const DOMAIN_DEFAULTS: Record<Domain, DomainDefaults> = {
 
   HEALTH: {
     summary:
-      "What you're carrying: Your body (or test results) has put uncertainty on your mind.\nWhat's really happening: Waiting and not knowing can feel like losing control — even before you have answers.",
+      "What you're carrying: A specific health concern is taking up space in your mind right now.\nWhat's really happening: Waiting and not knowing can feel like losing control — even before you have answers.",
     shortSummary:
-      "What you're carrying: A health concern is sitting with you today.\nWhat's really happening: Your attention keeps returning to it for a reason — it matters.",
+      "What you're carrying: Something about your health is sitting with you today.\nWhat's really happening: Your body is asking to be heard — and you're listening.",
     corepattern:
-      "You’re trying to live your life while uncertainty keeps pulling you back to worst-case possibilities.",
-    themes: ["uncertainty", "body awareness", "self-care", "control"],
-    emotions: ["anxiety", "fear", "frustration"],
+      "You're navigating the space between what you know and what you can't control about your own wellbeing.",
+    themes: ["health anxiety", "uncertainty", "body awareness", "control"],
+    emotions: ["anxiety", "fear", "uncertainty", "overwhelm"],
     nextStepFree:
-      "Option A: Write what you know (facts) vs what you fear (stories). Option B: Name one gentle thing your body needs today that isn’t about fixing.",
+      "Option A: Write down what you actually know right now — separate from what you're afraid of. Option B: Name one thing your body needs today that isn't about fixing anything.",
     nextStepPremium:
-      'Option A: Write what you know (facts) vs what you fear (stories). Option B: Name one gentle thing your body needs today that isn’t about fixing. Script line: "I can hold uncertainty without solving it today."',
+      'Option A: Write what you know (facts) vs what you fear (stories). Option B: Name one gentle thing your body needs today that isn\'t about fixing. Script line: "I can hold uncertainty without solving it today."',
     shortNextStep:
-      "Option A: Notice where you feel this worry in your body. Option B: Write one sentence about what you wish someone understood about this.",
+      "Option A: Notice where in your body you feel this worry. Name it without judging it. Option B: Write one sentence about what you wish someone understood about how this feels.",
     questions: [
-      "What’s the hardest part — symptoms, uncertainty, or the feeling of losing control?",
-      "Is there anything you’ve been pushing past that your body has been repeating?",
-      "Who in your life knows how this has been affecting you — and who doesn’t?",
-      "Next time, write what changed since you last felt okay in your body.",
+      "What part is most frightening — the results, the waiting, or what it might mean for your life?",
+      "What have you been doing to cope with the pain or uncertainty (even if it’s imperfect)?",
+      "What would you want to walk into the appointment knowing or asking for?",
+      "Next time, note what triggered the worry and what helped it settle even slightly.",
     ],
     shortQuestions: [
-      "What does your body feel like right now — not thoughts, just sensations?",
+      "What does your body feel like right now — not what you think about it, just what's actually there?",
       "Is there one small thing your body is asking for today?",
       "What would it feel like to be gentle with yourself about this?",
       "Next time, note what triggered the worry and what helped it settle.",
@@ -653,30 +391,30 @@ const DOMAIN_DEFAULTS: Record<Domain, DomainDefaults> = {
 
   GRIEF: {
     summary:
-      "What you're carrying: Grief has returned in a very specific way (a day, a habit, a moment).\nWhat's really happening: Missing them is an expression of love, not a problem to solve.",
+      "What you're carrying: A specific moment of grief is with you.\nWhat's really happening: Missing someone or something doesn't diminish over time the way people say — it changes shape.",
     shortSummary:
-      "What you're carrying: A wave of grief showed up today.\nWhat's really happening: It makes sense that love still reaches for them.",
+      "What you're carrying: Something about loss is with you today.\nWhat's really happening: Grief has its own timing — and today it surfaced.",
     corepattern:
-      "You’re learning how to keep love present without forcing yourself to “move on” faster than your heart can.",
+      "You're learning to carry something that doesn't go away — and finding out what that means for who you are now.",
     themes: ["loss", "memory", "identity", "time"],
-    emotions: ["grief", "longing", "sadness"],
+    emotions: ["grief", "longing", "sadness", "tenderness"],
     nextStepFree:
-      "Option A: Write one small, specific memory you want to keep close. Option B: Let the feeling be here without turning it into a task.",
+      "Option A: Write one thing you want to remember about what you lost — something specific, small, and true. Option B: Let yourself feel what came up without trying to move past it today.",
     nextStepPremium:
-      'Option A: Write one small, specific memory you want to keep close. Option B: Let the feeling be here without turning it into a task. Script line: "I’m allowed to miss them — and I’m allowed to still be here."',
+      'Option A: Write one specific memory in sensory detail (what you saw/heard). Option B: Write one sentence of what you wish you could say. Script line: "I\'m allowed to miss this — and I\'m allowed to still be here."',
     shortNextStep:
-      "Option A: Sit with the feeling for 60 seconds before doing anything else. Option B: Write one sentence that begins with: “I miss…”",
+      "Option A: Just sit with the feeling for a moment before you do anything. Option B: Write one sentence about what you're missing today.",
     questions: [
       "What triggered this today — something you saw, heard, or remembered?",
-      "What do you wish people understood about what this loss is like for you?",
-      "Is there something you never got to say — and is there a way to say it now, privately?",
-      "Next time, write one vivid memory (what you saw, heard, felt).",
+      "What do you most want people to understand about this loss?",
+      "Is there something you never got to say — and is there a way to say it now, even privately?",
+      "Next time, write about a specific memory — what it looked like, sounded like, felt like.",
     ],
     shortQuestions: [
-      "What showed up — a memory, a feeling, or something unexpected?",
-      "Is there anyone who can hold this with you, even quietly?",
-      "What would be the gentlest thing you could do for yourself today?",
-      "Next time, write one specific thing you miss — in detail.",
+      "What came up for you today — a memory, a feeling, or something unexpected?",
+      "Is there anyone in your life right now who holds this loss with you?",
+      "What would feel like the gentlest thing you could do for yourself today?",
+      "Next time, write about one specific thing you miss — not in general, but in detail.",
     ],
     mustHave:
       /\b(grief|loss|lost|died|death|passed|miss|missing|gone|mourning|remember|anniversary)\b/i,
@@ -685,29 +423,29 @@ const DOMAIN_DEFAULTS: Record<Domain, DomainDefaults> = {
 
   PARENTING: {
     summary:
-      "What you're carrying: A parenting moment (and your reaction to it) is still sitting heavy in you.\nWhat's really happening: The guilt is pointing to how much you care — and how thin you were stretched.",
+      "What you're carrying: A specific parenting moment is still sitting with you.\nWhat's really happening: The hardest part of parenting is caring this much — and not always knowing if it's enough.",
     shortSummary:
-      "What you're carrying: A parenting moment is replaying in your mind.\nWhat's really happening: Caring this much can hurt when you don’t like how you showed up.",
+      "What you're carrying: Something about your child or your role as a parent is pressing on you.\nWhat's really happening: The fact that it matters to you this much is already part of the answer.",
     corepattern:
-      "You’re trying to be the parent you want to be while running into real human limits.",
-    themes: ["guilt", "self-doubt", "unconditional love", "exhaustion"],
-    emotions: ["guilt", "love", "overwhelm"],
+      "You're holding the gap between the parent you want to be and the human limits you're working within.",
+    themes: ["guilt", "repair", "self-doubt", "exhaustion"],
+    emotions: ["guilt", "love", "overwhelm", "sadness"],
     nextStepFree:
-      "Option A: Name one moment you did show up with care (even if imperfect). Option B: Identify what you needed (sleep, support, pause) before it escalated.",
+      "Option A: Write down one moment today where you showed up for your child — even imperfectly. Option B: Name what you actually need right now to be a more present parent.",
     nextStepPremium:
-      'Option A: Name one moment you did show up with care (even if imperfect). Option B: Identify what you needed (sleep, support, pause) before it escalated. Script line: "I can repair this — and I can learn my early warning signs."',
+      'Option A: Write a 2-sentence repair you could say (no excuses, just ownership + care). Option B: Identify the trigger that pushed you past your limit. Script line: "I\'m sorry I snapped. You didn\'t deserve that. I\'m working on it, and I love you."',
     shortNextStep:
-      "Option A: Separate the moment from your identity: “I yelled” vs “I am a bad parent.” Option B: Write one line you could say to repair.",
+      "Option A: Sit with the feeling before deciding what it means about you as a parent. Option B: Write one sentence about what your child actually needs from you — not what you think you failed to give.",
     questions: [
-      "What story are you telling yourself about what this moment means for your child?",
-      "What would you tell a close friend who described this exact situation?",
-      "What did you need right before you reached your limit?",
-      "Next time, write the earliest warning sign you were approaching your edge.",
+      "What do you think your child needed from you in that moment when it went wrong?",
+      "If you could redo one minute, what would you do differently — specifically?",
+      "What was happening right before you reached your limit (stress, fatigue, fear)?",
+      "Next time, what is one early sign that you're close to snapping — and what could you do then?",
     ],
     shortQuestions: [
-      "Is this about what happened, or what you fear it means?",
-      "What’s one thing your child knows about being loved by you?",
-      "What would “good enough” look like today — not perfect, just enough?",
+      "Is this about what actually happened, or what you're afraid it means?",
+      "What's one thing your child knows about being loved by you?",
+      "What would 'good enough' look like today — not perfect, just enough?",
       "Next time, note the moment before the guilt arrived — what was happening?",
     ],
     mustHave:
@@ -717,92 +455,94 @@ const DOMAIN_DEFAULTS: Record<Domain, DomainDefaults> = {
 
   CREATIVE: {
     summary:
-      "What you're carrying: Your creative work is meeting resistance (avoidance, doubt, or pressure).\nWhat's really happening: The block often protects you from judgment — especially your own.",
+      "What you're carrying: A specific creative block or hesitation is sitting with you.\nWhat's really happening: Creative blocks are rarely about lack of ideas — usually they're about fear of what the work will say.",
     shortSummary:
-      "What you're carrying: Creating feels heavier than it used to.\nWhat's really happening: The resistance is information, not proof you can’t do it.",
+      "What you're carrying: Your creative energy is somewhere complicated right now.\nWhat's really happening: The resistance is information — it's worth listening to before pushing through.",
     corepattern:
-      "You want to create, but part of you is treating the work as a referendum on your worth.",
+      "You're navigating the gap between who you are and what you make — and the fear that one reflects on the other.",
     themes: ["creative block", "self-doubt", "identity", "process"],
-    emotions: ["frustration", "self-doubt", "longing"],
+    emotions: ["frustration", "insecurity", "disappointment", "longing"],
     nextStepFree:
-      "Option A: Do 10 minutes of deliberately imperfect work. Option B: Write what you’re afraid will happen if the work exists and is seen.",
+      "Option A: Make something small and deliberately imperfect today — not for anyone, just to move. Option B: Write down what you're actually afraid will happen if you make the work and it's seen.",
     nextStepPremium:
-      'Option A: Do 10 minutes of deliberately imperfect work. Option B: Write what you’re afraid will happen if the work exists and is seen. Script line: "The work doesn’t have to be good yet — it has to exist."',
+      'Option A: Do a 10-minute "bad draft" sprint and stop. Option B: Write the exact sentence you fear is true about you as a creator, then challenge it with one counterexample. Script line: "I\'m allowed to make a rough first version — that\'s how the work becomes real."',
     shortNextStep:
-      "Option A: Do 5 minutes with a timer and no judging. Option B: Write about the last time creating felt easy — what was different?",
+      "Option A: Do five minutes of the creative work without judging it. Option B: Write about the last time making something felt easy — what was different?",
     questions: [
-      "What are you afraid the work will reveal about you?",
-      "When did this feel fun rather than loaded — what was different then?",
-      "Is the block about the work itself, or about who might see it?",
-      "Next time, write the very first thought you had when you sat down to create.",
+      "What does the blank page represent to you right now — failure, exposure, or expectation?",
+      "What would a smaller, lower-stakes version of this project look like?",
+      "What is one thing you can make today that doesn’t need to be good — only real?",
+      "Next time, write down the first thought you had when you sat down to create — what was it?",
     ],
     shortQuestions: [
-      "What does creating feel like in your body right now — tight, flat, heavy?",
-      "Is there a smaller, lower-stakes version of this project?",
+      "What does 'being creative' feel like in your body right now — tight, flat, heavy?",
+      "Is there a version of this project that feels manageable — smaller, lower stakes?",
       "What would you make if nobody would ever see it?",
       "Next time, note whether the block arrived before or after you started.",
     ],
     mustHave:
       /\b(writing|write|drawing|painting|music|art|design|creative|project|novel|song|poem|blog|draft|blank page|creating|making)\b/i,
-    driftKeywords: /\b(colleague|manager|partner|gym|money|doctor|wife|husband|girlfriend|boyfriend)\b/i,
+    driftKeywords:
+      /\b(colleague|manager|partner|gym|money|doctor|wife|husband|girlfriend|boyfriend)\b/i,
   },
 
   IDENTITY: {
     summary:
-      "What you're carrying: A question about who you are (or who you’re becoming) is taking up space.\nWhat's really happening: When you’ve been performing for others, it can get hard to hear your own voice.",
+      "What you're carrying: A specific identity question is sitting with you.\nWhat's really happening: Identity questions are uncomfortable because they matter — and because they don't resolve quickly.",
     shortSummary:
-      "What you're carrying: Something about who you are feels unclear.\nWhat's really happening: Asking honestly is already movement.",
+      "What you're carrying: Something about who you are or what you want is feeling unclear.\nWhat's really happening: The fact that you're asking is already a shift.",
     corepattern:
-      "You’re transitioning between an old self you can perform and a truer self you’re still learning to trust.",
+      "You're in a transition between who you were and who you're becoming — and sitting in that gap is the hardest part.",
     themes: ["identity", "authenticity", "purpose", "change"],
-    emotions: ["confusion", "longing", "uncertainty"],
+    emotions: ["confusion", "overwhelm", "uncertainty", "longing"],
     nextStepFree:
-      "Option A: List three qualities that feel true about you (not achievements). Option B: Name one role you’re tired of performing.",
+      "Option A: Write down three things that have always been true about you — not achievements, but qualities. Option B: Name the version of yourself you're trying to move away from.",
     nextStepPremium:
-      'Option A: List three qualities that feel true about you (not achievements). Option B: Name one role you’re tired of performing. Script line: "I don’t have to know who I’m becoming yet — I can move toward what’s true."',
+      'Option A: Write 3 values that feel non-negotiable (not goals). Option B: Name one role you\'re tired of performing and what it protects you from. Script line: "I\'m allowed to disappoint expectations to stay honest with myself."',
     shortNextStep:
-      "Option A: Write one sentence that feels most “you” right now. Option B: Notice if this feels like a crisis or a becoming.",
+      "Option A: Write one sentence about what feels most 'you' right now — even if it's small. Option B: Notice whether this question feels like a crisis or a becoming.",
     questions: [
-      "When did you last feel like yourself — what were you doing?",
-      "What are you performing for other people that you’re tired of maintaining?",
-      "What would you do differently if you stopped worrying about how it looks?",
-      "Next time, write one specific moment you felt most like yourself — in detail.",
+      "Where do you feel like you're performing a version of yourself — and for whom?",
+      "What do you think you're afraid would happen if you stopped performing?",
+      "What is one choice this week that would be more aligned with what's true for you?",
+      "Next time, write about a specific moment when you felt most like yourself — what was happening?",
     ],
     shortQuestions: [
-      "What’s one word that feels true about you right now — even uncomfortably?",
-      "What have you been giving up to fit what others expect?",
-      "What would it feel like to not know yet — and still be okay?",
-      "Next time, write what you want — not what you think you should want.",
+      "Is there one word that feels true about who you are right now — even uncomfortably?",
+      "What have you been giving up to fit the version of yourself others expect?",
+      "What would it feel like to not know the answer to this — and be okay with that?",
+      "Next time, write about what you want — not what you think you should want.",
     ],
     mustHave:
       /\b(identity|who I am|purpose|authentic|real self|mask|performing|version of myself|belong|lost|direction|meaning|transition)\b/i,
-    driftKeywords: /\b(colleague|manager|gym|workout|money|doctor|wife|husband|girlfriend|boyfriend)\b/i,
+    driftKeywords:
+      /\b(colleague|manager|gym|workout|money|doctor|wife|husband|girlfriend|boyfriend)\b/i,
   },
 
   GENERAL: {
     summary:
-      "What you're carrying: You named something that matters, even if it’s not fully organized yet.\nWhat's really happening: Putting it into words is your mind trying to make sense of what you’re living through.",
+      "What you're carrying: You wrote something real down — even if it isn't fully named yet.\nWhat's really happening: The fact that you put it into words means part of you is already trying to understand it.",
     shortSummary:
-      "What you're carrying: You showed up to write.\nWhat's really happening: Even one line can be a doorway into what’s underneath.",
+      "What you're carrying: Something quiet — not loud enough to name yet, but present enough to notice.\nWhat's really happening: You showed up to write, even without words. That's the start of something.",
     corepattern:
-      "You’re in the middle of something — and part of you is asking for clarity.",
-    themes: ["self-awareness", "processing", "presence"],
-    emotions: ["uncertainty", "restlessness", "quiet courage"],
+      "You're in the middle of something — not at the beginning, not at the end, just present with it.",
+    themes: ["self-awareness", "processing", "presence", "uncertainty"],
+    emotions: ["uncertainty", "restlessness", "quiet courage", "hope"],
     nextStepFree:
-      "Option A: Write one more sentence: what feeling is underneath the first one? Option B: Ask: is this about something that happened, something expected, or something missing?",
+      "Option A: Write one more sentence — what's the feeling underneath the first one? Option B: Ask yourself: is this about something that happened, something expected, or something missing?",
     nextStepPremium:
-      'Option A: Write one more sentence: what feeling is underneath the first one? Option B: Ask: is this about something that happened, something expected, or something missing? Script line: "I don’t need the answer — I can stay with the question."',
+      'Option A: Write the clearest fact you know from this entry, then the clearest need it points to. Option B: Identify what this touches (safety / belonging / worth / control). Script line: "I don\'t need the answer yet — I just need to stay honest about what\'s here."',
     shortNextStep:
-      "Option A: Sit with it for 60 seconds and see if one honest word arrives. Option B: Write one more line — it doesn’t have to be polished.",
+      "Option A: Sit with it for 60 seconds and notice if a word arrives. Option B: Write one more line — it doesn't have to make sense.",
     questions: [
-      "What’s the feeling that’s hardest to name right now?",
-      "Is this about something that happened, something you’re expecting, or something you’re missing?",
-      "What would one small step toward clarity look like — not resolution, just clarity?",
+      "What is the most specific part of this you don't want to look at — and why?",
+      "If this feeling had a job, what would it be trying to protect you from?",
+      "What would feel like one small step toward clarity — not resolution, just clarity?",
       "Next time, write for two more minutes without stopping — what else is there?",
     ],
     shortQuestions: [
       "Where do you feel this in your body right now?",
-      "If you had to guess what’s underneath, what would you say?",
+      "If you had to guess what's underneath the uncertainty — what would you say?",
       "What would help right now — company, quiet, movement, or something else?",
       "Next time, write for two more minutes without stopping — what else comes up?",
     ],
@@ -819,10 +559,12 @@ const BANNED_SUMMARY_PATTERNS: RegExp[] = [
   /\ba workplace moment that left a mark\b/i,
   /\bsomething from work\b/i,
   /\bsomething happened at work\b/i,
+  /\ba specific moment at work is still sitting with you\b/i,
 
   /\bsomething in this connection\b/i,
   /\ba gap between you and someone\b/i,
   /\ba connection that matters\b/i,
+  /\ba specific moment in a relationship is still with you\b/i,
 
   /\bsomething is sitting with you\b/i,
   /\bsomething you haven't fully named\b/i,
@@ -837,20 +579,24 @@ const BANNED_SUMMARY_PATTERNS: RegExp[] = [
 
   /\byour body (or mind )?is asking\b/i,
   /\bsomething about your health\b/i,
+  /\ba specific health concern is taking up space\b/i,
 
   /\byou'?re in grief\b/i,
   /\bsomething about loss is with you\b/i,
 
   /\bsomething about parenting\b/i,
   /\bsomething about your child\b/i,
+  /\ba specific parenting moment is still sitting with you\b/i,
 
   /\bsomething about your creative work\b/i,
   /\byour creative energy is somewhere\b/i,
 
   /\ba question about who you are\b/i,
   /\bsomething about who you are\b/i,
+  /\ba specific identity question is sitting with you\b/i,
 ];
 
+/* Cross-domain leakage guard (WRH line) */
 const WRH_CROSS_DOMAIN_BANS: Record<Domain, RegExp[]> = {
   CREATIVE: [/\bdistance you felt\b/i, /\bwhat you didn't say\b/i, /\bgap between you\b/i],
   WORK: [],
@@ -863,6 +609,61 @@ const WRH_CROSS_DOMAIN_BANS: Record<Domain, RegExp[]> = {
   IDENTITY: [],
   GENERAL: [],
 };
+
+/* ────────────────────────────────────────────────────────────────────────── */
+/* Anchor Extraction (supports smart quotes)                                   */
+/* ────────────────────────────────────────────────────────────────────────── */
+
+function extractAnchors(entry: string): string[] {
+  const t = entry.trim();
+  const seen = new Set<string>();
+  const anchors: string[] = [];
+
+  const add = (s: string) => {
+    const v = s.trim();
+    if (!v) return;
+    const key = v.toLowerCase().replace(/\s+/g, " ");
+    if (seen.has(key)) return;
+    seen.add(key);
+    anchors.push(v);
+  };
+
+  // 1) Quoted phrases — high signal
+  for (const m of t.matchAll(/["“”]([^"“”]{4,90})["“”]/g)) {
+    add(`"${m[1]}"`);
+    if (anchors.length >= 3) break;
+  }
+
+  // 2) Join lines then split on sentence end
+  const lines = t
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(Boolean);
+  const joined = lines.join(" ");
+  const sentences = joined
+    .split(/(?<=[.!?])\s+/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  const emotionalSignals =
+    /\b(but|just|still|keep|always|never|again|quiet|ache|miss|wish|pretend|perform|nothing|empty|disappear|invisible|gap|distance|wanted|needed|tired|exhausted|fine|okay|underneath|scared|afraid|worried|hopeless|stuck|alone|lost|failed)\b/i;
+
+  for (const s of sentences) {
+    if (anchors.length >= 4) break;
+    if (emotionalSignals.test(s) && s.length <= 160) add(s);
+  }
+
+  // 3) Fill with first sentences if needed
+  if (anchors.length < 2) {
+    for (const s of sentences.slice(0, 4)) {
+      if (s.length <= 160) add(s);
+      if (anchors.length >= 2) break;
+    }
+  }
+
+  if (anchors.length < 1) add("you wrote this down, which means it matters");
+  return anchors.slice(0, 5);
+}
 
 /* ────────────────────────────────────────────────────────────────────────── */
 /* JSON Parsing (non-destructive; brace-scan)                                  */
@@ -885,9 +686,13 @@ function extractFirstJsonObject(raw: string): string | null {
     const ch = s[i];
 
     if (inString) {
-      if (escaped) escaped = false;
-      else if (ch === "\\") escaped = true;
-      else if (ch === '"') inString = false;
+      if (escaped) {
+        escaped = false;
+      } else if (ch === "\\") {
+        escaped = true;
+      } else if (ch === '"') {
+        inString = false;
+      }
       continue;
     }
 
@@ -901,6 +706,7 @@ function extractFirstJsonObject(raw: string): string | null {
 
     if (depth === 0) return s.slice(start, i + 1);
   }
+
   return null;
 }
 
@@ -915,15 +721,8 @@ function parseModelJson<T>(raw: string): T | null {
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
-/* Quality Gate (premium enforced; summary-on-domain; WRH leak guard)          */
+/* Matching helpers                                                            */
 /* ────────────────────────────────────────────────────────────────────────── */
-
-type QualityResult = { pass: true } | { pass: false; reasons: string[] };
-
-function extractSummaryLine(summary: string, label: string): string {
-  const m = summary.match(new RegExp(`${label}\\s*([^\\n]+)`, "i"));
-  return (m?.[1] ?? "").trim();
-}
 
 function normalizeForMatch(s: string): string {
   return s
@@ -944,9 +743,138 @@ function anchorHitInLine(line: string, anchors: string[]): boolean {
   return false;
 }
 
+function extractSummaryLine(summary: string, label: string): string {
+  const m = summary.match(new RegExp(`${label}\\s*([^\\n]+)`, "i"));
+  return (m?.[1] ?? "").trim();
+}
+
+function injectAnchorIntoCarrying(summary: string, anchors: string[]): string {
+  if (!summary.includes("What you're carrying:")) return summary;
+
+  const carrying = extractSummaryLine(summary, "What you're carrying:");
+  if (anchorHitInLine(carrying, anchors)) return summary;
+
+  const a = anchors.find((x) => normalizeForMatch(x).length >= 8) ?? anchors[0] ?? "";
+  const clean = String(a).replace(/^["“”]|["“”]$/g, "").trim();
+  if (!clean) return summary;
+
+  const injected = `You said "${clean}" — and it’s still sitting with you.`;
+  return summary.replace(/What you're carrying:\s*[^\n]+/i, `What you're carrying: ${injected}`);
+}
+
+function topUpUnique(list: string[], fallback: string[], min: number, max: number): string[] {
+  const out: string[] = [];
+  const seen = new Set<string>();
+
+  const push = (v: string) => {
+    const k = normalizeForMatch(v);
+    if (!k || seen.has(k)) return;
+    seen.add(k);
+    out.push(v.trim());
+  };
+
+  for (const v of list) push(v);
+  for (const v of fallback) {
+    if (out.length >= min) break;
+    push(v);
+  }
+
+  return out.slice(0, Math.max(min, Math.min(max, 99)));
+}
+
+function ensureFourQuestions(qs: string[], domain: Domain, short: boolean): string[] {
+  const defaults = short ? DOMAIN_DEFAULTS[domain].shortQuestions : DOMAIN_DEFAULTS[domain].questions;
+  const out = qs.map((s) => String(s ?? "").trim()).filter(Boolean).slice(0, 4);
+
+  while (out.length < 4) out.push(defaults[out.length] ?? defaults[defaults.length - 1]);
+
+  if (!out[out.length - 1].toLowerCase().startsWith("next time,")) out[out.length - 1] = defaults[3];
+  return out.slice(0, 4);
+}
+
+function ensurePremiumSummary(summary: string, domain: Domain, anchors: string[], corepattern: string): string {
+  let s = summary.trim();
+
+  if (!s.includes("What you're carrying:")) {
+    s = `What you're carrying: ${anchors[0] ?? "You wrote something that matters."}\n` + s;
+  }
+  if (!s.includes("What's really happening:")) {
+    s += `\nWhat's really happening: ${corepattern}`;
+  }
+
+  // Ensure an anchor appears in carrying line if possible (non-short entries)
+  s = injectAnchorIntoCarrying(s, anchors);
+
+  // Premium: enforce Deeper direction line
+  if (!s.includes("Deeper direction:")) {
+    const a = anchors.find((x) => normalizeForMatch(x).length >= 10) ?? anchors[0] ?? "";
+    const clean = String(a).replace(/^["“”]|["“”]$/g, "").trim();
+    const dd =
+      clean.length >= 8
+        ? `Deeper direction: "${clean}" points to a real need — pick one small, honest action that reduces pressure without forcing certainty.`
+        : `Deeper direction: Pick one small, honest action that reduces pressure without forcing certainty.`;
+    s = `${s}\n${dd}`;
+  }
+
+  // Domain leak guard: if summary drifts, prefer domain default with anchor injection
+  const defaults = DOMAIN_DEFAULTS[domain];
+  const carrying = extractSummaryLine(s, "What you're carrying:");
+  const wrh = extractSummaryLine(s, "What's really happening:");
+  const dd = extractSummaryLine(s, "Deeper direction:");
+  const summaryOnly = `${carrying}\n${wrh}\n${dd}`.trim();
+  if (domain !== "GENERAL") {
+    if (!defaults.mustHave.test(summaryOnly) || defaults.driftKeywords.test(summaryOnly)) {
+      const base = defaults.summary;
+      const repaired = injectAnchorIntoCarrying(`${base}\nDeeper direction: ${corepattern}`, anchors);
+      return repaired;
+    }
+  }
+
+  return s;
+}
+
+function ensurePremiumStep(step: string, domain: Domain, anchors: string[]): string {
+  let s = step.trim();
+
+  // Ensure Option A/B exist
+  if (!/Option A:/i.test(s) || !/Option B:/i.test(s)) {
+    s = DOMAIN_DEFAULTS[domain].nextStepPremium;
+  }
+
+  if (!/Script line:/i.test(s)) {
+    const a = anchors.find((x) => normalizeForMatch(x).length >= 8) ?? anchors[0] ?? "";
+    const clean = String(a).replace(/^["“”]|["“”]$/g, "").trim();
+
+    // Domain-adaptive script line (short + calm + usable)
+    const scriptByDomain: Record<Domain, string> = {
+      WORK: `Script line: "I want to be clear about what I need here."`,
+      RELATIONSHIP: `Script line: "I want to understand what I needed before I respond."`,
+      FITNESS: `Script line: "I\'m building consistency — recovery counts."`,
+      MONEY: `Script line: "I\'m dealing with one thing at a time — today\'s thing is clear."`,
+      HEALTH: `Script line: "I can hold uncertainty without solving it today."`,
+      GRIEF: `Script line: "I\'m allowed to miss this — and I\'m allowed to still be here."`,
+      PARENTING: `Script line: "I\'m sorry I snapped. I love you, and I\'m working on it."`,
+      CREATIVE: `Script line: "The work doesn\'t have to be good yet — it just has to exist."`,
+      IDENTITY: `Script line: "I\'m allowed to be honest about what\'s true for me."`,
+      GENERAL: `Script line: "I don\'t need the answer yet — I need to stay honest."`,
+    };
+
+    const extra = clean.length >= 12 ? ` (grounded in: "${clean}")` : "";
+    s = `${s}${s.endsWith(".") ? "" : "."} ${scriptByDomain[domain]}${extra}`;
+  }
+
+  return s;
+}
+
+/* ────────────────────────────────────────────────────────────────────────── */
+/* Quality Gate (kept; now paired with deterministic premium enforcement)      */
+/* ────────────────────────────────────────────────────────────────────────── */
+
+type QualityResult = { pass: true } | { pass: false; reasons: string[] };
+
 function qualityCheck(
   parsed: any,
-  e: EUO,
+  anchors: string[],
   plan: "FREE" | "PREMIUM",
   domain: Domain,
   short: boolean
@@ -967,7 +895,7 @@ function qualityCheck(
   const wrh = extractSummaryLine(summary, "What's really happening:");
 
   if (!short) {
-    if (!anchorHitInLine(carrying, e.anchors) && !anchorHitInLine(wrh, e.anchors)) {
+    if (!anchorHitInLine(carrying, anchors) && !anchorHitInLine(wrh, anchors)) {
       reasons.push("Missing anchor in carrying/WRH line");
     }
   }
@@ -986,7 +914,7 @@ function qualityCheck(
     if (!/Script line:/i.test(nextStep)) reasons.push("Missing Script line (PREMIUM)");
   }
 
-  const minLen = short ? 80 : plan === "PREMIUM" ? 260 : 160;
+  const minLen = short ? 80 : plan === "PREMIUM" ? 240 : 150;
   if (summary.length < minLen) reasons.push(`Summary too short (${summary.length} < ${minLen})`);
 
   if (!/Option A:/i.test(nextStep)) reasons.push("Missing Option A");
@@ -1013,166 +941,113 @@ function qualityCheck(
     }
   }
 
-  // Sensitivity guard: if user explicitly says “don’t fix”, the model must not push “feel better”
-  if (e.sensitivities.userSaysDontFix) {
-    if (/\bfeel better\b/i.test(summary) || /\bmove on\b/i.test(summary) || /\bget over\b/i.test(summary)) {
-      reasons.push("Tone mismatch: user said they don't want to feel better");
-    }
-  }
-
   return reasons.length === 0 ? { pass: true } : { pass: false, reasons };
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
-/* Deterministic repair for generic carrying line                              */
+/* Normalization (now enforces premium requirements deterministically)         */
 /* ────────────────────────────────────────────────────────────────────────── */
-
-function repairGenericCarrying(summary: string, anchors: string[]): string {
-  if (!summary.includes("What you're carrying:")) return summary;
-
-  const carrying = extractSummaryLine(summary, "What you're carrying:");
-  const isGeneric = BANNED_SUMMARY_PATTERNS.some((re) => re.test(`What you're carrying: ${carrying}`));
-  if (!isGeneric) return summary;
-
-  const a = anchors[0] || anchors[1] || "";
-  const clean = a.replace(/^["“”]|["“”]$/g, "").trim();
-  const injected =
-    clean.length >= 12
-      ? `You wrote: "${clean}" — and it’s still sitting with you.`
-      : `You wrote: "${clean}" — and it’s still sitting with you.`;
-
-  return summary.replace(/What you're carrying:\s*[^\n]+/i, `What you're carrying: ${injected}`);
-}
-
-/* ────────────────────────────────────────────────────────────────────────── */
-/* Normalization (ensures exactly 4 questions)                                 */
-/* ────────────────────────────────────────────────────────────────────────── */
-
-function ensureFourQuestions(qs: string[], domain: Domain, short: boolean): string[] {
-  const defaults = short ? DOMAIN_DEFAULTS[domain].shortQuestions : DOMAIN_DEFAULTS[domain].questions;
-  const out = qs.filter(Boolean).slice(0, 4);
-
-  while (out.length < 4) out.push(defaults[out.length] ?? defaults[defaults.length - 1]);
-  if (!out[out.length - 1].toLowerCase().startsWith("next time,")) out[out.length - 1] = defaults[3];
-
-  return out;
-}
 
 function normalizeReflection(
   r: any,
   domain: Domain,
   short: boolean,
   plan: "FREE" | "PREMIUM",
-  e: EUO
+  anchors: string[]
 ): Reflection {
   const defaults = DOMAIN_DEFAULTS[domain];
-
   const clean = (v: unknown) => (typeof v === "string" ? v.trim() : "");
   const cleanArr = (v: unknown, max: number): string[] =>
     Array.isArray(v) ? v.map((x) => String(x ?? "").trim()).filter(Boolean).slice(0, max) : [];
 
+  const isPremium = plan === "PREMIUM";
+
+  // Summary
   let summary = clean(r?.summary) || (short ? defaults.shortSummary : defaults.summary);
 
-  if (!short) summary = repairGenericCarrying(summary, e.anchors);
+  if (!short) {
+    // Ensure an anchor is present in carrying line (precision)
+    summary = injectAnchorIntoCarrying(summary, anchors);
 
-  const themes = cleanArr(r?.themes, 6);
-  const emotions = cleanArr(r?.emotions, 6);
-  const questions = ensureFourQuestions(cleanArr(r?.questions, 6), domain, short);
-
-  const step = clean(r?.gentlenextstep);
-  const gentlenextstep =
-    step ||
-    (short
-      ? defaults.shortNextStep
-      : plan === "PREMIUM"
-        ? defaults.nextStepPremium
-        : defaults.nextStepFree);
-
-  // If premium & not short: hard-enforce script line if missing
-  let enforcedStep = gentlenextstep;
-  if (plan === "PREMIUM" && !short && !/Script line:/i.test(enforcedStep)) {
-    enforcedStep = `${enforcedStep} Script line: "I can take one clear step at a time."`;
+    // Premium: always enforce Deeper direction (even if model failed)
+    if (isPremium) {
+      const core = clean(r?.corepattern) || defaults.corepattern;
+      summary = ensurePremiumSummary(summary, domain, anchors, core);
+    }
   }
 
-  // If model returned empty themes/emotions, use deterministic EUO hints first, then defaults
-  const finalThemes = themes.length ? themes : (e.themes.length ? e.themes : defaults.themes);
-  const finalEmotions = emotions.length ? emotions : (e.emotions.length ? e.emotions : defaults.emotions);
+  // Core pattern
+  const corepattern = clean(r?.corepattern) || defaults.corepattern;
 
-  return {
-    summary,
-    corepattern: clean(r?.corepattern) || defaults.corepattern,
-    themes: uniq(finalThemes, 6),
-    emotions: uniq(finalEmotions, 6),
-    gentlenextstep: enforcedStep,
-    questions,
-  };
+  // Themes / emotions (enforce minimum counts)
+  const minArr = isPremium ? 3 : 2;
+  const themes = topUpUnique(cleanArr(r?.themes, 6), defaults.themes, minArr, 6);
+  const emotions = topUpUnique(cleanArr(r?.emotions, 6), defaults.emotions, minArr, 6);
+
+  // Questions (exactly 4)
+  const questions = ensureFourQuestions(cleanArr(r?.questions, 6), domain, short);
+
+  // Gentle next step
+  let gentlenextstep =
+    clean(r?.gentlenextstep) ||
+    (short ? defaults.shortNextStep : isPremium ? defaults.nextStepPremium : defaults.nextStepFree);
+
+  if (isPremium && !short) gentlenextstep = ensurePremiumStep(gentlenextstep, domain, anchors);
+
+  return { summary, corepattern, themes, emotions, gentlenextstep, questions };
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
-/* Prompt Builder (intent-first; premium adds layered insight)                 */
+/* Prompt Builder (premium depth, universal topic intelligence)                */
 /* ────────────────────────────────────────────────────────────────────────── */
 
-function buildSystemPrompt(plan: "FREE" | "PREMIUM", domain: Domain, short: boolean, e: EUO): string {
+function buildSystemPrompt(plan: "FREE" | "PREMIUM", domain: Domain, short: boolean): string {
   const isPremium = plan === "PREMIUM";
 
   const summaryStructure =
     isPremium && !short
-      ? `1) "What you're carrying:" — open with a concrete detail + one verbatim anchor
-2) "What's really happening:" — the deeper dynamic, still grounded in their words
-3) "Deeper direction:" — one forward-facing observation grounded in THIS entry
-4) (Premium only) "What this might be touching:" — 2–3 layers (needs/tensions), no diagnosing
-5) (Premium only) "Progress marker:" — 1 small thing to notice next time`
-      : `1) "What you're carrying:" — open with a concrete detail + one verbatim anchor
-2) "What's really happening:" — the deeper dynamic, still grounded in their words`;
+      ? `1) "What you're carrying:" — open with the person's concrete situation using THEIR words (include 1 short verbatim phrase)\n2) "What's really happening:" — the deeper dynamic (need / fear / value / control), still grounded in THIS entry\n3) "Deeper direction:" — one forward-facing observation (a perspective shift + what to try next) grounded in THIS entry`
+      : `1) "What you're carrying:" — open with the person's concrete situation using THEIR words\n2) "What's really happening:" — the deeper dynamic, still grounded in THIS entry`;
 
   const nextStepStructure =
     isPremium && !short
-      ? `"Option A:" (practical, doable today) + "Option B:" (reflective alternative) + "Script line:" (1–2 calm sentences they could actually say/write)`
-      : `"Option A:" (practical, doable today) + "Option B:" (reflective alternative)`;
+      ? `"Option A:" (practical, doable today) and "Option B:" (reflective alternative) and "Script line:" (1–2 calm sentences they could actually say/write)`
+      : `"Option A:" (practical, doable today) and "Option B:" (reflective alternative)`;
 
   const shortGuidance = short
-    ? `\nSHORT ENTRY: Under 12 words. Be warm and curious — not analytical. Ask questions that invite more, don’t demand.`
+    ? `\nSHORT ENTRY: Under 12 words. Be warm and curious — not analytical. Invite one more sentence.`
     : "";
 
   const domainHint =
     domain === "GENERAL"
-      ? `DOMAIN: GENERAL (unknown topic)
-HARD RULE: Do NOT become vague. Use the most specific phrase from the entry as the anchor.
-If topic is unclear, treat it as "uncertainty + what it touches (safety / belonging / worth / control)".`
-      : `DOMAIN: ${domain}
-HARD RULE: Stay inside this domain. Do not borrow lines that sound like other domains.`;
+      ? `DOMAIN: GENERAL (unknown topic)\nHARD RULE: Do NOT become vague. Use the most specific phrase from the entry as the anchor.\nIf topic is unclear, treat it as: uncertainty + what it touches (safety / belonging / worth / control).`
+      : `DOMAIN: ${domain}\nHARD RULE: Stay inside this domain. Do not borrow lines that sound like other domains.`;
 
-  const sensitivityRules = `SENSITIVITY RULES:
-- Never invent events not present in the entry
-- No diagnosing; no medical/legal instructions
-- If the user explicitly says they do NOT want to “feel better”, do not push reframes that aim at moving on. Witness + meaning + permission instead.`;
+  const depthGuidance =
+    isPremium && !short
+      ? `\nPREMIUM DEPTH RULES:\n- Provide a micro-framework implicitly (e.g., facts vs stories, needs vs strategies, control vs uncertainty, values vs expectations).\n- Avoid advice-y tone; be supportive but intellectually sharp.\n- Themes/emotions: return at least 3 each; prefer 4 if accurate.\n- Questions must be highly specific to THIS entry (not generic).\n`
+      : "";
 
-  const intentRules = `INTENT-FIRST TONE:
-- Intent = ${e.intent}, State = ${e.state}
-- If intent is VENTING: reflect + clarify; keep actions minimal
-- If intent is DECISION/CLARITY: options + tradeoffs + values
-- If intent is REPAIR: accountability + script that repairs without self-shaming
-- If intent is GRIEF_PROCESSING: witnessing + ritual/meaning; avoid “fixing”
-- If intent is HEALTH_ANXIETY: separate facts vs fears; grounding; encourage appropriate follow-up without giving medical advice
-- If intent is CREATIVE_BLOCK: reduce stakes; micro-steps; address fear of judgment`;
-
-  return `You are Havenly — a private journaling companion.
-Your job is to make the person feel genuinely seen, with precision, and to help them think better.
+  return `You are Havenly — a private journaling thinking partner.
+Your job is to make the person feel genuinely seen, with precision, and leave them clearer than before.
 
 CORE RULES:
 - Write to "you"
-- Use at least ONE verbatim phrase from the entry in the summary (carrying or what's really happening)
-- Avoid templates and generic openings
-- If the opener could apply to many people, rewrite it using what THIS person wrote
+- Never invent events not in the entry
+- Use at least ONE verbatim phrase from the person's entry in the SUMMARY (carrying or what's really happening)
+- Avoid templates, generic openings, and clichés
 
-${sensitivityRules}
-${intentRules}
+ANTI-TEMPLATE TEST:
+If the opener could apply to 5 different people, rewrite it using what THIS person wrote.
 
 OUTPUT STRUCTURE:
 summary (labeled lines in order):
 ${summaryStructure}
 
-corepattern — ONE sentence describing the specific dynamic in THIS entry (not a category label).
+corepattern — ONE sentence. The specific dynamic in THIS entry (not a category label).
+
+themes — short phrases (e.g., "health anxiety", "fear of the unknown").
+emotions — single words (e.g., "anxious", "scared", "overwhelmed").
 
 gentlenextstep:
 ${nextStepStructure}
@@ -1180,8 +1055,7 @@ ${nextStepStructure}
 questions — exactly 4. The LAST must start with exactly: "Next time,"
 All questions must be specific enough that another entry would produce different questions.
 
-${domainHint}
-${shortGuidance}
+${domainHint}${depthGuidance}${shortGuidance}
 
 OUTPUT: Return ONLY valid JSON with double-quoted strings. No markdown.
 {
@@ -1195,7 +1069,7 @@ OUTPUT: Return ONLY valid JSON with double-quoted strings. No markdown.
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
-/* Groq Caller                                                                 */
+/* Groq Caller                                                                  */
 /* ────────────────────────────────────────────────────────────────────────── */
 
 async function callGroq(opts: {
@@ -1239,7 +1113,7 @@ async function callGroq(opts: {
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
-/* Main Export                                                                 */
+/* Main Export                                                                  */
 /* ────────────────────────────────────────────────────────────────────────── */
 
 export async function generateReflectionFromEntry(input: Input): Promise<Reflection> {
@@ -1247,7 +1121,6 @@ export async function generateReflectionFromEntry(input: Input): Promise<Reflect
   if (!apiKey) throw new Error("Missing GROQAPIKEY");
 
   const model = process.env.GROQMODEL || "meta-llama/llama-4-scout-17b-16e-instruct";
-
   const plan = normalizePlan(input.plan);
 
   const entryBody = (input.content || "").trim();
@@ -1256,60 +1129,47 @@ export async function generateReflectionFromEntry(input: Input): Promise<Reflect
 
   const domain = detectDomain(`${input.title || ""}\n${entryBody}`);
   const short = isShortEntry(entryBody);
+  const anchors = extractAnchors(entryBody);
 
-  // Build EUO (deterministic)
-  const e = buildEUO(entryBody, domain);
+  const anchorsBlock = anchors.map((a, i) => `ANCHOR ${i + 1}: ${a}`).join("\n");
 
   const recentThemes = (input.recentThemes || [])
     .map((s) => String(s).trim())
     .filter(Boolean)
-    .slice(0, 6);
+    .slice(0, 5);
 
-  const memoryBlock =
-    plan === "PREMIUM" && recentThemes.length
-      ? `RECENT PATTERN CONTEXT (use only if clearly supported by this entry; do not overclaim):
-${recentThemes.map((t, i) => `${i + 1}) ${t}`).join("\n")}
+  const memoryBlock = recentThemes.length
+    ? `RECENT PATTERN CONTEXT (use only if genuinely relevant; NEVER force it):\n${recentThemes
+        .map((t, i) => `${i + 1}) ${t}`)
+        .join("\n")}\n\n`
+    : "";
 
-`
-      : "";
-
-  const anchorsBlock = e.anchors.map((a, i) => `ANCHOR ${i + 1}: ${a}`).join("\n");
-  const factsBlock = e.facts.length ? `FACTS (no guessing):\n- ${e.facts.join("\n- ")}\n\n` : "";
-  const euoBlock = `EUO (deterministic; use for tone and precision):
-- Intent: ${e.intent}
-- State: ${e.state}
-- Needs: ${e.needs.join(", ") || "unknown"}
-- Tensions: ${e.tensions.join(", ") || "unknown"}
-- Theme hints: ${e.themes.join(", ") || "none"}
-- Emotion hints: ${e.emotions.join(", ") || "none"}
-- Sensitivities: ${JSON.stringify(e.sensitivities)}
-
-`;
-
-  const userPrompt = `${memoryBlock}${factsBlock}${euoBlock}THE PERSON'S EXACT WORDS — you MUST use at least one ANCHOR verbatim in the summary:
+  const userPrompt = `${memoryBlock}THE PERSON'S EXACT WORDS — use at least one verbatim phrase in your SUMMARY:
 ${anchorsBlock}
 
 REMINDER:
-- "What you're carrying:" must open with a concrete detail from this entry (not a generic opener).
+- "What you're carrying:" must open with a concrete detail from this entry (no generic opener).
 - Stay in DOMAIN: ${domain}.
-- Do not invent details.
+- Do NOT invent details. Use the anchors.
 
 ${entryText}`.trim();
 
-  const maxTokens = plan === "PREMIUM" ? 1200 : 800;
-  const systemPrompt = buildSystemPrompt(plan, domain, short, e);
+  const maxTokens = plan === "PREMIUM" ? 1200 : 780;
+  const systemPrompt = buildSystemPrompt(plan, domain, short);
 
   const ATTEMPTS = [
     { temperature: plan === "PREMIUM" ? 0.55 : 0.45, note: undefined as string | undefined },
     {
-      temperature: 0.28,
-      note: `RETRY — previous output failed quality rules. Fix missing labels, use an ANCHOR verbatim in the summary, and stay in DOMAIN: ${domain}. Return ONLY valid JSON.`,
+      temperature: 0.3,
+      note: `RETRY — your output failed quality rules. Fix missing labels, use an ANCHOR verbatim in the summary, include Deeper direction + Script line for PREMIUM, and stay in DOMAIN: ${domain}. Return ONLY valid JSON.`,
     },
     {
-      temperature: 0.18,
-      note: `FINAL RETRY — be highly specific. Start with the most concrete thing they wrote. Include an ANCHOR verbatim in carrying or what's really happening. Respect intent/state. Stay in DOMAIN: ${domain}. Return ONLY JSON.`,
+      temperature: 0.2,
+      note: `FINAL RETRY — be highly specific. Start with the most concrete thing they wrote (quote it). Include Deeper direction + Script line for PREMIUM. Stay in DOMAIN: ${domain}. Return ONLY JSON.`,
     },
   ];
+
+  let bestParsed: any = null;
 
   for (let i = 0; i < ATTEMPTS.length; i++) {
     const { temperature, note } = ATTEMPTS[i];
@@ -1326,8 +1186,10 @@ ${entryText}`.trim();
     const parsed = parseModelJson<any>(raw);
     if (!parsed) continue;
 
-    const result = qualityCheck(parsed, e, plan, domain, short);
-    if (result.pass) return normalizeReflection(parsed, domain, short, plan, e);
+    bestParsed = parsed;
+
+    const result = qualityCheck(parsed, anchors, plan, domain, short);
+    if (result.pass) return normalizeReflection(parsed, domain, short, plan, anchors);
 
     if (i === ATTEMPTS.length - 1) {
       console.warn(
@@ -1336,43 +1198,39 @@ ${entryText}`.trim();
         "Reasons:",
         (result as any).reasons
       );
-      return normalizeReflection(parsed, domain, short, plan, e);
+      // Still normalize with deterministic premium enforcement
+      return normalizeReflection(parsed, domain, short, plan, anchors);
     }
   }
 
   // Last resort: deterministic default with anchor injection + premium enforcement
   const defaults = DOMAIN_DEFAULTS[domain];
-  const a1 = e.anchors[0] || "what you wrote";
   const base = short ? defaults.shortSummary : defaults.summary;
 
-  let summaryWithAnchor = base.replace(
-    "What you're carrying:",
-    `What you're carrying: You wrote: ${a1} — and it’s still here with you.`
-  );
+  const a1 = anchors.find((x) => normalizeForMatch(x).length >= 8) ?? anchors[0] ?? "what you wrote";
+  let summaryWithAnchor = injectAnchorIntoCarrying(base, [a1, ...anchors]);
 
   if (plan === "PREMIUM" && !short) {
-    if (!summaryWithAnchor.includes("Deeper direction:")) {
-      summaryWithAnchor += `\nDeeper direction: ${defaults.corepattern}`;
-    }
-    if (!summaryWithAnchor.includes("What this might be touching:")) {
-      summaryWithAnchor += `\nWhat this might be touching: ${e.needs.slice(0, 3).join(", ") || "safety, belonging, worth"}.`;
-    }
-    if (!summaryWithAnchor.includes("Progress marker:")) {
-      summaryWithAnchor += `\nProgress marker: Notice the earliest moment the feeling starts (before it spikes).`;
-    }
+    summaryWithAnchor = ensurePremiumSummary(summaryWithAnchor, domain, anchors, defaults.corepattern);
   }
 
-  // Soft memory echo (premium only; avoid overclaiming)
-  if (plan === "PREMIUM" && recentThemes.length) {
-    summaryWithAnchor += `\nPattern lens: This may relate to a theme you’ve touched before — "${recentThemes[0]}".`;
+  if (recentThemes.length && plan === "PREMIUM" && !short) {
+    // Keep within the existing labeled format: fold into Deeper direction if present
+    const dd = extractSummaryLine(summaryWithAnchor, "Deeper direction:");
+    if (dd) {
+      summaryWithAnchor = summaryWithAnchor.replace(
+        /Deeper direction:\s*[^\n]+/i,
+        `Deeper direction: ${dd} (Pattern note: this echoes "${recentThemes[0]}".)`
+      );
+    }
   }
 
   return normalizeReflection(
     {
       summary: summaryWithAnchor,
       corepattern: defaults.corepattern,
-      themes: e.themes.length ? e.themes : defaults.themes,
-      emotions: e.emotions.length ? e.emotions : defaults.emotions,
+      themes: defaults.themes,
+      emotions: defaults.emotions,
       gentlenextstep:
         short ? defaults.shortNextStep : plan === "PREMIUM" ? defaults.nextStepPremium : defaults.nextStepFree,
       questions: short ? defaults.shortQuestions : defaults.questions,
@@ -1380,6 +1238,6 @@ ${entryText}`.trim();
     domain,
     short,
     plan,
-    e
+    anchors
   );
 }
