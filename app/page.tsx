@@ -30,7 +30,7 @@ export default function HomePage() {
 
             <p className="text-base leading-relaxed text-slate-400 sm:text-[17px]">
               Havenly is a private journal that notices what you keep coming
-              back to — and quietly reflects it back to you. No advice.
+              back to -- and quietly reflects it back to you. No advice.
               No pressure. Just clarity.
             </p>
 
@@ -40,7 +40,7 @@ export default function HomePage() {
                 href="/magic-login"
                 className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 hover:bg-emerald-400 transition-colors"
               >
-                Start for free — no card needed
+                Start for free -- no card needed
               </Link>
               <Link
                 href="/insights/preview"
@@ -102,7 +102,7 @@ export default function HomePage() {
               <div className="space-y-3">
                 <p className="text-[13px] leading-relaxed text-slate-300">
                   This tiredness sounds like it's been building quietly for a
-                  while — not just this week, but longer. There's a difference
+                  while -- not just this week, but longer. There's a difference
                   between being tired <em>from</em> things and being tired
                   <em> of</em> things.
                 </p>
@@ -114,7 +114,7 @@ export default function HomePage() {
                 </div>
 
                 <p className="text-[12px] text-slate-500 italic">
-                  What would it mean to stop saying you're fine — just for today?
+                  What would it mean to stop saying you're fine -- just for today?
                 </p>
               </div>
 
