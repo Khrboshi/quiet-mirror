@@ -893,6 +893,25 @@ function qualityCheck(
     reasons.push("Corepattern appears to be a fragment — needs a verb");
   }
 
+  // Ban generic / harmful question patterns
+  const BANNED_QUESTION_PATTERNS = [
+    /prioritize your emotional well-being/i,
+    /how can you prepare yourself/i,
+    /take care of yourself/i,
+    /practice self-care/i,
+    /what could be causing your (pain|symptoms)/i,
+    /what do you think (is|could be) causing/i,
+  ];
+  for (const q of questions) {
+    const qs = String(q);
+    for (const ban of BANNED_QUESTION_PATTERNS) {
+      if (ban.test(qs)) {
+        reasons.push(`Generic/harmful question pattern detected: "${qs.slice(0, 60)}"`);
+        break;
+      }
+    }
+  }
+
   if (domain !== "GENERAL") {
     const summaryOnly = `${carrying} ${wrh} ${extractSummaryLine(summary, "Deeper direction:")}`;
     if (!defaults.mustHave.test(summaryOnly)) reasons.push(`Domain signal missing for ${domain}`);
