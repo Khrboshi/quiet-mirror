@@ -900,6 +900,8 @@ function qualityCheck(
     /feel more (grounded|prepared|ready)/i,
     /help you feel more prepared/i,
     /take care of yourself/i,
+    /how are you taking care of/i,
+    /how (are|were) you (coping|managing|dealing) with/i,
     /practice self-care/i,
     /what could be causing your (pain|symptoms)/i,
     /what do you think (is|could be) causing/i,
