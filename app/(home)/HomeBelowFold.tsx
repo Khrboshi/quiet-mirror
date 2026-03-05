@@ -4,264 +4,329 @@ import Link from "next/link";
 export default function HomeBelowFold() {
   return (
     <>
-      {/* STRIP: WHO IT’S FOR */}
-      <section className="border-y border-slate-800/80 bg-slate-950/90">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8 text-xs text-hvn-text-muted sm:flex-row sm:items-center sm:justify-between">
-          <p className="font-medium text-hvn-text-secondary">Built for people who are:</p>
+      {/* ── WHO IT'S FOR ─────────────────────────────────────────────────── */}
+      <section className="border-y border-slate-800/60 bg-slate-950/80">
+        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-7 text-xs sm:flex-row sm:items-center sm:justify-between">
+          <p className="font-medium text-slate-500">Written for people who are:</p>
           <div className="flex flex-wrap gap-2">
-            <span className="rounded-full border border-hvn-subtle bg-slate-900/80 px-3 py-1">
-              Always “on”, rarely checked-in with themselves
-            </span>
-            <span className="rounded-full border border-hvn-subtle bg-slate-900/80 px-3 py-1">
-              Good at supporting others, hard on themselves
-            </span>
-            <span className="rounded-full border border-hvn-subtle bg-slate-900/80 px-3 py-1">
-              Wanting insight, not more dashboards
-            </span>
+            {[
+              "Always "on", rarely checked in with themselves",
+              "Good at caring for others, hard on themselves",
+              "Wanting to understand themselves, not optimise",
+            ].map((label) => (
+              <span
+                key={label}
+                className="rounded-full border border-slate-800 bg-slate-900/70 px-3 py-1 text-slate-400"
+              >
+                {label}
+              </span>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* SECTION: HOW HAVENLY WORKS */}
-      <section className="border-b border-slate-800/80 bg-slate-950/95 py-14 sm:py-18">
+      {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
+      <section className="border-b border-slate-800/60 bg-slate-950/90 py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <h2 className="text-xl font-semibold text-hvn-text-primary sm:text-2xl">
-                How Havenly fits into your actual life
-              </h2>
-              <p className="mt-2 max-w-xl text-sm text-hvn-text-muted">
-                No 30-day “challenges”, no pressure. Just small, honest
-                check-ins that build a clearer picture of how you have been
-                doing over time.
-              </p>
-            </div>
+          <div className="mb-10 max-w-lg">
+            <h2 className="text-2xl font-semibold text-white sm:text-3xl">
+              A practice that fits around your life
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-slate-500">
+              No streaks to maintain. No goals to set. Just a quiet place to be
+              honest — and something that pays attention.
+            </p>
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">
-            <div className="rounded-2xl border border-hvn-card bg-slate-950/80 p-4">
-              <p className="text-xs font-semibold text-emerald-300">1 · Capture</p>
-              <h3 className="mt-1 text-sm font-medium text-hvn-text-primary">
-                Write what is really going on
-              </h3>
-              <p className="mt-2 text-xs text-hvn-text-muted">
-                Open your journal and write for a few minutes—messy, honest,
-                incomplete. Havenly is for you, not for the internet.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-hvn-card bg-slate-950/80 p-4">
-              <p className="text-xs font-semibold text-emerald-300">2 · Reflect</p>
-              <h3 className="mt-1 text-sm font-medium text-hvn-text-primary">
-                Let the AI gently respond
-              </h3>
-              <p className="mt-2 text-xs text-hvn-text-muted">
-                Havenly’s AI reflects your words back to you, highlights
-                emotions, and offers a kinder narrative than your inner critic.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-hvn-card bg-slate-950/80 p-4">
-              <p className="text-xs font-semibold text-emerald-300">3 · Notice</p>
-              <h3 className="mt-1 text-sm font-medium text-hvn-text-primary">
-                See patterns over time
-              </h3>
-              <p className="mt-2 text-xs text-hvn-text-muted">
-                As entries build up, Insights and Tools help you see what keeps
-                repeating: stress patterns, energy dips, and quiet wins.
-              </p>
-            </div>
+            {[
+              {
+                step: "1",
+                title: "Write what's actually happening",
+                body: "Open Havenly and write for a few minutes — messy, incomplete, honest. This space is for you, not for an audience.",
+                accent: "text-emerald-400",
+              },
+              {
+                step: "2",
+                title: "Havenly reflects it back",
+                body: "Havenly reads what you wrote and offers a gentler version of what it heard — the emotions underneath, the patterns surfacing.",
+                accent: "text-violet-400",
+              },
+              {
+                step: "3",
+                title: "Start seeing what repeats",
+                body: "Over weeks, Havenly shows you what keeps coming up — what drains you, what lifts you, what you keep circling back to.",
+                accent: "text-amber-400",
+              },
+            ].map(({ step, title, body, accent }) => (
+              <div
+                key={step}
+                className="rounded-2xl border border-slate-800/60 bg-slate-900/40 p-5"
+              >
+                <p className={`text-xs font-semibold uppercase tracking-widest ${accent}`}>
+                  {step}
+                </p>
+                <h3 className="mt-2 text-sm font-medium text-white">{title}</h3>
+                <p className="mt-2 text-xs leading-relaxed text-slate-500">{body}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* SECTION: PLANS – FREE VS PREMIUM */}
-      <section className="border-b border-slate-800/80 bg-slate-950 py-14 sm:py-18">
+      {/* ── WHAT YOU ACTUALLY GET ────────────────────────────────────────── */}
+      <section className="border-b border-slate-800/60 bg-slate-950 py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="mb-8 max-w-xl">
-            <h2 className="text-xl font-semibold text-hvn-text-primary sm:text-2xl">
-              Start free. Upgrade only if it genuinely helps.
+          <div className="mb-10 max-w-lg">
+            <h2 className="text-2xl font-semibold text-white sm:text-3xl">
+              What Havenly actually shows you
             </h2>
-            <p className="mt-2 text-sm text-hvn-text-muted">
-              Havenly is designed so the Free plan is genuinely useful on its
-              own. “Coming soon” features will simply add more context and more
-              gentle support.
-            </p>
-
-            <p className="mt-3 text-xs text-hvn-text-muted">
-              You can explore without pressure. If extras aren’t right for you,
-              Free still works well.
+            <p className="mt-3 text-sm leading-relaxed text-slate-500">
+              Not summaries of your day. The things that are harder to see
+              from the inside.
             </p>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-[minmax(0,1.1fr),minmax(0,1.2fr)]">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                label: "Your top emotion this month",
+                example: "Curiosity — 14 times across 22 entries",
+                color: "border-violet-500/20 bg-violet-500/5",
+                tag: "text-violet-400",
+              },
+              {
+                label: "The theme that keeps appearing",
+                example: "Communication — in 10 of your last 15 entries",
+                color: "border-emerald-500/20 bg-emerald-500/5",
+                tag: "text-emerald-400",
+              },
+              {
+                label: "Your core pattern right now",
+                example: "\"You're trying to make sense of the moment while protecting your self-respect.\"",
+                color: "border-amber-500/20 bg-amber-500/5",
+                tag: "text-amber-400",
+              },
+              {
+                label: "What's been lifting lately",
+                example: "Hope, Openness, and Curiosity all trending up",
+                color: "border-sky-500/20 bg-sky-500/5",
+                tag: "text-sky-400",
+              },
+              {
+                label: "Your weekly pattern summary",
+                example: "A personal paragraph written just for you — what Havenly noticed this week",
+                color: "border-rose-500/20 bg-rose-500/5",
+                tag: "text-rose-400",
+              },
+              {
+                label: "Questions worth sitting with",
+                example: "\"What would it mean to stop saying you're fine — just for today?\"",
+                color: "border-slate-500/20 bg-slate-500/5",
+                tag: "text-slate-400",
+              },
+            ].map(({ label, example, color, tag }) => (
+              <div
+                key={label}
+                className={`rounded-2xl border p-5 ${color}`}
+              >
+                <p className={`text-[10px] font-semibold uppercase tracking-widest ${tag}`}>
+                  {label}
+                </p>
+                <p className="mt-2 text-xs leading-relaxed text-slate-400 italic">
+                  {example}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 text-center">
+            <Link
+              href="/insights/preview"
+              className="inline-flex items-center gap-2 text-sm font-medium text-emerald-400 hover:text-emerald-300 transition-colors"
+            >
+              See a full example of insights →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── PLANS ────────────────────────────────────────────────────────── */}
+      <section className="border-b border-slate-800/60 bg-slate-950 py-16 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="mb-10 max-w-lg">
+            <h2 className="text-2xl font-semibold text-white sm:text-3xl">
+              Start free. Stay free as long as you like.
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-slate-500">
+              The free plan is genuinely useful on its own. Premium adds
+              deeper patterns and weekly summaries — only worth it if it
+              genuinely helps you.
+            </p>
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-2">
+
             {/* Free */}
-            <div className="flex flex-col rounded-2xl border border-hvn-card bg-slate-950/85 p-5 shadow-[0_18px_60px_rgba(15,23,42,0.65)]">
-              <p className="text-xs font-semibold uppercase tracking-wide text-hvn-text-muted">
-                Free plan
+            <div className="flex flex-col rounded-2xl border border-slate-800 bg-slate-900/40 p-6">
+              <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
+                Free
               </p>
-              <p className="mt-1 text-2xl font-semibold text-hvn-text-primary">
-                $0 / month
+              <p className="mt-1 text-2xl font-semibold text-white">
+                Always free
               </p>
-              <p className="mt-2 text-xs text-hvn-text-muted">
-                For people who want a calmer, more honest place to check in
-                without yet committing to a subscription.
+              <p className="mt-2 text-sm text-slate-500">
+                A private space to write and reflect — no commitment needed.
               </p>
 
-              <ul className="mt-4 space-y-2 text-xs text-hvn-text-secondary">
-                <li>• Private journaling space</li>
-                <li>• AI reflections (with a monthly limit)</li>
-                <li>• Access to core Tools (mood, reflection prompts)</li>
-                <li>• Early Insights as they roll out</li>
+              <ul className="mt-5 space-y-2.5 text-sm text-slate-400">
+                {[
+                  "Write anytime, entries stay private",
+                  "AI reflections each month",
+                  "Gentle daily prompts",
+                  "Basic pattern insights",
+                ].map((f) => (
+                  <li key={f} className="flex items-start gap-2">
+                    <span className="mt-0.5 text-emerald-600">✓</span>
+                    {f}
+                  </li>
+                ))}
               </ul>
 
-              <div className="mt-5">
+              <div className="mt-auto pt-6">
                 <Link
                   href="/magic-login"
-                  className="inline-flex w-full items-center justify-center rounded-full bg-slate-100 px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-white"
+                  className="inline-flex w-full items-center justify-center rounded-full border border-slate-700 bg-slate-900 px-5 py-2.5 text-sm font-medium text-slate-200 hover:bg-slate-800 transition-colors"
                 >
-                  Start with Free
+                  Start for free
                 </Link>
+                <p className="mt-2 text-center text-xs text-slate-700">
+                  No credit card. No expiry.
+                </p>
               </div>
-
-              <p className="mt-2 text-[11px] text-hvn-text-muted">
-                You can stay on Free as long as you like.
-              </p>
             </div>
 
-            {/* Premium */}
-            <div className="relative flex flex-col rounded-2xl border border-emerald-500/50 bg-emerald-500/5 p-5 shadow-[0_18px_60px_rgba(15,23,42,0.75)]">
-              <div className="absolute right-4 top-4 rounded-full border border-amber-400/40 bg-amber-400/10 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-amber-200">
-                Coming soon
+            {/* Premium — early access, no price shown */}
+            <div className="relative flex flex-col rounded-2xl border border-emerald-500/25 bg-emerald-500/[0.04] p-6">
+              <div className="absolute right-4 top-4 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-widest text-emerald-400">
+                Early access
               </div>
 
-              <p className="text-xs font-semibold uppercase tracking-wide text-emerald-300">
-                Premium insights
+              <p className="text-xs font-semibold uppercase tracking-widest text-emerald-500/70">
+                Premium
               </p>
-              <p className="mt-1 text-2xl font-semibold text-hvn-text-primary">
-                In progress
+              <p className="mt-1 text-2xl font-semibold text-white">
+                Deeper clarity
               </p>
-              <p className="mt-2 text-xs text-emerald-100/80">
-                Designed for people who want clearer patterns, weekly reviews,
-                and more nuanced AI reflections.
+              <p className="mt-2 text-sm text-slate-400">
+                For people who want to genuinely understand their patterns
+                — not just track them.
               </p>
 
-              <ul className="mt-4 space-y-2 text-xs text-emerald-50/90">
-                <li>• Higher reflection limits each month</li>
-                <li>• Deeper multi-entry insights and timelines</li>
-                <li>• Weekly “how have I really been?” summaries</li>
-                <li>• Priority access to new tools & experiments</li>
+              <ul className="mt-5 space-y-2.5 text-sm text-slate-300">
+                {[
+                  "Everything in Free",
+                  "Unlimited AI reflections",
+                  "Full pattern insights across time",
+                  "Weekly personal summary from Havenly",
+                  "\"Why does this keep happening?\" insights",
+                  "Cancel anytime",
+                ].map((f) => (
+                  <li key={f} className="flex items-start gap-2">
+                    <span className="mt-0.5 text-emerald-400">✓</span>
+                    {f}
+                  </li>
+                ))}
               </ul>
 
-              <div className="mt-5">
+              <div className="mt-auto pt-6 flex flex-col gap-2">
+                <Link
+                  href="/upgrade"
+                  className="inline-flex w-full items-center justify-center rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-emerald-400 shadow-lg shadow-emerald-500/20 transition-colors"
+                >
+                  Upgrade to Premium
+                </Link>
                 <Link
                   href="/insights/preview"
-                  className="inline-flex w-full items-center justify-center rounded-full bg-hvn-accent-mint px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-emerald-400"
+                  className="inline-flex w-full items-center justify-center rounded-full border border-slate-700 px-5 py-2 text-xs font-medium text-slate-400 hover:bg-slate-900 transition-colors"
                 >
-                  Preview insights →
+                  Preview what Premium shows you
                 </Link>
               </div>
 
-              <p className="mt-2 text-[11px] text-emerald-200/80">
-                No pressure. We’ll launch gently when it’s ready.
+              <p className="mt-3 text-center text-xs text-slate-700">
+                Secure checkout via Stripe · Cancel anytime
               </p>
             </div>
+
           </div>
         </div>
       </section>
 
-      {/* SECTION: FAQ */}
-      <section className="bg-slate-950 py-12">
-        <div className="mx-auto max-w-4xl px-4">
-          <h2 className="text-lg font-semibold text-hvn-text-primary sm:text-xl">
-            A few questions you might have
+      {/* ── FAQ ──────────────────────────────────────────────────────────── */}
+      <section className="bg-slate-950 py-14">
+        <div className="mx-auto max-w-3xl px-4">
+          <h2 className="text-xl font-semibold text-white sm:text-2xl">
+            A few honest answers
           </h2>
 
-          <div className="mt-6 space-y-5 text-sm">
-            <div>
-              <p className="font-medium text-hvn-text-primary">
-                Is Havenly therapy or a replacement for professional help?
-              </p>
-              <p className="mt-1 text-xs text-hvn-text-muted sm:text-sm">
-                No. Havenly is a journaling and reflection companion. It can sit
-                alongside therapy, coaching, spiritual direction, or your own
-                personal practices—but it is not a clinical or crisis service.
-              </p>
-            </div>
-
-            <div>
-              <p className="font-medium text-hvn-text-primary">
-                Do I have to write every day?
-              </p>
-              <p className="mt-1 text-xs text-hvn-text-muted sm:text-sm">
-                Absolutely not. Some people use Havenly a few times a week,
-                others just when life feels particularly dense. The goal is
-                honest consistency, not perfection.
-              </p>
-            </div>
-
-            <div>
-              <p className="font-medium text-hvn-text-primary">
-                What happens to my data?
-              </p>
-              <p className="mt-1 text-xs text-hvn-text-muted sm:text-sm">
-                Your entries are stored securely and are not used to train
-                public models. The point of Havenly is to give you a private
-                corner online, not to turn your inner life into content.
-              </p>
-              <p className="mt-2 text-xs text-hvn-text-muted sm:text-sm">
-                <Link
-                  href="/privacy"
-                  className="font-medium text-emerald-400 hover:text-emerald-300 hover:underline"
-                >
-                  Read the Privacy Policy →
-                </Link>
-              </p>
-            </div>
+          <div className="mt-7 space-y-6">
+            {[
+              {
+                q: "Is this therapy?",
+                a: "No. Havenly is a journaling companion — it can sit alongside therapy, coaching, or your own personal practices, but it is not a clinical tool and can't replace professional support.",
+              },
+              {
+                q: "Do I have to write every day?",
+                a: "Not at all. Some people check in a few times a week. Others only when life feels particularly full. The patterns Havenly notices get richer over time, but there's no pressure.",
+              },
+              {
+                q: "What happens to my journal entries?",
+                a: "They're yours. Stored securely, never used to train AI models, never shared. Havenly is built around the idea that your inner life belongs to you — not the internet.",
+              },
+              {
+                q: "What makes Premium worth it?",
+                a: "The free plan gives you good reflections. Premium gives you the full picture — what repeats across weeks and months, a personal weekly summary written just for you, and deeper pattern insights. Worth it if you genuinely want to understand yourself better.",
+              },
+            ].map(({ q, a }) => (
+              <div key={q} className="border-b border-slate-800/60 pb-5">
+                <p className="font-medium text-white">{q}</p>
+                <p className="mt-2 text-sm leading-relaxed text-slate-500">{a}</p>
+              </div>
+            ))}
           </div>
 
-          <div className="mt-8 rounded-2xl border border-slate-800 bg-slate-950/60 p-5 text-xs text-hvn-text-muted">
-            <p className="font-medium text-hvn-text-primary">
-              Want to understand Havenly before you start?
-            </p>
-            <p className="mt-2">
-              Learn the intent and values behind the product, or read gentle notes
-              that show how reflection works in real life.
-            </p>
-            <div className="mt-4 flex flex-wrap gap-3">
-              <Link
-                href="/about"
-                className="inline-flex items-center justify-center rounded-full border border-slate-600 bg-slate-900/70 px-4 py-2 text-xs font-medium text-slate-100 hover:bg-slate-800"
-              >
-                Read About →
-              </Link>
-              <Link
-                href="/blog"
-                className="inline-flex items-center justify-center rounded-full border border-slate-600 bg-slate-900/70 px-4 py-2 text-xs font-medium text-slate-100 hover:bg-slate-800"
-              >
-                Explore Blog →
-              </Link>
-            </div>
+          <div className="mt-10 text-xs text-slate-700">
+            <Link href="/privacy" className="text-emerald-600 hover:text-emerald-500 transition-colors">
+              Read the Privacy Policy →
+            </Link>
           </div>
+        </div>
+      </section>
 
-          <div className="mt-8 flex flex-col items-start gap-3 border-t border-slate-800 pt-6 text-xs sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-hvn-text-muted">
-              Ready to give your inner life a quieter place to land?
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href="/magic-login"
-                className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-4 py-2 text-xs font-semibold text-slate-950 hover:bg-emerald-400"
-              >
-                Start journaling in 30 seconds
-              </Link>
-              <Link
-                href="/about"
-                className="inline-flex items-center justify-center rounded-full border border-slate-600 px-4 py-2 text-xs text-slate-100 hover:bg-slate-900"
-              >
-                Learn more about Havenly →
-              </Link>
-            </div>
+      {/* ── FINAL CTA ────────────────────────────────────────────────────── */}
+      <section className="bg-slate-950 border-t border-slate-800/60 py-14">
+        <div className="mx-auto max-w-3xl px-4 text-center space-y-5">
+          <h2 className="text-2xl font-semibold text-white sm:text-3xl">
+            Your thoughts deserve a quieter place to land.
+          </h2>
+          <p className="text-sm text-slate-500 max-w-md mx-auto">
+            Start with a single entry. No pressure, no performance.
+            Just write what's actually going on.
+          </p>
+          <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+            <Link
+              href="/magic-login"
+              className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-7 py-3 text-sm font-semibold text-slate-950 hover:bg-emerald-400 shadow-lg shadow-emerald-500/20 transition-colors"
+            >
+              Start for free — no card needed
+            </Link>
+            <Link
+              href="/about"
+              className="inline-flex items-center justify-center rounded-full border border-slate-700 px-7 py-3 text-sm font-medium text-slate-400 hover:bg-slate-900 transition-colors"
+            >
+              Learn more about Havenly
+            </Link>
           </div>
         </div>
       </section>
