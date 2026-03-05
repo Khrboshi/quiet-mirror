@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function HomeBelowFold() {
   return (
     <>
-      {/* ── WHO IT'S FOR ─────────────────────────────────────────────────── */}
+      
       <section className="border-y border-slate-800/60 bg-slate-950/80">
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-7 text-xs sm:flex-row sm:items-center sm:justify-between">
           <p className="font-medium text-slate-500">Written for people who are:</p>
@@ -25,7 +25,6 @@ export default function HomeBelowFold() {
         </div>
       </section>
 
-      {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
       <section className="border-b border-slate-800/60 bg-slate-950/90 py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4">
           <div className="mb-10 max-w-lg">
@@ -74,7 +73,6 @@ export default function HomeBelowFold() {
         </div>
       </section>
 
-      {/* ── WHAT YOU ACTUALLY GET ────────────────────────────────────────── */}
       <section className="border-b border-slate-800/60 bg-slate-950 py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4">
           <div className="mb-10 max-w-lg">
@@ -151,7 +149,6 @@ export default function HomeBelowFold() {
         </div>
       </section>
 
-      {/* ── PLANS ────────────────────────────────────────────────────────── */}
       <section className="border-b border-slate-800/60 bg-slate-950 py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4">
           <div className="mb-10 max-w-lg">
@@ -263,7 +260,6 @@ export default function HomeBelowFold() {
         </div>
       </section>
 
-      {/* ── FAQ ──────────────────────────────────────────────────────────── */}
       <section className="bg-slate-950 py-14">
         <div className="mx-auto max-w-3xl px-4">
           <h2 className="text-xl font-semibold text-white sm:text-2xl">
@@ -304,7 +300,6 @@ export default function HomeBelowFold() {
         </div>
       </section>
 
-      {/* ── FINAL CTA ────────────────────────────────────────────────────── */}
       <section className="bg-slate-950 border-t border-slate-800/60 py-14">
         <div className="mx-auto max-w-3xl px-4 text-center space-y-5">
           <h2 className="text-2xl font-semibold text-white sm:text-3xl">
