@@ -10,7 +10,6 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-hvn-bg text-hvn-text-primary bg-hvn-page-gradient">
 
-      {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-16 pb-20 sm:pt-24 sm:pb-28">
 
         {/* Ambient glow */}
@@ -18,7 +17,6 @@ export default function HomePage() {
 
         <div className="mx-auto flex max-w-6xl flex-col gap-12 px-4 md:flex-row md:items-center md:gap-16">
 
-          {/* ── Left copy ── */}
           <div className="max-w-lg space-y-7">
 
             <p className="text-xs font-medium uppercase tracking-[0.2em] text-emerald-500/70">
@@ -69,7 +67,6 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* ── Right: reflection card ── */}
           <div className="relative mx-auto w-full max-w-[360px] shrink-0">
 
             {/* Glow behind card */}
@@ -132,7 +129,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── BELOW THE FOLD ───────────────────────────────────────────────── */}
       <HomeBelowFold />
     </div>
   );
