@@ -344,6 +344,21 @@ function qualityCheck(
       fullText.includes(a.toLowerCase().replace(/^[""]|[""]$/g, "").trim())
     );
     if (!hasAnchor) reasons.push("Missing verbatim anchor");
+
+    // Summary itself must not be a known template opener
+    const BANNED_SUMMARY_OPENERS = [
+      "a workplace moment that left a mark",
+      "something is sitting with you",
+      "something in this connection left you unsettled",
+      "something in this connection",
+    ];
+    const summaryLower = summary.toLowerCase();
+    for (const banned of BANNED_SUMMARY_OPENERS) {
+      if (summaryLower.startsWith(banned)) {
+        reasons.push(`Generic template summary detected: "${banned}"`);
+        break;
+      }
+    }
   }
 
   if (!summary.includes("What you're carrying:")) reasons.push('Missing "What you\'re carrying:"');
@@ -422,21 +437,30 @@ function buildSystemPrompt(plan: "FREE" | "PREMIUM", domain: Domain, short: bool
   const domainGuidance: Record<Domain, string> = {
     WORK: `DOMAIN: WORK
 Name the specific workplace dynamic — being dismissed, overlooked, undervalued, or caught in a power tension.
+"What you're carrying:" MUST describe what literally happened: who was in the room, what was said or done, how you responded.
 "What's really happening:" must name what was touched: dignity, competence, recognition, or safety.
+BANNED opener: "A workplace moment that left a mark" — write the actual moment instead.
 Do NOT drift to relationship or fitness language.`,
 
     RELATIONSHIP: `DOMAIN: RELATIONSHIP
 Name the specific relational dynamic — feeling invisible, disconnected, unheard, or the gap between what was needed and what happened.
+"What you're carrying:" MUST name who it involves and what happened: "You told him you were struggling and got reassurance instead of presence."
 "What's really happening:" must name what the gap was: attention, care, presence, or reciprocity.
+BANNED opener: "Something in this connection left you unsettled" — write the actual dynamic instead.
 Do NOT drift to workplace or fitness language.`,
 
     FITNESS: `DOMAIN: FITNESS
 Stay in the physical/training lane. Do NOT mention colleagues, partners, or conflict unless explicitly in the entry.
-"What's really happening:" must be about the body, energy, or the inner voice around training and recovery.`,
+"What's really happening:" must be about the body, energy, or the inner voice around training and recovery.
+CRITICAL: If the person skipped or avoided exercise, do NOT assign "pride" as an emotion. Match the actual emotional tone — avoidance, guilt, resistance, or relief are more honest.
+If they worked out and felt good, THEN pride is valid. Read the entry before assigning emotions.`,
 
     GENERAL: `DOMAIN: GENERAL
-Use the person's EXACT words in "What's really happening:" — reflect what emotion is most present.
-BANNED phrase: "Something important is asking for clarity" — it is a placeholder and tells the person nothing.
+Use the person's EXACT words — especially vivid metaphors or images they used — directly in your summary.
+"What you're carrying:" must describe what the person actually wrote, not a generic label.
+"What's really happening:" must echo their specific phrasing. If they wrote "stuck behind glass watching my own life", use those words.
+BANNED opener: "Something is sitting with you" — write what is specifically sitting with them instead.
+BANNED phrase: "Something important is asking for clarity" — placeholder, forbidden.
 If the entry is short or unclear, be gentle and curious. Lead with warmth.`,
   };
 
@@ -449,11 +473,14 @@ If the entry is short or unclear, be gentle and curious. Lead with warmth.`,
 
 CORE RULES (never break these):
 - Write directly to "you". Never say "the user" or "this person".
-- Reference at least ONE concrete phrase or moment from the entry verbatim in your response.
+- "What you're carrying:" MUST use the person's exact situation — not a generic label. If they ran 5km, say so. If they cried, say so. If they said thank you when they wanted to push back, say so.
+- "What's really happening:" MUST quote or closely echo a specific phrase from the entry. The reader should recognise their own words.
+- "gentlenextstep" Option A and Option B MUST be specific to THIS entry — not generic advice that could apply to anyone.
 - Never invent events not in the entry.
-- BANNED: "Something important is asking for clarity" — forbidden, generic, useless.
-- BANNED: "A moment felt important" — unless the entry is truly one sentence with zero emotional signal.
-- Be specific to THIS entry. Generic responses are failures.
+- BANNED summary openers: "A workplace moment that left a mark", "Something is sitting with you", "Something in this connection left you unsettled" — these are placeholders. Write the actual situation.
+- BANNED: "Something important is asking for clarity" — useless placeholder.
+- BANNED: "A moment felt important" — unless the entry is one sentence with zero emotional signal.
+- If a person wrote a vivid, specific phrase (like "stuck behind glass watching my own life", or "handed a mask and told to put it back on") — that phrase MUST appear verbatim in your summary or corepattern. Do not paraphrase it away.
 
 ${domainGuidance[domain]}
 ${shortGuidance}
