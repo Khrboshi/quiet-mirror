@@ -38,7 +38,6 @@ export default function HomeBelowFold() {
             </p>
           </div>
 
-          {/* Single column on mobile, 3-col on desktop */}
           <div className="grid gap-3 sm:gap-4 md:grid-cols-3">
             {[
               {
@@ -91,7 +90,6 @@ export default function HomeBelowFold() {
             </p>
           </div>
 
-          {/* 1-col mobile, 2-col sm, 3-col lg */}
           <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
             {[
               {
@@ -116,7 +114,7 @@ export default function HomeBelowFold() {
                 premium: true,
               },
               {
-                label: "What\'s shifting in you",
+                label: "What's shifting in you",
                 example: "Hope, Openness, and Curiosity all rising &mdash; something is lifting",
                 color: "border-sky-500/20 bg-sky-500/5",
                 tag: "text-sky-400",
@@ -181,7 +179,6 @@ export default function HomeBelowFold() {
             </p>
           </div>
 
-          {/* Stacked on mobile &mdash; Premium card first on mobile so it's seen */}
           <div className="flex flex-col-reverse gap-4 md:grid md:grid-cols-2 md:gap-5">
 
             {/* Free */}
@@ -196,11 +193,10 @@ export default function HomeBelowFold() {
                 A calm place to write honestly &mdash; no commitment, no pressure,
                 no audience.
               </p>
-
               <ul className="mt-4 space-y-2.5 text-sm text-slate-400">
                 {[
                   "Write anytime, entries stay private",
-                  "AI reflections each month",
+                  "3 AI reflections per month",
                   "Gentle daily prompts",
                   "Basic pattern insights",
                 ].map((f) => (
@@ -210,8 +206,7 @@ export default function HomeBelowFold() {
                   </li>
                 ))}
               </ul>
-
-              <div className="mt-6">
+              <div className="mt-auto pt-6">
                 <Link
                   href="/magic-login"
                   className="inline-flex w-full items-center justify-center rounded-full border border-slate-700 bg-slate-900 px-5 py-3 text-sm font-medium text-slate-200 hover:bg-slate-800 transition-colors"
@@ -224,23 +219,25 @@ export default function HomeBelowFold() {
               </div>
             </div>
 
-            {/* Premium &mdash; shown first on mobile via flex-col-reverse */}
+            {/* Premium */}
             <div className="relative flex flex-col rounded-2xl border border-emerald-500/25 bg-emerald-500/[0.04] p-5 sm:p-6">
               <div className="absolute right-4 top-4 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-widest text-emerald-400">
                 Early access
               </div>
-
               <p className="text-xs font-semibold uppercase tracking-widest text-emerald-500/70">
                 Premium
               </p>
               <p className="mt-1 text-xl font-semibold text-white sm:text-2xl">
                 The roadmap to understanding yourself
               </p>
+              <div className="mt-2 flex items-baseline gap-1.5">
+                <span className="text-3xl font-bold text-white">$30</span>
+                <span className="text-sm text-slate-400">/ month</span>
+              </div>
               <p className="mt-2 text-sm text-slate-400">
                 For people who want to genuinely understand their patterns
                 &mdash; not just track them.
               </p>
-
               <ul className="mt-4 space-y-2.5 text-sm text-slate-300">
                 {[
                   "Everything in Free",
@@ -256,8 +253,7 @@ export default function HomeBelowFold() {
                   </li>
                 ))}
               </ul>
-
-              <div className="mt-6 flex flex-col gap-2">
+              <div className="mt-auto pt-6 flex flex-col gap-2">
                 <Link
                   href="/upgrade"
                   className="inline-flex w-full items-center justify-center rounded-full bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-emerald-400 shadow-lg shadow-emerald-500/20 transition-colors"
@@ -271,7 +267,6 @@ export default function HomeBelowFold() {
                   Preview what Premium shows you
                 </Link>
               </div>
-
               <p className="mt-3 text-center text-xs text-slate-700">
                 Secure checkout via Stripe &middot; Cancel anytime
               </p>
@@ -287,7 +282,6 @@ export default function HomeBelowFold() {
           <h2 className="text-xl font-semibold text-white sm:text-2xl">
             A few honest answers
           </h2>
-
           <div className="mt-6 space-y-5 sm:mt-7 sm:space-y-6">
             {[
               {
@@ -303,7 +297,7 @@ export default function HomeBelowFold() {
                 a: "They're yours. Stored securely, never used to train AI models, never shared. Havenly is built around the idea that your inner life belongs to you &mdash; not the internet.",
               },
               {
-                q: "What makes Premium worth it?",
+                q: "What makes Premium worth $30/month?",
                 a: "Free gives you a private space to write and reflect. Premium gives you the full picture &mdash; what repeats across weeks and months, a personal weekly summary written just for you, and the hidden patterns you can't see from inside them.",
               },
             ].map(({ q, a }) => (
@@ -316,7 +310,6 @@ export default function HomeBelowFold() {
               </div>
             ))}
           </div>
-
           <div className="mt-8 text-xs text-slate-700">
             <Link href="/privacy" className="text-emerald-600 hover:text-emerald-500 transition-colors">
               Read the Privacy Policy &rarr;
