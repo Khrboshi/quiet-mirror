@@ -70,6 +70,7 @@ const DOMAIN_SIGNALS: Record<Domain, WeightedSignal[]> = {
     { re: /\b(invisible|unheard|unseen|disconnected|lonely|taken for granted)\b/i, w: 2 },
   ],
   MONEY: [
+    { re: /\b(bank statements?|bank account|can't make rent|can't afford rent|can't pay)\b/i, w: 5 },
     { re: /\b(money|finances?|budget|debt|savings?|bills?|rent|mortgage)\b/i, w: 3 },
     { re: /\b(afford|expensive|broke|salary|income|spending|overdraft|loan)\b/i, w: 2 },
     { re: /\b(financial|bank|credit card|paycheck|cost of living)\b/i, w: 2 },
@@ -1127,13 +1128,23 @@ export async function generateReflectionFromEntry(input: Input): Promise<Reflect
     ? `RECENT PATTERN CONTEXT (use only if genuinely relevant):\n${recentThemes.map((t, i) => `${i + 1}) ${t}`).join("\n")}\n\n`
     : "";
 
-  // Pre-fill the carrying line start so the model completes it — not invents it.
-  // This structurally prevents generic openers like "There's a financial pressure sitting on you."
+  // Domain-aware anchor selection — pick the anchor most relevant to detected domain
+  const DOMAIN_ANCHOR_SIGNALS: Partial<Record<Domain, RegExp>> = {
+    MONEY:     /\b(bank|rent|afford|money|debt|paycheck|salary|broke|financial|bills?|savings?)\b/i,
+    HEALTH:    /\b(pain|doctor|test|diagnosis|scared|sick|illness|symptoms?)\b/i,
+    GRIEF:     /\b(died|death|miss|passed|gone|grief|loss|funeral|remember)\b/i,
+    PARENTING: /\b(son|daughter|kid|child|yelled|snapped|broke me|failing|parent)\b/i,
+    CREATIVE:  /\b(blank page|writing|novel|draw|music|block|staring|draft)\b/i,
+    IDENTITY:  /\b(performing|version of myself|who I am|underneath|lost|mask)\b/i,
+  };
+  const domainAnchorRe = DOMAIN_ANCHOR_SIGNALS[domain];
+  const bestAnchor = domainAnchorRe
+    ? (anchors.find(a => domainAnchorRe.test(a)) ?? anchors[0] ?? "")
+    : (anchors[0] ?? "");
+
   const carryingStarter = (() => {
-    const a = anchors[0] ?? "";
-    const clean = toSecondPerson(a.replace(/^["""]|["""]$/g, "").trim());
+    const clean = toSecondPerson(bestAnchor.replace(/^["""]|["""]$/g, "").trim());
     if (!clean || clean.length < 8) return "";
-    // Truncate to first ~6 words so model has room to complete naturally
     const words = clean.split(/\s+/);
     const starter = words.slice(0, Math.min(6, Math.floor(words.length * 0.6))).join(" ");
     return starter.length >= 6 ? starter : "";
