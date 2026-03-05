@@ -6,8 +6,8 @@ export default function HomeBelowFold() {
     <>
       {/* WHO IT'S FOR */}
       <section className="border-y border-slate-800/60 bg-slate-950/80">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-7 text-xs sm:flex-row sm:items-center sm:justify-between">
-          <p className="font-medium text-slate-500">Written for people who are:</p>
+        <div className="mx-auto max-w-6xl px-5 py-6">
+          <p className="mb-3 text-xs font-medium text-slate-500">Written for people who are:</p>
           <div className="flex flex-wrap gap-2">
             {[
               'Always "on", rarely checked in with themselves',
@@ -16,7 +16,7 @@ export default function HomeBelowFold() {
             ].map((label) => (
               <span
                 key={label}
-                className="rounded-full border border-slate-800 bg-slate-900/70 px-3 py-1 text-slate-400"
+                className="rounded-full border border-slate-800 bg-slate-900/70 px-3 py-1.5 text-xs text-slate-400"
               >
                 {label}
               </span>
@@ -26,9 +26,9 @@ export default function HomeBelowFold() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="border-b border-slate-800/60 bg-slate-950/90 py-16 sm:py-20">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="mb-10 max-w-lg">
+      <section className="border-b border-slate-800/60 bg-slate-950/90 py-12 sm:py-20">
+        <div className="mx-auto max-w-6xl px-5">
+          <div className="mb-8 max-w-lg">
             <h2 className="text-2xl font-semibold text-white sm:text-3xl">
               A practice that fits around your life
             </h2>
@@ -38,7 +38,8 @@ export default function HomeBelowFold() {
             </p>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-3">
+          {/* Single column on mobile, 3-col on desktop */}
+          <div className="grid gap-3 sm:gap-4 md:grid-cols-3">
             {[
               {
                 step: "1",
@@ -66,9 +67,9 @@ export default function HomeBelowFold() {
                 <p className={`text-xs font-semibold uppercase tracking-widest ${accent}`}>
                   {step}
                 </p>
-                <h3 className="mt-2 text-sm font-medium text-white">{title}</h3>
+                <h3 className="mt-2 text-[15px] font-medium text-white sm:text-sm">{title}</h3>
                 <p
-                  className="mt-2 text-xs leading-relaxed text-slate-500"
+                  className="mt-2 text-sm leading-relaxed text-slate-500 sm:text-xs"
                   dangerouslySetInnerHTML={{ __html: body }}
                 />
               </div>
@@ -78,9 +79,9 @@ export default function HomeBelowFold() {
       </section>
 
       {/* WHAT HAVENLY SHOWS YOU */}
-      <section className="border-b border-slate-800/60 bg-slate-950 py-16 sm:py-20">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="mb-10 max-w-lg">
+      <section className="border-b border-slate-800/60 bg-slate-950 py-12 sm:py-20">
+        <div className="mx-auto max-w-6xl px-5">
+          <div className="mb-8 max-w-lg">
             <h2 className="text-2xl font-semibold text-white sm:text-3xl">
               Your hidden patterns &mdash; finally visible
             </h2>
@@ -90,7 +91,8 @@ export default function HomeBelowFold() {
             </p>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {/* 1-col mobile, 2-col sm, 3-col lg */}
+          <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
             {[
               {
                 label: "What you feel most",
@@ -137,7 +139,7 @@ export default function HomeBelowFold() {
             ].map(({ label, example, color, tag, premium }) => (
               <div
                 key={label}
-                className={`relative rounded-2xl border p-5 ${color}`}
+                className={`relative rounded-2xl border p-4 sm:p-5 ${color}`}
               >
                 {premium && (
                   <span className="absolute right-3 top-3 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-widest text-emerald-400">
@@ -148,7 +150,7 @@ export default function HomeBelowFold() {
                   {label}
                 </p>
                 <p
-                  className="mt-2 text-xs leading-relaxed text-slate-400 italic"
+                  className="mt-2 text-sm leading-relaxed text-slate-400 italic sm:text-xs"
                   dangerouslySetInnerHTML={{ __html: example }}
                 />
               </div>
@@ -167,9 +169,9 @@ export default function HomeBelowFold() {
       </section>
 
       {/* PLANS */}
-      <section className="border-b border-slate-800/60 bg-slate-950 py-16 sm:py-20">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="mb-10 max-w-lg">
+      <section className="border-b border-slate-800/60 bg-slate-950 py-12 sm:py-20">
+        <div className="mx-auto max-w-6xl px-5">
+          <div className="mb-8 max-w-lg">
             <h2 className="text-2xl font-semibold text-white sm:text-3xl">
               Start free. Upgrade when it earns it.
             </h2>
@@ -179,14 +181,15 @@ export default function HomeBelowFold() {
             </p>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-2">
+          {/* Stacked on mobile &mdash; Premium card first on mobile so it's seen */}
+          <div className="flex flex-col-reverse gap-4 md:grid md:grid-cols-2 md:gap-5">
 
             {/* Free */}
-            <div className="flex flex-col rounded-2xl border border-slate-800 bg-slate-900/40 p-6">
+            <div className="flex flex-col rounded-2xl border border-slate-800 bg-slate-900/40 p-5 sm:p-6">
               <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
                 Free
               </p>
-              <p className="mt-1 text-2xl font-semibold text-white">
+              <p className="mt-1 text-xl font-semibold text-white sm:text-2xl">
                 The perfect private space to vent
               </p>
               <p className="mt-2 text-sm text-slate-500">
@@ -194,7 +197,7 @@ export default function HomeBelowFold() {
                 no audience.
               </p>
 
-              <ul className="mt-5 space-y-2.5 text-sm text-slate-400">
+              <ul className="mt-4 space-y-2.5 text-sm text-slate-400">
                 {[
                   "Write anytime, entries stay private",
                   "AI reflections each month",
@@ -202,16 +205,16 @@ export default function HomeBelowFold() {
                   "Basic pattern insights",
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2">
-                    <span className="mt-0.5 text-emerald-600">&#10003;</span>
+                    <span className="mt-0.5 shrink-0 text-emerald-600">&#10003;</span>
                     {f}
                   </li>
                 ))}
               </ul>
 
-              <div className="mt-auto pt-6">
+              <div className="mt-6">
                 <Link
                   href="/magic-login"
-                  className="inline-flex w-full items-center justify-center rounded-full border border-slate-700 bg-slate-900 px-5 py-2.5 text-sm font-medium text-slate-200 hover:bg-slate-800 transition-colors"
+                  className="inline-flex w-full items-center justify-center rounded-full border border-slate-700 bg-slate-900 px-5 py-3 text-sm font-medium text-slate-200 hover:bg-slate-800 transition-colors"
                 >
                   Start for free
                 </Link>
@@ -221,8 +224,8 @@ export default function HomeBelowFold() {
               </div>
             </div>
 
-            {/* Premium */}
-            <div className="relative flex flex-col rounded-2xl border border-emerald-500/25 bg-emerald-500/[0.04] p-6">
+            {/* Premium &mdash; shown first on mobile via flex-col-reverse */}
+            <div className="relative flex flex-col rounded-2xl border border-emerald-500/25 bg-emerald-500/[0.04] p-5 sm:p-6">
               <div className="absolute right-4 top-4 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-widest text-emerald-400">
                 Early access
               </div>
@@ -230,7 +233,7 @@ export default function HomeBelowFold() {
               <p className="text-xs font-semibold uppercase tracking-widest text-emerald-500/70">
                 Premium
               </p>
-              <p className="mt-1 text-2xl font-semibold text-white">
+              <p className="mt-1 text-xl font-semibold text-white sm:text-2xl">
                 The roadmap to understanding yourself
               </p>
               <p className="mt-2 text-sm text-slate-400">
@@ -238,7 +241,7 @@ export default function HomeBelowFold() {
                 &mdash; not just track them.
               </p>
 
-              <ul className="mt-5 space-y-2.5 text-sm text-slate-300">
+              <ul className="mt-4 space-y-2.5 text-sm text-slate-300">
                 {[
                   "Everything in Free",
                   "Unlimited reflections",
@@ -248,22 +251,22 @@ export default function HomeBelowFold() {
                   "Cancel anytime",
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2">
-                    <span className="mt-0.5 text-emerald-400">&#10003;</span>
+                    <span className="mt-0.5 shrink-0 text-emerald-400">&#10003;</span>
                     {f}
                   </li>
                 ))}
               </ul>
 
-              <div className="mt-auto pt-6 flex flex-col gap-2">
+              <div className="mt-6 flex flex-col gap-2">
                 <Link
                   href="/upgrade"
-                  className="inline-flex w-full items-center justify-center rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-emerald-400 shadow-lg shadow-emerald-500/20 transition-colors"
+                  className="inline-flex w-full items-center justify-center rounded-full bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-emerald-400 shadow-lg shadow-emerald-500/20 transition-colors"
                 >
                   Upgrade to Premium
                 </Link>
                 <Link
                   href="/insights/preview"
-                  className="inline-flex w-full items-center justify-center rounded-full border border-slate-700 px-5 py-2 text-xs font-medium text-slate-400 hover:bg-slate-900 transition-colors"
+                  className="inline-flex w-full items-center justify-center rounded-full border border-slate-700 px-5 py-2.5 text-xs font-medium text-slate-400 hover:bg-slate-900 transition-colors"
                 >
                   Preview what Premium shows you
                 </Link>
@@ -279,13 +282,13 @@ export default function HomeBelowFold() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-slate-950 py-14">
-        <div className="mx-auto max-w-3xl px-4">
+      <section className="bg-slate-950 py-12 sm:py-14">
+        <div className="mx-auto max-w-3xl px-5">
           <h2 className="text-xl font-semibold text-white sm:text-2xl">
             A few honest answers
           </h2>
 
-          <div className="mt-7 space-y-6">
+          <div className="mt-6 space-y-5 sm:mt-7 sm:space-y-6">
             {[
               {
                 q: "Is this therapy?",
@@ -305,7 +308,7 @@ export default function HomeBelowFold() {
               },
             ].map(({ q, a }) => (
               <div key={q} className="border-b border-slate-800/60 pb-5">
-                <p className="font-medium text-white">{q}</p>
+                <p className="text-[15px] font-medium text-white sm:text-base">{q}</p>
                 <p
                   className="mt-2 text-sm leading-relaxed text-slate-500"
                   dangerouslySetInnerHTML={{ __html: a }}
@@ -314,7 +317,7 @@ export default function HomeBelowFold() {
             ))}
           </div>
 
-          <div className="mt-10 text-xs text-slate-700">
+          <div className="mt-8 text-xs text-slate-700">
             <Link href="/privacy" className="text-emerald-600 hover:text-emerald-500 transition-colors">
               Read the Privacy Policy &rarr;
             </Link>
@@ -323,25 +326,25 @@ export default function HomeBelowFold() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="bg-slate-950 border-t border-slate-800/60 py-14">
-        <div className="mx-auto max-w-3xl px-4 text-center space-y-5">
+      <section className="border-t border-slate-800/60 bg-slate-950 py-12 sm:py-14">
+        <div className="mx-auto max-w-3xl px-5 text-center">
           <h2 className="text-2xl font-semibold text-white sm:text-3xl">
             Your thoughts deserve a quieter place to land.
           </h2>
-          <p className="text-sm text-slate-500 max-w-md mx-auto">
+          <p className="mx-auto mt-3 max-w-sm text-sm text-slate-500 sm:max-w-md">
             Start with a single entry. No pressure, no performance.
             Just write what's actually going on.
           </p>
-          <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+          <div className="mt-6 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
             <Link
               href="/magic-login"
-              className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-7 py-3 text-sm font-semibold text-slate-950 hover:bg-emerald-400 shadow-lg shadow-emerald-500/20 transition-colors"
+              className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-7 py-3.5 text-[15px] font-semibold text-slate-950 hover:bg-emerald-400 shadow-lg shadow-emerald-500/20 transition-colors sm:py-3 sm:text-sm"
             >
               Start for free &mdash; no card needed
             </Link>
             <Link
               href="/about"
-              className="inline-flex items-center justify-center rounded-full border border-slate-700 px-7 py-3 text-sm font-medium text-slate-400 hover:bg-slate-900 transition-colors"
+              className="inline-flex items-center justify-center rounded-full border border-slate-700 px-7 py-3.5 text-[15px] font-medium text-slate-400 hover:bg-slate-900 transition-colors sm:py-3 sm:text-sm"
             >
               Learn more about Havenly
             </Link>
