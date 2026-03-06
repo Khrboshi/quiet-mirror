@@ -317,7 +317,7 @@ export async function GET() {
 
   const { system, user } = buildSummaryPrompt({
     entryCount, topThemes, topEmotions, topCorepatterns,
-    momentum, trendUp, trendDown, firstEntryDate,
+    topDomains, momentum, trendUp, trendDown, firstEntryDate,
   });
 
   let summary: string;
