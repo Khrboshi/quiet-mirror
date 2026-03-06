@@ -3,52 +3,14 @@ import { NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { createClient } from "@supabase/supabase-js";
 import { ensureCreditsFresh } from "@/lib/creditRules";
+import {
+  bucketCorepattern,
+  normalizeAIResponseSignals,
+} from "@/lib/ai/normalizeInsightSignals";
 
 export const dynamic = "force-dynamic";
 
 const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
-
-const FALLBACK_THEMES = new Set([
-  "self-awareness",
-  "processing",
-  "presence",
-  "consistency",
-  "recovery",
-  "self-respect",
-  "motivation",
-  "recognition",
-  "boundaries",
-  "self-worth",
-  "connection",
-  "visibility",
-]);
-
-const FALLBACK_EMOTIONS = new Set([
-  "uncertainty",
-  "restlessness",
-  "quiet courage",
-  "pride",
-  "tiredness",
-  "determination",
-  "frustration",
-  "hurt",
-  "longing",
-  "confusion",
-]);
-
-const FALLBACK_CP_PREFIXES = [
-  "you're in the middle of something",
-  "you're proud of progress, but still learning the line",
-  "you're navigating a tension between your professional self-worth",
-  "you're trying to protect your self-respect while staying connected",
-];
-
-const isFallbackT = (k: string) => FALLBACK_THEMES.has(k.toLowerCase().trim());
-const isFallbackE = (k: string) => FALLBACK_EMOTIONS.has(k.toLowerCase().trim());
-const isFallbackCP = (k: string) => {
-  const lower = k.toLowerCase().trim();
-  return FALLBACK_CP_PREFIXES.some((prefix) => lower.startsWith(prefix));
-};
 
 type PlanType = "FREE" | "TRIAL" | "PREMIUM";
 
@@ -57,12 +19,7 @@ function normalizePlan(v: unknown): PlanType {
   return p === "PREMIUM" || p === "TRIAL" ? (p as PlanType) : "FREE";
 }
 
-function display(k: string) {
-  const t = k.trim();
-  return t.charAt(0).toUpperCase() + t.slice(1);
-}
-
-function parseAI(raw: unknown): any {
+function parseAI(raw: any) {
   try {
     return typeof raw === "string" ? JSON.parse(raw) : raw;
   } catch {
@@ -172,9 +129,7 @@ Rules:
 - End with one quiet, open question — genuinely curious, not leading.
 - Keep it under 200 words total.`;
 
-  const parts: string[] = [
-    `This person has written ${entryCount} journal entries since ${since}.`,
-  ];
+  const parts: string[] = [`This person has written ${entryCount} journal entries since ${since}.`];
 
   if (domainLabels) {
     parts.push(`The areas of life they write about most: ${domainLabels}.`);
@@ -222,7 +177,6 @@ export async function GET() {
   const userId = session.user.id;
 
   await ensureCreditsFresh({ supabase, userId });
-
   const { data: credits } = await supabase
     .from("user_credits")
     .select("plan_type")
@@ -250,29 +204,18 @@ export async function GET() {
 
   if (isFresh) {
     return NextResponse.json(
-      {
-        summary: cachedSummary,
-        generatedAt: cachedAt,
-        cached: true,
-      },
+      { summary: cachedSummary, generatedAt: cachedAt, cached: true },
       { headers: { "Cache-Control": "no-store" } }
     );
   }
 
-  const { data: rows, error: rowsError } = await supabase
+  const { data: rows } = await supabase
     .from("journal_entries")
     .select("ai_response, created_at")
     .eq("user_id", userId)
     .not("ai_response", "is", null)
     .order("created_at", { ascending: false })
     .limit(2000);
-
-  if (rowsError) {
-    return NextResponse.json(
-      { error: "Summary data not available yet." },
-      { status: 500 }
-    );
-  }
 
   if (!rows?.length) {
     return NextResponse.json({ error: "Not enough data yet." }, { status: 422 });
@@ -287,7 +230,6 @@ export async function GET() {
   const FOUR_WEEKS = 28 * 24 * 60 * 60 * 1000;
   const recentEm: Record<string, number> = {};
   const olderEm: Record<string, number> = {};
-
   let firstEntryDate: string | null = null;
   let entryCount = 0;
 
@@ -295,10 +237,11 @@ export async function GET() {
     const parsed = parseAI((row as any).ai_response);
     if (!parsed) continue;
 
-    entryCount++;
+    const normalized = normalizeAIResponseSignals(parsed);
 
-    const created = String((row as any).created_at ?? "");
-    if (created && (!firstEntryDate || new Date(created) < new Date(firstEntryDate))) {
+    entryCount++;
+    const created = (row as any).created_at;
+    if (!firstEntryDate || new Date(created) < new Date(firstEntryDate)) {
       firstEntryDate = created;
     }
 
@@ -306,32 +249,23 @@ export async function GET() {
     const isRecent = age <= FOUR_WEEKS;
     const isOlder = age > FOUR_WEEKS && age <= FOUR_WEEKS * 2;
 
-    const entryDomain =
-      typeof parsed?.domain === "string" ? parsed.domain.trim().toUpperCase() : "";
-    if (entryDomain && entryDomain !== "GENERAL") {
-      domains[entryDomain] = (domains[entryDomain] || 0) + 1;
+    if (normalized.domain) {
+      domains[normalized.domain] = (domains[normalized.domain] || 0) + 1;
     }
 
-    for (const t of Array.isArray(parsed?.themes) ? parsed.themes : []) {
-      const k = String(t || "").trim();
-      if (!k || isFallbackT(k)) continue;
-      const d = display(k);
-      themes[d] = (themes[d] || 0) + 1;
+    for (const t of normalized.themes) {
+      themes[t] = (themes[t] || 0) + 1;
     }
 
-    for (const e of Array.isArray(parsed?.emotions) ? parsed.emotions : []) {
-      const k = String(e || "").trim();
-      if (!k || isFallbackE(k)) continue;
-      const d = display(k);
-      emotions[d] = (emotions[d] || 0) + 1;
-      if (isRecent) recentEm[d] = (recentEm[d] || 0) + 1;
-      if (isOlder) olderEm[d] = (olderEm[d] || 0) + 1;
+    for (const e of normalized.emotions) {
+      emotions[e] = (emotions[e] || 0) + 1;
+      if (isRecent) recentEm[e] = (recentEm[e] || 0) + 1;
+      if (isOlder) olderEm[e] = (olderEm[e] || 0) + 1;
     }
 
-    const cp = typeof parsed?.corepattern === "string" ? parsed.corepattern.trim() : "";
-    if (cp.length >= 20 && cp.length <= 200 && !isFallbackCP(cp)) {
-      const d = display(cp);
-      corepatterns[d] = (corepatterns[d] || 0) + 1;
+    if (normalized.corepattern) {
+      const bucketed = bucketCorepattern(normalized.corepattern);
+      corepatterns[bucketed] = (corepatterns[bucketed] || 0) + 1;
     }
   }
 
@@ -361,7 +295,6 @@ export async function GET() {
   for (const [e, rc] of Object.entries(recentEm)) {
     if (rc > (olderEm[e] ?? 0) + 1) trendUp.push(e);
   }
-
   for (const [e, oc] of Object.entries(olderEm)) {
     if (oc > (recentEm[e] ?? 0) + 1) trendDown.push(e);
   }
@@ -387,13 +320,15 @@ export async function GET() {
     "despair",
     "hopeless",
     "numb",
-    "exhausted",
-    "overwhelmed",
+    "exhaustion",
+    "overwhelm",
     "trapped",
     "grief",
     "shame",
     "guilt",
     "defeated",
+    "fear",
+    "anxiety",
   ]);
 
   let pos = 0;
@@ -430,7 +365,6 @@ export async function GET() {
   });
 
   let summary: string;
-
   try {
     summary = await callGroq(system, user);
   } catch (err) {
@@ -448,35 +382,21 @@ export async function GET() {
     );
   }
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-  if (!supabaseUrl || !serviceRoleKey) {
-    return NextResponse.json(
-      { error: "Missing Supabase server environment variables." },
-      { status: 500 }
-    );
-  }
-
-  const adminClient = createClient(supabaseUrl, serviceRoleKey);
-
-  const generatedAt = new Date().toISOString();
-
-  await adminClient.from("profiles").upsert(
-    {
-      id: userId,
-      weekly_summary: summary,
-      weekly_summary_generated_at: generatedAt,
-    },
-    { onConflict: "id" }
+  const adminClient = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
+  const generatedAt = new Date().toISOString();
+  await adminClient
+    .from("profiles")
+    .upsert(
+      { id: userId, weekly_summary: summary, weekly_summary_generated_at: generatedAt },
+      { onConflict: "id" }
+    );
+
   return NextResponse.json(
-    {
-      summary,
-      generatedAt,
-      cached: false,
-    },
+    { summary, generatedAt, cached: false },
     { headers: { "Cache-Control": "no-store" } }
   );
 }
@@ -492,26 +412,21 @@ export async function POST() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-  if (!supabaseUrl || !serviceRoleKey) {
-    return NextResponse.json(
-      { error: "Missing Supabase server environment variables." },
-      { status: 500 }
-    );
-  }
-
-  const adminClient = createClient(supabaseUrl, serviceRoleKey);
-
-  await adminClient.from("profiles").upsert(
-    {
-      id: session.user.id,
-      weekly_summary: null,
-      weekly_summary_generated_at: null,
-    },
-    { onConflict: "id" }
+  const adminClient = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
+
+  await adminClient
+    .from("profiles")
+    .upsert(
+      {
+        id: session.user.id,
+        weekly_summary: null,
+        weekly_summary_generated_at: null,
+      },
+      { onConflict: "id" }
+    );
 
   return new Response(null, { status: 204 });
 }
