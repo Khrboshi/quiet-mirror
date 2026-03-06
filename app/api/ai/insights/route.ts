@@ -2,6 +2,10 @@
 import { NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { ensureCreditsFresh } from "@/lib/creditRules";
+import {
+  bucketCorepattern,
+  normalizeAIResponseSignals,
+} from "@/lib/ai/normalizeInsightSignals";
 
 export const dynamic = "force-dynamic";
 
@@ -25,66 +29,22 @@ async function getUserPlanType(
   return normalizePlan((data as any)?.plan_type);
 }
 
-// ─── Fallback pollution filter ────────────────────────────────────────────────
-const FALLBACK_THEMES = new Set([
-  "self-awareness", "processing", "presence",
-  "consistency", "recovery", "self-respect", "motivation",
-  "recognition", "boundaries", "self-worth",
-  "connection", "visibility",
-]);
-const FALLBACK_EMOTIONS = new Set([
-  "uncertainty", "restlessness", "quiet courage",
-  "pride", "tiredness", "determination",
-  "frustration", "hurt", "longing", "confusion",
-]);
-// All 4 domain template fallback corepatterns — exact match (case-insensitive prefix)
-const FALLBACK_COREPATTERNS = new Set([
-  "you're in the middle of something",
-  "you're proud of progress, but still learning the line",
-  "you're navigating a tension between your professional self-worth",
-  "you're trying to protect your self-respect while staying connected",
-]);
-
-const isFallback = (set: Set<string>, k: string) =>
-  set.has(k.toLowerCase().trim());
-
-function isFallbackCP(k: string): boolean {
-  const lower = k.toLowerCase().trim();
-  for (const prefix of FALLBACK_COREPATTERNS) {
-    if (lower.startsWith(prefix)) return true;
-  }
-  return false;
-}
-
-function display(k: string) {
-  const t = k.trim();
-  return t.charAt(0).toUpperCase() + t.slice(1);
-}
-
-// ─── Week-bucket helpers ──────────────────────────────────────────────────────
-// Returns ISO week key "YYYY-WW" for a date
 function isoWeek(date: Date): string {
   const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
   const dayNum = d.getUTCDay() || 7;
   d.setUTCDate(d.getUTCDate() + 4 - dayNum);
   const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  const weekNo = Math.ceil(
-    ((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7
-  );
+  const weekNo = Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
   return `${d.getUTCFullYear()}-${String(weekNo).padStart(2, "0")}`;
 }
 
-// Sort week keys chronologically
 function sortedWeeks(keys: string[]): string[] {
   return [...new Set(keys)].sort();
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-
 export async function GET() {
   const supabase = createServerSupabase();
 
-  // ✅ getSession — cookie-local read, no network call
   const {
     data: { session },
   } = await supabase.auth.getSession();
@@ -103,7 +63,7 @@ export async function GET() {
     .select("ai_response, created_at")
     .eq("user_id", session.user.id)
     .not("ai_response", "is", null)
-    .order("created_at", { ascending: true }) // oldest first for timeline
+    .order("created_at", { ascending: true })
     .limit(2000);
 
   if (error) {
@@ -113,17 +73,14 @@ export async function GET() {
     );
   }
 
-  // ── Aggregation buckets ────────────────────────────────────────────────────
   const themes: Record<string, number> = {};
   const emotions: Record<string, number> = {};
   const corepatterns: Record<string, number> = {};
   const domains: Record<string, number> = {};
 
-  // Weekly: { [week]: { [emotion|theme]: count } }
   const weeklyThemes: Record<string, Record<string, number>> = {};
   const weeklyEmotions: Record<string, Record<string, number>> = {};
 
-  // Trend window: last 4 weeks vs prior 4 weeks
   const now = Date.now();
   const FOUR_WEEKS = 28 * 24 * 60 * 60 * 1000;
   const recentEmotions: Record<string, number> = {};
@@ -146,6 +103,8 @@ export async function GET() {
       continue;
     }
 
+    const normalized = normalizeAIResponseSignals(parsed);
+
     entryCount++;
     const entryDate = new Date((row as any).created_at ?? now);
     if (!firstEntryDate) firstEntryDate = entryDate;
@@ -156,17 +115,11 @@ export async function GET() {
     const isRecent = age <= FOUR_WEEKS;
     const isOlder = age > FOUR_WEEKS && age <= FOUR_WEEKS * 2;
 
-    // Domain
-    const domain = typeof parsed?.domain === "string" ? parsed.domain.trim().toUpperCase() : "";
-    if (domain && domain !== "GENERAL") {
-      domains[domain] = (domains[domain] || 0) + 1;
+    if (normalized.domain) {
+      domains[normalized.domain] = (domains[normalized.domain] || 0) + 1;
     }
 
-    // Themes
-    for (const item of Array.isArray(parsed?.themes) ? parsed.themes : []) {
-      const k = String(item || "").trim();
-      if (!k || isFallback(FALLBACK_THEMES, k)) continue;
-      const d = display(k);
+    for (const d of normalized.themes) {
       themes[d] = (themes[d] || 0) + 1;
       if (!weeklyThemes[weekKey]) weeklyThemes[weekKey] = {};
       weeklyThemes[weekKey][d] = (weeklyThemes[weekKey][d] || 0) + 1;
@@ -174,11 +127,7 @@ export async function GET() {
       if (isOlder) olderThemes[d] = (olderThemes[d] || 0) + 1;
     }
 
-    // Emotions
-    for (const item of Array.isArray(parsed?.emotions) ? parsed.emotions : []) {
-      const k = String(item || "").trim();
-      if (!k || isFallback(FALLBACK_EMOTIONS, k)) continue;
-      const d = display(k);
+    for (const d of normalized.emotions) {
       emotions[d] = (emotions[d] || 0) + 1;
       if (!weeklyEmotions[weekKey]) weeklyEmotions[weekKey] = {};
       weeklyEmotions[weekKey][d] = (weeklyEmotions[weekKey][d] || 0) + 1;
@@ -186,21 +135,12 @@ export async function GET() {
       if (isOlder) olderEmotions[d] = (olderEmotions[d] || 0) + 1;
     }
 
-    // Corepatterns
-    const cp =
-      typeof parsed?.corepattern === "string" ? parsed.corepattern.trim() : "";
-    if (
-      cp.length >= 20 &&
-      cp.length <= 200 &&
-      !isFallbackCP(cp)
-    ) {
-      const d = display(cp);
-      corepatterns[d] = (corepatterns[d] || 0) + 1;
+    if (normalized.corepattern) {
+      const bucketed = bucketCorepattern(normalized.corepattern);
+      corepatterns[bucketed] = (corepatterns[bucketed] || 0) + 1;
     }
   }
 
-  // ── Weekly sparkline data for top 4 themes + top 4 emotions ──────────────
-  // Only last 8 weeks for readability
   const allWeeks = sortedWeeks([
     ...Object.keys(weeklyThemes),
     ...Object.keys(weeklyEmotions),
@@ -216,7 +156,6 @@ export async function GET() {
     .slice(0, 4)
     .map(([k]) => k);
 
-  // sparkline: array of weekly counts, one per week in allWeeks
   const themeSparklines: Record<string, number[]> = {};
   for (const k of topThemeKeys) {
     themeSparklines[k] = allWeeks.map((w) => weeklyThemes[w]?.[k] ?? 0);
@@ -227,9 +166,9 @@ export async function GET() {
     emotionSparklines[k] = allWeeks.map((w) => weeklyEmotions[w]?.[k] ?? 0);
   }
 
-  // ── Trend ──────────────────────────────────────────────────────────────────
   const trendUp: string[] = [];
   const trendDown: string[] = [];
+
   for (const [e, rc] of Object.entries(recentEmotions)) {
     if (rc > (olderEmotions[e] ?? 0) + 1) trendUp.push(e);
   }
@@ -237,19 +176,51 @@ export async function GET() {
     if (oc > (recentEmotions[e] ?? 0) + 1) trendDown.push(e);
   }
 
-  // ── Momentum word ─────────────────────────────────────────────────────────
-  // Compares recent vs older emotion landscape for a single-word label.
-  // Based on balance of positive/active vs heavy/withdrawing emotions.
   const POSITIVE_EMOTIONS = new Set([
-    "calm", "hope", "hopeful", "joy", "joyful", "proud", "gratitude",
-    "grateful", "relief", "excited", "excitement", "contentment", "content",
-    "clarity", "clear", "motivated", "empowered", "open", "light",
-    "energised", "energized", "curious", "optimistic",
+    "calm",
+    "hope",
+    "hopeful",
+    "joy",
+    "joyful",
+    "proud",
+    "gratitude",
+    "grateful",
+    "relief",
+    "excited",
+    "excitement",
+    "contentment",
+    "content",
+    "clarity",
+    "clear",
+    "motivated",
+    "empowered",
+    "open",
+    "light",
+    "energised",
+    "energized",
+    "curious",
+    "optimistic",
   ]);
+
   const HEAVY_EMOTIONS = new Set([
-    "dread", "despair", "hopeless", "numb", "exhausted", "overwhelmed",
-    "trapped", "stuck", "grief", "shame", "guilt", "worthless",
-    "powerless", "defeated", "withdrawn", "isolated",
+    "dread",
+    "despair",
+    "hopeless",
+    "numb",
+    "exhaustion",
+    "overwhelm",
+    "trapped",
+    "stuck",
+    "grief",
+    "shame",
+    "guilt",
+    "worthless",
+    "powerless",
+    "defeated",
+    "withdrawn",
+    "isolated",
+    "fear",
+    "anxiety",
   ]);
 
   let positiveScore = 0;
@@ -268,7 +239,6 @@ export async function GET() {
   const hasRealData =
     Object.keys(themes).length >= 2 || Object.keys(emotions).length >= 2;
 
-  // Total entries (including those not yet reflected on)
   const { count: totalEntryCount } = await supabase
     .from("journal_entries")
     .select("id", { count: "exact", head: true })
@@ -279,8 +249,8 @@ export async function GET() {
       themes,
       emotions,
       corepatterns,
-      entryCount,           // entries WITH reflections (used for pattern quality gate)
-      totalEntryCount: totalEntryCount ?? entryCount, // ALL entries (shown in header)
+      entryCount,
+      totalEntryCount: totalEntryCount ?? entryCount,
       hasRealData,
       firstEntryDate: firstEntryDate?.toISOString() ?? null,
       lastEntryDate: lastEntryDate?.toISOString() ?? null,
