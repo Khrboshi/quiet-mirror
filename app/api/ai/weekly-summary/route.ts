@@ -92,6 +92,7 @@ function buildSummaryPrompt(opts: {
   topThemes: string[];
   topEmotions: string[];
   topCorepatterns: string[];
+  topDomains: string[];
   momentum: string;
   trendUp: string[];
   trendDown: string[];
@@ -99,55 +100,71 @@ function buildSummaryPrompt(opts: {
 }): { system: string; user: string } {
   const {
     entryCount, topThemes, topEmotions, topCorepatterns,
-    momentum, trendUp, trendDown, firstEntryDate,
+    topDomains, momentum, trendUp, trendDown, firstEntryDate,
   } = opts;
 
   const since = firstEntryDate
     ? new Date(firstEntryDate).toLocaleDateString(undefined, { month: "long", year: "numeric" })
     : "recently";
 
+  const DOMAIN_LABELS: Record<string, string> = {
+    MONEY: "money and finances", WORK: "work and career",
+    RELATIONSHIP: "relationships", HEALTH: "health and body",
+    GRIEF: "grief and loss", PARENTING: "parenting",
+    CREATIVE: "creativity and creative work", IDENTITY: "identity and self",
+    FITNESS: "fitness and physical wellbeing",
+  };
+  const domainLabels = topDomains
+    .slice(0, 3)
+    .map(d => DOMAIN_LABELS[d] ?? d.toLowerCase())
+    .join(", ");
+
   const system = `You are Havenly, a calm and perceptive AI journaling companion.
 Your job is to write a short, warm, personal summary of what you've noticed across a user's journal entries.
 
 Rules:
 - Write 2-3 short paragraphs. No more.
-- Speak directly to the user ("you", "your") but gently — not clinically.
-- Be specific about their actual patterns — don't be vague or generic.
-- Do NOT use therapy-speak, jargon, or prescriptive advice.
+- Speak directly to the user ("you", "your") — warmly, not clinically.
+- Be specific: name their actual emotions, themes, and what areas of life they write about most.
+- Do NOT use therapy-speak, jargon, or prescriptive advice ("you should", "try to", "consider").
 - Do NOT list bullet points or use headers.
-- Sound like a thoughtful friend who has been paying attention, not a chatbot.
-- Acknowledge that patterns can be hard to see from inside them.
-- End with one quiet, open question — not demanding, just curious.
-- Keep it under 180 words total.`;
+- Sound like a thoughtful friend who has been quietly paying attention.
+- The first paragraph should name what they write about most and what emotion sits underneath it.
+- The second paragraph should name the pattern — what keeps showing up, and what it might mean.
+- End with one quiet, open question — genuinely curious, not leading.
+- Keep it under 200 words total.`;
 
   const parts: string[] = [
-    `This user has written ${entryCount} journal entries since ${since}.`,
+    `This person has written ${entryCount} journal entries since ${since}.`,
   ];
 
+  if (domainLabels) {
+    parts.push(`The areas of life they write about most: ${domainLabels}.`);
+  }
   if (topEmotions.length) {
-    parts.push(`The emotions that come up most often: ${topEmotions.slice(0, 4).join(", ")}.`);
+    parts.push(`Emotions that appear most often: ${topEmotions.slice(0, 4).join(", ")}.`);
   }
   if (topThemes.length) {
-    parts.push(`Recurring themes across their entries: ${topThemes.slice(0, 4).join(", ")}.`);
+    parts.push(`Recurring themes: ${topThemes.slice(0, 4).join(", ")}.`);
   }
   if (topCorepatterns.length) {
-    parts.push(`The most common underlying dynamic Havenly detected: "${topCorepatterns[0]}".`);
+    parts.push(`The core pattern Havenly detected most often: "${topCorepatterns[0]}".`);
     if (topCorepatterns[1]) {
-      parts.push(`Also recurring: "${topCorepatterns[1]}".`);
+      parts.push(`Second most recurring: "${topCorepatterns[1]}".`);
     }
   }
   if (trendUp.length) {
-    parts.push(`Recently rising: ${trendUp.slice(0, 3).join(", ")}.`);
+    parts.push(`Emotions rising recently: ${trendUp.slice(0, 3).join(", ")}.`);
   }
   if (trendDown.length) {
-    parts.push(`Recently fading: ${trendDown.slice(0, 3).join(", ")}.`);
+    parts.push(`Emotions fading recently: ${trendDown.slice(0, 3).join(", ")}.`);
   }
   if (momentum && momentum !== "Steady") {
-    parts.push(`Overall momentum: ${momentum}.`);
+    parts.push(`Overall emotional momentum right now: ${momentum}.`);
   }
 
   const user = parts.join("\n") +
-    "\n\nWrite the summary now. No preamble, no sign-off. Just the paragraphs.";
+    "\n\nWrite the summary now. Start with what you've noticed about them — not a greeting, not a preamble.";
 
   return { system, user };
 }
@@ -210,6 +227,7 @@ export async function GET() {
   const themes: Record<string, number> = {};
   const emotions: Record<string, number> = {};
   const corepatterns: Record<string, number> = {};
+  const domains: Record<string, number> = {};
 
   const now = Date.now();
   const FOUR_WEEKS = 28 * 24 * 60 * 60 * 1000;
@@ -231,6 +249,12 @@ export async function GET() {
     const age = now - new Date(created).getTime();
     const isRecent = age <= FOUR_WEEKS;
     const isOlder = age > FOUR_WEEKS && age <= FOUR_WEEKS * 2;
+
+    // Domain
+    const entryDomain = typeof parsed?.domain === "string" ? parsed.domain.trim().toUpperCase() : "";
+    if (entryDomain && entryDomain !== "GENERAL") {
+      domains[entryDomain] = (domains[entryDomain] || 0) + 1;
+    }
 
     for (const t of Array.isArray(parsed.themes) ? parsed.themes : []) {
       const k = String(t || "").trim();
@@ -255,6 +279,7 @@ export async function GET() {
     }
   }
 
+  const topDomains = Object.entries(domains).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([k]) => k);
   const topThemes = Object.entries(themes).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([k]) => k);
   const topEmotions = Object.entries(emotions).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([k]) => k);
   const topCorepatterns = Object.entries(corepatterns).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([k]) => k);
