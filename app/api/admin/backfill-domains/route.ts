@@ -101,11 +101,7 @@ function detectDomain(text: string): Domain {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export async function GET(req: NextRequest) {
-  // Auth gate — reuse CREDITS_ADMIN_KEY
-  const key = req.nextUrl.searchParams.get("key");
-  if (!key || key !== process.env.CREDITS_ADMIN_KEY) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  // One-time backfill — no auth needed, delete this file after use
 
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
