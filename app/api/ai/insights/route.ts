@@ -117,6 +117,7 @@ export async function GET() {
   const themes: Record<string, number> = {};
   const emotions: Record<string, number> = {};
   const corepatterns: Record<string, number> = {};
+  const domains: Record<string, number> = {};
 
   // Weekly: { [week]: { [emotion|theme]: count } }
   const weeklyThemes: Record<string, Record<string, number>> = {};
@@ -154,6 +155,12 @@ export async function GET() {
     const age = now - entryDate.getTime();
     const isRecent = age <= FOUR_WEEKS;
     const isOlder = age > FOUR_WEEKS && age <= FOUR_WEEKS * 2;
+
+    // Domain
+    const domain = typeof parsed?.domain === "string" ? parsed.domain.trim().toUpperCase() : "";
+    if (domain && domain !== "GENERAL") {
+      domains[domain] = (domains[domain] || 0) + 1;
+    }
 
     // Themes
     for (const item of Array.isArray(parsed?.themes) ? parsed.themes : []) {
@@ -284,6 +291,7 @@ export async function GET() {
       },
       trend: { up: trendUp.slice(0, 4), down: trendDown.slice(0, 4) },
       momentum,
+      domains,
     },
     { headers: { "Cache-Control": "no-store, max-age=0" } }
   );
