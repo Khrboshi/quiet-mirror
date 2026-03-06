@@ -77,8 +77,8 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Reflection card &mdash; HIDDEN on mobile, shown md+ only */}
-          <div className="relative mx-auto hidden w-full max-w-[360px] shrink-0 md:block">
+          {/* Reflection card &mdash; shown on all screens */}
+          <div className="relative mx-auto w-full max-w-[360px] shrink-0">
 
             <div className="pointer-events-none absolute -inset-4 rounded-3xl bg-emerald-500/[0.06] blur-2xl" />
 
@@ -131,33 +131,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Mobile-only: mini social proof strip below CTA */}
-          <div className="sm:hidden -mt-2 rounded-2xl border border-slate-800/40 bg-slate-900/30 p-4">
-            <p className="mb-3 text-[11px] font-medium uppercase tracking-widest text-slate-600">
-              What Havenly notices
-            </p>
-            <div className="space-y-2">
-              <div className="flex items-start gap-2.5">
-                <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-violet-400" />
-                <p className="text-[13px] leading-snug text-slate-400">
-                  <span className="text-slate-200">Curiosity</span> showing up 14 times this month
-                </p>
-              </div>
-              <div className="flex items-start gap-2.5">
-                <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400" />
-                <p className="text-[13px] leading-snug text-slate-400">
-                  <span className="text-slate-200">Communication</span> in 10 of your last 15 entries
-                </p>
-              </div>
-              <div className="flex items-start gap-2.5">
-                <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" />
-                <p className="text-[13px] leading-snug text-slate-400 italic">
-                  &ldquo;You&rsquo;re trying to make sense of the moment while
-                  protecting your self-respect.&rdquo;
-                </p>
-              </div>
-            </div>
-          </div>
+
 
         </div>
       </section>
