@@ -37,10 +37,19 @@ export default async function Page({
     initialReflection = null;
   }
 
+  // Cheap count to detect first-entry moment
+  const { count: entryCount } = await supabase
+    .from("journal_entries")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", session.user.id);
+
+  const isFirstEntry = (entryCount ?? 0) <= 1;
+
   return (
     <JournalEntryClient
       entry={entry}
       initialReflection={initialReflection}
+      isFirstEntry={isFirstEntry}
     />
   );
 }
