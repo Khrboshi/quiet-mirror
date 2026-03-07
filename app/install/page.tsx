@@ -47,9 +47,25 @@ export default function InstallPage() {
           ) : (
             <>
               {platformHint === "ios" && isSafariIOS ? (
-                <div className="mt-2 text-slate-300">
-                  <p>
-                    On iPhone/iPad (Safari): tap <b>Share</b> → <b>Add to Home Screen</b>.
+                <div className="mt-4 text-slate-300">
+                  <p className="text-sm text-slate-400 mb-4">Follow these steps in Safari:</p>
+                  <ol className="space-y-3">
+                    {[
+                      { step: "1", text: <>Tap the <b className="text-white">Share</b> button — the box with an arrow pointing up, at the bottom of your screen.</> },
+                      { step: "2", text: <>Scroll down and tap <b className="text-white">Add to Home Screen</b>.</> },
+                      { step: "3", text: <>Tap <b className="text-white">Add</b> in the top right corner.</> },
+                      { step: "4", text: <>Open Havenly from your Home Screen — sign-in links will now open directly in the app.</> },
+                    ].map(({ step, text }) => (
+                      <li key={step} className="flex items-start gap-3">
+                        <span className="flex-shrink-0 w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center justify-center mt-0.5">
+                          {step}
+                        </span>
+                        <span className="text-sm leading-relaxed">{text}</span>
+                      </li>
+                    ))}
+                  </ol>
+                  <p className="mt-4 text-xs text-slate-500">
+                    Not seeing the Share button? Make sure you&apos;re using Safari, not Chrome or another browser.
                   </p>
                 </div>
               ) : (
