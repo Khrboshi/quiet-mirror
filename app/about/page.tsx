@@ -1,6 +1,18 @@
 // app/about/page.tsx
 import Link from "next/link";
 
+export const metadata = {
+  title: "About Havenly",
+  description: "Havenly is a private AI journaling companion — built for people who want to understand themselves better, not optimize themselves harder.",
+  openGraph: {
+    title: "About Havenly — Private AI Journaling",
+    description: "Built for people who want to understand themselves better, not optimize themselves harder.",
+    url: "https://havenly-2-1.vercel.app/about",
+  },
+};
+
+
+
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-hvn-bg text-hvn-text-primary bg-hvn-page-gradient">
