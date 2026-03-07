@@ -224,69 +224,6 @@ function FreeInsightTeaser({
   );
 }
 
-// ── Welcome panel (new users, entryCount === 0) ──────────────────────────────
-
-function WelcomePanel({ name }: { name: string | null }) {
-  return (
-    <div className="mb-8 rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/5 to-transparent p-7">
-      <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-emerald-500/60">
-        Welcome to Havenly
-      </p>
-      <h2 className="text-lg font-semibold text-white leading-snug">
-        {name ? `Good to have you here, ${name}.` : "Good to have you here."}
-      </h2>
-      <p className="mt-2 text-sm text-slate-400 leading-relaxed max-w-lg">
-        Havenly is a private space to write what&apos;s on your mind. After each entry,
-        an AI reflection notices what&apos;s beneath the surface — and over time, patterns
-        start to emerge across your writing.
-      </p>
-      <p className="mt-2 text-sm text-slate-500 leading-relaxed max-w-lg">
-        Start with whatever&apos;s present right now. One sentence is always enough.
-      </p>
-      <div className="mt-5 flex flex-wrap items-center gap-3">
-        <Link
-          href="/journal/new"
-          className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-emerald-400 transition"
-        >
-          Write your first entry →
-        </Link>
-        <span className="text-xs text-slate-600">Takes less than a minute.</span>
-      </div>
-    </div>
-  );
-}
-
-// ── Post-first-reflection card ────────────────────────────────────────────────
-
-function PatternStartedCard({ emotion, theme }: { emotion: string | null; theme: string | null }) {
-  return (
-    <div className="mb-8 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-6">
-      <div className="flex items-start gap-3">
-        <span className="text-xl mt-0.5">✦</span>
-        <div>
-          <p className="text-sm font-semibold text-emerald-300">
-            Your pattern history has started.
-          </p>
-          <p className="mt-1.5 text-sm text-slate-400 leading-relaxed">
-            {emotion || theme
-              ? `Havenly noticed ${emotion ? emotion.toLowerCase() : theme!.toLowerCase()} in your first entry. Keep writing — patterns become visible across entries over time.`
-              : "Havenly has noted your first reflection. Keep writing — patterns become visible across entries over time."}
-          </p>
-          <div className="mt-3">
-            <Link
-              href="/journal/new"
-              className="text-xs font-medium text-emerald-400 hover:text-emerald-300 transition"
-            >
-              Write another entry →
-            </Link>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-
 // ── Thread card ───────────────────────────────────────────────────────────────
 
 function ThreadCard({
@@ -347,6 +284,99 @@ function ThreadCard({
           </Link>
         )}
       </div>
+    </div>
+  );
+}
+
+// ── Welcome panel (new user, zero entries) ────────────────────────────────────
+
+function WelcomePanel() {
+  return (
+    <div className="mb-8 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.04] p-6">
+      <p className="mb-1 text-[10px] font-semibold uppercase tracking-widest text-emerald-500/70">
+        Welcome to Havenly
+      </p>
+      <h2 className="text-lg font-semibold text-white leading-snug">
+        This is your private space to think out loud.
+      </h2>
+      <p className="mt-2 text-sm leading-relaxed text-slate-400">
+        Write what's actually going on — Havenly reads it, reflects it back gently,
+        and starts noticing what quietly repeats across your entries over time.
+        One sentence is always enough to start.
+      </p>
+      <Link
+        href="/journal/new"
+        className="mt-4 inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-emerald-400 transition"
+      >
+        Write your first entry →
+      </Link>
+      <p className="mt-3 text-xs text-slate-600">Takes less than a minute · stays private · no AI training</p>
+    </div>
+  );
+}
+
+// ── Pattern history started (1 entry with reflection) ─────────────────────────
+
+function PatternStartedCard({
+  emotion,
+  theme,
+}: {
+  emotion: string | null;
+  theme: string | null;
+}) {
+  return (
+    <div className="mb-8 rounded-2xl border border-violet-500/20 bg-violet-500/[0.04] p-6">
+      <p className="mb-1 text-[10px] font-semibold uppercase tracking-widest text-violet-400/70">
+        ✦ Your pattern history has started
+      </p>
+      <p className="text-sm leading-relaxed text-slate-300">
+        Havenly has your first reflection.{" "}
+        {emotion || theme ? (
+          <>
+            It noticed{" "}
+            <span className="text-slate-100">
+              {emotion ?? theme}
+            </span>{" "}
+            in what you wrote.{" "}
+          </>
+        ) : null}
+        The more you write, the more clearly the patterns will show.
+      </p>
+      <Link
+        href="/journal/new"
+        className="mt-4 inline-flex items-center gap-2 text-xs font-medium text-violet-400 hover:text-violet-300 transition"
+      >
+        Write another entry →
+      </Link>
+    </div>
+  );
+}
+
+// ── Progress nudge (2–4 entries, approaching pattern threshold) ───────────────
+
+function ProgressNudge({ entryCount }: { entryCount: number }) {
+  const remaining = 5 - entryCount;
+  if (remaining <= 0) return null;
+
+  return (
+    <div className="mb-8 rounded-2xl border border-slate-700/60 bg-slate-900/30 p-5">
+      <div className="flex items-center justify-between mb-2">
+        <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-500">
+          Pattern detection
+        </p>
+        <p className="text-xs text-slate-500">{entryCount} / 5 entries</p>
+      </div>
+      {/* Progress bar */}
+      <div className="h-1 w-full rounded-full bg-slate-800 mb-3">
+        <div
+          className="h-1 rounded-full bg-emerald-500/60 transition-all"
+          style={{ width: `${(entryCount / 5) * 100}%` }}
+        />
+      </div>
+      <p className="text-sm text-slate-400">
+        <span className="text-slate-200">{remaining} more {remaining === 1 ? "entry" : "entries"}</span> and Havenly
+        will start showing you what quietly repeats across your writing.
+      </p>
     </div>
   );
 }
@@ -433,21 +463,19 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
         )}
       </div>
 
-      {/* ── Onboarding: new user welcome ── */}
-      {entryCount === 0 && (
-        <WelcomePanel name={displayName} />
+      {/* ── Onboarding moments ── */}
+      {entryCount === 0 && <WelcomePanel />}
+
+      {entryCount === 1 && lastEntryHasReflection && (
+        <PatternStartedCard emotion={lastTopEmotion} theme={lastTopTheme} />
       )}
 
-      {/* ── Onboarding: post-first-reflection moment ── */}
-      {entryCount === 1 && lastEntryHasReflection && (
-        <PatternStartedCard
-          emotion={lastTopEmotion}
-          theme={lastTopTheme}
-        />
+      {entryCount >= 2 && entryCount < 5 && (
+        <ProgressNudge entryCount={entryCount} />
       )}
 
       {/* ── Premium insight card / Free teaser ── */}
-      {isPremium && entryCount > 1 && (lastTopEmotion || lastTopTheme || lastCorepattern) && (
+      {isPremium && (lastTopEmotion || lastTopTheme || lastCorepattern) && (
         <div className="mb-8">
           <PremiumInsightCard
             emotion={lastTopEmotion}
@@ -458,7 +486,7 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
         </div>
       )}
 
-      {isFree && entryCount >= 2 && (
+      {isFree && entryCount >= 5 && (
         <div className="mb-8">
           <FreeInsightTeaser
             entryCount={entryCount}
