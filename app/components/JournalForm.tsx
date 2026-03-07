@@ -123,7 +123,7 @@ export default function JournalForm(_props: Props) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="w-full">
+    <form onSubmit={onSubmit} className="w-full pb-24">
       <div className="space-y-3">
         <div>
           <div className="text-sm font-medium text-white/80 mb-2">
@@ -134,7 +134,7 @@ export default function JournalForm(_props: Props) {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Optional title (e.g., A quick check-in)"
-            className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/40 outline-none focus:border-white/20 focus:bg-white/[0.07]"
+            className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-white/40 outline-none focus:border-white/20 focus:bg-white/[0.07]"
             maxLength={120}
           />
 
@@ -142,12 +142,15 @@ export default function JournalForm(_props: Props) {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="How are you feeling today?"
-            className="mt-3 w-full min-h-[180px] rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/40 outline-none focus:border-white/20 focus:bg-white/[0.07]"
+            className="mt-3 w-full min-h-[40vh] rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-white/40 outline-none focus:border-white/20 focus:bg-white/[0.07] resize-none"
           />
         </div>
 
         {status === "error" && <div className="text-sm text-red-400">{error}</div>}
+      </div>
 
+      {/* Sticky save bar — stays visible above the keyboard on mobile */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-white/10 bg-[#020617]/95 backdrop-blur px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
         <button
           type="submit"
           disabled={!canSave}
