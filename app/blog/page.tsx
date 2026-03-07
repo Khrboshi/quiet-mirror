@@ -1,6 +1,18 @@
 import Link from "next/link";
 import { ARTICLES } from "./articles";
 
+export const metadata = {
+  title: "Havenly Journal — Articles for Overloaded Minds",
+  description: "Gentle articles about emotional load, rest, journaling, and self-awareness. No productivity hacks — just softer ways to understand what you're feeling.",
+  openGraph: {
+    title: "Havenly Journal — Articles for Overloaded Minds",
+    description: "Gentle articles about emotional load, rest, and self-awareness. No productivity hacks.",
+    url: "https://havenly-2-1.vercel.app/blog",
+  },
+};
+
+
+
 export default function BlogPage() {
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
