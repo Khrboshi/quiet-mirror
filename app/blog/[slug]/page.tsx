@@ -1,5 +1,8 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { ARTICLES, getArticle } from "../articles";
+
+const SITE_URL = "https://havenly-2-1.vercel.app";
 
 type BlogArticlePageProps = {
   params: { slug: string };
@@ -7,6 +10,28 @@ type BlogArticlePageProps = {
 
 export function generateStaticParams() {
   return ARTICLES.map((article) => ({ slug: article.slug }));
+}
+
+export function generateMetadata({ params }: BlogArticlePageProps): Metadata {
+  const article = getArticle(params.slug);
+  if (!article) return { title: "Article not found" };
+
+  return {
+    title: article.title,
+    description: article.summary,
+    openGraph: {
+      type: "article",
+      title: article.title,
+      description: article.summary,
+      url: `${SITE_URL}/blog/${article.slug}`,
+      siteName: "Havenly",
+    },
+    twitter: {
+      card: "summary",
+      title: article.title,
+      description: article.summary,
+    },
+  };
 }
 
 export default function BlogArticlePage({ params }: BlogArticlePageProps) {
@@ -28,8 +53,28 @@ export default function BlogArticlePage({ params }: BlogArticlePageProps) {
     );
   }
 
+  // JSON-LD structured data for Google rich results
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.summary,
+    url: `${SITE_URL}/blog/${article.slug}`,
+    publisher: {
+      "@type": "Organization",
+      name: "Havenly",
+      url: SITE_URL,
+    },
+    articleSection: article.category,
+    timeRequired: `PT${article.minutes}M`,
+  };
+
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <section className="mx-auto max-w-3xl px-6 pb-16 pt-24">
         <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-emerald-300">
           {article.category}
