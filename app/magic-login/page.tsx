@@ -1,12 +1,6 @@
 // app/magic-login/page.tsx
 "use client";
 
-export const metadata = {
-  title: "Sign in to Havenly",
-  description: "Sign in to your private Havenly journal with a magic link — no password needed.",
-};
-
-
 
 export const dynamic = "force-dynamic";
 
