@@ -185,3 +185,17 @@ body::-webkit-scrollbar-thumb {
   background-color: rgba(62, 231, 176, 0.15);
   border-radius: 10px;
 }
+
+/* ── Safe-area / mobile utilities ───────────────────────── */
+/* Prevents content sitting behind iPhone home indicator    */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.pb-safe-4 {
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+}
+
+/* Prevent iOS Safari zoom on input focus (font must be ≥16px) */
+input, textarea, select {
+  font-size: max(16px, 1rem);
+}
