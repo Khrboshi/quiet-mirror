@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { ensureCreditsFresh } from "@/lib/creditRules";
-import { generateReflectionFromEntry } from "@/lib/ai/generateReflection";
+import { generateReflectionFromEntry, detectCrisisContent } from "@/lib/ai/generateReflection";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -235,6 +235,27 @@ export async function POST(req: Request) {
     return NextResponse.json(
       { error: "Entry too long. Please shorten it a bit." },
       { status: 413, headers: noStoreHeaders() }
+    );
+  }
+
+  // ── Crisis safety check ─────────────────────────────────────────────────
+  // If the entry contains crisis signals, return a warm support response
+  // instead of a normal reflection. No credit is consumed.
+  if (detectCrisisContent(`${title} ${content}`)) {
+    const crisisReflection = {
+      crisis: true,
+      summary: "What you wrote matters, and you matter.\nIf you're carrying something that feels too heavy right now, please reach out to someone who can help.",
+      resources: [
+        { label: "988 Suicide & Crisis Lifeline (US)", value: "Call or text 988" },
+        { label: "Samaritans (UK/Ireland)", value: "Call 116 123" },
+        { label: "Crisis Text Line", value: "Text HOME to 741741" },
+        { label: "International Association for Suicide Prevention", value: "https://www.iasp.info/resources/Crisis_Centres/" },
+      ],
+      message: "Your entries stay private. You don't have to figure this out alone.",
+    };
+    return NextResponse.json(
+      { reflection: crisisReflection },
+      { headers: noStoreHeaders() }
     );
   }
 
