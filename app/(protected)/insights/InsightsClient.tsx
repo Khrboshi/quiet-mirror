@@ -248,7 +248,8 @@ function DomainSection({ domains }: { domains: Record<string, number> }) {
 
   if (!sorted.length) return null;
 
-  const total = sorted.reduce((s, [, v]) => s + v, 0);
+  // Include GENERAL in total so the denominator matches actual entry count
+  const total = Object.values(domains).reduce((s, v) => s + v, 0);
   const top = sorted[0]?.[0];
   const topMeta = DOMAIN_LABELS[top] ?? { label: top, emoji: "📝", color: "#34d399" };
 
@@ -733,7 +734,14 @@ export default function InsightsClient() {
             <StatCard
               label="Momentum"
               value={data.momentum ?? "Steady"}
-              sub="Last 4 weeks"
+              sub={(() => {
+                if (!mounted || !data.firstEntryDate) return "Your entries";
+                const ageMs = Date.now() - new Date(data.firstEntryDate).getTime();
+                const ageDays = Math.floor(ageMs / (1000 * 60 * 60 * 24));
+                if (ageDays <= 1) return "Based on today";
+                if (ageDays <= 27) return `Last ${ageDays} day${ageDays === 1 ? "" : "s"}`;
+                return "Last 4 weeks";
+              })()}
               accent={mColor}
             />
           </div>
