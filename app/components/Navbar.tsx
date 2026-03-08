@@ -32,7 +32,6 @@ export default function Navbar() {
 
   useEffect(() => {
     if (!isLoggedIn) return;
-    // Tools removed from prefetch -- no working pages yet
     const routes = ["/dashboard", "/journal", "/insights", "/settings"];
     routes.forEach((r) => router.prefetch(r));
   }, [isLoggedIn, router]);
@@ -48,11 +47,13 @@ export default function Navbar() {
     { href: "/install", label: "Install" },
   ];
 
+  // FIX: removed /upgrade "Premium", added /settings "Settings"
+  // Spec: Dashboard · Journal · Insights · Settings · Install · Logout
   const authLinks: NavLink[] = [
     { href: "/dashboard", label: "Dashboard" },
     { href: "/journal", label: "Journal" },
     { href: "/insights", label: "Insights" },
-    { href: "/upgrade", label: "Premium" },
+    { href: "/settings", label: "Settings" },
     { href: "/install", label: "Install" },
   ];
 
