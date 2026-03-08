@@ -1,4 +1,9 @@
 // app/api/stripe/webhook/route.ts
+// FIX Issue 7: added customer.subscription.updated handler.
+// If a subscription moves to status "past_due" or "unpaid" (not just "deleted"),
+// the user is downgraded to FREE immediately rather than waiting for
+// customer.subscription.deleted which only fires after Stripe exhausts all retries.
+
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createServerClient } from "@supabase/ssr";
@@ -121,6 +126,41 @@ export async function POST(req: Request) {
           planType: "PREMIUM",
         });
         console.log("[webhook] renewed PREMIUM for user:", userId);
+        break;
+      }
+
+      // FIX Issue 7: handle subscription moving to past_due / unpaid before it's deleted.
+      // Stripe may take days to fire subscription.deleted after a failed payment.
+      // This ensures the user is downgraded at the first sign of a payment problem.
+      case "customer.subscription.updated": {
+        const subscription = event.data.object as Stripe.Subscription;
+        const previousStatus = (event.data.previous_attributes as any)?.status;
+        const currentStatus = subscription.status;
+
+        // Only act if status changed to a delinquent state
+        const isNowDelinquent =
+          currentStatus === "past_due" || currentStatus === "unpaid";
+        const wasActiveOrTrialing =
+          previousStatus === "active" || previousStatus === "trialing";
+
+        if (!isNowDelinquent || !wasActiveOrTrialing) break;
+
+        const userId = await resolveUserId(subscription);
+        if (!userId) {
+          console.error("[webhook] subscription.updated - no user ID for sub:", subscription.id);
+          break;
+        }
+
+        const supabase = createAdminSupabase();
+        await setUserPlan({
+          supabase: supabase as any,
+          userId,
+          planType: "FREE",
+        });
+        console.log(
+          `[webhook] downgraded user to FREE (status: ${currentStatus}):`,
+          userId
+        );
         break;
       }
 
