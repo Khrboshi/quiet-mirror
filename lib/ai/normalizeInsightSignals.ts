@@ -252,7 +252,7 @@ export function normalizeCorepattern(raw: string): string | null {
 
 export function normalizeDomain(raw: unknown): string | null {
   const d = String(raw ?? "").trim().toUpperCase();
-  if (!d || d === "GENERAL") return null;
+  if (!d) return null;
   return d;
 }
 
