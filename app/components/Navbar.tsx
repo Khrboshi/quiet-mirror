@@ -109,7 +109,7 @@ export default function Navbar() {
             <span>Havenly</span>
           </Link>
 
-          <div className="hidden items-center gap-6 md:flex">
+          <div className="hidden items-center gap-2 md:flex">
             {links.map((link) => {
               const active = isActiveLink(link.href);
 
@@ -118,8 +118,10 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   prefetch
-                  className={`text-sm font-medium transition-colors ${
-                    active ? "text-emerald-400" : "text-slate-300 hover:text-emerald-400"
+                  className={`rounded-full px-3 py-2 text-sm font-medium transition-colors ${
+                    active
+                      ? "bg-emerald-500/10 text-emerald-300"
+                      : "text-slate-300 hover:bg-white/[0.04] hover:text-emerald-300"
                   }`}
                 >
                   {link.label}
@@ -131,14 +133,14 @@ export default function Navbar() {
               <Link
                 href="/magic-login"
                 prefetch
-                className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition-colors hover:bg-emerald-400"
+                className="ml-2 inline-flex items-center justify-center rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition-colors hover:bg-emerald-400"
               >
                 Start free
               </Link>
             ) : (
               <button
                 onClick={handleLogout}
-                className="text-sm font-medium text-red-400 transition-colors hover:text-red-300"
+                className="ml-2 inline-flex items-center justify-center rounded-full px-3 py-2 text-sm font-medium text-red-400 transition-colors hover:bg-red-500/10 hover:text-red-300"
               >
                 Logout
               </button>
@@ -171,12 +173,12 @@ export default function Navbar() {
 
           <div
             id="mobile-menu"
-            className="fixed inset-x-0 top-[72px] bottom-0 z-50 flex flex-col bg-[#020617]"
+            className="fixed inset-x-0 top-[72px] bottom-0 z-50 flex flex-col bg-[#020617]/95"
           >
-            <div className="flex-1 overflow-y-auto px-5 pb-8 pt-6">
+            <div className="flex-1 overflow-y-auto px-5 pb-8 pt-5">
               <div className="mx-auto flex max-w-xl flex-col">
-                <p className="mb-6 text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/70">
-                  {isLoggedIn ? "Your space" : "Private journaling, without the noise"}
+                <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/70">
+                  {isLoggedIn ? "Your space" : "Private journaling that reflects back"}
                 </p>
 
                 <nav className="flex flex-col gap-2">
@@ -228,6 +230,10 @@ export default function Navbar() {
                     Logout
                   </button>
                 )}
+
+                <p className="mt-5 text-center text-xs leading-relaxed text-slate-600">
+                  Havenly is built for quiet, private reflection — not performance.
+                </p>
               </div>
             </div>
           </div>
