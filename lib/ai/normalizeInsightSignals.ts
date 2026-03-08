@@ -1,4 +1,7 @@
 // lib/ai/normalizeInsightSignals.ts
+// FIX Issue 4: expanded FALLBACK_THEMES and FALLBACK_EMOTIONS to cover all domain-specific
+// defaults from DOMAIN_DEFAULTS in generateReflection.ts, so they never appear in
+// the insights dashboard as if they were real user-generated signals.
 
 export type ParsedAIResponse = {
   domain?: string;
@@ -8,30 +11,91 @@ export type ParsedAIResponse = {
 };
 
 const FALLBACK_THEMES = new Set([
+  // GENERAL domain defaults
   "self-awareness",
   "processing",
   "presence",
+  "uncertainty",
+  // FITNESS domain defaults
   "consistency",
   "recovery",
   "self-respect",
   "motivation",
+  // WORK domain defaults
   "recognition",
+  "visibility",
+  "respect",
+  "professional worth",
   "boundaries",
   "self-worth",
+  // RELATIONSHIP domain defaults
   "connection",
-  "visibility",
+  "distance",
+  "intimacy",
+  // MONEY domain defaults
+  "financial stress",
+  "security",
+  "control",
+  "shame",              // FIX: was missing
+  "planning",           // FIX: was missing
+  // HEALTH domain defaults
+  "health anxiety",
+  "uncertainty",
+  "body awareness",
+  // GRIEF domain defaults
+  "loss",               // FIX: was missing
+  "memory",             // FIX: was missing
+  "identity",           // FIX: was missing
+  "time",               // FIX: was missing
+  // PARENTING domain defaults
+  "guilt",
+  "repair",
+  "self-doubt",
+  "exhaustion",
+  // CREATIVE domain defaults
+  "creative block",
+  "process",
+  // IDENTITY domain defaults
+  "authenticity",
+  "purpose",
+  "change",
 ]);
 
 const FALLBACK_EMOTIONS = new Set([
+  // GENERAL domain defaults
   "uncertainty",
   "restlessness",
   "quiet courage",
+  "hope",
+  // FITNESS domain defaults
   "pride",
   "tiredness",
   "determination",
+  // WORK domain defaults
   "frustration",
   "hurt",
+  "self-doubt",
+  "anger",
+  // RELATIONSHIP domain defaults
   "longing",
+  "loneliness",
+  "disconnection",
+  // MONEY domain defaults
+  "anxiety",
+  "shame",              // FIX: was missing
+  "fear",               // FIX: was missing
+  // HEALTH domain defaults
+  "overwhelm",
+  // GRIEF domain defaults
+  "grief",              // FIX: was missing
+  "sadness",
+  "tenderness",         // FIX: was missing
+  // PARENTING domain defaults
+  "love",
+  // CREATIVE domain defaults
+  "insecurity",
+  "disappointment",
+  // IDENTITY domain defaults
   "confusion",
 ]);
 
@@ -105,7 +169,7 @@ const COREPATTERN_REPLACEMENTS: Array<[RegExp, string]> = [
 function norm(s: string): string {
   return String(s ?? "")
     .toLowerCase()
-    .replace(/[’]/g, "'")
+    .replace(/[']/g, "'")
     .replace(/[_]/g, " ")
     .replace(/[^a-z0-9\s-'"]/g, " ")
     .replace(/\s+/g, " ")
