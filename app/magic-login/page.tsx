@@ -1,7 +1,6 @@
 // app/magic-login/page.tsx
 "use client";
 
-
 export const dynamic = "force-dynamic";
 
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
@@ -24,7 +23,7 @@ function isStandalone(): boolean {
   if (typeof window === "undefined") return false;
   return (
     window.matchMedia?.("(display-mode: standalone)")?.matches === true ||
-    (window.navigator as any).standalone === true
+    (window.navigator as Navigator & { standalone?: boolean }).standalone === true
   );
 }
 
@@ -46,9 +45,7 @@ function MagicLoginInner() {
   const ios = useMemo(() => isIOS(), []);
   const standalone = useMemo(() => isStandalone(), []);
 
-  // Default: iOS => code, others => link
-  const [mode, setMode] = useState<Mode>(() => (ios ? "code" : "link"));
-
+  const [mode, setMode] = useState<Mode>(ios ? "code" : "link");
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState<string | null>(null);
 
@@ -58,30 +55,26 @@ function MagicLoginInner() {
   const goNext = useCallback(
     (target?: string) => {
       const n = safeNext(target ?? next);
-      // Hard navigation ensures cookies are applied consistently
       window.location.assign(n);
     },
     [next]
   );
 
-  // If already logged in, go to next
   useEffect(() => {
     if (session?.user) {
       router.replace(next);
     }
   }, [session?.user, router, next]);
 
-  // If callback exchange failed, guide to code
   useEffect(() => {
     if (!callbackError) return;
     setMode("code");
     setStatus("error");
     setMessage(
-      "Sign-in didn’t complete in this browser context. On iPhone, Safari and the Home Screen app may not share login. Use the code method below to sign in inside the same place you’re using."
+      "Sign-in did not complete in this browser context. On iPhone, Safari and the Home Screen app may not share login. Use code sign-in below in the same place you are using Havenly."
     );
   }, [callbackError]);
 
-  // Step 3: listen for auth completion coming from the /auth/complete tab
   useEffect(() => {
     const STORAGE_KEY = "havenly:auth_complete";
 
@@ -106,7 +99,7 @@ function MagicLoginInner() {
         }
       };
     } catch {
-      // BroadcastChannel not supported; storage fallback still works
+      // storage fallback remains available
     }
 
     return () => {
@@ -135,8 +128,8 @@ function MagicLoginInner() {
     setStatus("success");
     setMessage(
       mode === "code"
-        ? "Email sent. It may take a moment depending on your mail app. If your email includes a code, enter it below. Otherwise, open the button/link to sign in."
-        : "Email sent. It may take a moment depending on your mail app. Open the button/link in the same browser you started with. If you installed Havenly on iPhone, you can use the code option instead."
+        ? "Email sent. If your email includes a code, enter it below. If it shows a button or link instead, you can still open it to sign in."
+        : "Email sent. Open the button or link in the same browser you started with. If you installed Havenly on iPhone, code sign-in is usually the safer option."
     );
   }
 
@@ -164,120 +157,210 @@ function MagicLoginInner() {
   const tokenOk = tokenLen >= 6 && tokenLen <= 8;
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4">
-      <div className="max-w-md w-full bg-[#0f172a] p-8 rounded-xl shadow-lg border border-white/10">
-        <h1 className="text-2xl font-semibold text-center mb-2">Sign in to Havenly</h1>
+    <div className="min-h-screen bg-slate-950 text-white">
+      <div className="mx-auto flex min-h-screen w-full max-w-6xl items-center px-4 py-10 sm:px-6 lg:grid lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:px-8">
+        <div className="hidden lg:block">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-400/80">
+            Havenly sign in
+          </p>
+          <h1 className="mt-4 max-w-xl text-5xl font-semibold leading-[1.05] tracking-tight text-white">
+            Return to your private journal without friction.
+          </h1>
+          <p className="mt-5 max-w-lg text-base leading-relaxed text-slate-400">
+            Sign in with a magic link or a one-time code. Havenly is built to feel
+            calm, private, and simple across desktop, mobile, and Home Screen use.
+          </p>
 
-        {standalone ? (
-          <div className="mb-4 p-3 rounded bg-emerald-900/30 text-emerald-200 text-sm">
-            You’re in the Home Screen app. On iPhone, the email link may open in Safari and won’t sign
-            you into the Home Screen app. Use <span className="font-semibold">code sign-in</span>.
-          </div>
-        ) : null}
-
-        {message ? (
-          <div
-            className={`mb-4 p-3 rounded ${
-              status === "success"
-                ? "bg-emerald-900/40 text-emerald-300"
-                : status === "error"
-                ? "bg-red-900/40 text-red-300"
-                : "bg-white/5 text-slate-200"
-            }`}
-          >
-            {message}
-          </div>
-        ) : null}
-
-        <div className="mb-4 flex gap-2">
-          <button
-            type="button"
-            onClick={() => setMode("code")}
-            className={`flex-1 rounded-md px-3 py-2 text-sm font-medium border ${
-              mode === "code"
-                ? "bg-white/10 border-white/20 text-white"
-                : "bg-transparent border-white/10 text-slate-300"
-            }`}
-          >
-            Code (best on iPhone)
-          </button>
-          <button
-            type="button"
-            onClick={() => setMode("link")}
-            className={`flex-1 rounded-md px-3 py-2 text-sm font-medium border ${
-              mode === "link"
-                ? "bg-white/10 border-white/20 text-white"
-                : "bg-transparent border-white/10 text-slate-300"
-            }`}
-          >
-            Magic link
-          </button>
-        </div>
-
-        <label className="block text-sm mb-2">Email address</label>
-        <input
-          required
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@example.com"
-          className="w-full rounded-md px-3 py-2 mb-4 bg-black/20 border border-white/20 text-white"
-        />
-
-        {mode === "link" ? (
-          <button
-            type="button"
-            onClick={onSendEmail}
-            disabled={status === "loading" || !email}
-            className="w-full bg-emerald-400 hover:bg-emerald-500 text-black font-semibold py-2 rounded-md transition"
-          >
-            {status === "loading" ? "Sending..." : "Send Magic Link"}
-          </button>
-        ) : (
-          <>
-            <button
-              type="button"
-              onClick={onSendEmail}
-              disabled={status === "loading" || !email}
-              className="w-full bg-emerald-400 hover:bg-emerald-500 text-black font-semibold py-2 rounded-md transition"
-            >
-              {status === "loading" ? "Sending..." : "Send Email (link + code if available)"}
-            </button>
-
-            <div className="mt-4">
-              <label className="block text-sm mb-2">Code from email (6–8 digits)</label>
-              <input
-                value={token}
-                onChange={(e) => setToken(e.target.value.replace(/\D/g, "").slice(0, 8))}
-                inputMode="numeric"
-                placeholder="Enter code"
-                className="w-full rounded-md px-3 py-2 mb-3 bg-black/20 border border-white/20 text-white"
-              />
-              <button
-                type="button"
-                onClick={onVerifyCode}
-                disabled={status === "loading" || !email || !tokenOk}
-                className="w-full border border-white/20 bg-white/5 hover:bg-white/10 text-white font-semibold py-2 rounded-md transition"
-              >
-                {status === "loading" ? "Verifying..." : "Verify & Sign in"}
-              </button>
-
-              <p className="mt-2 text-xs text-slate-400">
-                Tip: if the email shows spaces between numbers, just paste it — Havenly removes spaces automatically.
+          <div className="mt-8 space-y-4">
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-sm font-medium text-white">Magic link</p>
+              <p className="mt-1 text-sm leading-relaxed text-slate-400">
+                Best on desktop and in a normal mobile browser. Open the email link in
+                the same place you started.
               </p>
             </div>
-          </>
-        )}
 
-        <div className="text-center mt-4">
-          <Link href="/" className="text-sm text-blue-300 hover:underline">
-            ← Back to Home
-          </Link>
+            <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.05] p-4">
+              <p className="text-sm font-medium text-white">Code sign-in</p>
+              <p className="mt-1 text-sm leading-relaxed text-slate-300">
+                Best on iPhone Home Screen installations, where email links may open in
+                Safari instead of the app.
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-sm font-medium text-white">Privacy first</p>
+              <p className="mt-1 text-sm leading-relaxed text-slate-400">
+                Your email is used only for sign-in. Your journal stays private and is
+                never used to train AI models.
+              </p>
+            </div>
+          </div>
         </div>
 
-        <p className="text-center text-xs text-gray-400 mt-3">
-          Desktop: magic link works. iPhone Home Screen app: use code.
-        </p>
+        <div className="w-full">
+          <div className="mx-auto w-full max-w-md rounded-[1.75rem] border border-white/10 bg-slate-900/60 p-6 shadow-2xl shadow-black/40 backdrop-blur sm:p-7">
+            <div className="lg:hidden">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-400/80">
+                Havenly sign in
+              </p>
+              <h1 className="mt-3 text-3xl font-semibold tracking-tight text-white">
+                Sign in to Havenly
+              </h1>
+              <p className="mt-3 text-sm leading-relaxed text-slate-400">
+                Your private space to write honestly, without the feed, noise, or pressure.
+              </p>
+            </div>
+
+            <div className="hidden lg:block">
+              <h2 className="text-2xl font-semibold text-white">Sign in to Havenly</h2>
+              <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                Choose the method that fits this device best.
+              </p>
+            </div>
+
+            {standalone ? (
+              <div className="mt-5 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.06] p-4 text-sm leading-relaxed text-emerald-200">
+                You are using the Home Screen app. On iPhone, email links may open in
+                Safari instead of the app, so <span className="font-semibold">code sign-in</span>{" "}
+                is usually the most reliable choice here.
+              </div>
+            ) : null}
+
+            {message ? (
+              <div
+                className={`mt-5 rounded-2xl border p-4 text-sm leading-relaxed ${
+                  status === "success"
+                    ? "border-emerald-500/20 bg-emerald-500/[0.06] text-emerald-200"
+                    : status === "error"
+                    ? "border-red-500/20 bg-red-500/[0.06] text-red-200"
+                    : "border-white/10 bg-white/[0.03] text-slate-200"
+                }`}
+              >
+                {message}
+              </div>
+            ) : null}
+
+            <div className="mt-5 grid grid-cols-2 gap-2 rounded-2xl border border-white/10 bg-slate-950/60 p-1.5">
+              <button
+                type="button"
+                onClick={() => setMode("code")}
+                className={`rounded-xl px-3 py-3 text-sm font-medium transition ${
+                  mode === "code"
+                    ? "bg-white/10 text-white shadow-sm"
+                    : "text-slate-400 hover:text-slate-200"
+                }`}
+              >
+                Code
+                <span className="mt-0.5 block text-[11px] font-normal text-slate-500">
+                  Best on iPhone
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setMode("link")}
+                className={`rounded-xl px-3 py-3 text-sm font-medium transition ${
+                  mode === "link"
+                    ? "bg-white/10 text-white shadow-sm"
+                    : "text-slate-400 hover:text-slate-200"
+                }`}
+              >
+                Magic link
+                <span className="mt-0.5 block text-[11px] font-normal text-slate-500">
+                  Best on desktop
+                </span>
+              </button>
+            </div>
+
+            <div className="mt-5">
+              <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                Email address
+              </label>
+              <input
+                required
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                className="w-full rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-emerald-500/50"
+              />
+            </div>
+
+            {mode === "link" ? (
+              <div className="mt-5">
+                <button
+                  type="button"
+                  onClick={onSendEmail}
+                  disabled={status === "loading" || !email}
+                  className="inline-flex w-full items-center justify-center rounded-full bg-emerald-500 px-4 py-3.5 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {status === "loading" ? "Sending..." : "Send magic link"}
+                </button>
+
+                <p className="mt-3 text-center text-xs leading-relaxed text-slate-500">
+                  Open the email link in the same browser you started with.
+                </p>
+              </div>
+            ) : (
+              <div className="mt-5">
+                <button
+                  type="button"
+                  onClick={onSendEmail}
+                  disabled={status === "loading" || !email}
+                  className="inline-flex w-full items-center justify-center rounded-full bg-emerald-500 px-4 py-3.5 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {status === "loading"
+                    ? "Sending..."
+                    : "Send email with sign-in link and code"}
+                </button>
+
+                <div className="mt-5 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+                  <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                    Code from email
+                  </label>
+                  <input
+                    value={token}
+                    onChange={(e) =>
+                      setToken(e.target.value.replace(/\D/g, "").slice(0, 8))
+                    }
+                    inputMode="numeric"
+                    placeholder="Enter 6–8 digit code"
+                    className="w-full rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-emerald-500/50"
+                  />
+
+                  <button
+                    type="button"
+                    onClick={onVerifyCode}
+                    disabled={status === "loading" || !email || !tokenOk}
+                    className="mt-4 inline-flex w-full items-center justify-center rounded-full border border-white/10 bg-white/[0.04] px-4 py-3.5 text-sm font-semibold text-white transition hover:bg-white/[0.08] disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {status === "loading" ? "Verifying..." : "Verify and sign in"}
+                  </button>
+
+                  <p className="mt-3 text-xs leading-relaxed text-slate-500">
+                    Tip: if the email shows spaces between numbers, just paste it. Havenly
+                    removes spaces automatically.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            <div className="mt-6 flex flex-col items-center gap-3 text-center">
+              <Link
+                href="/"
+                className="text-sm font-medium text-emerald-400 transition-colors hover:text-emerald-300"
+              >
+                ← Back to Home
+              </Link>
+
+              <p className="max-w-sm text-xs leading-relaxed text-slate-600">
+                Desktop usually works best with magic link. iPhone Home Screen app usually
+                works best with code sign-in.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -285,7 +368,13 @@ function MagicLoginInner() {
 
 export default function MagicLoginPage() {
   return (
-    <Suspense fallback={<div className="text-center p-10 text-white">Loading…</div>}>
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-slate-950 px-6 text-sm text-slate-300">
+          Loading…
+        </div>
+      }
+    >
       <MagicLoginInner />
     </Suspense>
   );
