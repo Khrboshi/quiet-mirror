@@ -164,7 +164,7 @@ export default function JournalEntryClient({
           </p>
         </div>
         <Link href="/journal" className="text-xs text-emerald-400/80 hover:text-emerald-300 transition-colors mt-1">
-          ← Back to journal
+          &larr; Back to journal
         </Link>
       </header>
 
@@ -179,9 +179,9 @@ export default function JournalEntryClient({
         {/* First-entry nudge */}
         {isFirstEntry && !reflection && (
           <div className="border-b border-white/6 bg-emerald-500/5 px-6 py-3 flex items-start gap-2">
-            <span className="text-emerald-400 text-sm mt-0.5">✦</span>
+            <span className="text-emerald-400 text-sm mt-0.5">&#10022;</span>
             <p className="text-xs text-slate-400 leading-relaxed">
-              This reflection starts your pattern history — Havenly will notice what repeats across your entries over time.
+              This reflection starts your pattern history &mdash; Havenly will notice what repeats across your entries over time.
             </p>
           </div>
         )}
@@ -195,12 +195,12 @@ export default function JournalEntryClient({
                 Plan: <span className="text-emerald-300/90">{readablePlan}</span>
                 {!isUnlimited ? (
                   <>
-                    {" "}·{" "}
-                    <span className="text-white/50">{loading ? "…" : credits} left</span>
+                    {" "}&middot;{" "}
+                    <span className="text-white/50">{loading ? "..." : credits} left</span>
                     {credits === 0 && <span className="ml-1.5 text-white/30">(resets monthly)</span>}
                   </>
                 ) : (
-                  <span className="text-white/30"> · Unlimited</span>
+                  <span className="text-white/30"> &middot; Unlimited</span>
                 )}
               </p>
             )}
@@ -215,17 +215,18 @@ export default function JournalEntryClient({
               {busy ? (
                 <>
                   <span className="inline-block h-3 w-3 rounded-full border-2 border-slate-950/30 border-t-slate-950 animate-spin" />
-                  Reflecting…
+                  Reflecting&hellip;
                 </>
               ) : "Generate Reflection"}
             </button>
           ) : (
+            // FIX Issue 5: badge text changed from "Saved" to "Reflection saved — Permanent"
             <div className="flex flex-col items-end gap-0.5">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/8 px-3 py-1.5 text-xs font-medium text-emerald-400">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                Saved
+                Reflection saved &mdash; Permanent
               </span>
-              <p className="text-[10px] text-white/20">permanent · keeps patterns accurate</p>
+              <p className="text-[10px] text-white/20">permanent &middot; keeps patterns accurate</p>
             </div>
           )}
         </div>
@@ -239,7 +240,7 @@ export default function JournalEntryClient({
         {/* Pre-generate placeholder */}
         {!reflection && !busy && (
           <p className="px-6 py-5 text-xs text-white/35 leading-relaxed">
-            When you're ready, Havenly will reflect back what it noticed — themes, emotions,
+            When you're ready, Havenly will reflect back what it noticed &mdash; themes, emotions,
             and a gentle next step. Each entry gets one reflection, saved permanently so your
             patterns stay accurate over time.
           </p>
@@ -256,7 +257,7 @@ export default function JournalEntryClient({
                 />
               ))}
             </div>
-            <span className="text-xs text-white/35">Reading your entry…</span>
+            <span className="text-xs text-white/35">Reading your entry&hellip;</span>
           </div>
         )}
 
@@ -369,7 +370,7 @@ export default function JournalEntryClient({
                 {parsedStep.script && (
                   <div className="rounded-xl border border-emerald-500/15 bg-emerald-500/5 px-4 py-3">
                     <p className="text-[10px] font-semibold text-emerald-400/50 mb-1">Script line</p>
-                    <p className="text-sm text-white/75 italic">"{parsedStep.script}"</p>
+                    <p className="text-sm text-white/75 italic">&ldquo;{parsedStep.script}&rdquo;</p>
                   </div>
                 )}
               </div>
@@ -397,7 +398,7 @@ export default function JournalEntryClient({
             {/* ── Footer note ───────────────────────────────────────────── */}
             <div className="px-6 py-3">
               <p className="text-center text-[10px] text-white/18">
-                Saved permanently · Havenly uses this to build your pattern history
+                Saved permanently &middot; Havenly uses this to build your pattern history
               </p>
             </div>
 
