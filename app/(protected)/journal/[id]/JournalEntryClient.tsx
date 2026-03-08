@@ -28,8 +28,14 @@ type Reflection = {
 
 // ─── Summary parser: splits "What you're carrying:" / "What's really happening:" / "Deeper direction:"
 function parseSummary(summary: string): { carrying: string; happening: string; deeper: string } {
-  const carrying = summary.match(/What you're carrying:\s*([^\n]+(?:\n(?!What's|Deeper)[^\n]+)*)/i)?.[1]?.trim() ?? "";
-  const happening = summary.match(/What's really happening:\s*([^\n]+(?:\n(?!Deeper)[^\n]+)*)/i)?.[1]?.trim() ?? "";
+  const rawCarrying = summary.match(/What you're carrying:\s*([^\n]+(?:\n(?!What's|Deeper)[^\n]+)*)/i)?.[1]?.trim() ?? "";
+  // Strip any inline "What's really happening:" or "Deeper direction:" that leaked into the carrying line
+  const carrying = rawCarrying
+    .replace(/\s*What's really happening:.*$/is, "")
+    .replace(/\s*Deeper direction:.*$/is, "")
+    .trim();
+  const rawHappening = summary.match(/What's really happening:\s*([^\n]+(?:\n(?!Deeper)[^\n]+)*)/i)?.[1]?.trim() ?? "";
+  const happening = rawHappening.replace(/\s*Deeper direction:.*$/is, "").trim();
   const deeper = summary.match(/Deeper direction:\s*([^\n]+(?:\n[^\n]+)*)/i)?.[1]?.trim() ?? "";
   return { carrying, happening, deeper };
 }
