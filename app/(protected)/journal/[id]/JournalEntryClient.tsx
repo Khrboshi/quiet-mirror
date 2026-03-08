@@ -20,6 +20,10 @@ type Reflection = {
   emotions: string[];
   gentlenextstep: string;
   questions: string[];
+  // Crisis safety response
+  crisis?: boolean;
+  message?: string;
+  resources?: { label: string; value: string }[];
 };
 
 // ─── Summary parser: splits "What you're carrying:" / "What's really happening:" / "Deeper direction:"
@@ -262,7 +266,33 @@ export default function JournalEntryClient({
         )}
 
         {/* ── Reflection body ───────────────────────────────────────────── */}
-        {reflection && (
+        {reflection && reflection.crisis ? (
+          // ── Crisis response card ────────────────────────────────────────
+          <div className="px-6 py-6 space-y-5">
+            <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 px-5 py-4 space-y-3">
+              <p className="text-sm font-medium text-amber-300/90">
+                What you wrote matters, and you matter.
+              </p>
+              <p className="text-xs leading-relaxed text-white/60">
+                {reflection.message}
+              </p>
+            </div>
+            <div className="space-y-2">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-white/30">
+                If you need support right now
+              </p>
+              {(reflection.resources ?? []).map((r) => (
+                <div key={r.label} className="rounded-lg border border-white/6 bg-white/[0.03] px-4 py-2.5 flex items-start justify-between gap-3">
+                  <span className="text-xs text-white/60">{r.label}</span>
+                  <span className="text-xs font-medium text-emerald-400/80 shrink-0">{r.value}</span>
+                </div>
+              ))}
+            </div>
+            <p className="text-[10px] text-white/25 text-center">
+              Your entries are always private &middot; You don't have to figure this out alone
+            </p>
+          </div>
+        ) : reflection ? (
           <div className="divide-y divide-white/5" suppressHydrationWarning>
 
             {/* ── What you're carrying ─────────────────────────────────── */}
@@ -403,7 +433,7 @@ export default function JournalEntryClient({
             </div>
 
           </div>
-        )}
+        ) : null}
       </section>
 
       <UpgradeTriggerModal
