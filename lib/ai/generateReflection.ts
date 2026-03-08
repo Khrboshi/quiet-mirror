@@ -185,8 +185,7 @@ const PRESSURE_SIGNALS: Partial<Record<Exclude<Domain, "GENERAL">, WeightedSigna
   ],
   RELATIONSHIP: [
     { re: /\b(we had a fight|we argued|he left|she left|they left|walking away|gave up on (me|us)|doesn't love|fell out of love|cheated|affair|betrayed)\b/i, w: 5 },
-    { re: /\b(my best friend|my mum|my mom|my dad|my sister|my brother|my partner|my husband|my wife|my girlfriend|my boyfriend)\b/i, w: 4 },
-    { re: /\b(not talking|stopped talking|haven't spoken|she said|he said|they said|the look on (his|her|their))\b/i, w: 3 },
+    { re: /\b(not talking|stopped talking|haven't spoken|she ended|he ended|they ended)\b/i, w: 4 },
   ],
   // FIX Bug1: WORK pressure signals for implicit workplace dynamics
   WORK: [
@@ -721,7 +720,7 @@ function extractAnchors(entry: string): string[] {
     }
   }
 
-  if (anchors.length < 1) add("you wrote this down, which means it matters");
+  if (anchors.length < 1) add("you came here and put this into words");
   return anchors.slice(0, 5);
 }
 
@@ -1422,7 +1421,13 @@ export async function generateReflectionFromEntry(input: Input): Promise<Reflect
   const titleLine = input.title?.trim() ? `Title: ${input.title.trim()}\n` : "";
   const entryText = `${titleLine}Entry:\n${entryBody}`;
 
-  const domain = detectDomain(`${input.title || ""}\n${entryBody}`);
+  const detectedDomain = detectDomain(`${input.title || ""}\n${entryBody}`);
+  const positive = isPositiveEntry(`${input.title || ""} ${entryBody}`);
+  // If entry is clearly celebratory/grateful, override to GENERAL so positive system prompt fires
+  // Exception: grief and health entries can contain positive moments without being positive entries
+  const domain: Domain = (positive && detectedDomain !== "GRIEF" && detectedDomain !== "HEALTH")
+    ? "GENERAL"
+    : detectedDomain;
   const secondaryDomains = detectSecondaryDomains(`${input.title || ""}\n${entryBody}`, domain);
   const short = isShortEntry(entryBody);
   const anchors = extractAnchors(entryBody);
@@ -1473,7 +1478,7 @@ export async function generateReflectionFromEntry(input: Input): Promise<Reflect
 
   const QUESTION_STEMS: Partial<Record<Domain, string[]>> = {
     MONEY: [
-      "What does 'can't afford rent' feel like in your body — is it closer to fear or shame?",
+      "What does the financial pressure feel like in your body right now — is it closer to fear or shame?",
       "When you say you're tired of pretending you're managing, what are you actually hiding from?",
       "What would it feel like to tell one person the real number?",
     ],
@@ -1539,7 +1544,6 @@ Stay in PRIMARY DOMAIN: ${domain}.
 ${entryText}`.trim();
 
   const maxTokens = plan === "PREMIUM" ? 1200 : 780;
-  const positive = domain === "GENERAL" && isPositiveEntry(`${input.title || ""} ${entryBody}`);
   const systemPrompt = buildSystemPrompt(plan, domain, secondaryDomains, short, positive);
 
   const ATTEMPTS = [
