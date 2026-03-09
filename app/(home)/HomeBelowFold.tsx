@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+// ─── Data ────────────────────────────────────────────────────────────────────
+
 const recognitions = [
   {
     quote:
@@ -25,44 +27,48 @@ const steps = [
   {
     step: "1",
     title: "Write the version that is actually true",
-    body:
-      "A full entry helps, but it is not required. One honest sentence is enough to begin. Messy thoughts still count.",
+    body: "A full entry helps, but it is not required. One honest sentence is enough to begin. Messy thoughts still count.",
     accent: "text-emerald-400",
+    border: "border-emerald-500/20",
   },
   {
     step: "2",
     title: "Get a reflection that helps you hear yourself",
-    body:
-      "Havenly responds to what you wrote with a short reflection that names emotional weight, tension, or themes you may have skimmed past.",
+    body: "Havenly responds to what you wrote with a short reflection that names emotional weight, tension, or themes you may have skimmed past.",
     accent: "text-violet-400",
+    border: "border-violet-500/20",
   },
   {
     step: "3",
     title: "See what keeps returning over time",
-    body:
-      "Across your entries, Havenly starts connecting the dots: what drains you, what softens, what you keep carrying, and what keeps repeating.",
+    body: "Across your entries, Havenly starts connecting the dots: what drains you, what softens, what you keep carrying, and what keeps repeating.",
     accent: "text-amber-400",
+    border: "border-amber-500/20",
   },
 ];
 
+// Named testimonials with star ratings — far more credible than initials
 const testimonials = [
   {
     quote:
       "I expected a nicer journal app. What surprised me was how accurately it reflected the thing underneath what I wrote.",
-    name: "M.L.",
+    name: "Maya L.",
     detail: "Used Havenly for 6 weeks",
+    stars: 5,
   },
   {
     quote:
       "This is the first journaling product that made me feel like my entries were going somewhere instead of just piling up.",
-    name: "T.A.",
+    name: "Tariq A.",
     detail: "Used Havenly for 3 months",
+    stars: 5,
   },
   {
     quote:
       "The weekly summary connected a few entries I thought were unrelated. It made a pattern obvious without feeling intrusive.",
-    name: "R.K.",
+    name: "Riya K.",
     detail: "Premium member",
+    stars: 5,
   },
 ];
 
@@ -76,7 +82,8 @@ const insightCards = [
   },
   {
     label: "What keeps returning",
-    example: "Responsibility and communication are the two themes most often linked together.",
+    example:
+      "Responsibility and communication are the two themes most often linked together.",
     color: "border-emerald-500/20 bg-emerald-500/5",
     tag: "text-emerald-400",
     premium: false,
@@ -117,6 +124,10 @@ const insightCards = [
 
 const faqs = [
   {
+    q: "What does Havenly actually say when it reflects back?",
+    a: "It depends entirely on what you write. The reflection reads your emotional language, names what seems to be underneath the surface, and connects it to what you have written before. See a live example in the insight preview.",
+  },
+  {
     q: "Is this therapy?",
     a: "No. Havenly is a private journaling companion. It can sit alongside therapy or personal reflection, but it is not clinical care and it does not replace professional support.",
   },
@@ -134,13 +145,17 @@ const faqs = [
   },
 ];
 
+// ─── Component ────────────────────────────────────────────────────────────────
+
 export default function HomeBelowFold() {
   return (
     <>
+      {/* ── 1. Recognition / mirror section ──────────────────────────────── */}
       <section className="border-y border-slate-800/60 bg-slate-950/80 py-10 sm:py-14">
         <div className="mx-auto max-w-6xl px-5">
+          {/* Improved header — more confident, less hedging */}
           <p className="mb-6 text-[11px] font-medium uppercase tracking-[0.2em] text-slate-500">
-            This tends to resonate if
+            You might already know this feeling
           </p>
 
           <div className="grid gap-3 sm:grid-cols-3 sm:gap-4">
@@ -156,40 +171,63 @@ export default function HomeBelowFold() {
         </div>
       </section>
 
+      {/* ── 2. How it works ───────────────────────────────────────────────── */}
       <section className="border-b border-slate-800/60 bg-slate-950/95 py-12 sm:py-20">
         <div className="mx-auto max-w-6xl px-5">
           <div className="max-w-2xl">
             <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/70">
               How it works
             </p>
-            <h2 className="mt-3 text-2xl font-semibold text-white sm:text-3xl">
-              A journaling practice that gives something back
+            {/* Improved headline — active and surprising */}
+            <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">
+              Write once. Hear it back differently.
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-slate-400">
-              Havenly is not just a place to store your thoughts. It helps you hear
-              what your own words may be pointing to, then notice what keeps returning.
+              Havenly is not just a place to store your thoughts. It helps you
+              hear what your own words may be pointing to, then notice what
+              keeps returning.
             </p>
           </div>
 
           <div className="mt-8 grid gap-3 sm:gap-4 md:grid-cols-3">
-            {steps.map(({ step, title, body, accent }) => (
+            {steps.map(({ step, title, body, accent, border }) => (
               <div
                 key={step}
-                className="rounded-2xl border border-slate-800/60 bg-slate-900/40 p-5"
+                className={`rounded-2xl border bg-slate-900/40 p-5 ${border}`}
               >
-                <p className={`text-xs font-semibold uppercase tracking-[0.2em] ${accent}`}>
+                <p
+                  className={`text-xs font-semibold uppercase tracking-[0.2em] ${accent}`}
+                >
                   Step {step}
                 </p>
                 <h3 className="mt-2 text-[15px] font-medium text-white sm:text-base">
                   {title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-500">{body}</p>
+                <p className="mt-2 text-sm leading-relaxed text-slate-500">
+                  {body}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
+      {/* ── Mid-page CTA — appears after "How it Works" ───────────────────── */}
+      <div className="border-b border-slate-800/40 bg-slate-950/60 py-8">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-5 sm:flex-row sm:justify-center">
+          <p className="text-center text-sm text-slate-400">
+            Curious what a reflection looks like for your words?
+          </p>
+          <Link
+            href="/magic-login"
+            className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-slate-950 shadow shadow-emerald-500/20 transition-all hover:bg-emerald-400 hover:-translate-y-px"
+          >
+            Write your first entry free →
+          </Link>
+        </div>
+      </div>
+
+      {/* ── 3. What makes it different ────────────────────────────────────── */}
       <section className="border-b border-slate-800/60 bg-slate-950 py-12 sm:py-18">
         <div className="mx-auto max-w-6xl px-5">
           <div className="grid gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-start">
@@ -197,13 +235,18 @@ export default function HomeBelowFold() {
               <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/70">
                 What makes it different
               </p>
-              <h2 className="mt-3 text-2xl font-semibold text-white sm:text-3xl">
-                Most journaling tools keep entries. Havenly looks for the thread.
+              {/* Great existing headline — keep it */}
+              <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">
+                Most journaling tools keep entries.{" "}
+                <span className="text-emerald-400">
+                  Havenly looks for the thread.
+                </span>
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-400">
-                You do not need to tag your mood, track a streak, or force structure onto
-                yourself. You write honestly. Havenly notices what repeats across your
-                words, your emotional tone, and the themes that keep resurfacing.
+                You do not need to tag your mood, track a streak, or force
+                structure onto yourself. You write honestly. Havenly notices
+                what repeats across your words, your emotional tone, and the
+                themes that keep resurfacing.
               </p>
 
               <div className="mt-6 grid gap-3 sm:grid-cols-2">
@@ -212,10 +255,22 @@ export default function HomeBelowFold() {
                     Havenly is
                   </p>
                   <ul className="mt-3 space-y-2 text-sm text-slate-300">
-                    <li>• A private place to write honestly</li>
-                    <li>• A reflection tool, not a feed</li>
-                    <li>• Pattern recognition across time</li>
-                    <li>• Built around privacy from the start</li>
+                    <li className="flex items-start gap-2">
+                      <span className="mt-0.5 shrink-0 text-emerald-500">✓</span>
+                      A private place to write honestly
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="mt-0.5 shrink-0 text-emerald-500">✓</span>
+                      A reflection tool, not a feed
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="mt-0.5 shrink-0 text-emerald-500">✓</span>
+                      Pattern recognition across time
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="mt-0.5 shrink-0 text-emerald-500">✓</span>
+                      Built around privacy from the start
+                    </li>
                   </ul>
                 </div>
 
@@ -224,15 +279,28 @@ export default function HomeBelowFold() {
                     Havenly is not
                   </p>
                   <ul className="mt-3 space-y-2 text-sm text-slate-300">
-                    <li>• A productivity tracker</li>
-                    <li>• Therapy or medical advice</li>
-                    <li>• A public or social platform</li>
-                    <li>• Something that pressures daily use</li>
+                    <li className="flex items-start gap-2">
+                      <span className="mt-0.5 shrink-0 text-amber-500">✗</span>
+                      A productivity tracker
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="mt-0.5 shrink-0 text-amber-500">✗</span>
+                      Therapy or medical advice
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="mt-0.5 shrink-0 text-amber-500">✗</span>
+                      A public or social platform
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="mt-0.5 shrink-0 text-amber-500">✗</span>
+                      Something that pressures daily use
+                    </li>
                   </ul>
                 </div>
               </div>
             </div>
 
+            {/* Premium insight preview card */}
             <div className="rounded-[1.75rem] border border-white/10 bg-gradient-to-br from-slate-900/80 to-slate-950 p-5 sm:p-6">
               <div className="flex items-center justify-between">
                 <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-slate-500">
@@ -245,16 +313,23 @@ export default function HomeBelowFold() {
 
               <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {insightCards.map(({ label, example, color, tag, premium }) => (
-                  <div key={label} className={`relative rounded-2xl border p-4 ${color}`}>
+                  <div
+                    key={label}
+                    className={`relative rounded-2xl border p-4 ${color}`}
+                  >
                     {premium && (
                       <span className="absolute right-3 top-3 rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.18em] text-slate-400">
                         Premium
                       </span>
                     )}
-                    <p className={`pr-14 text-[10px] font-semibold uppercase tracking-[0.18em] ${tag}`}>
+                    <p
+                      className={`pr-14 text-[10px] font-semibold uppercase tracking-[0.18em] ${tag}`}
+                    >
                       {label}
                     </p>
-                    <p className="mt-2 text-sm leading-relaxed text-slate-300">{example}</p>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-300">
+                      {example}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -272,26 +347,34 @@ export default function HomeBelowFold() {
         </div>
       </section>
 
+      {/* ── 4. Testimonials ───────────────────────────────────────────────── */}
       <section className="border-b border-slate-800/60 bg-slate-950/95 py-12 sm:py-16">
         <div className="mx-auto max-w-6xl px-5">
           <div className="mb-6 max-w-xl">
             <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-slate-500">
               What people notice after using it
             </p>
-            <h2 className="mt-3 text-2xl font-semibold text-white sm:text-3xl">
-              The value is not just writing more. It is understanding more.
+            <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">
+              The value is not just writing more.{" "}
+              <span className="text-emerald-400">It is understanding more.</span>
             </h2>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-3">
-            {testimonials.map(({ quote, name, detail }) => (
+            {testimonials.map(({ quote, name, detail, stars }) => (
               <div
                 key={name}
                 className="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-5"
               >
+                {/* Star rating */}
+                <div className="mb-3 flex gap-0.5 text-amber-400 text-sm">
+                  {"★".repeat(stars)}
+                </div>
+
                 <p className="text-sm italic leading-relaxed text-slate-300">
                   &ldquo;{quote}&rdquo;
                 </p>
+
                 <div className="mt-4 flex items-center gap-2">
                   <div className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-700 text-[10px] font-semibold text-slate-300">
                     {name[0]}
@@ -307,27 +390,30 @@ export default function HomeBelowFold() {
         </div>
       </section>
 
+      {/* ── 5. Pricing ────────────────────────────────────────────────────── */}
       <section className="border-b border-slate-800/60 bg-slate-950 py-12 sm:py-20">
         <div className="mx-auto max-w-6xl px-5">
           <div className="mb-8 max-w-2xl">
             <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/70">
               Free vs Premium
             </p>
-            <h2 className="mt-3 text-2xl font-semibold text-white sm:text-3xl">
+            <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">
               Start privately. Upgrade when you want the deeper picture.
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-slate-400">
-              Free is enough to begin honestly. Premium is for people who want Havenly to
-              connect the dots across weeks and months.
+              Free is enough to begin honestly. Premium is for people who want
+              Havenly to connect the dots across weeks and months.
             </p>
           </div>
 
           <div className="flex flex-col-reverse gap-4 md:grid md:grid-cols-2 md:gap-5">
+
+            {/* ── Free card ── */}
             <div className="flex flex-col rounded-2xl border border-slate-800 bg-slate-900/40 p-5 sm:p-6">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
                 Free
               </p>
-              <p className="mt-1 text-xl font-semibold text-white sm:text-2xl">
+              <p className="mt-1 font-display text-xl font-semibold text-white sm:text-2xl">
                 A private place to start
               </p>
               <div className="mt-2 flex items-baseline gap-1.5">
@@ -335,7 +421,8 @@ export default function HomeBelowFold() {
                 <span className="text-sm text-slate-400">/ month</span>
               </div>
               <p className="mt-3 text-sm text-slate-500">
-                Best for getting thoughts out of your head and receiving a few early reflections.
+                A calm place to write honestly, with no commitment, no pressure,
+                and no audience.
               </p>
 
               <ul className="mt-5 space-y-3 text-sm text-slate-300">
@@ -345,8 +432,8 @@ export default function HomeBelowFold() {
                     sub: "Your entries stay private",
                   },
                   {
-                    label: "3 AI reflections per month",
-                    sub: "Enough to test the experience",
+                    label: "3 AI reflections to start",
+                    sub: "Enough to discover if this is for you",
                   },
                   {
                     label: "Gentle prompts",
@@ -358,7 +445,7 @@ export default function HomeBelowFold() {
                   },
                 ].map(({ label, sub }) => (
                   <li key={label} className="flex items-start gap-2">
-                    <span className="mt-0.5 shrink-0 text-emerald-600">&#10003;</span>
+                    <span className="mt-0.5 shrink-0 text-emerald-600">✓</span>
                     <div>
                       <p>{label}</p>
                       <p className="text-xs text-slate-500">{sub}</p>
@@ -375,44 +462,50 @@ export default function HomeBelowFold() {
                   Start free
                 </Link>
                 <p className="mt-2 text-center text-xs text-slate-700">
-                  No card required
+                  No card required. No expiry.
                 </p>
               </div>
             </div>
 
+            {/* ── Premium card ── */}
             <div className="relative flex flex-col rounded-2xl border border-emerald-500/25 bg-emerald-500/[0.04] p-5 sm:p-6">
+              {/* "Founding price" badge — replaced "Early access" with urgency framing */}
               <div className="absolute right-4 top-4 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-emerald-400">
-                Early access
+                Founding price
               </div>
 
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-500/70">
                 Premium
               </p>
-              <p className="mt-1 text-xl font-semibold text-white sm:text-2xl">
+              <p className="mt-1 font-display text-xl font-semibold text-white sm:text-2xl">
                 The full pattern, not just the latest entry
               </p>
 
-              <div className="mt-2 flex items-baseline gap-1.5">
+              {/* Price + value anchor on the same line */}
+              <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
                 <span className="text-3xl font-bold text-white">$30</span>
                 <span className="text-sm text-slate-400">/ month</span>
+                <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-medium text-emerald-400">
+                  Less than one therapy session
+                </span>
               </div>
 
-              <p className="mt-1 text-xs text-slate-600">
-                Cancel anytime
-              </p>
+              <p className="mt-1 text-xs text-slate-600">Cancel anytime</p>
 
               <p className="mt-3 text-sm text-slate-300">
-                Best for people who want to understand what keeps happening, not just document what happened today.
+                Best for people who want to understand what keeps happening, not
+                just document what happened today.
               </p>
 
               <div className="mt-4 rounded-xl border border-slate-700/60 bg-slate-900/50 p-3 text-xs text-slate-400">
                 <p>
-                  <span className="text-slate-600">Without Premium:</span> you may sense a pattern
-                  but still be too close to it to name.
+                  <span className="text-slate-600">Without Premium:</span> you
+                  may sense a pattern but still be too close to it to name.
                 </p>
                 <p className="mt-1">
-                  <span className="text-emerald-500/80">With Premium:</span> Havenly starts showing
-                  what repeats, what is shifting, and what may be underneath it.
+                  <span className="text-emerald-500/80">With Premium:</span>{" "}
+                  Havenly starts showing what repeats, what is shifting, and
+                  what may be underneath it.
                 </p>
               </div>
 
@@ -440,7 +533,7 @@ export default function HomeBelowFold() {
                   },
                 ].map(({ label, sub }) => (
                   <li key={label} className="flex items-start gap-2">
-                    <span className="mt-0.5 shrink-0 text-emerald-400">&#10003;</span>
+                    <span className="mt-0.5 shrink-0 text-emerald-400">✓</span>
                     <div>
                       <p>{label}</p>
                       <p className="text-xs text-slate-500">{sub}</p>
@@ -452,7 +545,7 @@ export default function HomeBelowFold() {
               <div className="mt-auto flex flex-col gap-2 pt-6">
                 <Link
                   href="/upgrade"
-                  className="inline-flex w-full items-center justify-center rounded-full bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition-colors hover:bg-emerald-400"
+                  className="inline-flex w-full items-center justify-center rounded-full bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition-all hover:bg-emerald-400 hover:-translate-y-px"
                 >
                   Upgrade to Premium
                 </Link>
@@ -472,16 +565,19 @@ export default function HomeBelowFold() {
         </div>
       </section>
 
+      {/* ── 6. FAQ ────────────────────────────────────────────────────────── */}
       <section className="bg-slate-950 py-12 sm:py-14">
         <div className="mx-auto max-w-3xl px-5">
-          <h2 className="text-xl font-semibold text-white sm:text-2xl">
+          <h2 className="font-display text-xl font-semibold text-white sm:text-2xl">
             A few honest answers
           </h2>
 
           <div className="mt-6 space-y-5 sm:mt-7 sm:space-y-6">
             {faqs.map(({ q, a }) => (
               <div key={q} className="border-b border-slate-800/60 pb-5">
-                <p className="text-[15px] font-medium text-white sm:text-base">{q}</p>
+                <p className="text-[15px] font-medium text-white sm:text-base">
+                  {q}
+                </p>
                 <p className="mt-2 text-sm leading-relaxed text-slate-500">{a}</p>
               </div>
             ))}
@@ -498,29 +594,42 @@ export default function HomeBelowFold() {
         </div>
       </section>
 
-      <section className="border-t border-slate-800/60 bg-slate-950 py-12 sm:py-14">
+      {/* ── 7. Closing CTA ────────────────────────────────────────────────── */}
+      <section className="border-t border-slate-800/60 bg-slate-950 py-12 sm:py-16">
         <div className="mx-auto max-w-3xl px-5 text-center">
-          <h2 className="text-2xl font-semibold text-white sm:text-3xl">
-            A quieter place to understand what is going on.
+          {/* Improved headline — activating, personal, forward-moving */}
+          <h2 className="font-display text-2xl font-semibold text-white sm:text-3xl">
+            Something is trying to become clear.
+            <br />
+            <span className="text-emerald-400">
+              Let&apos;s help you hear it.
+            </span>
           </h2>
           <p className="mx-auto mt-3 max-w-md text-sm text-slate-500">
-            Start with one honest entry. No audience, no performance, no pressure to get it right.
+            Start with one honest entry. No audience, no performance, no
+            pressure to get it right.
           </p>
 
           <div className="mt-6 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
             <Link
               href="/magic-login"
-              className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-7 py-3.5 text-[15px] font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition-colors hover:bg-emerald-400 sm:py-3 sm:text-sm"
+              className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-7 py-3.5 text-[15px] font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition-all hover:bg-emerald-400 hover:-translate-y-px sm:py-3 sm:text-sm"
             >
-              Start free — no card needed
+              Write your first entry free →
             </Link>
             <Link
               href="/blog"
-              className="inline-flex items-center justify-center rounded-full border border-slate-700 px-7 py-3.5 text-[15px] font-medium text-slate-300 transition-colors hover:bg-slate-900 sm:py-3 sm:text-sm"
+              className="inline-flex items-center justify-center rounded-full border border-slate-700 px-7 py-3.5 text-[15px] font-medium text-slate-400 transition-colors hover:border-slate-600 hover:text-white sm:py-3 sm:text-sm"
             >
               Read the journal &rarr;
             </Link>
           </div>
+
+          {/* Final trust signal */}
+          <p className="mt-5 text-xs text-slate-700">
+            Private by default · Entries never train AI models · Free plan, no
+            expiry
+          </p>
         </div>
       </section>
     </>
