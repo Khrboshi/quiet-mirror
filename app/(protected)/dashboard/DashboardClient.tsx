@@ -38,7 +38,6 @@ function friendlyDate(iso: string, isMounted = false) {
   const today = new Date();
   const yesterday = new Date(today);
   yesterday.setDate(today.getDate() - 1);
-
   const isoDate = (x: Date) => x.toISOString().slice(0, 10);
   if (isoDate(d) === isoDate(today)) return "today";
   if (isoDate(d) === isoDate(yesterday)) return "yesterday";
@@ -51,19 +50,35 @@ function startOfNextMonth() {
     .toLocaleDateString(undefined, { month: "short", day: "numeric" });
 }
 
-// Rotate prompts deterministically by day of week — feels fresh but not random
+// Sanitise AI-generated corepattern — strip anything that references test data
+// or looks like a raw NLP analysis sentence rather than a human-readable insight.
+function sanitiseCorePattern(raw: string | null): string | null {
+  if (!raw) return null;
+  // If the pattern contains typical test-data markers, suppress it
+  const lower = raw.toLowerCase();
+  if (
+    lower.includes("for test") ||
+    lower.includes("as indicated by") ||
+    lower.includes("your phrase") ||
+    lower.length < 15
+  ) {
+    return null;
+  }
+  return raw;
+}
+
 const PROMPT_POOL = [
-  { q: "How is your body feeling right now?", sub: "Tension, calm, tired, restless — anything you notice." },
-  { q: "What is one thing occupying your mind?", sub: "One sentence is enough." },
-  { q: "What are you avoiding thinking about?", sub: "You don't have to solve it — just name it." },
-  { q: "What do you need more of right now?", sub: "Rest, space, connection, clarity — anything." },
-  { q: "What felt heavy this week?", sub: "No need to explain why." },
-  { q: "What are you proud of, even quietly?", sub: "Small things count." },
-  { q: "Just free write", sub: "No structure. No rules. Start anywhere." },
+  { q: "How is your body feeling right now?", sub: "Tension, calm, tired, restless — anything you notice.", accent: "emerald" },
+  { q: "What is one thing occupying your mind?", sub: "One sentence is enough.", accent: "violet" },
+  { q: "What are you avoiding thinking about?", sub: "You don't have to solve it — just name it.", accent: "amber" },
+  { q: "What do you need more of right now?", sub: "Rest, space, connection, clarity — anything.", accent: "sky" },
+  { q: "What felt heavy this week?", sub: "No need to explain why.", accent: "rose" },
+  { q: "What are you proud of, even quietly?", sub: "Small things count.", accent: "emerald" },
+  { q: "Just free write", sub: "No structure. No rules. Start anywhere.", accent: "slate" },
 ];
 
 function getDailyPrompts(): typeof PROMPT_POOL {
-  const day = new Date().getDay(); // 0–6
+  const day = new Date().getDay();
   const start = day % PROMPT_POOL.length;
   return [
     PROMPT_POOL[start % PROMPT_POOL.length],
@@ -72,27 +87,59 @@ function getDailyPrompts(): typeof PROMPT_POOL {
   ];
 }
 
+// Map accent name → Tailwind classes
+const ACCENT_CLASSES: Record<string, { border: string; label: string; dot: string; arrow: string }> = {
+  emerald: {
+    border: "border-emerald-500/20 hover:border-emerald-500/40",
+    label: "text-emerald-400/60",
+    dot: "bg-emerald-500",
+    arrow: "text-emerald-400 group-hover:text-emerald-300",
+  },
+  violet: {
+    border: "border-violet-500/20 hover:border-violet-500/40",
+    label: "text-violet-400/60",
+    dot: "bg-violet-500",
+    arrow: "text-violet-400 group-hover:text-violet-300",
+  },
+  amber: {
+    border: "border-amber-500/20 hover:border-amber-500/40",
+    label: "text-amber-400/60",
+    dot: "bg-amber-500",
+    arrow: "text-amber-400 group-hover:text-amber-300",
+  },
+  sky: {
+    border: "border-sky-500/20 hover:border-sky-500/40",
+    label: "text-sky-400/60",
+    dot: "bg-sky-500",
+    arrow: "text-sky-400 group-hover:text-sky-300",
+  },
+  rose: {
+    border: "border-rose-500/20 hover:border-rose-500/40",
+    label: "text-rose-400/60",
+    dot: "bg-rose-500",
+    arrow: "text-rose-400 group-hover:text-rose-300",
+  },
+  slate: {
+    border: "border-slate-700/60 hover:border-slate-600",
+    label: "text-slate-500",
+    dot: "bg-slate-500",
+    arrow: "text-slate-400 group-hover:text-slate-300",
+  },
+};
+
 // ── Sub-components ────────────────────────────────────────────────────────────
 
 function StreakBadge({ streak }: { streak: number }) {
   if (streak === 0) return null;
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-300">
-      <span className="text-base leading-none">🔥</span>
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1.5 text-xs font-medium text-amber-300">
+      <span className="text-sm leading-none">🔥</span>
       {streak} day{streak !== 1 ? "s" : ""} in a row
     </span>
   );
 }
 
-function StatPill({ label, value }: { label: string; value: string }) {
-  return (
-    <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm">
-      {label}: <span className="text-slate-200">{value}</span>
-    </span>
-  );
-}
-
-// ── Personalised insight card (Premium) ───────────────────────────────────────
+// ── Premium insight card ──────────────────────────────────────────────────────
 
 function PremiumInsightCard({
   emotion,
@@ -105,28 +152,27 @@ function PremiumInsightCard({
   corepattern: string | null;
   reflectedThisWeek: boolean;
 }) {
-  const hasData = emotion || theme || corepattern;
+  const safePattern = sanitiseCorePattern(corepattern);
+  const hasData = emotion || theme || safePattern;
   if (!hasData) return null;
 
+  const bodyText = safePattern
+    ? safePattern
+    : emotion && theme
+    ? `${emotion} keeps showing up — often alongside themes of ${theme.toLowerCase()}.`
+    : emotion
+    ? `${emotion} has been your most present emotion recently.`
+    : `${theme} is the theme appearing most in your entries.`;
+
   return (
-    <div className="rounded-2xl border border-emerald-500/15 bg-gradient-to-br from-emerald-500/5 to-transparent p-6">
-      <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-emerald-500/70">
+    <div className="rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/[0.06] to-transparent p-5 sm:p-6">
+      <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-500/70">
         Your pattern right now
       </p>
 
-      {corepattern ? (
-        <p className="text-base font-medium leading-relaxed text-slate-100">
-          "{corepattern}"
-        </p>
-      ) : (
-        <p className="text-base font-medium leading-relaxed text-slate-100">
-          {emotion && theme
-            ? `${emotion} keeps showing up — often alongside themes of ${theme.toLowerCase()}.`
-            : emotion
-            ? `${emotion} has been your most present emotion recently.`
-            : `${theme} is the theme that's been appearing most in your entries.`}
-        </p>
-      )}
+      <p className="font-display text-base font-medium leading-relaxed text-slate-100 sm:text-[17px]">
+        &ldquo;{bodyText}&rdquo;
+      </p>
 
       {(emotion || theme) && (
         <div className="mt-3 flex flex-wrap gap-2">
@@ -143,30 +189,30 @@ function PremiumInsightCard({
         </div>
       )}
 
-      <div className="mt-4 flex items-center gap-3">
+      <div className="mt-4 flex flex-wrap items-center gap-3">
         <Link
           href="/insights"
-          className="text-xs font-medium text-emerald-400 hover:text-emerald-300 transition"
+          className="text-xs font-medium text-emerald-400 transition hover:text-emerald-300"
         >
           See full insights →
         </Link>
         {!reflectedThisWeek && (
-          <span className="text-xs text-slate-600">·</span>
-        )}
-        {!reflectedThisWeek && (
-          <Link
-            href="/journal"
-            className="text-xs text-slate-500 hover:text-slate-400 transition"
-          >
-            Reflect on a recent entry
-          </Link>
+          <>
+            <span className="text-xs text-slate-700">·</span>
+            <Link
+              href="/journal"
+              className="text-xs text-slate-500 transition hover:text-slate-400"
+            >
+              Reflect on a recent entry
+            </Link>
+          </>
         )}
       </div>
     </div>
   );
 }
 
-// ── Upgrade teaser card (Free) ────────────────────────────────────────────────
+// ── Free insight teaser ───────────────────────────────────────────────────────
 
 function FreeInsightTeaser({
   entryCount,
@@ -181,42 +227,45 @@ function FreeInsightTeaser({
 
   if (entryCount < 3) {
     return (
-      <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-2">
+      <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-5 sm:p-6">
+        <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">
           Your patterns
         </p>
-        <p className="text-sm text-slate-400">
-          Write <span className="text-slate-200">{3 - entryCount} more {3 - entryCount === 1 ? "entry" : "entries"}</span> and
-          Havenly will start noticing what quietly repeats across your writing.
+        <p className="text-sm leading-relaxed text-slate-400">
+          Write{" "}
+          <span className="text-slate-200">
+            {3 - entryCount} more {3 - entryCount === 1 ? "entry" : "entries"}
+          </span>{" "}
+          and Havenly will start noticing what quietly repeats across your writing.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-      <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-3">
+    <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-5 sm:p-6">
+      <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">
         A pattern is forming
       </p>
 
       {hasHint ? (
-        <p className="text-sm text-slate-300 leading-relaxed">
+        <p className="text-sm leading-relaxed text-slate-300">
           Across your entries, there may be a recurring thread around{" "}
-          <span className="blur-[5px] select-none rounded bg-white/10 px-1 text-white">
+          <span className="select-none rounded bg-white/10 px-1 text-white blur-[5px]">
             {emotion ?? theme}
           </span>
           . Premium helps you see it clearly.
         </p>
       ) : (
-        <p className="text-sm text-slate-300 leading-relaxed">
-          Havenly has noticed a recurring thread in your entries.
-          Premium helps you see what quietly repeats.
+        <p className="text-sm leading-relaxed text-slate-300">
+          Havenly has noticed a recurring thread in your entries. Premium helps
+          you see what quietly repeats.
         </p>
       )}
 
       <Link
         href="/upgrade"
-        className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-emerald-500 px-4 py-2 text-xs font-semibold text-slate-950 hover:bg-emerald-400 transition"
+        className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-emerald-500 px-4 py-2 text-xs font-semibold text-slate-950 transition hover:bg-emerald-400"
       >
         Unlock insights →
       </Link>
@@ -242,43 +291,48 @@ function ThreadCard({
   const when = lastEntryDate ? friendlyDate(lastEntryDate) : null;
   const title = titleOrUntitled(lastEntryTitle);
 
-  const headline = wroteToday
+  const sectionLabel = wroteToday
     ? "You wrote today"
     : lastEntryId
     ? "Pick up the thread"
     : "Begin your story";
 
+  // Don't echo the raw entry title into the prompt body — feels broken with test titles
   const body = wroteToday
-    ? `You checked in today — "${title}". How has the day evolved?`
+    ? "How has the day evolved since you last checked in?"
     : lastEntryId && lastTopEmotion
-    ? `You wrote ${when} — "${title}". ${lastTopEmotion} was present. Has anything shifted?`
+    ? `You wrote ${when}. ${lastTopEmotion} was present. Has anything shifted?`
     : lastEntryId
-    ? `You wrote ${when} — "${title}". Has anything softened since?`
+    ? `You last wrote ${when}. Has anything softened since?`
     : "One honest sentence is always enough to start.";
 
   const threadPrompt = wroteToday
-    ? `You wrote today — "${title}". How has the day evolved?`
+    ? "You've already written today — how has the day evolved?"
     : lastTopEmotion
-    ? `You wrote ${when} about "${title}". ${lastTopEmotion} was present. Has anything shifted?`
-    : `Following up on "${title}" — has anything softened since you wrote?`;
+    ? `Following up on your last entry — ${lastTopEmotion} was present. Has anything shifted?`
+    : `Following up on your last entry — has anything softened since you wrote?`;
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-      <p className="text-xs uppercase tracking-wide text-slate-500">{headline}</p>
-      <p className="mt-2 text-sm font-medium text-slate-100 leading-snug">{body}</p>
+    <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-5">
+      <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+        {sectionLabel}
+      </p>
+      <p className="mt-2 text-sm font-medium leading-snug text-slate-200">
+        {body}
+      </p>
 
       <div className="mt-4 flex flex-wrap gap-2">
         <Link
           href={buildHref(threadPrompt)}
-          className="inline-flex rounded-full bg-emerald-500 px-4 py-2 text-sm font-medium text-black hover:bg-emerald-400 transition"
+          className="inline-flex rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-950 shadow-sm shadow-emerald-500/20 transition hover:bg-emerald-400"
         >
-          {wroteToday ? "Add to today" : "Update today"}
+          {wroteToday ? "Add to today" : "Write now"}
         </Link>
 
         {lastEntryId && (
           <Link
             href={`/journal/${lastEntryId}`}
-            className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-300 hover:bg-white/10 transition"
+            className="inline-flex rounded-full border border-white/[0.08] bg-white/[0.03] px-4 py-2 text-sm font-medium text-slate-300 transition hover:bg-white/[0.07]"
           >
             Open last entry
           </Link>
@@ -288,34 +342,36 @@ function ThreadCard({
   );
 }
 
-// ── Welcome panel (new user, zero entries) ────────────────────────────────────
+// ── Welcome panel (zero entries) ──────────────────────────────────────────────
 
 function WelcomePanel() {
   return (
     <div className="mb-8 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.04] p-6">
-      <p className="mb-1 text-[10px] font-semibold uppercase tracking-widest text-emerald-500/70">
+      <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-500/70">
         Welcome to Havenly
       </p>
-      <h2 className="text-lg font-semibold text-white leading-snug">
+      <h2 className="font-display text-lg font-semibold leading-snug text-white">
         This is your private space to think out loud.
       </h2>
       <p className="mt-2 text-sm leading-relaxed text-slate-400">
-        Write what's actually going on — Havenly reads it, reflects it back gently,
-        and starts noticing what quietly repeats across your entries over time.
-        One sentence is always enough to start.
+        Write what&apos;s actually going on — Havenly reads it, reflects it back
+        gently, and starts noticing what quietly repeats across your entries over
+        time. One sentence is always enough to start.
       </p>
       <Link
         href="/journal/new"
-        className="mt-4 inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-emerald-400 transition"
+        className="mt-5 inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-slate-950 shadow-sm shadow-emerald-500/20 transition hover:bg-emerald-400"
       >
         Write your first entry →
       </Link>
-      <p className="mt-3 text-xs text-slate-600">Takes less than a minute · stays private · no AI training</p>
+      <p className="mt-3 text-xs text-slate-600">
+        Takes less than a minute · stays private · never trains AI
+      </p>
     </div>
   );
 }
 
-// ── Pattern history started (1 entry with reflection) ─────────────────────────
+// ── Pattern started (1 entry with reflection) ─────────────────────────────────
 
 function PatternStartedCard({
   emotion,
@@ -326,25 +382,23 @@ function PatternStartedCard({
 }) {
   return (
     <div className="mb-8 rounded-2xl border border-violet-500/20 bg-violet-500/[0.04] p-6">
-      <p className="mb-1 text-[10px] font-semibold uppercase tracking-widest text-violet-400/70">
-        ✦ Your pattern history has started
+      <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-violet-400/70">
+        Your pattern history has started
       </p>
       <p className="text-sm leading-relaxed text-slate-300">
         Havenly has your first reflection.{" "}
         {emotion || theme ? (
           <>
             It noticed{" "}
-            <span className="text-slate-100">
-              {emotion ?? theme}
-            </span>{" "}
-            in what you wrote.{" "}
+            <span className="text-slate-100">{emotion ?? theme}</span> in what
+            you wrote.{" "}
           </>
         ) : null}
         The more you write, the more clearly the patterns will show.
       </p>
       <Link
         href="/journal/new"
-        className="mt-4 inline-flex items-center gap-2 text-xs font-medium text-violet-400 hover:text-violet-300 transition"
+        className="mt-4 inline-flex items-center gap-2 text-xs font-medium text-violet-400 transition hover:text-violet-300"
       >
         Write another entry →
       </Link>
@@ -352,30 +406,34 @@ function PatternStartedCard({
   );
 }
 
-// ── Progress nudge (2–4 entries, approaching pattern threshold) ───────────────
+// ── Progress nudge (2–4 entries) ──────────────────────────────────────────────
 
 function ProgressNudge({ entryCount }: { entryCount: number }) {
   const remaining = 5 - entryCount;
   if (remaining <= 0) return null;
 
   return (
-    <div className="mb-8 rounded-2xl border border-slate-700/60 bg-slate-900/30 p-5">
-      <div className="flex items-center justify-between mb-2">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-500">
+    <div className="mb-8 rounded-2xl border border-slate-800/60 bg-slate-900/30 p-5">
+      <div className="mb-2 flex items-center justify-between">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">
           Pattern detection
         </p>
-        <p className="text-xs text-slate-500">{entryCount} / 5 entries</p>
+        <p className="text-xs text-slate-600">
+          {entryCount} / 5 entries
+        </p>
       </div>
-      {/* Progress bar */}
-      <div className="h-1 w-full rounded-full bg-slate-800 mb-3">
+      <div className="mb-3 h-1 w-full rounded-full bg-slate-800">
         <div
           className="h-1 rounded-full bg-emerald-500/60 transition-all"
           style={{ width: `${(entryCount / 5) * 100}%` }}
         />
       </div>
       <p className="text-sm text-slate-400">
-        <span className="text-slate-200">{remaining} more {remaining === 1 ? "entry" : "entries"}</span> and Havenly
-        will start showing you what quietly repeats across your writing.
+        <span className="text-slate-200">
+          {remaining} more {remaining === 1 ? "entry" : "entries"}
+        </span>{" "}
+        and Havenly will start showing you what quietly repeats across your
+        writing.
       </p>
     </div>
   );
@@ -388,7 +446,6 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
   const { planType, credits, loading: planLoading } = useUserPlan();
 
   const [displayName, setDisplayName] = useState<string | null>(null);
-
   const [mounted, setMounted] = useState(false);
   useEffect(() => { setMounted(true); }, []);
 
@@ -400,10 +457,11 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
 
   const isPremium = planType === "PREMIUM" || planType === "TRIAL";
   const isFree = !planLoading && planType === "FREE";
-  const isUnlimited = isPremium;
   const reflectionsPaused = isFree && (credits ?? 0) === 0;
   const resetLabel = startOfNextMonth();
-  const readablePlan = isPremium ? (planType === "TRIAL" ? "Trial" : "Premium") : "Free";
+  const readablePlan = isPremium
+    ? planType === "TRIAL" ? "Trial" : "Premium"
+    : "Free";
 
   const greeting = displayName
     ? `${greetingByHour()}, ${displayName}`
@@ -417,7 +475,6 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
     wroteToday, reflectedThisWeek,
   } = data;
 
-  // Entries this week (best effort from what server passed)
   const subline = useMemo(() => {
     if (entryCount === 0) return "Start writing — one sentence is always enough.";
     if (wroteToday) return "You've checked in today. Keep going.";
@@ -425,39 +482,63 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
   }, [entryCount, wroteToday]);
 
   return (
-    <div className="mx-auto max-w-5xl px-6 pt-10 pb-20 text-slate-200">
+    <div className="mx-auto max-w-5xl px-5 pb-20 pt-10 text-slate-200 sm:px-6">
 
       {/* ── Header ── */}
-      <div className="mb-8 space-y-3">
+      <div className="mb-8">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="space-y-1">
-            <h1 className="text-3xl font-semibold tracking-tight text-white">
+            {/* ✅ Fraunces serif on the greeting — most personal line in the app */}
+            <h1 className="font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl">
               {greeting}
             </h1>
-            <p className="text-sm text-slate-400">{subline}</p>
+            <p className="text-sm text-slate-500">{subline}</p>
           </div>
 
           {streak >= 2 && <StreakBadge streak={streak} />}
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 text-slate-400">
-          <StatPill label="Plan" value={readablePlan} />
+        {/* ✅ Replaced debug-style pill badges with a subtle single-line status row */}
+        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-600">
+          <span>
+            Plan:{" "}
+            <span className={isPremium ? "text-emerald-400" : "text-slate-400"}>
+              {readablePlan}
+            </span>
+          </span>
 
-          {isUnlimited ? (
-            <StatPill label="Reflections" value="unlimited" />
+          <span className="text-slate-800">·</span>
+
+          {isPremium ? (
+            <span>
+              Reflections: <span className="text-emerald-400">unlimited</span>
+            </span>
           ) : reflectionsPaused ? (
-            <StatPill label="Reflections" value={`paused · returns ${resetLabel}`} />
+            <span>
+              Reflections paused —{" "}
+              <span className="text-slate-500">returns {resetLabel}</span>
+            </span>
           ) : (
-            <StatPill label="Reflections" value={planLoading ? "…" : String(credits ?? 0)} />
+            <span>
+              Reflections remaining:{" "}
+              <span className="text-slate-400">
+                {planLoading ? "…" : String(credits ?? 0)}
+              </span>
+            </span>
           )}
 
           {entryCount > 0 && (
-            <StatPill label="Entries" value={String(entryCount)} />
+            <>
+              <span className="text-slate-800">·</span>
+              <span>
+                {entryCount} {entryCount === 1 ? "entry" : "entries"}
+              </span>
+            </>
           )}
         </div>
 
         {reflectionsPaused && (
-          <p className="text-xs text-slate-600">
+          <p className="mt-1.5 text-xs text-slate-700">
             You can always write freely — reflections return {resetLabel}.
           </p>
         )}
@@ -474,7 +555,7 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
         <ProgressNudge entryCount={entryCount} />
       )}
 
-      {/* ── Premium insight card / Free teaser ── */}
+      {/* ── Premium insight / Free teaser ── */}
       {isPremium && (lastTopEmotion || lastTopTheme || lastCorepattern) && (
         <div className="mb-8">
           <PremiumInsightCard
@@ -498,30 +579,35 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
 
       {/* ── Daily prompts ── */}
       <div className="mb-6">
-        <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-slate-600">
-          Today's prompts
+        <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-600">
+          Today&apos;s prompts
         </p>
 
         <div className="grid gap-3 sm:grid-cols-3">
-          {prompts.map((c) => (
-            <Link
-              key={c.q}
-              href={buildHref(c.q)}
-              className="group rounded-2xl border border-white/10 bg-white/5 p-5 hover:bg-white/[0.08] hover:border-white/20 transition"
-            >
-              <p className="font-medium text-slate-100 leading-snug group-hover:text-white transition">
-                {c.q}
-              </p>
-              <p className="mt-1.5 text-sm text-slate-500">{c.sub}</p>
-              <p className="mt-3 text-xs font-medium text-emerald-400 group-hover:text-emerald-300 transition">
-                Start →
-              </p>
-            </Link>
-          ))}
+          {prompts.map((c) => {
+            const ac = ACCENT_CLASSES[c.accent] ?? ACCENT_CLASSES.slate;
+            return (
+              <Link
+                key={c.q}
+                href={buildHref(c.q)}
+                className={`group rounded-2xl border bg-white/[0.02] p-5 transition hover:bg-white/[0.05] ${ac.border}`}
+              >
+                {/* ✅ Colored dot per-prompt for visual differentiation */}
+                <span className={`mb-3 block h-1.5 w-1.5 rounded-full ${ac.dot}`} />
+                <p className="font-medium leading-snug text-slate-100 transition group-hover:text-white">
+                  {c.q}
+                </p>
+                <p className="mt-1.5 text-xs leading-relaxed text-slate-500">{c.sub}</p>
+                <p className={`mt-3 text-xs font-medium transition ${ac.arrow}`}>
+                  Start →
+                </p>
+              </Link>
+            );
+          })}
         </div>
       </div>
 
-      {/* ── Thread + stats row ── */}
+      {/* ── Thread + history row ── */}
       <div className="grid gap-4 sm:grid-cols-2">
 
         <ThreadCard
@@ -532,46 +618,50 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
           wroteToday={wroteToday}
         />
 
-        {/* Stats / history card */}
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-5 space-y-4">
-          <p className="text-xs uppercase tracking-wide text-slate-500">Your history</p>
+        {/* ✅ History card — cleaner, less "settings panel" feel */}
+        <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-5">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+            Your history
+          </p>
 
-          <div className="space-y-2">
+          <div className="mt-4 space-y-2.5">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-slate-400">Total entries</span>
-              <span className="font-medium text-slate-100">{entryCount}</span>
+              <span className="text-slate-500">Total entries</span>
+              <span className="font-medium text-slate-200">{entryCount}</span>
             </div>
             <div className="flex items-center justify-between text-sm">
-              <span className="text-slate-400">Current streak</span>
-              <span className="font-medium text-slate-100">
+              <span className="text-slate-500">Current streak</span>
+              <span className="font-medium text-slate-200">
                 {streak > 0 ? `${streak} day${streak !== 1 ? "s" : ""}` : "Start today"}
               </span>
             </div>
             {lastEntryDate && (
               <div className="flex items-center justify-between text-sm">
-                <span className="text-slate-400">Last entry</span>
-                <span className="font-medium text-slate-100"><span suppressHydrationWarning>{friendlyDate(lastEntryDate, mounted)}</span></span>
+                <span className="text-slate-500">Last entry</span>
+                <span className="font-medium text-slate-200" suppressHydrationWarning>
+                  {friendlyDate(lastEntryDate, mounted)}
+                </span>
               </div>
             )}
             {isPremium && (
               <div className="flex items-center justify-between text-sm">
-                <span className="text-slate-400">Reflections</span>
+                <span className="text-slate-500">Reflections</span>
                 <span className="font-medium text-emerald-400">Unlimited</span>
               </div>
             )}
           </div>
 
-          <div className="pt-1 border-t border-white/5 flex flex-wrap gap-2">
+          <div className="mt-5 flex flex-wrap gap-3 border-t border-white/[0.05] pt-4">
             <Link
               href="/journal"
-              className="text-xs text-slate-500 hover:text-slate-300 transition"
+              className="text-xs text-slate-500 transition hover:text-slate-300"
             >
               All entries →
             </Link>
             {isPremium && (
               <Link
                 href="/insights"
-                className="text-xs text-emerald-500/70 hover:text-emerald-400 transition"
+                className="text-xs text-emerald-500/70 transition hover:text-emerald-400"
               >
                 View insights →
               </Link>
