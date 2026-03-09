@@ -1,13 +1,14 @@
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+// app/(protected)/journal/[id]/page.tsx
+
 import { notFound } from "next/navigation";
+import { createServerSupabase } from "@/lib/supabase/server";
 
 type PageProps = {
   params: { id: string };
 };
 
 async function getEntry(id: string) {
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = createServerSupabase();
 
   const { data, error } = await supabase
     .from("journal_entries")
@@ -50,26 +51,22 @@ export default async function JournalEntryPage({ params }: PageProps) {
 
   return (
     <div className="mx-auto max-w-3xl space-y-8 pb-16">
-
-      {/* Entry */}
       <section className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6">
         {entry.title && (
-          <h1 className="text-xl font-semibold text-slate-100 mb-4">
+          <h1 className="mb-4 text-xl font-semibold text-slate-100">
             {entry.title}
           </h1>
         )}
 
-        <p className="whitespace-pre-wrap text-slate-300 leading-relaxed">
+        <p className="whitespace-pre-wrap leading-relaxed text-slate-300">
           {entry.content}
         </p>
       </section>
 
-      {/* Reflection */}
       {!reflection ? (
         <ReflectionSkeleton />
       ) : (
         <section className="rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.05] p-6 space-y-4">
-
           <div className="text-xs font-semibold uppercase tracking-widest text-emerald-400/80">
             Havenly reflection
           </div>
@@ -81,9 +78,7 @@ export default async function JournalEntryPage({ params }: PageProps) {
               <p
                 key={i}
                 className={`leading-relaxed ${
-                  i === 0
-                    ? "text-base text-slate-100"
-                    : "text-sm text-slate-400"
+                  i === 0 ? "text-base text-slate-100" : "text-sm text-slate-400"
                 }`}
               >
                 {p}
@@ -93,7 +88,6 @@ export default async function JournalEntryPage({ params }: PageProps) {
           <p className="text-xs text-slate-600">
             Reflections evolve as you keep writing.
           </p>
-
         </section>
       )}
     </div>
