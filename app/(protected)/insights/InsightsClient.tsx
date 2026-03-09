@@ -10,7 +10,7 @@ type InsightData = {
   themes: Record<string, number>;
   emotions: Record<string, number>;
   corepatterns?: Record<string, number>;
-  entryCount?: number;      // entries WITH reflections
+  entryCount?: number; // entries WITH reflections
   totalEntryCount?: number; // ALL entries
   hasRealData?: boolean;
   firstEntryDate?: string | null;
@@ -34,10 +34,12 @@ type SummaryState =
 function sortMap(m: Record<string, number>) {
   return Object.entries(m).sort((a, b) => b[1] - a[1]);
 }
+
 function maxVal(m: Record<string, number>) {
   const v = Object.values(m);
   return v.length ? Math.max(...v) : 1;
 }
+
 function friendlyDate(iso: string) {
   return new Date(iso).toLocaleDateString(undefined, {
     month: "short",
@@ -62,8 +64,13 @@ function Sparkline({
     return (
       <svg width={width} height={height} className="opacity-20">
         <line
-          x1={0} y1={height / 2} x2={width} y2={height / 2}
-          stroke={color} strokeWidth={1.5} strokeDasharray="3 3"
+          x1={0}
+          y1={height / 2}
+          x2={width}
+          y2={height / 2}
+          stroke={color}
+          strokeWidth={1.5}
+          strokeDasharray="3 3"
         />
       </svg>
     );
@@ -75,10 +82,9 @@ function Sparkline({
 
   const points = values.map((v, i) => ({
     x: pad + i * step,
-    y: height - pad - ((v / max) * (height - pad * 2)),
+    y: height - pad - (v / max) * (height - pad * 2),
   }));
 
-  // Smooth curve via bezier
   let d = `M ${points[0].x} ${points[0].y}`;
   for (let i = 1; i < points.length; i++) {
     const cp1x = (points[i - 1].x + points[i].x) / 2;
@@ -88,7 +94,6 @@ function Sparkline({
     d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${points[i].x} ${points[i].y}`;
   }
 
-  // Area fill path
   const areaD =
     d +
     ` L ${points[points.length - 1].x} ${height}` +
@@ -96,20 +101,24 @@ function Sparkline({
 
   const lastVal = values[values.length - 1];
   const prevVal = values[values.length - 2] ?? lastVal;
-  const dotColor = lastVal > prevVal ? color : lastVal < prevVal ? "#94a3b8" : color;
+  const dotColor =
+    lastVal > prevVal ? color : lastVal < prevVal ? "#94a3b8" : color;
 
   return (
     <svg width={width} height={height} style={{ overflow: "visible" }}>
       <defs>
-        <linearGradient id={`sg-${color.replace("#", "")}`} x1="0" y1="0" x2="0" y2="1">
+        <linearGradient
+          id={`sg-${color.replace("#", "")}`}
+          x1="0"
+          y1="0"
+          x2="0"
+          y2="1"
+        >
           <stop offset="0%" stopColor={color} stopOpacity={0.18} />
           <stop offset="100%" stopColor={color} stopOpacity={0} />
         </linearGradient>
       </defs>
-      <path
-        d={areaD}
-        fill={`url(#sg-${color.replace("#", "")})`}
-      />
+      <path d={areaD} fill={`url(#sg-${color.replace("#", "")})`} />
       <path
         d={d}
         fill="none"
@@ -118,7 +127,6 @@ function Sparkline({
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      {/* Latest dot */}
       <circle
         cx={points[points.length - 1].x}
         cy={points[points.length - 1].y}
@@ -168,7 +176,9 @@ function BarRow({
             {label}
           </span>
         </div>
-        <span className="shrink-0 tabular-nums text-xs text-slate-600">{count}</span>
+        <span className="shrink-0 tabular-nums text-xs text-slate-600">
+          {count}
+        </span>
       </div>
       <div className="h-[3px] w-full overflow-hidden rounded-full bg-slate-800/80">
         <div
@@ -198,7 +208,9 @@ function StatCard({
 }) {
   return (
     <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4 space-y-1">
-      <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-600">{label}</p>
+      <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-600">
+        {label}
+      </p>
       <p
         className="text-base font-semibold leading-tight"
         style={{ color: accent ?? "#e2e8f0" }}
@@ -228,31 +240,45 @@ function TrendPill({ label, dir }: { label: string; dir: "up" | "down" }) {
 
 // ─── Domain distribution ─────────────────────────────────────────────────────
 
-const DOMAIN_LABELS: Record<string, { label: string; emoji: string; color: string }> = {
-  MONEY:        { label: "Money",      emoji: "💰", color: "#34d399" },
-  WORK:         { label: "Work",       emoji: "💼", color: "#60a5fa" },
+const DOMAIN_LABELS: Record<
+  string,
+  { label: string; emoji: string; color: string }
+> = {
+  MONEY: { label: "Money", emoji: "💰", color: "#34d399" },
+  WORK: { label: "Work", emoji: "💼", color: "#60a5fa" },
   RELATIONSHIP: { label: "Relationships", emoji: "🤝", color: "#f472b6" },
-  HEALTH:       { label: "Health",     emoji: "🫀", color: "#fb923c" },
-  GRIEF:        { label: "Grief",      emoji: "🕊️", color: "#a78bfa" },
-  PARENTING:    { label: "Parenting",  emoji: "🌱", color: "#86efac" },
-  CREATIVE:     { label: "Creative",   emoji: "✍️", color: "#fbbf24" },
-  IDENTITY:     { label: "Identity",   emoji: "🪞", color: "#e879f9" },
-  FITNESS:      { label: "Fitness",    emoji: "⚡", color: "#2dd4bf" },
-  GENERAL:      { label: "General",    emoji: "📝", color: "#64748b" },
+  HEALTH: { label: "Health", emoji: "🫀", color: "#fb923c" },
+  GRIEF: { label: "Grief", emoji: "🕊️", color: "#a78bfa" },
+  PARENTING: { label: "Parenting", emoji: "🌱", color: "#86efac" },
+  CREATIVE: { label: "Creative", emoji: "✍️", color: "#fbbf24" },
+  IDENTITY: { label: "Identity", emoji: "🪞", color: "#e879f9" },
+  FITNESS: { label: "Fitness", emoji: "⚡", color: "#2dd4bf" },
+  GENERAL: { label: "General", emoji: "📝", color: "#64748b" },
 };
 
-function DomainSection({ domains, entryCount }: { domains: Record<string, number>; entryCount: number }) {
+function DomainSection({
+  domains,
+  entryCount,
+}: {
+  domains: Record<string, number>;
+  entryCount: number;
+}) {
   const sorted = Object.entries(domains)
     .filter(([k]) => k !== "GENERAL")
     .sort((a, b) => b[1] - a[1]);
 
   if (!sorted.length) return null;
 
-  // Use entryCount (all reflected entries) as denominator so the count is always accurate
-  // regardless of whether entries landed in GENERAL or a named domain
-  const total = entryCount > 0 ? entryCount : Object.values(domains).reduce((s, v) => s + v, 0);
+  const total =
+    entryCount > 0
+      ? entryCount
+      : Object.values(domains).reduce((s, v) => s + v, 0);
   const top = sorted[0]?.[0];
-  const topMeta = DOMAIN_LABELS[top] ?? { label: top, emoji: "📝", color: "#34d399" };
+  const topMeta = DOMAIN_LABELS[top] ?? {
+    label: top,
+    emoji: "📝",
+    color: "#34d399",
+  };
 
   return (
     <section className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6">
@@ -265,7 +291,6 @@ function DomainSection({ domains, entryCount }: { domains: Record<string, number
         </p>
       </div>
 
-      {/* Top domain callout */}
       <div className="my-4 flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-3">
         <span className="text-2xl">{topMeta.emoji}</span>
         <div>
@@ -273,29 +298,38 @@ function DomainSection({ domains, entryCount }: { domains: Record<string, number
             {topMeta.label}
           </p>
           <p className="text-xs text-slate-500">
-            {sorted[0][1]} of {total} {total === 1 ? "entry" : "entries"} — your most written-about area
+            {sorted[0][1]} of {total} {total === 1 ? "entry" : "entries"} — your
+            most written-about area
           </p>
         </div>
       </div>
 
-      {/* All domains bar list */}
       <ul className="space-y-3 mt-2">
         {sorted.map(([domain, count], i) => {
-          const meta = DOMAIN_LABELS[domain] ?? { label: domain, emoji: "📝", color: "#64748b" };
+          const meta = DOMAIN_LABELS[domain] ?? {
+            label: domain,
+            emoji: "📝",
+            color: "#64748b",
+          };
           const pct = Math.round((count / sorted[0][1]) * 100);
           return (
             <li key={domain} className="space-y-1">
               <div className="flex items-center justify-between text-xs">
                 <span className="flex items-center gap-1.5 text-slate-300">
                   <span>{meta.emoji}</span>
-                  <span className={i === 0 ? "font-medium" : "text-slate-400"}>{meta.label}</span>
+                  <span className={i === 0 ? "font-medium" : "text-slate-400"}>
+                    {meta.label}
+                  </span>
                 </span>
                 <span className="tabular-nums text-slate-600">{count}</span>
               </div>
               <div className="h-[3px] w-full overflow-hidden rounded-full bg-slate-800">
                 <div
                   className="h-full rounded-full transition-all duration-700"
-                  style={{ width: `${pct}%`, backgroundColor: i === 0 ? meta.color : "#1e293b" }}
+                  style={{
+                    width: `${pct}%`,
+                    backgroundColor: i === 0 ? meta.color : "#1e293b",
+                  }}
                 />
               </div>
             </li>
@@ -306,14 +340,17 @@ function DomainSection({ domains, entryCount }: { domains: Record<string, number
   );
 }
 
-// ─── Skeleton ───────────────────────────────────────────────────────────────────
+// ─── Skeleton ─────────────────────────────────────────────────────────────────
 
 function Skeleton() {
   return (
     <div className="animate-pulse space-y-6">
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {[0, 1, 2, 3].map((i) => (
-          <div key={i} className="rounded-xl border border-slate-800 bg-slate-950/60 p-4 space-y-2">
+          <div
+            key={i}
+            className="rounded-xl border border-slate-800 bg-slate-950/60 p-4 space-y-2"
+          >
             <div className="h-2 w-16 rounded bg-slate-800" />
             <div className="h-4 w-24 rounded bg-slate-800" />
           </div>
@@ -326,12 +363,18 @@ function Skeleton() {
       </div>
       <div className="grid gap-6 md:grid-cols-2">
         {[0, 1].map((i) => (
-          <div key={i} className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6 space-y-5">
+          <div
+            key={i}
+            className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6 space-y-5"
+          >
             <div className="h-3 w-24 rounded bg-slate-800" />
             {[80, 60, 45, 35].map((w, j) => (
               <div key={j} className="space-y-1.5">
                 <div className="flex justify-between">
-                  <div className="h-3 rounded bg-slate-800" style={{ width: `${w}%` }} />
+                  <div
+                    className="h-3 rounded bg-slate-800"
+                    style={{ width: `${w}%` }}
+                  />
                   <div className="h-3 w-4 rounded bg-slate-800" />
                 </div>
                 <div className="h-[3px] w-full rounded-full bg-slate-800" />
@@ -355,7 +398,9 @@ function NotEnoughData({ entryCount }: { entryCount: number }) {
       </div>
       <div className="space-y-1">
         <h3 className="text-sm font-semibold text-slate-200">
-          {entryCount === 0 ? "No reflections yet" : `${entryCount} ${entryCount === 1 ? "reflection" : "reflections"} so far`}
+          {entryCount === 0
+            ? "No reflections yet"
+            : `${entryCount} ${entryCount === 1 ? "reflection" : "reflections"} so far`}
         </h3>
         <p className="mx-auto max-w-sm text-sm text-slate-500">
           {needed > 0
@@ -387,12 +432,6 @@ function WeeklyTrends({
 
   if (!themeKeys.length && !emotionKeys.length) return null;
 
-  // Format week label: "YYYY-WW" → "W12" or "Apr"
-  const weekLabels = weeks.map((w) => {
-    const [, wn] = w.split("-");
-    return `W${parseInt(wn, 10)}`;
-  });
-
   return (
     <section className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6">
       <div className="mb-5 flex items-center justify-between">
@@ -401,14 +440,13 @@ function WeeklyTrends({
             Weekly trends
           </h2>
           <p className="mt-0.5 text-xs text-slate-600">
-            How your top patterns have moved week‑to‑week.
+            How your top patterns have moved week-to-week.
           </p>
         </div>
         <span className="text-xs text-slate-700">Last {weeks.length} weeks</span>
       </div>
 
       <div className="grid gap-8 sm:grid-cols-2">
-        {/* Themes */}
         {themeKeys.length > 0 && (
           <div className="space-y-3">
             <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-600">
@@ -416,7 +454,9 @@ function WeeklyTrends({
             </p>
             {themeKeys.map((k) => (
               <div key={k} className="flex items-center justify-between gap-3">
-                <span className="truncate text-sm text-slate-300 min-w-0">{k}</span>
+                <span className="truncate text-sm text-slate-300 min-w-0">
+                  {k}
+                </span>
                 <Sparkline
                   values={tSparklines[k]}
                   color="#34d399"
@@ -428,7 +468,6 @@ function WeeklyTrends({
           </div>
         )}
 
-        {/* Emotions */}
         {emotionKeys.length > 0 && (
           <div className="space-y-3">
             <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-600">
@@ -436,7 +475,9 @@ function WeeklyTrends({
             </p>
             {emotionKeys.map((k) => (
               <div key={k} className="flex items-center justify-between gap-3">
-                <span className="truncate text-sm text-slate-300 min-w-0">{k}</span>
+                <span className="truncate text-sm text-slate-300 min-w-0">
+                  {k}
+                </span>
                 <Sparkline
                   values={eSparklines[k]}
                   color="#a78bfa"
@@ -460,14 +501,16 @@ function WeeklySummarySection({ hasRealData }: { hasRealData: boolean }) {
   async function fetchSummary(force = false) {
     setState({ status: "loading" });
     try {
-      // If force-regenerate, clear cache first
       if (force) {
         await fetch("/api/ai/weekly-summary", { method: "POST" });
       }
       const res = await fetch("/api/ai/weekly-summary", { cache: "no-store" });
       if (!res.ok) {
         const j = await res.json().catch(() => ({} as any));
-        setState({ status: "error", message: j?.error || "Couldn't generate summary." });
+        setState({
+          status: "error",
+          message: j?.error || "Couldn't generate summary.",
+        });
         return;
       }
       const j = await res.json();
@@ -478,11 +521,13 @@ function WeeklySummarySection({ hasRealData }: { hasRealData: boolean }) {
         cached: j.cached,
       });
     } catch {
-      setState({ status: "error", message: "Network error. Try again in a moment." });
+      setState({
+        status: "error",
+        message: "Network error. Try again in a moment.",
+      });
     }
   }
 
-  // Auto-fetch on mount if data is ready
   useEffect(() => {
     if (hasRealData) fetchSummary();
   }, [hasRealData]);
@@ -490,7 +535,11 @@ function WeeklySummarySection({ hasRealData }: { hasRealData: boolean }) {
   const generatedLabel = useMemo(() => {
     if (state.status !== "ready") return null;
     const d = new Date(state.generatedAt);
-    return d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+    return d.toLocaleDateString(undefined, {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
   }, [state]);
 
   return (
@@ -517,14 +566,13 @@ function WeeklySummarySection({ hasRealData }: { hasRealData: boolean }) {
         )}
       </div>
 
-      {/* Idle / not enough data */}
       {state.status === "idle" && !hasRealData && (
         <p className="text-sm text-slate-600">
-          Generate a few more reflections and Havenly will write a personal summary of what it's noticed.
+          Generate a few more reflections and Havenly will write a personal
+          summary of what it's noticed.
         </p>
       )}
 
-      {/* Loading */}
       {state.status === "loading" && (
         <div className="space-y-2.5 animate-pulse">
           <div className="h-3.5 w-full rounded bg-slate-800" />
@@ -535,7 +583,6 @@ function WeeklySummarySection({ hasRealData }: { hasRealData: boolean }) {
         </div>
       )}
 
-      {/* Error */}
       {state.status === "error" && (
         <div className="space-y-3">
           <p className="text-sm text-slate-500">{state.message}</p>
@@ -549,24 +596,26 @@ function WeeklySummarySection({ hasRealData }: { hasRealData: boolean }) {
         </div>
       )}
 
-      {/* Ready */}
       {state.status === "ready" && (
         <div className="space-y-4">
-          {/* Split paragraphs for better readability */}
-          {state.text.split(/\n\n+/).filter(Boolean).map((para, i) => (
-            <p
-              key={i}
-              className={`leading-relaxed ${
-                i === 0 ? "text-base text-slate-200" : "text-sm text-slate-400"
-              }`}
-            >
-              {para}
-            </p>
-          ))}
+          {state.text
+            .split(/\n\n+/)
+            .filter(Boolean)
+            .map((para, i) => (
+              <p
+                key={i}
+                className={`leading-relaxed ${
+                  i === 0 ? "text-base text-slate-200" : "text-sm text-slate-400"
+                }`}
+              >
+                {para}
+              </p>
+            ))}
 
           <div className="flex items-center gap-3 pt-1 border-t border-slate-800">
             <span className="text-xs text-slate-700" suppressHydrationWarning>
-              Generated {generatedLabel}{state.cached ? " · cached" : ""}
+              Generated {generatedLabel}
+              {state.cached ? " · cached" : ""}
             </span>
           </div>
         </div>
@@ -575,13 +624,54 @@ function WeeklySummarySection({ hasRealData }: { hasRealData: boolean }) {
   );
 }
 
+// ─── Premium teaser ───────────────────────────────────────────────────────────
 
+function PremiumTeaser() {
+  return (
+    <section className="rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.05] p-5">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-emerald-400/80">
+            Premium
+          </p>
+          <p className="mt-1 text-sm leading-relaxed text-slate-200">
+            Premium insights unlock a deeper view of patterns across longer
+            stretches of writing.
+          </p>
+          <p className="mt-1 text-xs text-slate-500">
+            See richer patterns, deeper summaries, and longer-range trends.
+          </p>
+        </div>
+
+        <div className="flex gap-2">
+          <Link
+            href="/insights/preview"
+            className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-slate-200 hover:bg-white/[0.08] transition"
+          >
+            Preview
+          </Link>
+
+          <Link
+            href="/upgrade"
+            className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-4 py-2 text-xs font-semibold text-slate-950 hover:bg-emerald-400 transition"
+          >
+            See Premium
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function InsightsClient() {
   const [data, setData] = useState<InsightData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
-  useEffect(() => { setMounted(true); }, []);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const [showAllThemes, setShowAllThemes] = useState(false);
   const [showAllEmotions, setShowAllEmotions] = useState(false);
 
@@ -604,18 +694,25 @@ export default function InsightsClient() {
   }, []);
 
   const allThemes = useMemo(() => (data ? sortMap(data.themes) : []), [data]);
-  const allEmotions = useMemo(() => (data ? sortMap(data.emotions) : []), [data]);
+  const allEmotions = useMemo(
+    () => (data ? sortMap(data.emotions) : []),
+    [data]
+  );
   const topCorepatterns = useMemo(
     () => (data?.corepatterns ? sortMap(data.corepatterns).slice(0, 5) : []),
     [data]
   );
   const hasDomains = useMemo(
-    () => data?.domains && Object.keys(data.domains).filter(k => k !== "GENERAL").length > 0,
+    () =>
+      !!data?.domains &&
+      Object.keys(data.domains).filter((k) => k !== "GENERAL").length > 0,
     [data]
   );
 
   const visibleThemes = showAllThemes ? allThemes : allThemes.slice(0, 6);
-  const visibleEmotions = showAllEmotions ? allEmotions : allEmotions.slice(0, 6);
+  const visibleEmotions = showAllEmotions
+    ? allEmotions
+    : allEmotions.slice(0, 6);
 
   const maxTheme = useMemo(() => (data ? maxVal(data.themes) : 1), [data]);
   const maxEmotion = useMemo(() => (data ? maxVal(data.emotions) : 1), [data]);
@@ -626,8 +723,8 @@ export default function InsightsClient() {
 
   const topEmotion = allEmotions[0]?.[0];
   const topTheme = allThemes[0]?.[0];
-  const entryCount = data?.entryCount ?? 0;           // reflected entries
-  const totalEntryCount = data?.totalEntryCount ?? entryCount; // all entries
+  const entryCount = data?.entryCount ?? 0;
+  const totalEntryCount = data?.totalEntryCount ?? entryCount;
   const hasRealData = data?.hasRealData ?? false;
   const hasTrend =
     (data?.trend?.up?.length ?? 0) + (data?.trend?.down?.length ?? 0) > 0;
@@ -636,7 +733,6 @@ export default function InsightsClient() {
     (Object.keys(data?.weeklyTrend?.themes ?? {}).length > 0 ||
       Object.keys(data?.weeklyTrend?.emotions ?? {}).length > 0);
 
-  // Momentum colour
   const momentumColor: Record<string, string> = {
     Lifting: "#34d399",
     Shifting: "#fbbf24",
@@ -646,7 +742,6 @@ export default function InsightsClient() {
   };
   const mColor = momentumColor[data?.momentum ?? "Steady"] ?? "#64748b";
 
-  // Personal headline — plain function, not useMemo returning JSX (avoids hydration mismatch #418/#423)
   function renderHeadline() {
     if (!topEmotion && !topTheme) return null;
     if (topEmotion && topTheme) {
@@ -676,49 +771,70 @@ export default function InsightsClient() {
 
   return (
     <div className="space-y-8 pb-10">
-
-      {/* Header */}
       <div>
         <h1 className="text-3xl font-semibold text-slate-100">Insights</h1>
         <p className="mt-1 text-sm text-slate-500">
           What Havenly has noticed across your reflections
           {totalEntryCount > 0 && (
-            <> — <span className="text-slate-400">{totalEntryCount} {totalEntryCount === 1 ? "entry" : "entries"}</span></>
+            <>
+              {" "}
+              —{" "}
+              <span className="text-slate-400">
+                {totalEntryCount} {totalEntryCount === 1 ? "entry" : "entries"}
+              </span>
+            </>
           )}
           {entryCount > 0 && entryCount < totalEntryCount && (
             <span className="text-slate-600"> · {entryCount} reflected</span>
           )}
           {data?.firstEntryDate && data?.lastEntryDate && (
             <span className="text-slate-600">
-              {" "}· <span suppressHydrationWarning>{mounted ? friendlyDate(data.firstEntryDate) : data.firstEntryDate.slice(0, 7)}</span> – <span suppressHydrationWarning>{mounted ? friendlyDate(data.lastEntryDate) : data.lastEntryDate.slice(0, 7)}</span>
+              {" "}
+              ·{" "}
+              <span suppressHydrationWarning>
+                {mounted
+                  ? friendlyDate(data.firstEntryDate)
+                  : data.firstEntryDate.slice(0, 7)}
+              </span>{" "}
+              –{" "}
+              <span suppressHydrationWarning>
+                {mounted
+                  ? friendlyDate(data.lastEntryDate)
+                  : data.lastEntryDate.slice(0, 7)}
+              </span>
             </span>
           )}
         </p>
       </div>
 
-      {/* Error */}
       {error && (
         <div className="rounded-xl border border-red-500/20 bg-red-500/5 p-4 text-sm text-red-300">
           {error}
         </div>
       )}
 
-      {/* Loading */}
       {!error && !data && <Skeleton />}
 
-      {/* Not enough data */}
       {data && !hasRealData && <NotEnoughData entryCount={entryCount} />}
 
-      {/* Real content */}
       {data && hasRealData && (
         <div className="space-y-6">
-
-          {/* ── Stat bar ── */}
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4" suppressHydrationWarning>
+          <div
+            className="grid grid-cols-2 gap-3 sm:grid-cols-4"
+            suppressHydrationWarning
+          >
             <StatCard
               label="Entries"
               value={String(totalEntryCount)}
-              sub={data.firstEntryDate ? `Since ${mounted ? friendlyDate(data.firstEntryDate) : data.firstEntryDate.slice(0, 7)}` : undefined}
+              sub={
+                data.firstEntryDate
+                  ? `Since ${
+                      mounted
+                        ? friendlyDate(data.firstEntryDate)
+                        : data.firstEntryDate.slice(0, 7)
+                    }`
+                  : undefined
+              }
             />
             <StatCard
               label="Top emotion"
@@ -737,10 +853,12 @@ export default function InsightsClient() {
               value={data.momentum ?? "Steady"}
               sub={(() => {
                 if (!mounted || !data.firstEntryDate) return "Your entries";
-                const ageMs = Date.now() - new Date(data.firstEntryDate).getTime();
+                const ageMs =
+                  Date.now() - new Date(data.firstEntryDate).getTime();
                 const ageDays = Math.floor(ageMs / (1000 * 60 * 60 * 24));
                 if (ageDays <= 1) return "Based on today";
-                if (ageDays <= 27) return `Last ${ageDays} day${ageDays === 1 ? "" : "s"}`;
+                if (ageDays <= 27)
+                  return `Last ${ageDays} day${ageDays === 1 ? "" : "s"}`;
                 return "Last 4 weeks";
               })()}
               accent={mColor}
@@ -750,16 +868,25 @@ export default function InsightsClient() {
           {/* ── Weekly AI summary ── */}
           <WeeklySummarySection hasRealData={hasRealData} />
 
-          {/* ── Domain distribution ── */}
-          {hasDomains && <DomainSection domains={data.domains!} entryCount={entryCount} />}
+          {/* ── Premium teaser ── */}
+          <PremiumTeaser />
 
-          {/* ── Narrative headline ── */}
+          {/* ── Domain distribution ── */}
+          {hasDomains && (
+            <DomainSection domains={data.domains!} entryCount={entryCount} />
+          )}
+
           <section className="rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-950 to-slate-900/40 p-7">
             <p className="mb-2 text-[10px] font-semibold uppercase tracking-widest text-slate-600">
               The pattern underneath
             </p>
 
-            <p className="text-lg leading-relaxed text-slate-300" suppressHydrationWarning>{renderHeadline()}</p>
+            <p
+              className="text-lg leading-relaxed text-slate-300"
+              suppressHydrationWarning
+            >
+              {renderHeadline()}
+            </p>
 
             {hasTrend && (
               <div className="mt-4 flex flex-wrap items-center gap-2">
@@ -778,17 +905,16 @@ export default function InsightsClient() {
             </p>
           </section>
 
-          {/* ── What you keep coming back to (corepatterns) ── */}
           {topCorepatterns.length > 0 && (
             <section className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6">
               <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500">
                 What you keep coming back to
               </h2>
               <p className="mt-0.5 mb-5 text-xs text-slate-600">
-                The specific dynamic Havenly noticed most often beneath your entries.
+                The specific dynamic Havenly noticed most often beneath your
+                entries.
               </p>
 
-              {/* Top pattern — featured */}
               <div className="mb-4 rounded-xl border border-emerald-500/15 bg-emerald-500/5 p-4">
                 <div className="flex items-start justify-between gap-3">
                   <p className="text-sm font-medium leading-relaxed text-slate-100">
@@ -804,7 +930,6 @@ export default function InsightsClient() {
                 </p>
               </div>
 
-              {/* Secondary patterns */}
               {topCorepatterns.length > 1 && (
                 <ul className="space-y-3">
                   {topCorepatterns.slice(1).map(([pattern, count]) => (
@@ -813,12 +938,16 @@ export default function InsightsClient() {
                         <p className="text-xs leading-relaxed text-slate-400 group-hover:text-slate-300 transition-colors">
                           {pattern}
                         </p>
-                        <span className="shrink-0 tabular-nums text-xs text-slate-700 pt-0.5">{count}×</span>
+                        <span className="shrink-0 tabular-nums text-xs text-slate-700 pt-0.5">
+                          {count}×
+                        </span>
                       </div>
                       <div className="h-[2px] w-full overflow-hidden rounded-full bg-slate-800">
                         <div
                           className="h-full rounded-full bg-slate-700 transition-all duration-700"
-                          style={{ width: `${Math.round((count / maxPattern) * 100)}%` }}
+                          style={{
+                            width: `${Math.round((count / maxPattern) * 100)}%`,
+                          }}
                         />
                       </div>
                     </li>
@@ -828,13 +957,9 @@ export default function InsightsClient() {
             </section>
           )}
 
-          {/* ── Weekly sparklines ── */}
           {hasWeeklyData && <WeeklyTrends data={data.weeklyTrend!} />}
 
-          {/* ── Themes + Emotions grid ── */}
           <div className="grid gap-6 md:grid-cols-2">
-
-            {/* Themes */}
             <section className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6">
               <div className="mb-5 flex items-center justify-between">
                 <div>
@@ -842,7 +967,9 @@ export default function InsightsClient() {
                     Recurring themes
                   </h2>
                   <p className="mt-0.5 text-xs text-slate-600">
-                    {allThemes.length} distinct {allThemes.length === 1 ? "theme" : "themes"} · cleaned + merged
+                    {allThemes.length} distinct{" "}
+                    {allThemes.length === 1 ? "theme" : "themes"} · cleaned +
+                    merged
                   </p>
                 </div>
                 {allThemes.length > 6 && (
@@ -864,15 +991,18 @@ export default function InsightsClient() {
                 <ul className="space-y-4">
                   {visibleThemes.map(([k, v], i) => (
                     <BarRow
-                      key={k} label={k} count={v}
-                      max={maxTheme} rank={i} accent="#34d399"
+                      key={k}
+                      label={k}
+                      count={v}
+                      max={maxTheme}
+                      rank={i}
+                      accent="#34d399"
                     />
                   ))}
                 </ul>
               )}
             </section>
 
-            {/* Emotions */}
             <section className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6">
               <div className="mb-5 flex items-center justify-between">
                 <div>
@@ -880,7 +1010,9 @@ export default function InsightsClient() {
                     Emotions over time
                   </h2>
                   <p className="mt-0.5 text-xs text-slate-600">
-                    {allEmotions.length} distinct {allEmotions.length === 1 ? "emotion" : "emotions"} · cleaned + merged
+                    {allEmotions.length} distinct{" "}
+                    {allEmotions.length === 1 ? "emotion" : "emotions"} ·
+                    cleaned + merged
                   </p>
                 </div>
                 {allEmotions.length > 6 && (
@@ -889,7 +1021,9 @@ export default function InsightsClient() {
                     onClick={() => setShowAllEmotions((v) => !v)}
                     className="text-xs text-slate-600 hover:text-slate-400 transition"
                   >
-                    {showAllEmotions ? "Show less" : `+${allEmotions.length - 6} more`}
+                    {showAllEmotions
+                      ? "Show less"
+                      : `+${allEmotions.length - 6} more`}
                   </button>
                 )}
               </div>
@@ -902,8 +1036,12 @@ export default function InsightsClient() {
                 <ul className="space-y-4">
                   {visibleEmotions.map(([k, v], i) => (
                     <BarRow
-                      key={k} label={k} count={v}
-                      max={maxEmotion} rank={i} accent="#a78bfa"
+                      key={k}
+                      label={k}
+                      count={v}
+                      max={maxEmotion}
+                      rank={i}
+                      accent="#a78bfa"
                     />
                   ))}
                 </ul>
@@ -911,11 +1049,9 @@ export default function InsightsClient() {
             </section>
           </div>
 
-          {/* ── Footer ── */}
           <p className="text-center text-xs text-slate-700">
             Insights deepen as your reflection history grows.
           </p>
-
         </div>
       )}
     </div>
