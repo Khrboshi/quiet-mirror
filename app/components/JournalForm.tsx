@@ -7,6 +7,13 @@ type Props = {
   userId?: string; // kept for compatibility with your current import usage
 };
 
+const starterPrompts = [
+  "What has been weighing on you lately?",
+  "Is there something you keep thinking about today?",
+  "Did anything today leave a strong emotional impact?",
+  "What conversation or moment is still on your mind?",
+];
+
 function safeSlice(value: string, max: number) {
   const s = (value || "").trim();
   if (!s) return "";
@@ -15,7 +22,6 @@ function safeSlice(value: string, max: number) {
 
 function pickSeed(title: string, content: string) {
   const base = `${title || ""}\n${content || ""}`.trim();
-  // Keep it short; teaser will blur it anyway.
   return safeSlice(base.replace(/\s+/g, " "), 180);
 }
 
@@ -92,21 +98,15 @@ export default function JournalForm(_props: Props) {
 
       setStatus("success");
 
-      // Arm dashboard insight preview ONCE after a successful save
       try {
         sessionStorage.setItem("havenly:show_insight_preview", "1");
-
-        // Seed used for teaser theme inference on /upgrade
         sessionStorage.setItem("havenly:last_seed", pickSeed(title, contentTrimmed));
 
-        // Evolve insight stage (1→3)
         const prev = Number(sessionStorage.getItem("havenly:insight_stage") || "0");
         const next = Math.min(3, (Number.isFinite(prev) ? prev : 0) + 1);
         sessionStorage.setItem("havenly:insight_stage", String(next));
       } catch {}
 
-      // ✅ FIX: API returns { success: true, entry: data }
-      // The ID is at json.entry.id, not json.id
       const id = json?.entry?.id;
       if (id) {
         router.push(`/journal/${id}`);
@@ -120,6 +120,14 @@ export default function JournalForm(_props: Props) {
       setStatus("error");
       setError(err?.message || "Network error. Please try again.");
     }
+  }
+
+  function handleStarterPrompt(prompt: string) {
+    setContent((prev) => {
+      const trimmed = prev.trim();
+      if (!trimmed) return `${prompt}\n\n`;
+      return prev;
+    });
   }
 
   return (
@@ -138,6 +146,25 @@ export default function JournalForm(_props: Props) {
             maxLength={120}
           />
 
+          <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+            <p className="text-sm text-slate-300">
+              Not sure how to start? Try one of these:
+            </p>
+
+            <div className="mt-3 flex flex-wrap gap-2">
+              {starterPrompts.map((prompt) => (
+                <button
+                  key={prompt}
+                  type="button"
+                  onClick={() => handleStarterPrompt(prompt)}
+                  className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-slate-200 transition hover:bg-white/10"
+                >
+                  {prompt}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
@@ -149,7 +176,6 @@ export default function JournalForm(_props: Props) {
         {status === "error" && <div className="text-sm text-red-400">{error}</div>}
       </div>
 
-      {/* Sticky save bar — stays visible above the keyboard on mobile */}
       <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-white/10 bg-[#020617]/95 backdrop-blur px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
         <button
           type="submit"
