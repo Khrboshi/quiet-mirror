@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ARTICLES } from "./articles";
+import EmailCapture from "@/app/components/EmailCapture";
 
 export const metadata = {
   title: "Havenly Journal — Articles for Overloaded Minds",
@@ -107,6 +108,10 @@ export default function BlogPage() {
             </article>
           ))}
         </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-6 pb-8">
+        <EmailCapture source="blog-index" variant="blog-index" />
       </section>
 
       <section className="mx-auto max-w-6xl px-6 pb-16 sm:pb-20">
