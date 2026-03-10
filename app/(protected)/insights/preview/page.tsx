@@ -160,7 +160,7 @@ export default async function InsightsPreviewPage() {
         {/* ── Stat cards ────────────────────────────────────────────────── */}
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {[
-            { label: "Entries", value: String(entryCount || 13), sub: "Since this month", accent: undefined },
+            { label: "Entries", value: String(entryCount ?? 0), sub: "Since you joined", accent: undefined },
             { label: "Top emotion", value: displayEmotion, sub: hasData ? `${sortedEmotions[0]?.[1] ?? 2} times` : "2 times", accent: "#a78bfa" },
             { label: "Top theme", value: displayTheme, sub: hasData ? `${sortedThemes[0]?.[1] ?? 1} ${sortedThemes[0]?.[1] === 1 ? "entry" : "entries"}` : "1 entry", accent: "#34d399" },
             { label: "Momentum", value: "Shifting", sub: "Based on today", accent: "#fbbf24" },
