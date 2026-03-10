@@ -557,6 +557,13 @@ export default function HomeBelowFold() {
                 </Link>
               </div>
 
+              <div className="mt-4 rounded-xl border border-slate-800 bg-slate-900/40 px-4 py-3 text-center">
+                <p className="text-xs font-medium text-slate-300">🛡️ 7-day full refund guarantee</p>
+                <p className="mt-0.5 text-[11px] leading-relaxed text-slate-600">
+                  Not what you expected? Email us within 7 days — full refund, no questions asked.
+                </p>
+              </div>
+
               <p className="mt-3 text-center text-xs text-slate-700">
                 Secure checkout via Stripe
               </p>
@@ -627,8 +634,7 @@ export default function HomeBelowFold() {
 
           {/* Final trust signal */}
           <p className="mt-5 text-xs text-slate-700">
-            Private by default · Entries never train AI models · Free plan, no
-            expiry
+            Private by default · Entries never train AI models · 7-day refund guarantee
           </p>
         </div>
       </section>
