@@ -161,14 +161,14 @@ export default async function InsightsPreviewPage() {
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {[
             { label: "Entries", value: String(entryCount ?? 0), sub: "Since you joined", accent: undefined },
-            { label: "Top emotion", value: displayEmotion, sub: hasData ? `${sortedEmotions[0]?.[1] ?? 2} times` : "2 times", accent: "#a78bfa" },
-            { label: "Top theme", value: displayTheme, sub: hasData ? `${sortedThemes[0]?.[1] ?? 1} ${sortedThemes[0]?.[1] === 1 ? "entry" : "entries"}` : "1 entry", accent: "#34d399" },
-            { label: "Momentum", value: "Shifting", sub: "Based on today", accent: "#fbbf24" },
+            { label: "Top emotion", value: hasData ? displayEmotion : "—", sub: hasData ? `${sortedEmotions[0]?.[1] ?? 2} times` : "Builds as you write", accent: hasData ? "#a78bfa" : undefined },
+            { label: "Top theme", value: hasData ? displayTheme : "—", sub: hasData ? `${sortedThemes[0]?.[1] ?? 1} ${sortedThemes[0]?.[1] === 1 ? "entry" : "entries"}` : "Builds as you write", accent: hasData ? "#34d399" : undefined },
+            { label: "Momentum", value: hasData ? "Shifting" : "—", sub: hasData ? "Based on today" : "Builds as you write", accent: hasData ? "#fbbf24" : undefined },
           ].map(({ label, value, sub, accent }) => (
             <div key={label} className="rounded-xl border border-slate-800 bg-slate-950/60 p-4 space-y-1">
               <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-600">{label}</p>
               <p className="text-base font-semibold leading-tight capitalize truncate" style={{ color: accent ?? "#e2e8f0" }}>{value}</p>
-              {sub && <p className="text-xs text-slate-600 capitalize">{sub}</p>}
+              {sub && <p className="text-xs text-slate-600">{sub}</p>}
             </div>
           ))}
         </div>
@@ -206,14 +206,21 @@ export default async function InsightsPreviewPage() {
         {/* ── What you write about most ──────────────────────────────────── */}
         {(hasData || true) && (
           <div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6">
-            <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-1">What you write about most</h2>
-            <p className="text-xs text-slate-600 mb-4">Based on domain detection across all reflected entries.</p>
+            <div className="flex items-center justify-between mb-1">
+              <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500">What you write about most</h2>
+              {!hasData && <span className="text-[10px] font-medium uppercase tracking-widest text-amber-500/60">Example</span>}
+            </div>
+            <p className="text-xs text-slate-600 mb-4">
+              {hasData ? "Based on domain detection across all reflected entries." : "This is what this section looks like once you start writing."}
+            </p>
 
             <div className="mb-4 flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-3">
               <span className="text-2xl">{domainMeta?.emoji ?? "💼"}</span>
               <div>
                 <p className="text-sm font-semibold text-blue-400">{domainMeta?.label ?? "Work"}</p>
-                <p className="text-xs text-slate-500">{hasData ? `${Object.values({}).length || 3} of ${entryCount}` : "3 of 12"} entries — your most written-about area</p>
+                <p className="text-xs text-slate-500">
+                  {hasData ? `${Object.values({}).length || 3} of ${entryCount} entries — your most written-about area` : "Your most written-about area will appear here"}
+                </p>
               </div>
             </div>
 
@@ -247,7 +254,10 @@ export default async function InsightsPreviewPage() {
 
         {/* ── The pattern underneath ────────────────────────────────────── */}
         <div className="rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-950 to-slate-900/40 p-7">
-          <p className="mb-2 text-[10px] font-semibold uppercase tracking-widest text-slate-600">The pattern underneath</p>
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-600">The pattern underneath</p>
+            {!hasData && <span className="text-[10px] font-medium uppercase tracking-widest text-amber-500/60">Example</span>}
+          </div>
           <p className="text-lg leading-relaxed text-slate-300">
             <span className="font-semibold text-slate-100" style={{ textTransform: "capitalize" }}>{displayEmotion}</span>{" "}
             keeps showing up — often alongside{" "}
@@ -259,7 +269,9 @@ export default async function InsightsPreviewPage() {
               ↑ {displayEmotion}
             </span>
           </div>
-          <p className="mt-4 text-xs text-slate-600">These are patterns, not diagnoses. They shift as you keep writing.</p>
+          <p className="mt-4 text-xs text-slate-600">
+            {hasData ? "These are patterns, not diagnoses. They shift as you keep writing." : "This is what this section looks like — built from your actual entries once you start writing."}
+          </p>
         </div>
 
         {/* ── What you keep coming back to — locked ──────────────────────── */}
@@ -312,8 +324,11 @@ export default async function InsightsPreviewPage() {
           {/* Themes */}
           <div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6">
             <div className="mb-5">
-              <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500">Recurring themes</h2>
-              <p className="mt-0.5 text-xs text-slate-600">{themeCount || themeBars.length} distinct themes · cleaned + merged</p>
+              <div className="flex items-center justify-between">
+                <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500">Recurring themes</h2>
+                {!hasData && <span className="text-[10px] font-medium uppercase tracking-widest text-amber-500/60">Example</span>}
+              </div>
+              <p className="mt-0.5 text-xs text-slate-600">{hasData ? `${themeCount} distinct themes · cleaned + merged` : "Sample themes shown below"}</p>
             </div>
             <ul className="space-y-4">
               {themeBars.map(({ label, count, real }, i) => {
@@ -340,8 +355,11 @@ export default async function InsightsPreviewPage() {
           {/* Emotions */}
           <div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6">
             <div className="mb-5">
-              <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500">Emotions over time</h2>
-              <p className="mt-0.5 text-xs text-slate-600">{emotionCount || emotionBars.length} distinct emotions · cleaned + merged</p>
+              <div className="flex items-center justify-between">
+                <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500">Emotions over time</h2>
+                {!hasData && <span className="text-[10px] font-medium uppercase tracking-widest text-amber-500/60">Example</span>}
+              </div>
+              <p className="mt-0.5 text-xs text-slate-600">{hasData ? `${emotionCount} distinct emotions · cleaned + merged` : "Sample emotions shown below"}</p>
             </div>
             <ul className="space-y-4">
               {emotionBars.map(({ label, count, real }, i) => {
