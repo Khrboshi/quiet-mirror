@@ -116,6 +116,7 @@ export default function BlogArticlePage({ params }: BlogArticlePageProps) {
               Start free journaling
             </Link>
           </div>
+          <p className="mt-3 text-[11px] text-slate-600">🛡️ 7-day full refund on Premium · Cancel anytime</p>
         </div>
 
         <EmailCapture source={`blog-article-${article.slug}`} variant="article-inline" />
