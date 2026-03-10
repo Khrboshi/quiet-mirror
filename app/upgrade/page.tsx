@@ -84,7 +84,9 @@ const faqs = [
     a: "Premium unlocks the layer that reads across all your entries over time — not just the one you wrote today. You start seeing which emotional themes appear most often, how they connect to each other, what has been shifting, and why something may keep happening. The weekly summary pulls it all together into one personal read each week.",
   },
   {
-    q: "What if I do not write very often?",
+    q: "What is your refund policy?",
+    a: "If Havenly Premium is not what you expected, email support@havenly.app within 7 days of your first charge and we will issue a full refund — no questions asked. This applies to your first subscription period only.",
+  },
     a: "Premium can still be worthwhile. Patterns can begin emerging from a small number of entries, and the weekly summary reflects whatever you have written, even if it was a lighter week.",
   },
   {
@@ -463,6 +465,13 @@ export default function UpgradePage() {
                 </Link>
               </div>
 
+              <div className="mt-4 rounded-xl border border-slate-800 bg-slate-900/40 px-4 py-3 text-center">
+                <p className="text-xs font-medium text-slate-300">🛡️ 7-day full refund guarantee</p>
+                <p className="mt-0.5 text-[11px] leading-relaxed text-slate-600">
+                  Not what you expected? Email us within 7 days of your first charge — full refund, no questions asked.
+                </p>
+              </div>
+
               <p className="mt-3 text-center text-xs text-slate-700">
                 Secure checkout via Stripe
               </p>
@@ -528,7 +537,7 @@ export default function UpgradePage() {
           </div>
 
           <p className="mt-5 text-xs text-slate-700">
-            Private by default · Entries never train AI models · Cancel anytime
+            Private by default · Entries never train AI models · 7-day refund guarantee
           </p>
         </div>
       </section>
