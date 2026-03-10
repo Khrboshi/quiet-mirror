@@ -168,12 +168,25 @@ export default function JournalEntryClient({
       {/* ── Header ─────────────────────────────────────────────────────── */}
       <header className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-xl font-semibold tracking-tight">{entry.title || "Untitled"}</h1>
-          <p className="mt-0.5 text-xs text-white/35" suppressHydrationWarning>
-            {mounted ? new Date(entry.created_at).toLocaleString() : new Date(entry.created_at).toISOString().slice(0, 10)}
+          {/* ✅ Fraunces serif on entry title — most personal heading in the app */}
+          <h1 className="font-display text-2xl font-semibold leading-snug tracking-tight text-white sm:text-3xl">
+            {entry.title || "Untitled"}
+          </h1>
+          {/* ✅ Human-readable date: "March 8, 2026" not "3/8/2026, 7:56:40 PM" */}
+          <p className="mt-1 text-xs text-white/35" suppressHydrationWarning>
+            {mounted
+              ? new Date(entry.created_at).toLocaleDateString(undefined, {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
+              : new Date(entry.created_at).toISOString().slice(0, 10)}
           </p>
         </div>
-        <Link href="/journal" className="text-xs text-emerald-400/80 hover:text-emerald-300 transition-colors mt-1">
+        <Link
+          href="/journal"
+          className="mt-1 shrink-0 text-xs text-emerald-400/70 transition-colors hover:text-emerald-300"
+        >
           &larr; Back to journal
         </Link>
       </header>
@@ -199,19 +212,16 @@ export default function JournalEntryClient({
         {/* Card header bar */}
         <div className="flex items-center justify-between border-b border-white/6 px-6 py-4">
           <div>
-            <h2 className="text-sm font-semibold tracking-tight">AI Reflection</h2>
-            {mounted && (
-              <p className="mt-0.5 text-xs text-white/40">
-                Plan: <span className="text-emerald-300/90">{readablePlan}</span>
-                {!isUnlimited ? (
-                  <>
-                    {" "}&middot;{" "}
-                    <span className="text-white/50">{loading ? "..." : credits} left</span>
-                    {credits === 0 && <span className="ml-1.5 text-white/30">(resets monthly)</span>}
-                  </>
-                ) : (
-                  <span className="text-white/30"> &middot; Unlimited</span>
-                )}
+            {/* ✅ "Havenly's reflection" — brand voice, not a system label */}
+            <h2 className="text-sm font-semibold tracking-tight text-white/90">
+              Havenly&apos;s reflection
+            </h2>
+            {/* ✅ Plan/credit info moved to a single unobtrusive line, only shown when relevant */}
+            {mounted && !isUnlimited && (
+              <p className="mt-0.5 text-xs text-white/30">
+                {loading ? "…" : credits}{" "}
+                {credits === 1 ? "reflection" : "reflections"} remaining
+                {credits === 0 && <span className="ml-1"> · resets monthly</span>}
               </p>
             )}
           </div>
@@ -220,24 +230,23 @@ export default function JournalEntryClient({
             <button
               onClick={generateReflection}
               disabled={busy}
-              className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-4 py-2 text-xs font-semibold text-slate-950 hover:bg-emerald-400 disabled:opacity-50 transition-all"
+              className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-4 py-2 text-xs font-semibold text-slate-950 transition-all hover:bg-emerald-400 disabled:opacity-50"
             >
               {busy ? (
                 <>
-                  <span className="inline-block h-3 w-3 rounded-full border-2 border-slate-950/30 border-t-slate-950 animate-spin" />
+                  <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-slate-950/30 border-t-slate-950" />
                   Reflecting&hellip;
                 </>
-              ) : "Generate Reflection"}
+              ) : (
+                "Get reflection"
+              )}
             </button>
           ) : (
-            // FIX Issue 5: badge text changed from "Saved" to "Reflection saved — Permanent"
-            <div className="flex flex-col items-end gap-0.5">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/8 px-3 py-1.5 text-xs font-medium text-emerald-400">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                Reflection saved &mdash; Permanent
-              </span>
-              <p className="text-[10px] text-white/20">permanent &middot; keeps patterns accurate</p>
-            </div>
+            // ✅ Softer badge — "Saved to your history" instead of alarming "Permanent"
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/[0.06] px-3 py-1.5 text-xs font-medium text-emerald-400/80">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              Saved to your history
+            </span>
           )}
         </div>
 
