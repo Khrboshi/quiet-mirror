@@ -29,29 +29,35 @@ export default function InstallPage() {
             journal faster, cleaner, and more reliable.
           </p>
 
-          <div className="mt-8 space-y-4">
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-              <p className="text-sm font-medium text-white">Faster access</p>
-              <p className="mt-1 text-sm leading-relaxed text-slate-400">
-                Open Havenly like an app instead of finding it again in your browser tabs.
-              </p>
+          {/* App icon mockup — shows Havenly sitting on a home screen */}
+          <div className="mt-8 flex items-center gap-4 rounded-2xl border border-white/[0.07] bg-white/[0.03] px-5 py-5">
+            <div className="relative shrink-0">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/icon-192.png" alt="Havenly app icon" className="h-16 w-16 rounded-[22%] shadow-xl shadow-black/40" />
+              <span className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-[9px] font-bold text-slate-950">✓</span>
             </div>
+            <div>
+              <p className="text-sm font-semibold text-white">Havenly</p>
+              <p className="text-xs text-slate-500">Your sanctuary among the noise.</p>
+              <p className="mt-1.5 text-xs text-slate-600">Lives on your Home Screen, opens instantly.</p>
+            </div>
+          </div>
 
-            <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.05] p-4">
-              <p className="text-sm font-medium text-white">Better sign-in flow</p>
-              <p className="mt-1 text-sm leading-relaxed text-slate-300">
-                Installation can improve how email sign-in behaves, especially when you
-                regularly return to Havenly on the same device.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-              <p className="text-sm font-medium text-white">More focused feel</p>
-              <p className="mt-1 text-sm leading-relaxed text-slate-400">
-                A cleaner, app-like experience that feels more intentional and less like
-                another browser task.
-              </p>
-            </div>
+          <div className="mt-5 space-y-3">
+            {[
+              { label: "One tap to open", detail: "No browser tabs to hunt through." },
+              { label: "Feels like an app", detail: "Full screen, no address bar, no distractions." },
+              { label: "Smoother sign-in on iPhone", detail: "Code sign-in works more reliably from the Home Screen." },
+            ].map(({ label, detail }) => (
+              <div key={label} className="flex items-start gap-3">
+                <span className="mt-0.5 shrink-0 text-emerald-400 text-xs">✓</span>
+                <p className="text-sm text-slate-300">
+                  <span className="font-medium text-white">{label}</span>
+                  {" — "}
+                  <span className="text-slate-500">{detail}</span>
+                </p>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -71,9 +77,9 @@ export default function InstallPage() {
             </div>
 
             <div className="hidden lg:block">
-              <h2 className="text-2xl font-semibold text-white">Install on this device</h2>
-              <p className="mt-2 text-sm leading-relaxed text-slate-400">
-                Follow the option below that matches your current browser.
+              <h2 className="text-xl font-semibold text-white">Add to your device</h2>
+              <p className="mt-1 text-sm leading-relaxed text-slate-400">
+                Works on iPhone, Android, and desktop Chrome or Edge.
               </p>
             </div>
 
@@ -87,7 +93,7 @@ export default function InstallPage() {
               </div>
             ) : (
               <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-                <h3 className="text-lg font-semibold text-white">Install on this device</h3>
+                <h3 className="text-lg font-semibold text-white">Add to this device</h3>
 
                 {canPromptNative ? (
                   <>
