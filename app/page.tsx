@@ -22,7 +22,7 @@ export default function HomePage() {
         <div className="pointer-events-none absolute left-1/2 top-0 h-[380px] w-[600px] -translate-x-1/2 rounded-full bg-emerald-500/[0.14] blur-[100px]" />
         <div className="pointer-events-none absolute right-[-60px] top-20 h-64 w-64 rounded-full bg-cyan-500/[0.10] blur-[80px]" />
 
-        <div className="mx-auto grid max-w-6xl gap-10 px-5 md:grid-cols-[minmax(0,1.05fr)_minmax(320px,420px)] md:items-center md:gap-14">
+        <div className="mx-auto grid max-w-6xl gap-10 px-5 md:grid-cols-[minmax(0,1fr)_minmax(360px,500px)] md:items-center md:gap-12">
 
           {/* ─────────────── LEFT — Copy ─────────────── */}
           <div className="max-w-2xl">
@@ -136,27 +136,27 @@ export default function HomePage() {
           </div>
 
           {/* ─────────────── RIGHT — Product preview card ─────────────── */}
-          <div className="relative mx-auto w-full max-w-[420px]">
+          <div className="relative mx-auto w-full max-w-[500px]">
             {/* Glow halo behind card */}
             <div className="pointer-events-none absolute -inset-6 rounded-[2.5rem] bg-emerald-500/[0.12] blur-[80px]" />
             <div className="pointer-events-none absolute -inset-2 rounded-[2rem] bg-gradient-to-b from-emerald-500/[0.06] to-transparent" />
 
-            <div className="animate-fade-in anim-delay-300 relative overflow-hidden rounded-[2rem] border border-white/[0.10] bg-slate-950/95 p-5 shadow-2xl shadow-black/70 backdrop-blur">
+            <div className="animate-fade-in anim-delay-300 relative overflow-hidden rounded-[2rem] border border-white/[0.10] bg-slate-950/95 p-6 shadow-2xl shadow-black/70 backdrop-blur">
 
               {/* Card header */}
               <div className="flex items-center justify-between">
-                <span className="flex items-center gap-2 text-[11px] text-slate-500">
+                <span className="flex items-center gap-2 text-xs text-slate-500">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400/60" />
                   Evening check-in
                 </span>
-                <span className="text-[10px] text-slate-700">
+                <span className="text-[11px] text-slate-600">
                   Private • Just for you
                 </span>
               </div>
 
               {/* User entry */}
               <div className="mt-4 rounded-2xl border border-slate-800/70 bg-slate-900/70 p-4">
-                <p className="text-[13px] leading-relaxed text-slate-200">
+                <p className="text-sm leading-relaxed text-slate-200">
                   &ldquo;I keep telling people I&apos;m okay, but lately even
                   small things feel heavier than they should. I think I&apos;m
                   more drained than I&apos;ve been admitting.&rdquo;
@@ -166,7 +166,7 @@ export default function HomePage() {
               {/* Divider */}
               <div className="my-4 flex items-center gap-3">
                 <div className="h-px flex-1 bg-slate-800/60" />
-                <span className="text-[10px] uppercase tracking-[0.2em] text-slate-600">
+                <span className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
                   Havenly reflects
                 </span>
                 <div className="h-px flex-1 bg-slate-800/60" />
@@ -174,13 +174,13 @@ export default function HomePage() {
 
               {/* Reflection */}
               <div className="space-y-3">
-                <p className="text-[13px] leading-relaxed text-slate-300">
+                <p className="text-sm leading-relaxed text-slate-100">
                   It sounds like you have been carrying more than you have let
                   yourself fully name. This does not read like one bad day. It
                   reads like a weight that has been building quietly.
                 </p>
 
-                <p className="text-[13px] leading-relaxed text-slate-300">
+                <p className="text-sm leading-relaxed text-slate-200">
                   Sometimes the first sign of burnout is not collapse — it&apos;s
                   how often &ldquo;I&apos;m fine&rdquo; becomes a way to keep
                   moving.
@@ -200,11 +200,11 @@ export default function HomePage() {
                 </div>
 
                 {/* Pattern box */}
-                <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-3.5">
-                  <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-slate-600">
+                <div className="rounded-2xl border border-emerald-500/[0.12] bg-emerald-500/[0.04] p-4">
+                  <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-emerald-500/60">
                     Pattern across recent entries
                   </p>
-                  <p className="mt-2 text-[12px] leading-relaxed text-slate-400">
+                  <p className="mt-2 text-[13px] leading-relaxed text-slate-300">
                     Over the last 3 weeks, your entries keep returning to
                     responsibility, emotional exhaustion, and saying you are okay
                     before you actually feel okay.
