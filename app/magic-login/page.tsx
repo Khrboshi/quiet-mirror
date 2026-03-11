@@ -140,11 +140,11 @@ function MagicLoginInner() {
   const tokenOk = digitsOnlyToken.length >= 6 && digitsOnlyToken.length <= 8;
 
   return (
-    <div className="bg-slate-950 pt-16 text-white">
-      <div className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-6xl items-center px-4 py-10 sm:px-6 lg:grid lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:px-8">
+    <div className="min-h-screen bg-slate-950 text-white">
+      <div className="mx-auto w-full max-w-6xl px-4 pt-24 pb-16 sm:px-6 lg:grid lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:px-8">
 
         {/* ── Left column ── */}
-        <div className="hidden lg:flex lg:flex-col lg:justify-center">
+        <div className="hidden lg:flex lg:flex-col lg:justify-start">
           <div className="mb-8 flex items-center gap-2.5">
             <Image
               src="/pwa/icon-192.png"
