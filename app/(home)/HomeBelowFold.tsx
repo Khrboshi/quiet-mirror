@@ -1,7 +1,7 @@
 import Link from "next/link";
 import ScrollReveal from "@/app/components/ScrollReveal";
 
-// ─── Data ────────────────────────────────────────────────────────────────────
+// ─── Data ──────────────────────────────────────────────────────────────────
 
 const recognitions = [
   {
@@ -24,104 +24,7 @@ const recognitions = [
   },
 ];
 
-const steps = [
-  {
-    step: "1",
-    title: "Write the version that is actually true",
-    body: "A full entry helps, but it is not required. One honest sentence is enough to begin. Messy thoughts still count.",
-    accent: "text-emerald-400",
-    border: "border-emerald-500/20",
-  },
-  {
-    step: "2",
-    title: "Get a reflection that helps you hear yourself",
-    body: "Havenly responds to what you wrote with a short reflection that names emotional weight, tension, or themes you may have skimmed past.",
-    accent: "text-violet-400",
-    border: "border-violet-500/20",
-  },
-  {
-    step: "3",
-    title: "See what keeps returning over time",
-    body: "Across your entries, Havenly starts connecting the dots: what drains you, what softens, what you keep carrying, and what keeps repeating.",
-    accent: "text-amber-400",
-    border: "border-amber-500/20",
-  },
-];
-
-const insightCards = [
-  {
-    label: "What shows up most",
-    example: "Emotional load appears in 14 of your last 22 entries.",
-    color: "border-violet-500/20 bg-violet-500/5",
-    tag: "text-violet-400",
-    premium: false,
-  },
-  {
-    label: "What keeps returning",
-    example:
-      "Responsibility and communication are the two themes most often linked together.",
-    color: "border-emerald-500/20 bg-emerald-500/5",
-    tag: "text-emerald-400",
-    premium: false,
-  },
-  {
-    label: "What may be driving it",
-    example:
-      "You often sound most overwhelmed when you feel responsible for keeping everything steady for everyone else.",
-    color: "border-amber-500/20 bg-amber-500/5",
-    tag: "text-amber-400",
-    premium: true,
-  },
-  {
-    label: "What is shifting",
-    example:
-      "Curiosity and honesty are rising in recent entries, which often signals that something important is becoming clearer.",
-    color: "border-sky-500/20 bg-sky-500/5",
-    tag: "text-sky-400",
-    premium: true,
-  },
-  {
-    label: "Your weekly mirror",
-    example:
-      "A short personal summary of what Havenly noticed across the week, written just for you.",
-    color: "border-rose-500/20 bg-rose-500/5",
-    tag: "text-rose-400",
-    premium: true,
-  },
-  {
-    label: "A question worth sitting with",
-    example:
-      "What keeps making you say you are fine before you have had a chance to ask whether you are?",
-    color: "border-slate-500/20 bg-slate-500/5",
-    tag: "text-slate-400",
-    premium: false,
-  },
-];
-
-const faqs = [
-  {
-    q: "What does Havenly actually say when it reflects back?",
-    a: "It depends entirely on what you write. The reflection reads your emotional language, names what seems to be underneath the surface, and connects it to what you have written before. See a live example in the insight preview.",
-  },
-  {
-    q: "Is this therapy?",
-    a: "No. Havenly is a private journaling companion. It can sit alongside therapy or personal reflection, but it is not clinical care and it does not replace professional support.",
-  },
-  {
-    q: "Do I need to write every day for it to work?",
-    a: "No. Some people write several times a week. Others only when life feels heavy. The more entries you have, the richer the pattern recognition becomes, but there is no streak to maintain.",
-  },
-  {
-    q: "What happens to my entries?",
-    a: "They stay private. They are never used to train AI models, never sold, and never shared. Havenly is built around the idea that your inner life belongs to you.",
-  },
-  {
-    q: "Why would someone pay for Premium?",
-    a: "Free helps you write and reflect. Premium helps you understand what your entries mean together over time: recurring themes, hidden patterns, weekly summaries, and clearer insight into why something keeps happening.",
-  },
-];
-
-// ─── Component ────────────────────────────────────────────────────────────────
+// ─── Component ────────────────────────────────────────────────────────────
 
 export default function HomeBelowFold() {
   return (
@@ -148,161 +51,391 @@ export default function HomeBelowFold() {
         </div>
       </section>
 
-      {/* ── 2. How it works ───────────────────────────────────────────────── */}
-      <section className="border-b border-slate-800/60 section-tinted py-12 sm:py-20">
+      {/* ── 2. Concrete AI Demo — Before / After ─────────────────────────── */}
+      <section className="border-b border-slate-800/60 section-tinted py-14 sm:py-20">
         <div className="mx-auto max-w-6xl px-5">
-          <ScrollReveal className="max-w-2xl">
+
+          <ScrollReveal className="mb-10 max-w-2xl">
             <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/70">
-              How it works
+              What actually happens
             </p>
             <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">
-              Write once. Hear it back differently.
+              Write once. Hear it back{" "}
+              <span className="text-emerald-400">differently.</span>
             </h2>
-            <p className="mt-3 text-sm leading-relaxed text-slate-400">
-              Havenly is not just a place to store your thoughts. It helps you
-              hear what your own words may be pointing to, then notice what
-              keeps returning.
+            <p className="mt-3 max-w-lg text-sm leading-relaxed text-slate-400">
+              You write whatever is on your mind — honestly, messily, without
+              editing yourself. Havenly reads it and reflects back what it
+              noticed. No advice. No diagnosis. Just a mirror held up gently.
             </p>
           </ScrollReveal>
 
-          <ScrollReveal stagger className="mt-8 grid gap-3 sm:gap-4 md:grid-cols-3">
-            {steps.map(({ step, title, body, accent, border }) => (
+          {/* Before / after demo */}
+          <ScrollReveal className="grid gap-4 md:grid-cols-2 md:gap-6">
+
+            {/* Entry card */}
+            <div className="rounded-[1.5rem] border border-slate-800/80 bg-slate-900/60 p-6 sm:p-7">
+              <div className="mb-4 flex items-center justify-between">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-600">
+                  What you write
+                </p>
+                <span className="rounded-full border border-slate-700/50 px-2 py-0.5 text-[10px] text-slate-600">
+                  ~2 min
+                </span>
+              </div>
+              <p className="text-[15px] leading-[1.75] text-slate-200">
+                &ldquo;Work has been overwhelming lately. I keep saying yes to
+                things and then resenting it afterwards. I don&apos;t know why I
+                can&apos;t just say no. At home it&apos;s the same — I end up
+                handling everything and nobody seems to notice. I&apos;m
+                exhausted but I&apos;d feel guilty if I stepped back.&rdquo;
+              </p>
+              <div className="mt-5 flex flex-wrap gap-1.5">
+                {["Honest", "Unfiltered", "No structure needed"].map((t) => (
+                  <span
+                    key={t}
+                    className="rounded-full border border-slate-700/50 px-2.5 py-0.5 text-[11px] text-slate-500"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Reflection card */}
+            <div className="rounded-[1.5rem] border border-emerald-500/15 bg-emerald-500/[0.03] p-6 sm:p-7">
+              <div className="mb-4 flex items-center justify-between">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-500/70">
+                  Havenly reflects
+                </p>
+                <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-400">
+                  Immediate
+                </span>
+              </div>
+              <p className="text-[15px] leading-[1.75] text-slate-100">
+                There&apos;s a pattern worth noticing here: you&apos;re
+                absorbing other people&apos;s needs to the point of exhaustion,
+                then feeling guilty for wanting relief. That guilt isn&apos;t
+                proof you&apos;re asking for too much — it may be proof that
+                you&apos;ve been trained to expect very little in return.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-2">
+                {[
+                  { label: "Emotional load", color: "border-emerald-500/20 bg-emerald-500/10 text-emerald-300" },
+                  { label: "People-pleasing", color: "border-violet-500/20 bg-violet-500/10 text-violet-300" },
+                  { label: "Resentment cycle", color: "border-amber-500/20 bg-amber-500/10 text-amber-300" },
+                ].map(({ label, color }) => (
+                  <span
+                    key={label}
+                    className={`rounded-full border px-2.5 py-0.5 text-[11px] font-medium ${color}`}
+                  >
+                    {label}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* Three-step flow — compact */}
+          <ScrollReveal stagger className="mt-8 grid gap-3 sm:grid-cols-3 sm:gap-4">
+            {[
+              {
+                step: "1",
+                label: "Write the version that is actually true",
+                sub: "One honest sentence is enough to begin.",
+                accent: "text-emerald-400",
+                border: "border-emerald-500/20",
+              },
+              {
+                step: "2",
+                label: "Get a reflection that names what you feel",
+                sub: "Not advice. A mirror. Short, thoughtful, honest.",
+                accent: "text-violet-400",
+                border: "border-violet-500/20",
+              },
+              {
+                step: "3",
+                label: "See what keeps returning over time",
+                sub: "Patterns across weeks and months, not just today.",
+                accent: "text-amber-400",
+                border: "border-amber-500/20",
+              },
+            ].map(({ step, label, sub, accent, border }) => (
               <div
                 key={step}
                 className={`rounded-2xl border bg-slate-900/40 p-5 ${border}`}
               >
-                <p className={`text-xs font-semibold uppercase tracking-[0.2em] ${accent}`}>
+                <p className={`mb-2 text-xs font-semibold uppercase tracking-[0.2em] ${accent}`}>
                   Step {step}
                 </p>
-                <h3 className="mt-2 text-[15px] font-medium text-white sm:text-base">
-                  {title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-500">{body}</p>
+                <p className="text-[15px] font-medium leading-snug text-white">
+                  {label}
+                </p>
+                <p className="mt-1.5 text-sm leading-relaxed text-slate-500">
+                  {sub}
+                </p>
               </div>
             ))}
           </ScrollReveal>
-        </div>
-      </section>
 
-      {/* ── Mid-page CTA ──────────────────────────────────────────────────── */}
-      <div className="border-b border-slate-800/40 bg-slate-950/60 py-8">
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-5 sm:flex-row sm:justify-center">
-          <p className="text-center text-sm text-slate-400">
-            Curious what a reflection looks like for your words?
-          </p>
-          <Link
-            href="/magic-login"
-            className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-slate-950 shadow shadow-emerald-500/20 transition-all hover:bg-emerald-400 hover:-translate-y-px"
-          >
-            Write your first entry free →
-          </Link>
-        </div>
-      </div>
-
-      {/* ── 3. What makes it different ────────────────────────────────────── */}
-      <section className="border-b border-slate-800/60 section-purple-tint py-12 sm:py-18">
-        <div className="mx-auto max-w-6xl px-5">
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-start">
-
-            <ScrollReveal className="max-w-xl">
-              <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/70">
-                What makes it different
-              </p>
-              <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">
-                Most journaling tools keep entries.{" "}
-                <span className="text-emerald-400">
-                  Havenly looks for the thread.
-                </span>
-              </h2>
-              <p className="mt-3 text-sm leading-relaxed text-slate-400">
-                You do not need to tag your mood, track a streak, or force
-                structure onto yourself. You write honestly. Havenly notices
-                what repeats across your words, your emotional tone, and the
-                themes that keep resurfacing.
-              </p>
-
-              <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-500/70">
-                    Havenly is
-                  </p>
-                  <ul className="mt-3 space-y-2 text-sm text-slate-300">
-                    {[
-                      "A private place to write honestly",
-                      "A reflection tool, not a feed",
-                      "Pattern recognition across time",
-                      "Built around privacy from the start",
-                    ].map((item) => (
-                      <li key={item} className="flex items-start gap-2">
-                        <span className="mt-0.5 shrink-0 text-emerald-500">✓</span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-500/70">
-                    Havenly is not
-                  </p>
-                  <ul className="mt-3 space-y-2 text-sm text-slate-300">
-                    {[
-                      "A productivity tracker",
-                      "Therapy or medical advice",
-                      "A public or social platform",
-                      "Something that pressures daily use",
-                    ].map((item) => (
-                      <li key={item} className="flex items-start gap-2">
-                        <span className="mt-0.5 shrink-0 text-amber-500">✗</span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </ScrollReveal>
-
-            {/* Premium insight preview card */}
-            <ScrollReveal className="rounded-[1.75rem] border border-white/10 bg-gradient-to-br from-slate-900/80 to-slate-950 p-5 sm:p-6">
-              <div className="flex items-center justify-between">
-                <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-slate-500">
-                  Example insight view
-                </p>
-                <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-emerald-400">
-                  Premium
-                </span>
-              </div>
-
-              <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {insightCards.map(({ label, example, color, tag, premium }) => (
-                  <div key={label} className={`relative rounded-2xl border p-4 ${color}`}>
-                    {premium && (
-                      <span className="absolute right-3 top-3 rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.18em] text-slate-400">
-                        Premium
-                      </span>
-                    )}
-                    <p className={`pr-14 text-[10px] font-semibold uppercase tracking-[0.18em] ${tag}`}>
-                      {label}
-                    </p>
-                    <p className="mt-2 text-sm leading-relaxed text-slate-300">{example}</p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-5">
-                <Link
-                  href="/insights/preview"
-                  className="inline-flex items-center gap-2 text-sm font-medium text-emerald-400 transition-colors hover:text-emerald-300"
-                >
-                  See a fuller example of Premium insights &rarr;
-                </Link>
-              </div>
-            </ScrollReveal>
+          <div className="mt-8 text-center">
+            <Link
+              href="/magic-login"
+              className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-6 py-3.5 text-sm font-semibold text-slate-950 shadow shadow-emerald-500/20 transition-all hover:bg-emerald-400 hover:-translate-y-px"
+            >
+              Write your first entry free →
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* ── 4. Testimonials — redesigned ──────────────────────────────────── */}
+      {/* ── 3. AI Insight Cards — ELEVATED ──────────────────────────────── */}
+      <section className="border-b border-slate-800/60 section-purple-tint py-14 sm:py-20">
+        <div className="mx-auto max-w-6xl px-5">
+
+          <ScrollReveal className="mb-10">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/70">
+                  What Havenly shows you
+                </p>
+                <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">
+                  The patterns are easier to trust{" "}
+                  <br className="hidden sm:block" />
+                  <span className="text-emerald-400">when you can finally see them.</span>
+                </h2>
+                <p className="mt-3 max-w-lg text-sm leading-relaxed text-slate-400">
+                  Across your entries, Havenly finds what keeps surfacing —
+                  the emotions, themes, and questions that repeat without you
+                  noticing.
+                </p>
+              </div>
+              <div className="shrink-0">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-400">
+                  ✦ Premium feature
+                </span>
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* Insight card grid — large, prominent */}
+          <ScrollReveal stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+
+            {/* Card 1 — What shows up most */}
+            <div className="rounded-[1.5rem] border border-violet-500/20 bg-violet-500/[0.04] p-6">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-violet-400">
+                What shows up most
+              </p>
+              <p className="mt-3 text-lg font-semibold leading-snug text-white sm:text-xl">
+                Emotional load appears in{" "}
+                <span className="text-violet-300">14 of your last 22</span>{" "}
+                entries.
+              </p>
+              {/* Mini bar */}
+              <div className="mt-4 space-y-1.5">
+                {[
+                  { label: "Emotional load", pct: 64, color: "bg-violet-400" },
+                  { label: "Overwhelm", pct: 45, color: "bg-violet-500/60" },
+                  { label: "Clarity", pct: 28, color: "bg-violet-600/50" },
+                ].map(({ label, pct, color }) => (
+                  <div key={label}>
+                    <div className="mb-1 flex items-center justify-between">
+                      <span className="text-[11px] text-slate-500">{label}</span>
+                      <span className="text-[11px] text-slate-600">{pct}%</span>
+                    </div>
+                    <div className="h-1.5 w-full rounded-full bg-slate-800">
+                      <div
+                        className={`h-1.5 rounded-full ${color}`}
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Card 2 — What keeps returning */}
+            <div className="rounded-[1.5rem] border border-emerald-500/20 bg-emerald-500/[0.04] p-6">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-400">
+                What keeps returning
+              </p>
+              <p className="mt-3 text-lg font-semibold leading-snug text-white sm:text-xl">
+                Responsibility and communication are the{" "}
+                <span className="text-emerald-300">two themes most often linked</span> together.
+              </p>
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                {[
+                  { label: "Responsibility", count: "11×", color: "border-emerald-500/20 bg-emerald-500/10 text-emerald-300" },
+                  { label: "Communication", count: "9×", color: "border-emerald-500/20 bg-emerald-500/10 text-emerald-300" },
+                  { label: "Boundary-setting", count: "7×", color: "border-slate-600/40 bg-slate-800/50 text-slate-400" },
+                  { label: "Exhaustion", count: "6×", color: "border-slate-600/40 bg-slate-800/50 text-slate-400" },
+                ].map(({ label, count, color }) => (
+                  <div
+                    key={label}
+                    className={`rounded-xl border px-3 py-2 ${color}`}
+                  >
+                    <p className="text-[11px] font-medium">{label}</p>
+                    <p className="mt-0.5 text-xs opacity-70">{count} this month</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Card 3 — What may be driving it (Premium) */}
+            <div className="relative rounded-[1.5rem] border border-amber-500/20 bg-amber-500/[0.04] p-6 sm:col-span-2 lg:col-span-1">
+              <div className="flex items-start justify-between gap-3">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-amber-400">
+                  What may be driving it
+                </p>
+                <span className="shrink-0 rounded-full border border-amber-500/20 bg-amber-500/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-amber-400">
+                  Premium
+                </span>
+              </div>
+              <p className="mt-3 text-[15px] leading-[1.7] text-slate-200">
+                You often sound most overwhelmed when you feel responsible for{" "}
+                <span className="text-amber-300">
+                  keeping everything steady for everyone else
+                </span>{" "}
+                — and rarely give yourself the same patience.
+              </p>
+              <div className="mt-4 rounded-xl border border-amber-500/10 bg-amber-500/[0.04] p-3">
+                <p className="text-xs leading-relaxed text-slate-400">
+                  This pattern appeared in your last 3 weeks of entries. It
+                  tends to peak on Sundays.
+                </p>
+              </div>
+            </div>
+
+            {/* Card 4 — What is shifting (Premium) */}
+            <div className="relative rounded-[1.5rem] border border-sky-500/20 bg-sky-500/[0.04] p-6">
+              <div className="flex items-start justify-between gap-3">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-sky-400">
+                  What is shifting
+                </p>
+                <span className="shrink-0 rounded-full border border-sky-500/20 bg-sky-500/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-sky-400">
+                  Premium
+                </span>
+              </div>
+              <p className="mt-3 text-[15px] leading-[1.7] text-slate-200">
+                Curiosity and honesty are{" "}
+                <span className="text-sky-300">rising in recent entries</span> — which often
+                signals that something important is becoming clearer.
+              </p>
+              {/* Arrow trend */}
+              <div className="mt-4 flex items-center gap-2 text-xs text-slate-500">
+                <span className="text-sky-400">↑</span>
+                <span>Clarity signal up over the last 2 weeks</span>
+              </div>
+            </div>
+
+            {/* Card 5 — Weekly mirror (Premium) */}
+            <div className="relative rounded-[1.5rem] border border-rose-500/20 bg-rose-500/[0.04] p-6">
+              <div className="flex items-start justify-between gap-3">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-rose-400">
+                  Your weekly mirror
+                </p>
+                <span className="shrink-0 rounded-full border border-rose-500/20 bg-rose-500/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-rose-400">
+                  Premium
+                </span>
+              </div>
+              <p className="mt-3 text-[15px] leading-[1.7] text-slate-200">
+                This week, your entries returned most often to questions of
+                worth, pace, and{" "}
+                <span className="text-rose-300">what you&apos;re actually allowed to need</span>.
+              </p>
+              <p className="mt-3 text-[11px] text-slate-500">
+                Generated every Monday · Personal to your entries only
+              </p>
+            </div>
+
+            {/* Card 6 — A question worth sitting with */}
+            <div className="rounded-[1.5rem] border border-slate-500/20 bg-slate-500/[0.04] p-6">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+                A question worth sitting with
+              </p>
+              <p className="mt-3 text-lg font-medium leading-snug text-white sm:text-xl">
+                &ldquo;What keeps making you say you&apos;re fine before
+                you&apos;ve had a chance to ask whether you are?&rdquo;
+              </p>
+              <p className="mt-3 text-xs text-slate-600">
+                Generated from your last 6 entries. Not a prompt to answer —
+                just something to carry.
+              </p>
+            </div>
+
+          </ScrollReveal>
+
+          <ScrollReveal className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+            <Link
+              href="/insights/preview"
+              className="inline-flex items-center justify-center gap-2 text-sm font-medium text-emerald-400 transition-colors hover:text-emerald-300"
+            >
+              See a fuller example of Premium insights →
+            </Link>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* ── 4. What makes it different — compact ─────────────────────────── */}
+      <section className="border-b border-slate-800/60 py-12 sm:py-16">
+        <div className="mx-auto max-w-6xl px-5">
+          <ScrollReveal className="mb-8 max-w-2xl">
+            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/70">
+              What makes it different
+            </p>
+            <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">
+              Most journaling tools keep entries.{" "}
+              <span className="text-emerald-400">
+                Havenly looks for the thread.
+              </span>
+            </h2>
+          </ScrollReveal>
+
+          <ScrollReveal stagger className="grid gap-4 sm:grid-cols-2">
+            {/* Is */}
+            <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5 sm:p-6">
+              <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-500/70">
+                Havenly is
+              </p>
+              <ul className="space-y-3">
+                {[
+                  "A private place to write without judgment",
+                  "A gentle reflection on what you wrote",
+                  "A way to see patterns across weeks and months",
+                  "Respectful of your pace and privacy",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm text-slate-300">
+                    <span className="mt-0.5 shrink-0 text-emerald-500">✓</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Is not */}
+            <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5 sm:p-6">
+              <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-500/70">
+                Havenly is not
+              </p>
+              <ul className="space-y-3">
+                {[
+                  "Therapy or a substitute for clinical care",
+                  "A productivity or self-optimisation tool",
+                  "A public or social platform",
+                  "Something you have to use every day",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm text-slate-300">
+                    <span className="mt-0.5 shrink-0 text-amber-500">—</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* ── 5. Testimonials ──────────────────────────────────────────────── */}
       <section className="border-b border-slate-800/60 py-12 sm:py-16">
         <div className="mx-auto max-w-6xl px-5">
           <ScrollReveal className="mb-8">
@@ -336,27 +469,34 @@ export default function HomeBelowFold() {
           <ScrollReveal stagger className="grid gap-4 sm:grid-cols-2">
             {[
               {
-                quote: "This is the first journaling product that made me feel like my entries were going somewhere instead of just piling up.",
+                quote:
+                  "This is the first journaling product that made me feel like my entries were going somewhere instead of just piling up.",
                 name: "Tariq A.",
                 detail: "Used Havenly for 3 months",
                 initial: "T",
                 gradient: "from-violet-500/40 to-blue-500/40",
               },
               {
-                quote: "The weekly summary connected entries I thought were unrelated. It made a pattern obvious without feeling intrusive.",
+                quote:
+                  "The weekly summary connected entries I thought were unrelated. It made a pattern obvious without feeling intrusive.",
                 name: "Riya K.",
                 detail: "Premium member",
                 initial: "R",
                 gradient: "from-amber-500/40 to-rose-500/40",
               },
             ].map(({ quote, name, detail, initial, gradient }) => (
-              <div key={name} className="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-5">
+              <div
+                key={name}
+                className="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-5"
+              >
                 <div className="mb-3 text-sm text-amber-400">★★★★★</div>
                 <p className="text-sm italic leading-relaxed text-slate-300">
                   &ldquo;{quote}&rdquo;
                 </p>
                 <div className="mt-4 flex items-center gap-2">
-                  <div className={`flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-gradient-to-br ${gradient} text-xs font-semibold text-white`}>
+                  <div
+                    className={`flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-gradient-to-br ${gradient} text-xs font-semibold text-white`}
+                  >
                     {initial}
                   </div>
                   <div>
@@ -370,7 +510,7 @@ export default function HomeBelowFold() {
         </div>
       </section>
 
-      {/* ── Pattern Interrupt ─────────────────────────────────────────────── */}
+      {/* ── Pattern interrupt ─────────────────────────────────────────────── */}
       <div className="border-y border-slate-800/40 py-12 sm:py-14">
         <ScrollReveal className="mx-auto max-w-4xl px-5 text-center">
           <p className="font-display text-2xl font-medium leading-relaxed text-white sm:text-3xl sm:leading-relaxed">
@@ -383,7 +523,7 @@ export default function HomeBelowFold() {
         </ScrollReveal>
       </div>
 
-      {/* ── 5. Pricing ────────────────────────────────────────────────────── */}
+      {/* ── 6. Pricing ────────────────────────────────────────────────────── */}
       <section className="border-b border-slate-800/60 section-tinted py-12 sm:py-20">
         <div className="mx-auto max-w-6xl px-5">
           <ScrollReveal className="mb-8 max-w-2xl">
@@ -403,7 +543,9 @@ export default function HomeBelowFold() {
 
             {/* Free card */}
             <div className="flex flex-col rounded-2xl border border-slate-800 bg-slate-900/40 p-5 sm:p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Free</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                Free
+              </p>
               <p className="mt-1 font-display text-xl font-semibold text-white sm:text-2xl">
                 A private place to start
               </p>
@@ -446,7 +588,9 @@ export default function HomeBelowFold() {
 
             {/* Premium card */}
             <div className="relative flex flex-col rounded-2xl border border-emerald-500/25 bg-emerald-500/[0.04] p-5 sm:p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-500/70">Premium</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-500/70">
+                Premium
+              </p>
               <p className="mt-1 font-display text-xl font-semibold text-white sm:text-2xl">
                 The full pattern, not just the latest entry
               </p>
@@ -498,11 +642,14 @@ export default function HomeBelowFold() {
                   Start seeing the pattern →
                 </Link>
 
-                {/* Refund guarantee — directly under CTA */}
+                {/* Refund guarantee */}
                 <div className="rounded-xl border border-emerald-500/15 bg-emerald-500/[0.04] px-4 py-2.5 text-center">
-                  <p className="text-xs font-medium text-slate-300">🛡️ 7-day full refund guarantee</p>
+                  <p className="text-xs font-medium text-slate-300">
+                    🛡️ 7-day full refund guarantee
+                  </p>
                   <p className="mt-0.5 text-[11px] leading-relaxed text-slate-600">
-                    Not what you expected? Full refund within 7 days — no questions asked.
+                    Not what you expected? Full refund within 7 days — no
+                    questions asked.
                   </p>
                 </div>
 
@@ -521,7 +668,7 @@ export default function HomeBelowFold() {
         </div>
       </section>
 
-      {/* ── 6. FAQ ────────────────────────────────────────────────────────── */}
+      {/* ── 7. FAQ ────────────────────────────────────────────────────────── */}
       <section className="bg-slate-950 py-12 sm:py-14">
         <div className="mx-auto max-w-3xl px-5">
           <ScrollReveal>
@@ -531,11 +678,36 @@ export default function HomeBelowFold() {
           </ScrollReveal>
 
           <div className="mt-6 space-y-5 sm:mt-7 sm:space-y-6">
-            {faqs.map(({ q, a }) => (
+            {[
+              {
+                q: "What does Havenly actually say when it reflects back?",
+                a: "It depends entirely on what you write. The reflection reads your emotional language, names what seems to be underneath the surface, and connects it to what you have written before. See a live example in the insight preview.",
+              },
+              {
+                q: "Is this therapy?",
+                a: "No. Havenly is a private journaling companion. It can sit alongside therapy or personal reflection, but it is not clinical care and it does not replace professional support.",
+              },
+              {
+                q: "Do I need to write every day for it to work?",
+                a: "No. Some people write several times a week. Others only when life feels heavy. The more entries you have, the richer the pattern recognition becomes, but there is no streak to maintain.",
+              },
+              {
+                q: "What happens to my entries?",
+                a: "They stay private. They are never used to train AI models, never sold, and never shared. Havenly is built around the idea that your inner life belongs to you.",
+              },
+              {
+                q: "Why would someone pay for Premium?",
+                a: "Free helps you write and reflect. Premium helps you understand what your entries mean together over time: recurring themes, hidden patterns, weekly summaries, and clearer insight into why something keeps happening.",
+              },
+            ].map(({ q, a }) => (
               <ScrollReveal key={q}>
                 <div className="border-b border-slate-800/60 pb-5">
-                  <p className="text-[15px] font-medium text-white sm:text-base">{q}</p>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-500">{a}</p>
+                  <p className="text-[15px] font-medium text-white sm:text-base">
+                    {q}
+                  </p>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-500">
+                    {a}
+                  </p>
                 </div>
               </ScrollReveal>
             ))}
@@ -552,7 +724,7 @@ export default function HomeBelowFold() {
         </div>
       </section>
 
-      {/* ── 7. Closing CTA — elevated ─────────────────────────────────────── */}
+      {/* ── 8. Closing CTA ────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-t border-slate-800/60 section-cta-gradient py-20 sm:py-28">
         <div className="pointer-events-none absolute bottom-0 left-1/2 h-[400px] w-[600px] -translate-x-1/2 rounded-full bg-emerald-500/[0.08] blur-[120px]" />
 
@@ -569,8 +741,8 @@ export default function HomeBelowFold() {
               </span>
             </h2>
             <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-slate-400">
-              You don&apos;t need to have it figured out to begin.
-              One honest sentence is enough.
+              You don&apos;t need to have it figured out to begin. One honest
+              sentence is enough.
             </p>
             <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
               <Link
