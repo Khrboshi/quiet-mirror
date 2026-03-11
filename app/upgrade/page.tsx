@@ -1,10 +1,8 @@
-import Link from "next/link";
+"use client";
 
-export const metadata = {
-  title: "Upgrade to Havenly Premium",
-  description:
-    "See the deeper pattern behind your entries with Havenly Premium: unlimited reflections, recurring themes, weekly summaries, and clearer insight over time.",
-};
+import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const premiumFeatures = [
   {
@@ -105,13 +103,60 @@ const faqs = [
   },
 ];
 
+// ─── Shared upgrade button ────────────────────────────────────────────────────
+// Uses POST fetch instead of <Link> to avoid Next.js GET prefetch → 405 error
+
+function UpgradeButton({
+  className,
+  label = "Upgrade to Premium",
+}: {
+  className?: string;
+  label?: string;
+}) {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  async function handleUpgrade() {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/stripe/checkout", { method: "POST" });
+      if (res.status === 401) {
+        router.push("/magic-login?next=/upgrade");
+        return;
+      }
+      const data = await res.json();
+      if (data?.url) {
+        window.location.assign(data.url);
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    } catch {
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={handleUpgrade}
+      disabled={loading}
+      className={className}
+    >
+      {loading ? "Redirecting…" : label}
+    </button>
+  );
+}
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
+
 export default function UpgradePage() {
   return (
     <div className="min-h-screen bg-slate-950 text-white">
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-slate-800/60 bg-slate-950">
-        {/* Stronger glow blobs */}
         <div className="pointer-events-none absolute left-1/2 top-0 h-[380px] w-[700px] -translate-x-1/2 rounded-full bg-emerald-500/[0.14] blur-[110px]" />
         <div className="pointer-events-none absolute right-[-100px] top-20 h-72 w-72 rounded-full bg-cyan-500/[0.10] blur-[80px]" />
 
@@ -134,12 +179,7 @@ export default function UpgradePage() {
             </p>
 
             <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Link
-                href="/api/stripe/checkout"
-                className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-6 py-4 text-base font-semibold text-slate-950 shadow-lg shadow-emerald-500/25 transition-all hover:bg-emerald-400 hover:-translate-y-px sm:px-6 sm:py-3.5 sm:text-sm"
-              >
-                Upgrade to Premium
-              </Link>
+              <UpgradeButton className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-6 py-4 text-base font-semibold text-slate-950 shadow-lg shadow-emerald-500/25 transition-all hover:bg-emerald-400 hover:-translate-y-px disabled:opacity-60 sm:px-6 sm:py-3.5 sm:text-sm" />
 
               <Link
                 href="/insights/preview"
@@ -149,19 +189,18 @@ export default function UpgradePage() {
               </Link>
             </div>
 
-            {/* Trust micro-signals */}
             <div className="mt-5 flex flex-col gap-2.5 text-xs text-slate-500 sm:flex-row sm:flex-wrap sm:gap-x-4 sm:gap-y-2">
               <span className="flex items-center gap-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                $30 / month — less than one therapy session
+                $30 / month — less than one therapy session ($150–200/hr)
               </span>
               <span className="flex items-center gap-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                Cancel anytime
+                7-day full refund guarantee
               </span>
               <span className="flex items-center gap-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                Secure checkout via Stripe
+                Cancel anytime · Secure checkout via Stripe
               </span>
             </div>
           </div>
@@ -173,7 +212,6 @@ export default function UpgradePage() {
         <div className="mx-auto max-w-6xl px-5">
           <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
 
-            {/* Left — feature grid */}
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-400/70">
                 What changes with Premium
@@ -190,10 +228,7 @@ export default function UpgradePage() {
 
               <div className="mt-6 grid gap-3 sm:grid-cols-2">
                 {premiumFeatures.map(({ title, body, accent, tag }) => (
-                  <div
-                    key={title}
-                    className={`rounded-2xl border bg-white/[0.02] p-4 ${accent}`}
-                  >
+                  <div key={title} className={`rounded-2xl border bg-white/[0.02] p-4 ${accent}`}>
                     <p className={`text-[10px] font-semibold uppercase tracking-[0.18em] ${tag}`}>
                       {title}
                     </p>
@@ -203,7 +238,7 @@ export default function UpgradePage() {
               </div>
             </div>
 
-            {/* Right — premium pricing card */}
+            {/* Pricing card */}
             <div className="rounded-[1.75rem] border border-emerald-500/25 bg-emerald-500/[0.04] p-5 sm:p-6">
               <div className="flex items-center justify-between gap-3">
                 <div>
@@ -214,25 +249,21 @@ export default function UpgradePage() {
                     The full picture, not just today&apos;s entry
                   </h3>
                 </div>
-
-                {/* ✅ Fixed: "Founding price" replaces "Early access" */}
                 <span className="shrink-0 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-emerald-400">
                   Founding price
                 </span>
               </div>
 
-              {/* ✅ Price with therapy anchor on same row */}
               <div className="mt-4 flex flex-wrap items-baseline gap-x-2 gap-y-1">
                 <span className="text-4xl font-bold text-white">$30</span>
                 <span className="pb-0.5 text-sm text-slate-400">/ month</span>
                 <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-medium text-emerald-400">
-                  Less than one therapy session
+                  Less than one therapy session ($150–200/hr)
                 </span>
               </div>
 
               <p className="mt-1 text-xs text-slate-600">Cancel anytime · no questions asked</p>
 
-              {/* Before / After contrast box */}
               <div className="mt-4 rounded-xl border border-slate-700/60 bg-slate-900/50 p-3 text-xs text-slate-400">
                 <p>
                   <span className="text-slate-600">Before:</span>{" "}
@@ -246,30 +277,12 @@ export default function UpgradePage() {
 
               <ul className="mt-5 space-y-3 text-sm text-slate-200">
                 {[
-                  {
-                    label: "Everything in Free",
-                    sub: "Nothing removed, just a deeper layer added",
-                  },
-                  {
-                    label: "Unlimited reflections",
-                    sub: "Reflect on every entry",
-                  },
-                  {
-                    label: "Full hidden-pattern insights",
-                    sub: "See what repeats across weeks and months",
-                  },
-                  {
-                    label: "Weekly personal summary",
-                    sub: "A written mirror of the week",
-                  },
-                  {
-                    label: "\u201cWhy does this keep happening?\u201d insights",
-                    sub: "A clearer view of recurring loops and emotional drivers",
-                  },
-                  {
-                    label: "Cancel anytime",
-                    sub: "No lock-in, no questions asked",
-                  },
+                  { label: "Everything in Free", sub: "Nothing removed, just a deeper layer added" },
+                  { label: "Unlimited reflections", sub: "Reflect on every entry" },
+                  { label: "Full hidden-pattern insights", sub: "See what repeats across weeks and months" },
+                  { label: "Weekly personal summary", sub: "A written mirror of the week" },
+                  { label: "\u201cWhy does this keep happening?\u201d insights", sub: "A clearer view of recurring loops and emotional drivers" },
+                  { label: "Cancel anytime", sub: "No lock-in, no questions asked" },
                 ].map(({ label, sub }) => (
                   <li key={label} className="flex items-start gap-2">
                     <span className="mt-0.5 shrink-0 text-emerald-400">✓</span>
@@ -282,12 +295,15 @@ export default function UpgradePage() {
               </ul>
 
               <div className="mt-6 flex flex-col gap-2">
-                <Link
-                  href="/api/stripe/checkout"
-                  className="inline-flex w-full items-center justify-center rounded-full bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition-all hover:bg-emerald-400 hover:-translate-y-px"
-                >
-                  Upgrade to Premium
-                </Link>
+                <UpgradeButton className="inline-flex w-full items-center justify-center rounded-full bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition-all hover:bg-emerald-400 hover:-translate-y-px disabled:opacity-60" />
+
+                {/* 7-day refund — directly under CTA */}
+                <div className="rounded-xl border border-emerald-500/15 bg-emerald-500/[0.04] px-4 py-2.5 text-center">
+                  <p className="text-xs font-medium text-slate-300">🛡️ 7-day full refund guarantee</p>
+                  <p className="mt-0.5 text-[11px] leading-relaxed text-slate-600">
+                    Not what you expected? Email us within 7 days — full refund, no questions asked.
+                  </p>
+                </div>
 
                 <Link
                   href="/insights/preview"
@@ -340,7 +356,7 @@ export default function UpgradePage() {
         </div>
       </section>
 
-      {/* ── Free vs Premium comparison ────────────────────────────────────── */}
+      {/* ── Free vs Premium ───────────────────────────────────────────────── */}
       <section className="border-b border-slate-800/60 bg-slate-950/95 py-12 sm:py-16">
         <div className="mx-auto max-w-6xl px-5">
           <div className="mb-8 max-w-2xl">
@@ -360,9 +376,7 @@ export default function UpgradePage() {
 
             {/* Free card */}
             <div className="flex flex-col rounded-2xl border border-slate-800 bg-slate-900/40 p-5 sm:p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-                Free
-              </p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Free</p>
               <p className="mt-1 text-xl font-semibold text-white sm:text-2xl">
                 The perfect private place to start
               </p>
@@ -370,11 +384,9 @@ export default function UpgradePage() {
                 <span className="text-3xl font-bold text-white">$0</span>
                 <span className="text-sm text-slate-400">/ month</span>
               </div>
-
               <p className="mt-3 text-sm text-slate-500">
                 A calm place to write honestly, with no commitment, no pressure, and no audience.
               </p>
-
               <ul className="mt-5 space-y-3 text-sm text-slate-300">
                 {[
                   { label: "Write anytime", sub: "Entries stay private" },
@@ -391,7 +403,6 @@ export default function UpgradePage() {
                   </li>
                 ))}
               </ul>
-
               <div className="mt-auto pt-6">
                 <Link
                   href="/magic-login"
@@ -408,32 +419,24 @@ export default function UpgradePage() {
             {/* Premium card */}
             <div className="flex flex-col rounded-2xl border border-emerald-500/25 bg-emerald-500/[0.04] p-5 sm:p-6">
               <div className="flex items-center justify-between gap-3">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400/80">
-                  Premium
-                </p>
-                {/* ✅ Fixed: "Founding price" replaces "Early access" */}
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400/80">Premium</p>
                 <span className="shrink-0 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-emerald-400">
                   Founding price
                 </span>
               </div>
-
               <p className="mt-1 text-xl font-semibold text-white sm:text-2xl">
                 The deeper layer of understanding
               </p>
-
-              {/* ✅ Therapy anchor next to price */}
               <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
                 <span className="text-3xl font-bold text-white">$30</span>
                 <span className="text-sm text-slate-400">/ month</span>
                 <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-medium text-emerald-400">
-                  Less than one therapy session
+                  Less than one therapy session ($150–200/hr)
                 </span>
               </div>
-
               <p className="mt-3 text-sm text-slate-300">
                 For people who want clearer insight into what keeps repeating and why.
               </p>
-
               <ul className="mt-5 space-y-3 text-sm text-slate-200">
                 {[
                   { label: "Unlimited reflections", sub: "Reflect on every entry" },
@@ -451,14 +454,17 @@ export default function UpgradePage() {
                   </li>
                 ))}
               </ul>
-
               <div className="mt-auto flex flex-col gap-2 pt-6">
-                <Link
-                  href="/api/stripe/checkout"
-                  className="inline-flex w-full items-center justify-center rounded-full bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition-all hover:bg-emerald-400 hover:-translate-y-px"
-                >
-                  Upgrade to Premium
-                </Link>
+                <UpgradeButton className="inline-flex w-full items-center justify-center rounded-full bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition-all hover:bg-emerald-400 hover:-translate-y-px disabled:opacity-60" />
+
+                {/* 7-day refund */}
+                <div className="rounded-xl border border-slate-800 bg-slate-900/40 px-4 py-3 text-center">
+                  <p className="text-xs font-medium text-slate-300">🛡️ 7-day full refund guarantee</p>
+                  <p className="mt-0.5 text-[11px] leading-relaxed text-slate-600">
+                    Not what you expected? Email us within 7 days of your first charge — full refund, no questions asked.
+                  </p>
+                </div>
+
                 <Link
                   href="/insights/preview"
                   className="inline-flex w-full items-center justify-center rounded-full border border-slate-700 px-5 py-2.5 text-xs font-medium text-slate-300 transition-colors hover:bg-slate-900"
@@ -466,14 +472,6 @@ export default function UpgradePage() {
                   Preview Premium insights
                 </Link>
               </div>
-
-              <div className="mt-4 rounded-xl border border-slate-800 bg-slate-900/40 px-4 py-3 text-center">
-                <p className="text-xs font-medium text-slate-300">🛡️ 7-day full refund guarantee</p>
-                <p className="mt-0.5 text-[11px] leading-relaxed text-slate-600">
-                  Not what you expected? Email us within 7 days of your first charge — full refund, no questions asked.
-                </p>
-              </div>
-
               <p className="mt-3 text-center text-xs text-slate-700">
                 Secure checkout via Stripe
               </p>
@@ -488,7 +486,6 @@ export default function UpgradePage() {
           <h2 className="text-xl font-semibold text-white sm:text-2xl">
             A few honest answers
           </h2>
-
           <div className="mt-6 space-y-5 sm:mt-7 sm:space-y-6">
             {faqs.map(({ q, a }) => (
               <div key={q} className="border-b border-slate-800/60 pb-5">
@@ -497,12 +494,8 @@ export default function UpgradePage() {
               </div>
             ))}
           </div>
-
           <div className="mt-8 text-xs text-slate-700">
-            <Link
-              href="/privacy"
-              className="text-emerald-600 transition-colors hover:text-emerald-500"
-            >
+            <Link href="/privacy" className="text-emerald-600 transition-colors hover:text-emerald-500">
               Read the Privacy Policy &rarr;
             </Link>
           </div>
@@ -521,14 +514,8 @@ export default function UpgradePage() {
             Start with a single entry. When you want the deeper picture, Premium helps
             Havenly connect the dots.
           </p>
-
           <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:justify-center">
-            <Link
-              href="/api/stripe/checkout"
-              className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-7 py-3.5 text-[15px] font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition-all hover:bg-emerald-400 hover:-translate-y-px sm:py-3 sm:text-sm"
-            >
-              Upgrade to Premium
-            </Link>
+            <UpgradeButton className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-7 py-3.5 text-[15px] font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition-all hover:bg-emerald-400 hover:-translate-y-px disabled:opacity-60 sm:py-3 sm:text-sm" />
 
             <Link
               href="/magic-login"
@@ -537,7 +524,6 @@ export default function UpgradePage() {
               Start free first
             </Link>
           </div>
-
           <p className="mt-5 text-xs text-slate-700">
             Private by default · Entries never train AI models · 7-day refund guarantee
           </p>
