@@ -1,10 +1,28 @@
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
+import { Fraunces, DM_Sans } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Providers from "./providers";
 import DeepLinkBootstrap from "./components/DeepLinkBootstrap";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import InstallPrompt from "@/app/components/InstallPrompt";
+
+// ─── Fonts via next/font — self-hosted, no FOUT, better Core Web Vitals
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  axes: ["SOFT", "opsz"],
+  weight: ["300", "400", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-body",
+  display: "swap",
+});
 
 const SITE_URL = "https://havenly-2-1.vercel.app";
 
@@ -40,13 +58,12 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary",
     title: "Havenly — The Journal That Listens",
-    description:
-      "Write what's weighing on you. Get a gentle reflection back.",
+    description: "Write what's weighing on you. Get a gentle reflection back.",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#2ad3b2",
+  themeColor: "#3ee7b0",
 };
 
 export default function RootLayout({
@@ -57,24 +74,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* PWA / Apple */}
         <meta name="mobile-web-app-capable" content="yes" />
         <link rel="apple-touch-icon" href="/pwa/icon-192.png" />
-
-        {/* Google Fonts — Fraunces (display) + DM Sans (body) */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin=""
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap"
-          rel="stylesheet"
-        />
+        {/* No <link> font tags needed — next/font handles everything above */}
       </head>
 
-      <body suppressHydrationWarning>
+      <body
+        className={`${fraunces.variable} ${dmSans.variable}`}
+        suppressHydrationWarning
+      >
         <DeepLinkBootstrap />
         <Providers>
           <Navbar />
