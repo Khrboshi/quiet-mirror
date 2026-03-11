@@ -29,6 +29,135 @@ const recognitions = [
 export default function HomeBelowFold() {
   return (
     <>
+      {/* ── 0. PROOF INTERRUPTION — stops the scroll ─────────────────────
+          The single most compelling thing Havenly does, shown immediately.
+          Navy = you writing. Green = what Havenly found.
+      ────────────────────────────────────────────────────────────────────── */}
+      <section className="border-b border-emerald-500/10 bg-emerald-500/[0.03] py-12 sm:py-16">
+        <div className="mx-auto max-w-4xl px-5">
+
+          <ScrollReveal className="mb-8 text-center">
+            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/60">
+              After 3 weeks of entries — what Havenly noticed
+            </p>
+            <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">
+              The pattern you&apos;ve been living
+              <br className="hidden sm:block" />
+              <span className="text-emerald-400"> but couldn&apos;t quite name.</span>
+            </h2>
+          </ScrollReveal>
+
+          {/* The single large proof card */}
+          <ScrollReveal>
+            <div className="overflow-hidden rounded-[1.75rem] border border-emerald-500/20 shadow-2xl shadow-black/50">
+
+              {/* Card header — green band */}
+              <div className="flex items-center justify-between border-b border-emerald-500/15 bg-emerald-500/[0.08] px-6 py-4 sm:px-8">
+                <div className="flex items-center gap-2.5">
+                  <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400/60" />
+                  <p className="text-sm font-medium text-emerald-300">
+                    Your hidden pattern
+                  </p>
+                </div>
+                <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-emerald-400">
+                  Premium insight
+                </span>
+              </div>
+
+              {/* Card body */}
+              <div className="bg-slate-900/90 px-6 py-7 sm:px-8 sm:py-8">
+
+                {/* The insight — large and prominent */}
+                <p className="font-display text-xl font-medium leading-relaxed text-white sm:text-2xl">
+                  &ldquo;You often sound most overwhelmed when you feel
+                  responsible for{" "}
+                  <span className="text-emerald-300">
+                    keeping everything steady for everyone else
+                  </span>{" "}
+                  — and rarely give yourself the same patience.&rdquo;
+                </p>
+
+                {/* Supporting data — bar chart + stats */}
+                <div className="mt-7 grid gap-5 sm:grid-cols-[1fr_auto]">
+
+                  {/* Bars */}
+                  <div>
+                    <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+                      What keeps appearing in your entries
+                    </p>
+                    <div className="space-y-2.5">
+                      {[
+                        { label: "Emotional load", pct: 64, color: "bg-emerald-400" },
+                        { label: "Responsibility for others", pct: 50, color: "bg-emerald-500/70" },
+                        { label: "Overwhelm / exhaustion", pct: 45, color: "bg-violet-400/70" },
+                        { label: "Clarity (↑ rising)", pct: 28, color: "bg-sky-400/60" },
+                      ].map(({ label, pct, color }) => (
+                        <div key={label}>
+                          <div className="mb-1 flex items-center justify-between">
+                            <span className="text-xs text-slate-400">{label}</span>
+                            <span className="text-xs text-slate-600">{pct}%</span>
+                          </div>
+                          <div className="h-2 w-full rounded-full bg-slate-800">
+                            <div
+                              className={`h-2 rounded-full ${color}`}
+                              style={{ width: `${pct}%` }}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Stat pills */}
+                  <div className="flex flex-row gap-3 sm:flex-col sm:justify-center">
+                    <div className="rounded-2xl border border-slate-700/50 bg-slate-800/60 px-4 py-3 text-center sm:px-5">
+                      <p className="font-display text-2xl font-bold text-white sm:text-3xl">
+                        14
+                        <span className="text-base font-normal text-slate-500">
+                          /22
+                        </span>
+                      </p>
+                      <p className="mt-1 text-[11px] leading-snug text-slate-500">
+                        entries with<br />emotional load
+                      </p>
+                    </div>
+                    <div className="rounded-2xl border border-slate-700/50 bg-slate-800/60 px-4 py-3 text-center sm:px-5">
+                      <p className="font-display text-2xl font-bold text-white sm:text-3xl">
+                        3
+                        <span className="text-base font-normal text-slate-500">
+                          wks
+                        </span>
+                      </p>
+                      <p className="mt-1 text-[11px] leading-snug text-slate-500">
+                        pattern has<br />been building
+                      </p>
+                    </div>
+                  </div>
+
+                </div>
+
+                <p className="mt-5 text-[11px] text-slate-600">
+                  Generated from your private entries. Only you can see this.
+                </p>
+              </div>
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal>
+            <p className="mt-6 text-center text-sm text-slate-500">
+              This is what Premium unlocks — the pattern underneath the entries.{" "}
+              <Link
+                href="/insights/preview"
+                className="text-emerald-500 transition-colors hover:text-emerald-400"
+              >
+                See a full example →
+              </Link>
+            </p>
+          </ScrollReveal>
+
+        </div>
+      </section>
+
       {/* ── 1. Recognition ───────────────────────────────────────────────── */}
       <section className="border-y border-slate-800/60 py-10 sm:py-14">
         <div className="mx-auto max-w-6xl px-5">
@@ -70,11 +199,11 @@ export default function HomeBelowFold() {
             </p>
           </ScrollReveal>
 
-          {/* Before / after demo */}
-          <ScrollReveal className="grid gap-4 md:grid-cols-2 md:gap-6">
+          {/* Before / after demo — tightened for mobile */}
+          <ScrollReveal className="overflow-hidden rounded-[1.5rem] border border-slate-800/60 md:grid md:grid-cols-2">
 
-            {/* Entry card */}
-            <div className="rounded-[1.5rem] border border-slate-800/80 bg-slate-900/60 p-6 sm:p-7">
+            {/* INPUT — dark navy */}
+            <div className="border-b border-slate-800/60 bg-slate-900/60 p-6 md:border-b-0 md:border-r">
               <div className="mb-4 flex items-center justify-between">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-600">
                   What you write
@@ -84,11 +213,9 @@ export default function HomeBelowFold() {
                 </span>
               </div>
               <p className="text-[15px] leading-[1.75] text-slate-200">
-                &ldquo;Work has been overwhelming lately. I keep saying yes to
-                things and then resenting it afterwards. I don&apos;t know why I
-                can&apos;t just say no. At home it&apos;s the same — I end up
-                handling everything and nobody seems to notice. I&apos;m
-                exhausted but I&apos;d feel guilty if I stepped back.&rdquo;
+                &ldquo;Work has been overwhelming. I keep saying yes and then
+                resenting it. At home it&apos;s the same — I handle everything
+                and feel guilty even thinking about stepping back.&rdquo;
               </p>
               <div className="mt-5 flex flex-wrap gap-1.5">
                 {["Honest", "Unfiltered", "No structure needed"].map((t) => (
@@ -102,8 +229,8 @@ export default function HomeBelowFold() {
               </div>
             </div>
 
-            {/* Reflection card */}
-            <div className="rounded-[1.5rem] border border-emerald-500/15 bg-emerald-500/[0.03] p-6 sm:p-7">
+            {/* OUTPUT — green tinted */}
+            <div className="border-t border-emerald-500/10 bg-emerald-950/30 p-6 md:border-t-0">
               <div className="mb-4 flex items-center justify-between">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-500/70">
                   Havenly reflects
@@ -113,11 +240,10 @@ export default function HomeBelowFold() {
                 </span>
               </div>
               <p className="text-[15px] leading-[1.75] text-slate-100">
-                There&apos;s a pattern worth noticing here: you&apos;re
-                absorbing other people&apos;s needs to the point of exhaustion,
-                then feeling guilty for wanting relief. That guilt isn&apos;t
-                proof you&apos;re asking for too much — it may be proof that
-                you&apos;ve been trained to expect very little in return.
+                There&apos;s a pattern worth noticing: you&apos;re absorbing
+                other people&apos;s needs to the point of exhaustion, then
+                feeling guilty for wanting relief. That guilt isn&apos;t proof
+                you&apos;re asking for too much.
               </p>
               <div className="mt-5 flex flex-wrap gap-2">
                 {[
@@ -134,10 +260,11 @@ export default function HomeBelowFold() {
                 ))}
               </div>
             </div>
+
           </ScrollReveal>
 
-          {/* Three-step flow — compact */}
-          <ScrollReveal stagger className="mt-8 grid gap-3 sm:grid-cols-3 sm:gap-4">
+          {/* Three-step flow */}
+          <ScrollReveal stagger className="mt-6 grid gap-3 sm:grid-cols-3 sm:gap-4">
             {[
               {
                 step: "1",
@@ -218,7 +345,7 @@ export default function HomeBelowFold() {
             </div>
           </ScrollReveal>
 
-          {/* Insight card grid — large, prominent */}
+          {/* Insight card grid */}
           <ScrollReveal stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 
             {/* Card 1 — What shows up most */}
@@ -231,8 +358,7 @@ export default function HomeBelowFold() {
                 <span className="text-violet-300">14 of your last 22</span>{" "}
                 entries.
               </p>
-              {/* Mini bar */}
-              <div className="mt-4 space-y-1.5">
+              <div className="mt-4 space-y-2">
                 {[
                   { label: "Emotional load", pct: 64, color: "bg-violet-400" },
                   { label: "Overwhelm", pct: 45, color: "bg-violet-500/60" },
@@ -240,14 +366,11 @@ export default function HomeBelowFold() {
                 ].map(({ label, pct, color }) => (
                   <div key={label}>
                     <div className="mb-1 flex items-center justify-between">
-                      <span className="text-[11px] text-slate-500">{label}</span>
-                      <span className="text-[11px] text-slate-600">{pct}%</span>
+                      <span className="text-xs text-slate-500">{label}</span>
+                      <span className="text-xs text-slate-600">{pct}%</span>
                     </div>
                     <div className="h-1.5 w-full rounded-full bg-slate-800">
-                      <div
-                        className={`h-1.5 rounded-full ${color}`}
-                        style={{ width: `${pct}%` }}
-                      />
+                      <div className={`h-1.5 rounded-full ${color}`} style={{ width: `${pct}%` }} />
                     </div>
                   </div>
                 ))}
@@ -270,10 +393,7 @@ export default function HomeBelowFold() {
                   { label: "Boundary-setting", count: "7×", color: "border-slate-600/40 bg-slate-800/50 text-slate-400" },
                   { label: "Exhaustion", count: "6×", color: "border-slate-600/40 bg-slate-800/50 text-slate-400" },
                 ].map(({ label, count, color }) => (
-                  <div
-                    key={label}
-                    className={`rounded-xl border px-3 py-2 ${color}`}
-                  >
+                  <div key={label} className={`rounded-xl border px-3 py-2 ${color}`}>
                     <p className="text-[11px] font-medium">{label}</p>
                     <p className="mt-0.5 text-xs opacity-70">{count} this month</p>
                   </div>
@@ -281,7 +401,7 @@ export default function HomeBelowFold() {
               </div>
             </div>
 
-            {/* Card 3 — What may be driving it (Premium) */}
+            {/* Card 3 — What may be driving it */}
             <div className="relative rounded-[1.5rem] border border-amber-500/20 bg-amber-500/[0.04] p-6 sm:col-span-2 lg:col-span-1">
               <div className="flex items-start justify-between gap-3">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-amber-400">
@@ -293,9 +413,7 @@ export default function HomeBelowFold() {
               </div>
               <p className="mt-3 text-[15px] leading-[1.7] text-slate-200">
                 You often sound most overwhelmed when you feel responsible for{" "}
-                <span className="text-amber-300">
-                  keeping everything steady for everyone else
-                </span>{" "}
+                <span className="text-amber-300">keeping everything steady for everyone else</span>{" "}
                 — and rarely give yourself the same patience.
               </p>
               <div className="mt-4 rounded-xl border border-amber-500/10 bg-amber-500/[0.04] p-3">
@@ -306,7 +424,7 @@ export default function HomeBelowFold() {
               </div>
             </div>
 
-            {/* Card 4 — What is shifting (Premium) */}
+            {/* Card 4 — What is shifting */}
             <div className="relative rounded-[1.5rem] border border-sky-500/20 bg-sky-500/[0.04] p-6">
               <div className="flex items-start justify-between gap-3">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-sky-400">
@@ -321,14 +439,13 @@ export default function HomeBelowFold() {
                 <span className="text-sky-300">rising in recent entries</span> — which often
                 signals that something important is becoming clearer.
               </p>
-              {/* Arrow trend */}
               <div className="mt-4 flex items-center gap-2 text-xs text-slate-500">
                 <span className="text-sky-400">↑</span>
                 <span>Clarity signal up over the last 2 weeks</span>
               </div>
             </div>
 
-            {/* Card 5 — Weekly mirror (Premium) */}
+            {/* Card 5 — Weekly mirror */}
             <div className="relative rounded-[1.5rem] border border-rose-500/20 bg-rose-500/[0.04] p-6">
               <div className="flex items-start justify-between gap-3">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-rose-400">
@@ -365,7 +482,7 @@ export default function HomeBelowFold() {
 
           </ScrollReveal>
 
-          <ScrollReveal className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+          <ScrollReveal className="mt-8 text-center">
             <Link
               href="/insights/preview"
               className="inline-flex items-center justify-center gap-2 text-sm font-medium text-emerald-400 transition-colors hover:text-emerald-300"
@@ -376,7 +493,7 @@ export default function HomeBelowFold() {
         </div>
       </section>
 
-      {/* ── 4. What makes it different — compact ─────────────────────────── */}
+      {/* ── 4. What makes it different ───────────────────────────────────── */}
       <section className="border-b border-slate-800/60 py-12 sm:py-16">
         <div className="mx-auto max-w-6xl px-5">
           <ScrollReveal className="mb-8 max-w-2xl">
@@ -392,7 +509,6 @@ export default function HomeBelowFold() {
           </ScrollReveal>
 
           <ScrollReveal stagger className="grid gap-4 sm:grid-cols-2">
-            {/* Is */}
             <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5 sm:p-6">
               <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-500/70">
                 Havenly is
@@ -412,7 +528,6 @@ export default function HomeBelowFold() {
               </ul>
             </div>
 
-            {/* Is not */}
             <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5 sm:p-6">
               <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-500/70">
                 Havenly is not
@@ -447,7 +562,6 @@ export default function HomeBelowFold() {
             </h2>
           </ScrollReveal>
 
-          {/* Featured quote */}
           <ScrollReveal className="mb-6 rounded-[1.75rem] border border-emerald-500/15 bg-emerald-500/[0.03] p-7 sm:p-8">
             <div className="text-lg text-amber-400">★★★★★</div>
             <p className="mt-4 font-display text-xl leading-relaxed text-white sm:text-2xl">
@@ -465,38 +579,30 @@ export default function HomeBelowFold() {
             </div>
           </ScrollReveal>
 
-          {/* Two smaller quotes */}
           <ScrollReveal stagger className="grid gap-4 sm:grid-cols-2">
             {[
               {
-                quote:
-                  "This is the first journaling product that made me feel like my entries were going somewhere instead of just piling up.",
+                quote: "This is the first journaling product that made me feel like my entries were going somewhere instead of just piling up.",
                 name: "Tariq A.",
                 detail: "Used Havenly for 3 months",
                 initial: "T",
                 gradient: "from-violet-500/40 to-blue-500/40",
               },
               {
-                quote:
-                  "The weekly summary connected entries I thought were unrelated. It made a pattern obvious without feeling intrusive.",
+                quote: "The weekly summary connected entries I thought were unrelated. It made a pattern obvious without feeling intrusive.",
                 name: "Riya K.",
                 detail: "Premium member",
                 initial: "R",
                 gradient: "from-amber-500/40 to-rose-500/40",
               },
             ].map(({ quote, name, detail, initial, gradient }) => (
-              <div
-                key={name}
-                className="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-5"
-              >
+              <div key={name} className="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-5">
                 <div className="mb-3 text-sm text-amber-400">★★★★★</div>
                 <p className="text-sm italic leading-relaxed text-slate-300">
                   &ldquo;{quote}&rdquo;
                 </p>
                 <div className="mt-4 flex items-center gap-2">
-                  <div
-                    className={`flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-gradient-to-br ${gradient} text-xs font-semibold text-white`}
-                  >
+                  <div className={`flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-gradient-to-br ${gradient} text-xs font-semibold text-white`}>
                     {initial}
                   </div>
                   <div>
@@ -543,9 +649,7 @@ export default function HomeBelowFold() {
 
             {/* Free card */}
             <div className="flex flex-col rounded-2xl border border-slate-800 bg-slate-900/40 p-5 sm:p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-                Free
-              </p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Free</p>
               <p className="mt-1 font-display text-xl font-semibold text-white sm:text-2xl">
                 A private place to start
               </p>
@@ -588,9 +692,7 @@ export default function HomeBelowFold() {
 
             {/* Premium card */}
             <div className="relative flex flex-col rounded-2xl border border-emerald-500/25 bg-emerald-500/[0.04] p-5 sm:p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-500/70">
-                Premium
-              </p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-500/70">Premium</p>
               <p className="mt-1 font-display text-xl font-semibold text-white sm:text-2xl">
                 The full pattern, not just the latest entry
               </p>
@@ -641,18 +743,14 @@ export default function HomeBelowFold() {
                 >
                   Start seeing the pattern →
                 </Link>
-
-                {/* Refund guarantee */}
                 <div className="rounded-xl border border-emerald-500/15 bg-emerald-500/[0.04] px-4 py-2.5 text-center">
                   <p className="text-xs font-medium text-slate-300">
                     🛡️ 7-day full refund guarantee
                   </p>
                   <p className="mt-0.5 text-[11px] leading-relaxed text-slate-600">
-                    Not what you expected? Full refund within 7 days — no
-                    questions asked.
+                    Not what you expected? Full refund within 7 days — no questions asked.
                   </p>
                 </div>
-
                 <Link
                   href="/insights/preview"
                   className="inline-flex w-full items-center justify-center rounded-full border border-slate-700 px-5 py-2.5 text-xs font-medium text-slate-300 transition-colors hover:bg-slate-900"
@@ -702,22 +800,15 @@ export default function HomeBelowFold() {
             ].map(({ q, a }) => (
               <ScrollReveal key={q}>
                 <div className="border-b border-slate-800/60 pb-5">
-                  <p className="text-[15px] font-medium text-white sm:text-base">
-                    {q}
-                  </p>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-500">
-                    {a}
-                  </p>
+                  <p className="text-[15px] font-medium text-white sm:text-base">{q}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-500">{a}</p>
                 </div>
               </ScrollReveal>
             ))}
           </div>
 
           <div className="mt-8 text-xs text-slate-700">
-            <Link
-              href="/privacy"
-              className="text-emerald-600 transition-colors hover:text-emerald-500"
-            >
+            <Link href="/privacy" className="text-emerald-600 transition-colors hover:text-emerald-500">
               Read the Privacy Policy &rarr;
             </Link>
           </div>
@@ -736,9 +827,7 @@ export default function HomeBelowFold() {
             <h2 className="font-display text-3xl font-semibold leading-[1.08] text-white sm:text-4xl">
               Something is trying to become clear.
               <br />
-              <span className="text-emerald-400">
-                Let&apos;s help you hear it.
-              </span>
+              <span className="text-emerald-400">Let&apos;s help you hear it.</span>
             </h2>
             <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-slate-400">
               You don&apos;t need to have it figured out to begin. One honest
