@@ -7,10 +7,8 @@ import DeepLinkBootstrap from "./components/DeepLinkBootstrap";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import InstallPrompt from "@/app/components/InstallPrompt";
 
-// ─── Fonts via next/font — self-hosted, no FOUT, better Core Web Vitals
 const fraunces = Fraunces({
   subsets: ["latin"],
-  axes: ["SOFT", "opsz"],
   weight: ["300", "400", "600"],
   style: ["normal", "italic"],
   variable: "--font-display",
@@ -76,7 +74,6 @@ export default function RootLayout({
       <head>
         <meta name="mobile-web-app-capable" content="yes" />
         <link rel="apple-touch-icon" href="/pwa/icon-192.png" />
-        {/* No <link> font tags needed — next/font handles everything above */}
       </head>
 
       <body
