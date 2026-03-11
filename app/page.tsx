@@ -29,11 +29,12 @@ export default function HomePage() {
           {/* ─── LEFT — Copy ──────────────────────────────────────────── */}
           <div className="max-w-xl">
 
-            {/* 5-second definition pill */}
+            {/* Definition pill — abbreviated on mobile, full on sm+ */}
             <div className="animate-fade-in anim-delay-0 mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/[0.07] px-3.5 py-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400/60" />
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400/60" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-400">
-                Private AI journaling · Write → Reflect → See patterns
+                Private AI journal
+                <span className="hidden sm:inline"> · Write → Reflect → See patterns</span>
               </span>
             </div>
 
@@ -44,7 +45,7 @@ export default function HomePage() {
               <em className="not-italic text-emerald-400">for a while now.</em>
             </h1>
 
-            {/* What it is — clear one-liner */}
+            {/* What it is */}
             <p className="animate-fade-in-up anim-delay-200 mt-5 text-base leading-relaxed text-slate-300 sm:text-[17px]">
               Havenly is a private journal that reads what you write and{" "}
               <span className="text-slate-200">gently reflects it back</span> —
@@ -101,14 +102,14 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* ─── RIGHT — Product preview ──────────────────────────────── */}
+          {/* ─── RIGHT — Product preview card ─────────────────────────── */}
           <div className="relative mx-auto w-full max-w-[460px]">
             <div className="pointer-events-none absolute -inset-6 rounded-[2.5rem] bg-emerald-500/[0.09] blur-[80px]" />
 
-            <div className="animate-fade-in anim-delay-300 relative overflow-hidden rounded-[2rem] border border-white/[0.10] bg-slate-950/95 shadow-2xl shadow-black/70 backdrop-blur">
+            <div className="animate-fade-in anim-delay-300 relative overflow-hidden rounded-[2rem] border border-white/[0.10] shadow-2xl shadow-black/70 backdrop-blur">
 
-              {/* Card header */}
-              <div className="border-b border-slate-800/70 px-6 py-4 flex items-center justify-between">
+              {/* Card chrome */}
+              <div className="flex items-center justify-between border-b border-slate-800/70 bg-slate-950/95 px-6 py-4">
                 <span className="flex items-center gap-2 text-xs text-slate-500">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400/60" />
                   Evening check-in
@@ -118,30 +119,31 @@ export default function HomePage() {
                 </span>
               </div>
 
-              <div className="p-6">
-                {/* What you wrote label */}
+              {/* ── INPUT section — dark navy ──────────────────────────── */}
+              <div className="bg-slate-950/95 px-6 pb-5 pt-5">
                 <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-600">
                   What you wrote
                 </p>
-
-                {/* User entry */}
-                <div className="rounded-2xl border border-slate-800/70 bg-slate-900/70 p-4">
+                <div className="rounded-2xl border border-slate-800/70 bg-slate-900/80 p-4">
                   <p className="text-sm leading-relaxed text-slate-300">
                     &ldquo;I keep telling people I&apos;m okay, but lately even
                     small things feel heavier than they should.&rdquo;
                   </p>
                 </div>
+              </div>
 
-                {/* Divider */}
-                <div className="my-5 flex items-center gap-3">
-                  <div className="h-px flex-1 bg-slate-800/60" />
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-500/60">
+              {/* ── OUTPUT section — green tinted ─────────────────────── */}
+              <div className="border-t border-emerald-500/10 bg-emerald-950/40 px-6 pb-6 pt-5">
+                {/* Section label */}
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="h-px flex-1 bg-emerald-500/10" />
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-500/70">
                     Havenly reflects
                   </span>
-                  <div className="h-px flex-1 bg-slate-800/60" />
+                  <div className="h-px flex-1 bg-emerald-500/10" />
                 </div>
 
-                {/* Reflection */}
+                {/* Reflection text */}
                 <p className="text-[15px] leading-[1.7] text-slate-100">
                   It sounds like you&apos;ve been carrying more than you&apos;ve
                   let yourself name. This doesn&apos;t read like one bad day —
@@ -149,11 +151,11 @@ export default function HomePage() {
                 </p>
 
                 {/* Signal tags */}
-                <div className="mt-5 flex flex-wrap gap-2">
+                <div className="mt-4 flex flex-wrap gap-2">
                   {[
-                    { label: "Emotional load", color: "border-emerald-500/20 bg-emerald-500/10 text-emerald-300" },
-                    { label: "Masking", color: "border-violet-500/20 bg-violet-500/10 text-violet-300" },
-                    { label: "Burnout signal", color: "border-amber-500/20 bg-amber-500/10 text-amber-300" },
+                    { label: "Emotional load", color: "border-emerald-500/25 bg-emerald-500/10 text-emerald-300" },
+                    { label: "Masking", color: "border-violet-500/25 bg-violet-500/10 text-violet-300" },
+                    { label: "Burnout signal", color: "border-amber-500/25 bg-amber-500/10 text-amber-300" },
                   ].map(({ label, color }) => (
                     <span
                       key={label}
@@ -164,19 +166,20 @@ export default function HomePage() {
                   ))}
                 </div>
 
-                {/* Footer note */}
-                <div className="mt-5 flex items-center justify-between">
-                  <p className="text-[11px] text-slate-700">
+                {/* Footer */}
+                <div className="mt-4 flex items-center justify-between">
+                  <p className="text-[11px] text-emerald-500/30">
                     Never leaves your account.
                   </p>
                   <Link
                     href="/insights/preview"
-                    className="text-[11px] font-medium text-emerald-600 transition-colors hover:text-emerald-400"
+                    className="text-[11px] font-medium text-emerald-500 transition-colors hover:text-emerald-400"
                   >
                     See full example →
                   </Link>
                 </div>
               </div>
+
             </div>
           </div>
 
