@@ -46,14 +46,14 @@ export async function GET() {
   const supabase = createServerSupabase();
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!session?.user) {
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const planType = await getUserPlanType(supabase, session.user.id);
+  const planType = await getUserPlanType(supabase, user.id);
   if (planType !== "PREMIUM" && planType !== "TRIAL") {
     return NextResponse.json({ error: "Premium required" }, { status: 402 });
   }
@@ -61,7 +61,7 @@ export async function GET() {
   const { data: rows, error } = await supabase
     .from("journal_entries")
     .select("ai_response, created_at")
-    .eq("user_id", session.user.id)
+    .eq("user_id", user.id)
     .not("ai_response", "is", null)
     .order("created_at", { ascending: true })
     .limit(2000);
@@ -242,7 +242,7 @@ export async function GET() {
   const { count: totalEntryCount } = await supabase
     .from("journal_entries")
     .select("id", { count: "exact", head: true })
-    .eq("user_id", session.user.id);
+    .eq("user_id", user.id);
 
   return NextResponse.json(
     {
