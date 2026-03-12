@@ -48,7 +48,7 @@ export default function Navbar() {
   // Prefetch authenticated routes
   useEffect(() => {
     if (!isLoggedIn) return;
-    ["/dashboard", "/journal", "/insights", "/settings"].forEach((route) => {
+    ["/dashboard", "/journal", "/insights", "/tools", "/settings"].forEach((route) => {
       router.prefetch(route);
     });
   }, [isLoggedIn, router]);
@@ -66,6 +66,7 @@ export default function Navbar() {
     { href: "/dashboard", label: "Dashboard" },
     { href: "/journal",   label: "Journal"   },
     { href: "/insights",  label: "Insights"  },
+    { href: "/tools",     label: "Tools"     },
     { href: "/settings",  label: "Settings"  },
     { href: "/install",   label: "Install"   },
   ];
