@@ -45,7 +45,7 @@ export async function GET(req: Request) {
 
     // Always redirect (avoid JSON for auth failures)
     if (!user) {
-      return NextResponse.redirect(new URL("/login", getBaseUrl(req.url)), 303);
+      return NextResponse.redirect(new URL("/magic-login", getBaseUrl(req.url)), 303);
     }
 
     // Read stripe_customer_id
