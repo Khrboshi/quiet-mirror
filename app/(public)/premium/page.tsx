@@ -14,6 +14,16 @@ export default function PremiumPage() {
       ? "Trial"
       : "Free";
 
+  const isPremium = planType === "PREMIUM";
+
+  const displayCredits = isPremium ? "Unlimited" : (credits ?? 0);
+
+  const displayRenewal = renewalDate
+    ? renewalDate
+    : isPremium
+    ? null
+    : "—";
+
   const premiumFeatures = [
     {
       title: "Unlimited reflections",
@@ -79,19 +89,26 @@ export default function PremiumPage() {
               <dl className="mt-6 grid gap-4 sm:grid-cols-2">
                 <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
                   <dt className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
-                    Credits available
+                    Reflections
                   </dt>
                   <dd className="mt-2 text-2xl font-semibold text-white">
-                    {credits ?? 0}
+                    {displayCredits}
                   </dd>
                 </div>
 
                 <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
                   <dt className="text-[11px] uppercase tracking-[0.18em] text-slate-500">
-                    Next renewal
+                    Subscription
                   </dt>
                   <dd className="mt-2 text-lg font-medium text-white">
-                    {renewalDate || "—"}
+                    {displayRenewal ?? (
+                      <Link
+                        href="/settings/billing"
+                        className="text-emerald-400 hover:text-emerald-300 transition-colors"
+                      >
+                        View billing →
+                      </Link>
+                    )}
                   </dd>
                 </div>
               </dl>
@@ -176,7 +193,7 @@ export default function PremiumPage() {
                   Without the deeper layer
                 </p>
                 <p className="mt-2 text-sm leading-relaxed text-slate-400">
-                  “I know this keeps happening, but I still cannot tell what the real pattern is.”
+                  "I know this keeps happening, but I still cannot tell what the real pattern is."
                 </p>
               </div>
 
@@ -185,8 +202,8 @@ export default function PremiumPage() {
                   With Premium
                 </p>
                 <p className="mt-2 text-sm leading-relaxed text-slate-300">
-                  “My entries keep circling the same mix of over-responsibility, emotional
-                  exhaustion, and difficulty asking for help. It is not random anymore.”
+                  "My entries keep circling the same mix of over-responsibility, emotional
+                  exhaustion, and difficulty asking for help. It is not random anymore."
                 </p>
               </div>
 
