@@ -112,13 +112,13 @@ export default function TransactionsPage() {
         <div className="flex items-center gap-3">
           <Link
             href="/settings"
-            className="rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-slate-200 hover:bg-white/10"
+            className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-slate-200 hover:bg-white/10"
           >
             Back to Settings
           </Link>
           <Link
             href="/settings/billing"
-            className="rounded-md bg-emerald-500 px-3 py-2 text-sm font-medium text-black hover:bg-emerald-400"
+            className="rounded-full bg-emerald-500 px-3 py-2 text-sm font-medium text-black hover:bg-emerald-400"
           >
             Billing
           </Link>
@@ -148,7 +148,7 @@ export default function TransactionsPage() {
             <button
               type="button"
               onClick={goToPortal}
-              className="rounded-md bg-emerald-500 px-4 py-2 text-sm font-medium text-black hover:bg-emerald-400"
+              className="rounded-full bg-emerald-500 px-4 py-2 text-sm font-medium text-black hover:bg-emerald-400"
             >
               Manage subscription
             </button>
@@ -156,7 +156,7 @@ export default function TransactionsPage() {
             {showUpgrade ? (
               <Link
                 href="/upgrade"
-                className="rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-white/10"
+                className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-white/10"
               >
                 Upgrade
               </Link>
@@ -164,7 +164,7 @@ export default function TransactionsPage() {
 
             <Link
               href="/dashboard"
-              className="rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-white/10"
+              className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-white/10"
             >
               Dashboard
             </Link>
@@ -249,14 +249,14 @@ export default function TransactionsPage() {
             <button
               type="button"
               onClick={goToPortal}
-              className="rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-white/10"
+              className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-white/10"
             >
               Open Stripe portal
             </button>
 
             <Link
               href="/settings/billing"
-              className="rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-white/10"
+              className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-white/10"
             >
               Go to Billing page
             </Link>
