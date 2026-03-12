@@ -7,22 +7,21 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   const supabase = createServerSupabase();
 
-  // ✅ getSession reads from cookie locally — no network call
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { user } } = await supabase.auth.getUser();
 
-  if (!session?.user) {
+  if (!user) {
     return NextResponse.json(
       { credits: 0, renewalDate: null },
       { headers: { "Cache-Control": "no-store, max-age=0" } }
     );
   }
 
-  await ensureCreditsFresh({ supabase, userId: session.user.id });
+  await ensureCreditsFresh({ supabase, userId: user.id });
 
   const { data, error } = await supabase
     .from("user_credits")
     .select("remaining_credits, renewal_date")
-    .eq("user_id", session.user.id)
+    .eq("user_id", user.id)
     .maybeSingle();
 
   if (error || !data) {
