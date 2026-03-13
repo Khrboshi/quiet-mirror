@@ -14,7 +14,7 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-hvn-bg bg-hvn-page-gradient text-hvn-text-primary">
+    <main className="min-h-screen bg-slate-950 text-slate-200">
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section className="border-b border-slate-800/60 pb-16 pt-12 sm:pb-20 sm:pt-16">
@@ -24,7 +24,6 @@ export default function AboutPage() {
               About Havenly
             </p>
 
-            {/* font-display added so optical sizing is correct at large scale */}
             <h1 className="mt-4 font-display text-[2.2rem] font-semibold leading-[1.08] tracking-tight text-white sm:text-5xl">
               A private journal that notices what you carry —{" "}
               <span className="text-emerald-400">
@@ -46,7 +45,6 @@ export default function AboutPage() {
                 Start journaling free
               </Link>
 
-              {/* Updated: "See Pricing →" consistent with nav rename */}
               <Link
                 href="/upgrade"
                 className="inline-flex items-center justify-center rounded-full border border-slate-700/60 px-5 py-3 text-sm font-medium text-slate-400 transition-colors hover:border-slate-600 hover:text-white"
