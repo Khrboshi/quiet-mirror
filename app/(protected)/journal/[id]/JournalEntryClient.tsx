@@ -3,6 +3,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useUserPlan } from "@/app/components/useUserPlan";
 import UpgradeTriggerModal from "@/app/components/UpgradeTriggerModal";
 
@@ -29,7 +30,6 @@ type Reflection = {
 // ─── Summary parser: splits "What you're carrying:" / "What's really happening:" / "Deeper direction:"
 function parseSummary(summary: string): { carrying: string; happening: string; deeper: string } {
   const rawCarrying = summary.match(/What you're carrying:\s*([^\n]+(?:\n(?!What's|Deeper)[^\n]+)*)/i)?.[1]?.trim() ?? "";
-  // Strip any inline "What's really happening:" or "Deeper direction:" that leaked into the carrying line
   const carrying = rawCarrying
     .replace(/\s*What's really happening:.*$/is, "")
     .replace(/\s*Deeper direction:.*$/is, "")
@@ -45,7 +45,7 @@ function parseNextStep(step: string): { optionA: string; optionB: string; script
   if (!step) return { optionA: "", optionB: "", script: "" };
   const optionA = step.match(/Option A:\s*(.+?)(?=Option B:|Script line:|$)/is)?.[1]?.trim() ?? "";
   const optionB = step.match(/Option B:\s*(.+?)(?=Script line:|$)/is)?.[1]?.trim() ?? "";
-  const scriptRaw = step.match(/Script line:\s*[""\u201c\u2018]?(.+?)[""\u201d\u2019]?\s*$/is)?.[1]?.trim() ?? "";
+  const scriptRaw = step.match(/Script line:\s*[""'\u201c\u2018]?(.+?)[""'\u201d\u2019]?\s*$/is)?.[1]?.trim() ?? "";
   const script = scriptRaw.replace(/^["\u201c\u2018]|["\u201d\u2019]$/g, "").trim();
   return { optionA, optionB, script };
 }
@@ -99,19 +99,21 @@ export default function JournalEntryClient({
   initialReflection?: Reflection | null;
   isFirstEntry?: boolean;
 }) {
+  const router = useRouter();
   const { planType, credits, loading, refresh } = useUserPlan();
 
   const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  useEffect(() => { setMounted(true); }, []);
 
   const [busy, setBusy] = useState(false);
   const [reflection, setReflection] = useState<Reflection | null>(initialReflection ?? null);
   const [error, setError] = useState<string | null>(null);
   const [showUpgrade, setShowUpgrade] = useState(false);
-  // `revealed` removed — caused React #425 hydration mismatch.
-  // reflection content renders whenever `reflection` is non-null.
+
+  // ─── Delete state
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   const readablePlan = useMemo(() => {
     if (planType === "PREMIUM") return "Premium";
@@ -163,17 +165,33 @@ export default function JournalEntryClient({
     }
   }
 
+  async function handleDelete() {
+    setDeleting(true);
+    setDeleteError(null);
+    try {
+      const res = await fetch(`/api/journal/${entry.id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const j = await res.json().catch(() => ({}));
+        setDeleteError(j?.error || "Could not delete this entry. Try again.");
+        setDeleting(false);
+        return;
+      }
+      router.push("/journal");
+    } catch {
+      setDeleteError("Something went wrong. Try again.");
+      setDeleting(false);
+    }
+  }
+
   return (
     <div className="mx-auto max-w-2xl space-y-5 px-4 py-10 text-white">
 
       {/* ── Header ─────────────────────────────────────────────────────── */}
       <header className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          {/* Fraunces serif — most personal heading in the app */}
           <h1 className="font-display text-2xl font-semibold leading-snug tracking-tight text-white sm:text-3xl">
             {entry.title || "Untitled"}
           </h1>
-          {/* Human date: "March 8, 2026" not "3/8/2026, 7:56:40 PM" */}
           <p className="mt-1 text-xs text-white/35" suppressHydrationWarning>
             {mounted
               ? new Date(entry.created_at).toLocaleDateString(undefined, {
@@ -198,26 +216,22 @@ export default function JournalEntryClient({
       </article>
 
       {/* ── Reflection card ─────────────────────────────────────────────── */}
-      <section className="rounded-2xl border border-white/8 bg-white/[0.02] overflow-hidden">
+      <section className="overflow-hidden rounded-2xl border border-white/8 bg-white/[0.02]">
 
-        {/* First-entry nudge */}
         {isFirstEntry && !reflection && (
-          <div className="border-b border-white/6 bg-emerald-500/5 px-6 py-3 flex items-start gap-2">
-            <span className="text-emerald-400 text-sm mt-0.5">&#10022;</span>
-            <p className="text-xs text-slate-400 leading-relaxed">
+          <div className="flex items-start gap-2 border-b border-white/6 bg-emerald-500/5 px-6 py-3">
+            <span className="mt-0.5 text-sm text-emerald-400">&#10022;</span>
+            <p className="text-xs leading-relaxed text-slate-400">
               This reflection starts your pattern history &mdash; Havenly will notice what repeats across your entries over time.
             </p>
           </div>
         )}
 
-        {/* Card header bar */}
         <div className="flex items-center justify-between border-b border-white/6 px-6 py-4">
           <div>
-            {/* "Havenly's reflection" — brand voice, not a system label */}
             <h2 className="text-sm font-semibold tracking-tight text-white/90">
               Havenly&apos;s reflection
             </h2>
-            {/* Plan info only shown when relevant — free users with credits remaining */}
             {mounted && !isUnlimited && (
               <p className="mt-0.5 text-xs text-white/30">
                 {loading ? "…" : credits}{" "}
@@ -243,7 +257,6 @@ export default function JournalEntryClient({
               )}
             </button>
           ) : (
-            // Softer badge — "Saved to your history" instead of alarming "Permanent"
             <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/[0.06] px-3 py-1.5 text-xs font-medium text-emerald-400/80">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
               Saved to your history
@@ -257,9 +270,8 @@ export default function JournalEntryClient({
           </p>
         )}
 
-        {/* Pre-generate placeholder */}
         {!reflection && !busy && (
-          <p className="px-6 py-5 text-xs text-white/35 leading-relaxed">
+          <p className="px-6 py-5 text-xs leading-relaxed text-white/35">
             When you're ready, Havenly will reflect back what it noticed &mdash; themes, emotions,
             and a gentle next step. Each entry gets one reflection, saved permanently so your
             patterns stay accurate over time.
@@ -272,7 +284,7 @@ export default function JournalEntryClient({
               {[0, 1, 2].map(i => (
                 <span
                   key={i}
-                  className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400/60 animate-bounce"
+                  className="inline-block h-1.5 w-1.5 animate-bounce rounded-full bg-emerald-400/60"
                   style={{ animationDelay: `${i * 0.15}s` }}
                 />
               ))}
@@ -281,11 +293,9 @@ export default function JournalEntryClient({
           </div>
         )}
 
-        {/* ── Reflection body ───────────────────────────────────────────── */}
         {reflection && reflection.crisis ? (
-          // ── Crisis response card ────────────────────────────────────────
-          <div className="px-6 py-6 space-y-5">
-            <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 px-5 py-4 space-y-3">
+          <div className="space-y-5 px-6 py-6">
+            <div className="space-y-3 rounded-xl border border-amber-500/20 bg-amber-500/5 px-5 py-4">
               <p className="text-sm font-medium text-amber-300/90">
                 What you wrote matters, and you matter.
               </p>
@@ -298,25 +308,24 @@ export default function JournalEntryClient({
                 If you need support right now
               </p>
               {(reflection.resources ?? []).map((r) => (
-                <div key={r.label} className="rounded-lg border border-white/6 bg-white/[0.03] px-4 py-2.5 flex items-start justify-between gap-3">
+                <div key={r.label} className="flex items-start justify-between gap-3 rounded-lg border border-white/6 bg-white/[0.03] px-4 py-2.5">
                   <span className="text-xs text-white/60">{r.label}</span>
-                  <span className="text-xs font-medium text-emerald-400/80 shrink-0">{r.value}</span>
+                  <span className="shrink-0 text-xs font-medium text-emerald-400/80">{r.value}</span>
                 </div>
               ))}
             </div>
-            <p className="text-[10px] text-white/25 text-center">
+            <p className="text-center text-[10px] text-white/25">
               Your entries are always private &middot; You don't have to figure this out alone
             </p>
           </div>
         ) : reflection ? (
           <div className="divide-y divide-white/5" suppressHydrationWarning>
 
-            {/* ── What you're carrying ─────────────────────────────────── */}
             {parsedSummary && (
-              <div className="px-6 py-5 space-y-4">
+              <div className="space-y-4 px-6 py-5">
                 {parsedSummary.carrying && (
                   <div>
-                    <p className="text-[10px] font-semibold uppercase tracking-widest text-emerald-400/60 mb-2">
+                    <p className="mb-2 text-[10px] font-semibold uppercase tracking-widest text-emerald-400/60">
                       What you're carrying
                     </p>
                     <p className="text-sm leading-relaxed text-white/90">
@@ -326,7 +335,7 @@ export default function JournalEntryClient({
                 )}
                 {parsedSummary.happening && (
                   <div>
-                    <p className="text-[10px] font-semibold uppercase tracking-widest text-white/30 mb-2">
+                    <p className="mb-2 text-[10px] font-semibold uppercase tracking-widest text-white/30">
                       What's really happening
                     </p>
                     <p className="text-sm leading-relaxed text-white/70">
@@ -336,7 +345,7 @@ export default function JournalEntryClient({
                 )}
                 {parsedSummary.deeper && (
                   <div className="rounded-xl border border-emerald-500/12 bg-emerald-500/5 px-4 py-3">
-                    <p className="text-[10px] font-semibold uppercase tracking-widest text-emerald-400/50 mb-1.5">
+                    <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-widest text-emerald-400/50">
                       Deeper direction
                     </p>
                     <p className="text-sm leading-relaxed text-white/70">
@@ -347,22 +356,20 @@ export default function JournalEntryClient({
               </div>
             )}
 
-            {/* ── Key pattern ──────────────────────────────────────────── */}
             {reflection.corepattern && (
               <div className="px-6 py-5">
-                <p className="text-[10px] font-semibold uppercase tracking-widest text-white/30 mb-2">
+                <p className="mb-2 text-[10px] font-semibold uppercase tracking-widest text-white/30">
                   Key Pattern
                 </p>
-                <p className="text-sm leading-relaxed text-white/80 italic">
+                <p className="text-sm italic leading-relaxed text-white/80">
                   {reflection.corepattern}
                 </p>
               </div>
             )}
 
-            {/* ── Themes + Emotions ─────────────────────────────────────── */}
-            <div className="px-6 py-5 grid grid-cols-2 gap-5">
+            <div className="grid grid-cols-2 gap-5 px-6 py-5">
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-widest text-white/30 mb-3">
+                <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-white/30">
                   Themes
                 </p>
                 <div className="flex flex-wrap gap-1.5">
@@ -377,7 +384,7 @@ export default function JournalEntryClient({
                 </div>
               </div>
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-widest text-white/30 mb-3">
+                <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-white/30">
                   Emotions
                 </p>
                 <div className="flex flex-wrap gap-1.5">
@@ -393,39 +400,37 @@ export default function JournalEntryClient({
               </div>
             </div>
 
-            {/* ── Gentle next step ─────────────────────────────────────── */}
             {parsedStep && (
-              <div className="px-6 py-5 space-y-3">
+              <div className="space-y-3 px-6 py-5">
                 <p className="text-[10px] font-semibold uppercase tracking-widest text-white/30">
                   Gentle Next Step
                 </p>
                 <div className="grid gap-2 sm:grid-cols-2">
                   {parsedStep.optionA && (
                     <div className="rounded-xl border border-white/8 bg-white/[0.03] px-4 py-3">
-                      <p className="text-[10px] font-semibold text-emerald-400/60 mb-1">Option A</p>
+                      <p className="mb-1 text-[10px] font-semibold text-emerald-400/60">Option A</p>
                       <p className="text-xs leading-relaxed text-white/70">{parsedStep.optionA}</p>
                     </div>
                   )}
                   {parsedStep.optionB && (
                     <div className="rounded-xl border border-white/8 bg-white/[0.03] px-4 py-3">
-                      <p className="text-[10px] font-semibold text-white/30 mb-1">Option B</p>
+                      <p className="mb-1 text-[10px] font-semibold text-white/30">Option B</p>
                       <p className="text-xs leading-relaxed text-white/70">{parsedStep.optionB}</p>
                     </div>
                   )}
                 </div>
                 {parsedStep.script && (
                   <div className="rounded-xl border border-emerald-500/15 bg-emerald-500/5 px-4 py-3">
-                    <p className="text-[10px] font-semibold text-emerald-400/50 mb-1">Script line</p>
-                    <p className="text-sm text-white/75 italic">&ldquo;{parsedStep.script}&rdquo;</p>
+                    <p className="mb-1 text-[10px] font-semibold text-emerald-400/50">Script line</p>
+                    <p className="text-sm italic text-white/75">&ldquo;{parsedStep.script}&rdquo;</p>
                   </div>
                 )}
               </div>
             )}
 
-            {/* ── Questions ─────────────────────────────────────────────── */}
             {reflection.questions?.length > 0 && (
               <div className="px-6 py-5">
-                <p className="text-[10px] font-semibold uppercase tracking-widest text-white/30 mb-3">
+                <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-white/30">
                   {questionsTitle}
                 </p>
                 <ol className="space-y-2.5">
@@ -441,7 +446,6 @@ export default function JournalEntryClient({
               </div>
             )}
 
-            {/* ── Footer note ───────────────────────────────────────────── */}
             <div className="px-6 py-3">
               <p className="text-center text-[10px] text-white/18">
                 Saved permanently &middot; Havenly uses this to build your pattern history
@@ -452,15 +456,10 @@ export default function JournalEntryClient({
         ) : null}
       </section>
 
-      {/* ── Post-reflection bridge ─────────────────────────────────────────
-           Only shown after a reflection exists. Serves Premium users toward
-           Insights, and Free users toward upgrading. This is the highest-
-           leverage moment in the product for both retention and conversion.
-      ────────────────────────────────────────────────────────────────────── */}
+      {/* ── Post-reflection bridge ─────────────────────────────────────────── */}
       {reflection && !reflection.crisis && (
         <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] px-6 py-5">
           {isPremiumUser ? (
-            // ── Premium: natural next step toward Insights ──────────────
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-sm font-medium text-white/80">
@@ -479,7 +478,6 @@ export default function JournalEntryClient({
               </Link>
             </div>
           ) : (
-            // ── Free: upgrade moment, earned and contextual ──────────────
             <div>
               <p className="text-sm font-medium text-white/80">
                 This reflection is now part of your pattern history.
@@ -508,6 +506,46 @@ export default function JournalEntryClient({
           )}
         </div>
       )}
+
+      {/* ── Delete entry ──────────────────────────────────────────────────────
+           Positioned at the very bottom, quiet and muted.
+           Two-step: first tap shows confirmation, second tap deletes.
+           GDPR Article 17 compliance — users have the right to erase their data.
+      ─────────────────────────────────────────────────────────────────────── */}
+      <div className="border-t border-white/[0.04] pt-6">
+        {!deleteConfirm ? (
+          <button
+            onClick={() => setDeleteConfirm(true)}
+            className="text-xs text-white/20 transition-colors hover:text-white/40"
+          >
+            Remove this entry
+          </button>
+        ) : (
+          <div className="space-y-2">
+            <p className="text-xs text-white/40">
+              This will permanently delete the entry and its reflection. This cannot be undone.
+            </p>
+            {deleteError && (
+              <p className="text-xs text-red-400">{deleteError}</p>
+            )}
+            <div className="flex items-center gap-4">
+              <button
+                onClick={handleDelete}
+                disabled={deleting}
+                className="text-xs font-medium text-red-400/80 transition-colors hover:text-red-400 disabled:opacity-50"
+              >
+                {deleting ? "Deleting…" : "Yes, delete permanently"}
+              </button>
+              <button
+                onClick={() => { setDeleteConfirm(false); setDeleteError(null); }}
+                className="text-xs text-white/30 transition-colors hover:text-white/60"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
 
       <UpgradeTriggerModal
         open={showUpgrade}
