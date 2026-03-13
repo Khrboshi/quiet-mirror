@@ -127,7 +127,7 @@ export default function MoodToolPage() {
                 <button
                   key={mood.label}
                   onClick={() => setSelected(isActive ? null : mood)}
-                  className={`group rounded-[1.25rem] border px-4 py-4 text-left transition-all duration-150 ${
+                  className={`group rounded-2xl border px-4 py-4 text-left transition-all duration-150 ${
                     isActive ? styles.active : styles.idle
                   }`}
                 >
@@ -148,7 +148,7 @@ export default function MoodToolPage() {
           </div>
 
           {selected && (
-            <div className="rounded-[1.5rem] border border-emerald-500/20 bg-emerald-500/[0.03] px-6 py-6">
+            <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.03] px-6 py-6">
               <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-emerald-500/60">
                 A prompt for this moment
               </p>
@@ -173,7 +173,7 @@ export default function MoodToolPage() {
           )}
 
           {!selected && (
-            <div className="rounded-[1.5rem] border border-slate-800 bg-slate-900/30 px-6 py-5">
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/30 px-6 py-5">
               <p className="text-sm leading-relaxed text-slate-500">
                 Pick the one that feels closest to true right now — even if it only partially fits.
                 You don't need to be certain.
