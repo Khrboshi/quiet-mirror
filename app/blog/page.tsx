@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ARTICLES } from "./articles";
 import EmailCapture from "@/app/components/EmailCapture";
+import ScrollReveal from "@/app/components/ScrollReveal";
 
 export const metadata = {
   title: "Havenly Journal — Articles for Overloaded Minds",
@@ -29,7 +30,7 @@ export default function BlogPage() {
               Havenly Journal
             </p>
 
-            <h1 className="mt-4 text-[2.2rem] font-semibold leading-[1.08] tracking-tight text-white sm:text-5xl">
+            <h1 className="mt-4 font-display text-[2.2rem] font-semibold leading-[1.08] tracking-tight text-white sm:text-5xl">
               Gentle articles for overloaded minds.
             </h1>
 
@@ -75,7 +76,7 @@ export default function BlogPage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-6 py-10 sm:py-12">
-        <div className="grid gap-5 md:grid-cols-2">
+        <ScrollReveal stagger className="grid gap-5 md:grid-cols-2">
           {ARTICLES.map((article) => (
             <article
               key={article.slug}
@@ -97,7 +98,6 @@ export default function BlogPage() {
 
               <div className="mt-6 flex items-center justify-between gap-4">
                 <span className="text-xs text-slate-500">{article.minutes} min read</span>
-
                 <Link
                   href={`/blog/${article.slug}`}
                   className="text-sm font-medium text-emerald-400 transition-colors group-hover:text-emerald-300"
@@ -107,7 +107,7 @@ export default function BlogPage() {
               </div>
             </article>
           ))}
-        </div>
+        </ScrollReveal>
       </section>
 
       <section className="mx-auto max-w-6xl px-6 pb-8">
@@ -133,7 +133,6 @@ export default function BlogPage() {
             >
               Start free reflection
             </Link>
-
             <Link
               href="/privacy"
               className="inline-flex items-center justify-center rounded-full border border-slate-700 bg-slate-950/40 px-5 py-3 text-sm font-medium text-slate-200 transition-colors hover:bg-slate-900"
