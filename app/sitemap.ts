@@ -10,10 +10,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   return [
-    { url: `${base}/`,        priority: 1.0 },
-    { url: `${base}/about`,   priority: 0.8 },
-    { url: `${base}/blog`,    priority: 0.9 },
-    { url: `${base}/premium`, priority: 0.7 },
+    { url: `${base}/`,       priority: 1.0 },
+    { url: `${base}/about`,  priority: 0.8 },
+    { url: `${base}/blog`,   priority: 0.9 },
     { url: `${base}/upgrade`, priority: 0.7 },
     { url: `${base}/privacy`, priority: 0.5 },
     ...blogPosts,
