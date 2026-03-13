@@ -15,13 +15,14 @@ const config: Config = {
       },
       colors: {
         // ─── Consolidated Havenly brand palette ───────────────────────────
-        // ONE green accent. Use hvn-mint everywhere instead of emerald-500.
+        // Working accent is emerald-500 (#10b981) used throughout the codebase.
+        // hvn-mint (#3ee7b0) is reserved for future brand refresh if needed.
         hvn: {
-          mint:      "#3ee7b0",  // Primary accent
-          "mint-dim":"#2bc99a",  // Hover state
-          bg:        "#020617",  // Base background
-          elevated:  "#02091a",  // Elevated surfaces
-          soft:      "#0b1220",  // Soft background
+          mint:       "#3ee7b0",
+          "mint-dim": "#2bc99a",
+          bg:         "#020617",
+          elevated:   "#02091a",
+          soft:       "#0b1220",
         },
       },
       animation: {
