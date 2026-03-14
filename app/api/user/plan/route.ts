@@ -37,7 +37,13 @@ export async function GET() {
     } = await supabase.auth.getUser();
 
     if (userErr || !user) {
-      return safeJson({ planType: "FREE", credits: 0, renewalDate: null });
+      // Return 401 rather than 200+FREE — silent plan degradation on session
+      // expiry was masking auth failures from the client. The useUserPlan hook
+      // already handles non-OK responses gracefully without smashing cached state.
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401, headers: { "Cache-Control": "no-store, max-age=0" } }
+      );
     }
 
     await ensureCreditsFresh({ supabase, userId: user.id });
