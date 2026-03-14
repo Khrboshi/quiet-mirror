@@ -497,7 +497,7 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
             <p className="text-sm text-slate-500">{subline}</p>
           </div>
 
-          {streak >= 2 && <StreakBadge streak={streak} />}
+          {/* StreakBadge removed — homepage FAQ explicitly says "there is no streak to maintain" */}
         </div>
 
         {/* ✅ Replaced debug-style pill badges with a subtle single-line status row */}
@@ -633,9 +633,7 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
             </div>
             <div className="flex items-center justify-between text-sm">
               <span className="text-slate-500">Writing days</span>
-              <span className="font-medium text-slate-200">
-                {streak > 0 ? `${streak} day${streak !== 1 ? "s" : ""}` : "—"}
-              </span>
+              <span className="font-medium text-slate-200">—</span>
             </div>
             {lastEntryDate && (
               <div className="flex items-center justify-between text-sm">
