@@ -77,7 +77,7 @@ export default async function BillingPage() {
       <header className="mb-10">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-2xl font-semibold text-white">Billing</h1>
+            <h1 className="font-display text-2xl font-semibold text-white">Billing</h1>
             <p className="mt-2 text-sm text-slate-400">
               Manage your subscription and billing details.
             </p>
