@@ -125,7 +125,7 @@ export default async function JournalPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-semibold text-slate-100">Your Journal</h1>
+          <h1 className="font-display text-3xl font-semibold text-slate-100">Your Journal</h1>
           {(entries?.length ?? 0) > 0 && (
             <p className="mt-1 text-sm text-slate-500">
               {entries!.length} {entries!.length === 1 ? "entry" : "entries"}
