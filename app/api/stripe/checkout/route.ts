@@ -20,6 +20,23 @@ export async function POST() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Guard: don't create a second checkout session if the user is already Premium.
+    // Without this check, a Premium user could open a second subscription and be
+    // charged twice — Stripe won't deduplicate concurrent subscriptions automatically.
+    const { data: creditsRow } = await supabase
+      .from("user_credits")
+      .select("plan_type")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    const currentPlan = String((creditsRow as any)?.plan_type ?? "FREE").toUpperCase();
+    if (currentPlan === "PREMIUM" || currentPlan === "TRIAL") {
+      return NextResponse.json(
+        { error: "Already subscribed" },
+        { status: 409 }
+      );
+    }
+
     const priceId = process.env.STRIPE_PRICE_ID;
     if (!priceId) {
       return NextResponse.json(
@@ -28,8 +45,16 @@ export async function POST() {
       );
     }
 
-    const siteUrl =
-      process.env.NEXT_PUBLIC_SITE_URL || "https://havenly-2-1.vercel.app";
+    // Fix: read from env — never fall back to a hardcoded staging domain.
+    // NEXT_PUBLIC_SITE_URL must be set in Vercel environment variables.
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+    if (!siteUrl) {
+      console.error("[stripe/checkout] NEXT_PUBLIC_SITE_URL is not set");
+      return NextResponse.json(
+        { error: "Site URL not configured" },
+        { status: 500 }
+      );
+    }
 
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
