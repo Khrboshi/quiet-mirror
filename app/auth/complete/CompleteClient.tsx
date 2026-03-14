@@ -13,7 +13,7 @@ function safeNext(pathname: string) {
 
 export default function CompleteClient({ next }: { next: string }) {
   const target = useMemo(() => safeNext(next), [next]);
-  const [triedClose, setTriedClose] = useState(false);
+  const [canClose, setCanClose] = useState(false);
 
   useEffect(() => {
     const payload = JSON.stringify({
@@ -21,32 +21,37 @@ export default function CompleteClient({ next }: { next: string }) {
       t: Date.now(),
     });
 
-    // Signal the original tab via localStorage (works across same-origin tabs)
+    // Signal the original tab (works on desktop browsers)
     try {
       localStorage.setItem("havenly:auth_complete", payload);
     } catch {}
 
-    // Signal via BroadcastChannel (more reliable on desktop)
     try {
       const bc = new BroadcastChannel("havenly_auth");
       bc.postMessage({ type: "AUTH_COMPLETE", next: target });
       bc.close();
     } catch {}
 
-    // Attempt to close this tab.
-    // window.close() only works when the tab was opened by window.open() — it
-    // silently fails when the user clicked a link in their email client.
-    // We do NOT fall back to navigating here, because that would cause both
-    // this tab AND the original tab (which received the broadcast) to land on
-    // the dashboard simultaneously.
+    // Try to close this tab (only works if browser allows it)
+    // If it fails, user will see fallback UI.
     setTimeout(() => {
       try {
+        // If we can close, do it; otherwise show fallback.
         window.close();
-      } catch {}
-      // Always show the fallback UI — if close worked the user won't see it;
-      // if it didn't they have a clear path forward.
-      setTriedClose(true);
+        setCanClose(true);
+      } catch {
+        setCanClose(false);
+      }
     }, 150);
+
+    // As a backup, if it didn't close, navigate to the target here too.
+    const navTimer = setTimeout(() => {
+      try {
+        window.location.replace(target);
+      } catch {}
+    }, 700);
+
+    return () => clearTimeout(navTimer);
   }, [target]);
 
   return (
@@ -56,54 +61,32 @@ export default function CompleteClient({ next }: { next: string }) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#020617",
         padding: 24,
       }}
     >
       <div style={{ textAlign: "center", maxWidth: 420 }}>
-        <div
-          style={{
-            fontSize: 18,
-            fontWeight: 600,
-            color: "#f8fafc",
-            marginBottom: 8,
-          }}
-        >
-          You&apos;re signed in.
-        </div>
-        <div
-          style={{
-            opacity: 0.6,
-            fontSize: 14,
-            color: "#cbd5e1",
-            marginBottom: 24,
-            lineHeight: 1.6,
-          }}
-        >
-          {triedClose
-            ? "You can close this tab and return to the original window."
-            : "Signing you in\u2026"}
+        <div style={{ fontSize: 18, marginBottom: 8 }}>Signing you in…</div>
+        <div style={{ opacity: 0.7, fontSize: 14, marginBottom: 16 }}>
+          Returning you to your dashboard.
         </div>
 
-        {/* Shown once close attempt has been made — covers mobile and
-            single-tab users who don't have an original tab to return to. */}
-        {triedClose && (
+        {/* Fallback (in case tab-close is blocked) */}
+        {!canClose ? (
           <Link
             href={target}
             style={{
               display: "inline-block",
-              padding: "10px 20px",
-              borderRadius: 9999,
-              background: "#3ee7b0",
-              color: "#020617",
+              padding: "10px 14px",
+              borderRadius: 10,
+              background: "#34d399",
+              color: "#0f172a",
               fontWeight: 700,
               textDecoration: "none",
-              fontSize: 14,
             }}
           >
-            Continue to Havenly &rarr;
+            Continue
           </Link>
-        )}
+        ) : null}
       </div>
     </div>
   );
