@@ -22,9 +22,9 @@ export default function ToolsPage() {
           href="/tools/mood"
           className="rounded-2xl border border-slate-800 bg-slate-950/60 p-6 transition hover:border-slate-700 hover:bg-slate-900"
         >
-          <h3 className="mb-2 font-medium text-slate-100">Mood Check</h3>
+          <h3 className="mb-2 font-medium text-slate-100">A quiet moment</h3>
           <p className="text-sm text-slate-400">
-            Notice how you are feeling today in a simple, quiet flow.
+            Pause and notice where you actually are — no scores, no ratings, just honesty.
           </p>
         </Link>
 
