@@ -418,7 +418,7 @@ function ProgressNudge({ entryCount }: { entryCount: number }) {
     <div className="mb-8 rounded-2xl border border-slate-800/60 bg-slate-900/30 p-5">
       <div className="mb-2 flex items-center justify-between">
         <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">
-          Pattern detection
+          Your pattern is forming
         </p>
         <p className="text-xs text-slate-600">
           {entryCount} / 5 entries
