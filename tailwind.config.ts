@@ -14,15 +14,13 @@ const config: Config = {
         sans:    ["var(--font-body)",    "DM Sans",  "system-ui", "sans-serif"],
       },
       colors: {
-        // ─── Consolidated Havenly brand palette ───────────────────────────
-        // Working accent is emerald-500 (#10b981) used throughout the codebase.
-        // hvn-mint (#3ee7b0) is reserved for future brand refresh if needed.
+        // ─── Havenly brand palette ────────────────────────────────────────
+        // Canonical accent: emerald-500 (#10b981) — used throughout the app.
+        // Background tokens kept here for occasional use in component code.
         hvn: {
-          mint:       "#3ee7b0",
-          "mint-dim": "#2bc99a",
-          bg:         "#020617",
-          elevated:   "#02091a",
-          soft:       "#0b1220",
+          bg:       "#020617",
+          elevated: "#02091a",
+          soft:     "#0b1220",
         },
       },
       animation: {
