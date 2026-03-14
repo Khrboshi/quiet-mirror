@@ -115,14 +115,7 @@ export default function JournalEntryClient({
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
 
-  const readablePlan = useMemo(() => {
-    if (planType === "PREMIUM") return "Premium";
-    if (planType === "TRIAL") return "Trial";
-    return "Free";
-  }, [planType]);
-
   const isUnlimited = planType === "PREMIUM" || planType === "TRIAL";
-  const isPremiumUser = isUnlimited;
 
   const parsedSummary = useMemo(
     () => (reflection ? parseSummary(reflection.summary) : null),
@@ -459,7 +452,7 @@ export default function JournalEntryClient({
       {/* ── Post-reflection bridge ─────────────────────────────────────────── */}
       {reflection && !reflection.crisis && (
         <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] px-6 py-5">
-          {isPremiumUser ? (
+          {isUnlimited ? (
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-sm font-medium text-white/80">
