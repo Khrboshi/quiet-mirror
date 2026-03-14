@@ -474,8 +474,8 @@ export default async function InsightsPreviewPage() {
           </h3>
           <p className="mb-5 max-w-xl text-sm leading-relaxed text-slate-400">
             {hasData
-              ? `Havenly has already started building your pattern from your ${entryCount} ${entryCount === 1 ? "entry" : "entries"}. Premium unlocks the full timeline, weekly summary, and the deeper analysis above.`
-              : "Start writing and Havenly will fill this with your actual patterns — the weekly summary, full pattern history, and deeper analysis. Less than one therapy session per month."}
+              ? `Havenly has already started building your pattern from your ${entryCount} ${entryCount === 1 ? "entry" : "entries"}. Premium unlocks the full picture — what keeps returning, the weekly summary, and what Havenly has noticed underneath.`
+              : "Start writing and Havenly will fill this with your actual patterns — the weekly summary, your full pattern history, and what keeps returning across weeks and months. Less than one therapy session per month."}
           </p>
           <div className="flex flex-wrap gap-3">
             <Link
