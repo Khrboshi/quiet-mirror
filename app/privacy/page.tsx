@@ -8,7 +8,7 @@ export default function PrivacyPolicyPage() {
           Privacy Policy
         </p>
 
-        <h1 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+        <h1 className="font-display mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
           Your privacy comes first.
         </h1>
 
