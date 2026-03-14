@@ -27,9 +27,22 @@ function getBaseUrl(reqUrl: string) {
   }
 }
 
-function toAbsoluteUrl(reqUrl: string, input: string) {
-  if (input.startsWith("http://") || input.startsWith("https://")) return input;
-  return new URL(input, getBaseUrl(reqUrl)).toString();
+/**
+ * Validates and resolves the returnUrl parameter.
+ *
+ * Security: only relative paths are accepted. Any value containing a host
+ * (e.g. "https://evil.com") is silently replaced with the fallback.
+ * This prevents open-redirect attacks where a crafted link causes Stripe
+ * to send the user to an attacker-controlled site after billing.
+ */
+function sanitiseReturnUrl(input: string | null, fallback: string, baseUrl: string): string {
+  const raw = (input ?? "").trim();
+
+  // Must start with "/" and must not be a protocol-relative URL ("//evil.com")
+  const isSafeRelative = raw.startsWith("/") && !raw.startsWith("//");
+
+  const path = isSafeRelative ? raw : fallback;
+  return new URL(path, baseUrl).toString();
 }
 
 // GET /api/stripe/portal?returnUrl=/settings/transactions
@@ -87,14 +100,15 @@ export async function GET(req: Request) {
       }
     }
 
-    // Return URL
+    // Return URL — sanitised to prevent open redirect
     const urlObj = new URL(req.url);
+    const baseUrl = getBaseUrl(req.url);
     const returnParam =
       urlObj.searchParams.get("returnUrl") ||
       process.env.STRIPE_PORTAL_RETURN_URL ||
       fallbackReturn;
 
-    const return_url = toAbsoluteUrl(req.url, returnParam);
+    const return_url = sanitiseReturnUrl(returnParam, fallbackReturn, baseUrl);
 
     // Create billing portal session
     const session = await stripe.billingPortal.sessions.create({
