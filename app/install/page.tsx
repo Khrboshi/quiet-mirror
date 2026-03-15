@@ -24,7 +24,7 @@ export default function InstallPage() {
           <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-400/80">
             Install Havenly
           </p>
-          <h1 className="mt-4 max-w-xl text-5xl font-semibold leading-[1.05] tracking-tight text-white">
+          <h1 className="font-display mt-4 max-w-xl text-5xl font-semibold leading-[1.05] tracking-tight text-white">
             Keep Havenly one tap away.
           </h1>
           <p className="mt-5 max-w-lg text-base leading-relaxed text-slate-400">
@@ -80,7 +80,7 @@ export default function InstallPage() {
               <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-400/80">
                 Install Havenly
               </p>
-              <h1 className="mt-3 text-3xl font-semibold tracking-tight text-white">
+              <h1 className="font-display mt-3 text-3xl font-semibold tracking-tight text-white">
                 Install Havenly
               </h1>
               <p className="mt-3 text-sm leading-relaxed text-slate-400">
