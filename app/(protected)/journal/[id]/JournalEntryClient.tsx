@@ -246,7 +246,7 @@ export default function JournalEntryClient({
                   Reflecting&hellip;
                 </>
               ) : (
-                "Get reflection"
+                "See reflection"
               )}
             </button>
           ) : (
