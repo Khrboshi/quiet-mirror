@@ -268,13 +268,13 @@ export default function JournalForm(_props: Props) {
             disabled={!canSave}
             className="flex-1 rounded-full bg-emerald-500 px-6 py-3.5 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-40"
           >
-            {status === "saving" ? "Saving…" : "Save entry"}
+            {status === "saving" ? "Saving…" : "Write"}
           </button>
 
           {/* Only show the reflection hint if they have content */}
           {canSave && (
             <p className="hidden shrink-0 text-xs text-slate-600 sm:block">
-              You can request a reflection after saving
+              Havenly will reflect this back when you&apos;re ready
             </p>
           )}
         </div>
