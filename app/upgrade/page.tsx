@@ -42,9 +42,11 @@ function UpgradeButton({
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleUpgrade() {
     setLoading(true);
+    setError(null);
     try {
       const res = await fetch("/api/stripe/checkout", { method: "POST" });
       if (res.status === 401) {
@@ -55,24 +57,29 @@ function UpgradeButton({
       if (data?.url) {
         window.location.assign(data.url);
       } else {
-        alert("Something went wrong. Please try again.");
+        setError("Something went wrong — please try again or email support@havenly.app.");
       }
     } catch {
-      alert("Something went wrong. Please try again.");
+      setError("Something went wrong — please try again or email support@havenly.app.");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <button
-      type="button"
-      onClick={handleUpgrade}
-      disabled={loading}
-      className={className}
-    >
-      {loading ? "Redirecting…" : label}
-    </button>
+    <>
+      <button
+        type="button"
+        onClick={handleUpgrade}
+        disabled={loading}
+        className={className}
+      >
+        {loading ? "Redirecting…" : label}
+      </button>
+      {error && (
+        <p className="text-center text-xs text-red-400">{error}</p>
+      )}
+    </>
   );
 }
 
