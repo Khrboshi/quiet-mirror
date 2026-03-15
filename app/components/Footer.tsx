@@ -94,6 +94,12 @@ export default function Footer() {
                 >
                   Settings
                 </Link>
+                <Link
+                  href="/settings/billing"
+                  className="hover:text-slate-300 transition-colors"
+                >
+                  Billing
+                </Link>
               </div>
             </div>
 
