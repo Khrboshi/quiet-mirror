@@ -2,7 +2,6 @@
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { createServerSupabase } from "@/lib/supabase/server";
 import UpgradeIntentTracker from "@/app/components/UpgradeIntentTracker";
 
@@ -91,12 +90,17 @@ function sc(s: string) { return s.charAt(0).toUpperCase() + s.slice(1); }
 export default async function InsightsPreviewPage() {
   const supabase = createServerSupabase();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/magic-login");
+
+  // Logged-out visitors see the full demo/placeholder state — no redirect.
+  // The page already renders gracefully with hasData = false.
+  const insightData = user
+    ? await getUserInsightData(user.id)
+    : { entryCount: 0, sortedThemes: [], sortedEmotions: [], sortedDomains: [], topTheme: null, topEmotion: null, topDomain: null };
 
   const {
     entryCount, sortedThemes, sortedEmotions, sortedDomains,
     topTheme, topEmotion, topDomain,
-  } = await getUserInsightData(user.id);
+  } = insightData;
 
   // hasData = user has at least 2 reflected entries with meaningful signals
   const hasData = entryCount >= 2 && (topTheme || topEmotion);
