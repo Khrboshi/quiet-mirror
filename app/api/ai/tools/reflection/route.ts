@@ -5,6 +5,7 @@ import { ensureCreditsFresh } from "@/lib/creditRules";
 import { normalizeAIResponseSignals } from "@/lib/ai/normalizeInsightSignals";
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 30;
 
 async function callGroq(system: string, user: string): Promise<string> {
   const apiKey = process.env.GROQAPIKEY || process.env.GROQ_API_KEY;
