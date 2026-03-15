@@ -13,45 +13,40 @@ function safeNext(pathname: string) {
 
 export default function CompleteClient({ next }: { next: string }) {
   const target = useMemo(() => safeNext(next), [next]);
-  const [canClose, setCanClose] = useState(false);
+
+  // true  = window.close() was blocked, tab is still open → show fallback UI
+  // false = still waiting to know
+  const [closeBlocked, setCloseBlocked] = useState(false);
 
   useEffect(() => {
-    const payload = JSON.stringify({
-      next: target,
-      t: Date.now(),
-    });
+    const payload = JSON.stringify({ next: target, t: Date.now() });
 
-    // Signal the original tab (works on desktop browsers)
-    try {
-      localStorage.setItem("havenly:auth_complete", payload);
-    } catch {}
+    // Signal the original tab via localStorage (fires storage event on other tabs)
+    try { localStorage.setItem("havenly:auth_complete", payload); } catch {}
 
+    // Signal via BroadcastChannel (more reliable, same-origin tabs)
     try {
       const bc = new BroadcastChannel("havenly_auth");
       bc.postMessage({ type: "AUTH_COMPLETE", next: target });
       bc.close();
     } catch {}
 
-    // Try to close this tab (only works if browser allows it)
-    // If it fails, user will see fallback UI.
+    // Attempt to close this tab.
+    // window.close() only works when the tab was opened by window.open().
+    // When a user clicks a link in their email client, Chrome blocks it.
+    // We detect whether it worked by checking if this code is still running
+    // 300ms later — if the tab closed, this callback never fires.
     setTimeout(() => {
-      try {
-        // If we can close, do it; otherwise show fallback.
-        window.close();
-        setCanClose(true);
-      } catch {
-        setCanClose(false);
-      }
-    }, 150);
+      window.close();
 
-    // As a backup, if it didn't close, navigate to the target here too.
-    const navTimer = setTimeout(() => {
-      try {
-        window.location.replace(target);
-      } catch {}
-    }, 700);
-
-    return () => clearTimeout(navTimer);
+      // If we reach this point, the tab is still open (close was blocked).
+      // Show the fallback UI so the user has a clear path forward.
+      // We do NOT navigate Tab B to the dashboard — that would cause a
+      // duplicate-tab situation since Tab A already received the broadcast.
+      setTimeout(() => {
+        setCloseBlocked(true);
+      }, 200);
+    }, 100);
   }, [target]);
 
   return (
@@ -61,32 +56,53 @@ export default function CompleteClient({ next }: { next: string }) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        background: "#020617",
         padding: 24,
       }}
     >
       <div style={{ textAlign: "center", maxWidth: 420 }}>
-        <div style={{ fontSize: 18, marginBottom: 8 }}>Signing you in…</div>
-        <div style={{ opacity: 0.7, fontSize: 14, marginBottom: 16 }}>
-          Returning you to your dashboard.
+        <div
+          style={{
+            fontSize: 18,
+            fontWeight: 600,
+            color: "#f8fafc",
+            marginBottom: 8,
+          }}
+        >
+          {closeBlocked ? "You're signed in." : "Signing you in\u2026"}
+        </div>
+        <div
+          style={{
+            opacity: 0.6,
+            fontSize: 14,
+            color: "#cbd5e1",
+            marginBottom: 24,
+            lineHeight: 1.6,
+          }}
+        >
+          {closeBlocked
+            ? "Your original tab is ready. You can close this one."
+            : ""}
         </div>
 
-        {/* Fallback (in case tab-close is blocked) */}
-        {!canClose ? (
+        {/* Shown when close is blocked — covers mobile and single-tab users */}
+        {closeBlocked && (
           <Link
             href={target}
             style={{
               display: "inline-block",
-              padding: "10px 14px",
-              borderRadius: 10,
-              background: "#34d399",
-              color: "#0f172a",
+              padding: "10px 20px",
+              borderRadius: 9999,
+              background: "#3ee7b0",
+              color: "#020617",
               fontWeight: 700,
               textDecoration: "none",
+              fontSize: 14,
             }}
           >
-            Continue
+            Continue to Havenly &rarr;
           </Link>
-        ) : null}
+        )}
       </div>
     </div>
   );
