@@ -225,10 +225,7 @@ export default async function SettingsPage() {
             }
             right={
               isPremium ? (
-                <ActionLink
-                  href={`/api/stripe/portal?returnUrl=${portalReturn}`}
-                  variant="secondary"
-                >
+                <ActionLink href="/settings/billing" variant="secondary">
                   Billing
                 </ActionLink>
               ) : (
