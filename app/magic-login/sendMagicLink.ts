@@ -38,7 +38,10 @@ export async function sendMagicLink(formData: FormData) {
   );
 
   const siteUrl = getSiteUrl();
-  const emailRedirectTo = `${siteUrl}/auth/callback?next=/dashboard`;
+  // Use a clean callback URL with no query params — email clients (Yahoo, Gmail)
+  // can mangle or strip query parameters from redirect URLs inside magic links.
+  // The callback route always sends users to /dashboard after session exchange.
+  const emailRedirectTo = `${siteUrl}/auth/callback`;
 
   const { error } = await supabase.auth.signInWithOtp({
     email,
