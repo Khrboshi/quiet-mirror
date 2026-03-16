@@ -5,7 +5,7 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { Menu, X } from "lucide-react";
-import { useSupabase } from "@/components/SupabaseSessionProvider";
+import { useSupabase } from "@/app/components/SupabaseSessionProvider";
 import { useInstallAvailability } from "@/app/hooks/useInstallAvailability";
 
 type NavLink = { href: string; label: string };
