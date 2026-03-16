@@ -89,6 +89,12 @@ export default function Footer() {
                   Dashboard
                 </Link>
                 <Link
+                  href="/tools"
+                  className="hover:text-slate-300 transition-colors"
+                >
+                  Tools
+                </Link>
+                <Link
                   href="/settings"
                   className="hover:text-slate-300 transition-colors"
                 >
