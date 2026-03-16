@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ScrollReveal from "@/app/components/ScrollReveal";
+import { PRICING } from "@/app/lib/pricing";
 
 // ─── Data ──────────────────────────────────────────────────────────────────
 
@@ -569,13 +570,8 @@ export default function HomeBelowFold() {
               accurately it reflected the thing underneath what I wrote.&rdquo;
             </p>
             <div className="mt-5 flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-gradient-to-br from-emerald-500/40 to-violet-500/40 text-sm font-semibold text-white">
-                M
-              </div>
-              <div>
-                <p className="text-sm font-medium text-slate-200">Maya L.</p>
-                <p className="text-xs text-slate-600">Used Havenly for 6 weeks</p>
-              </div>
+              <div className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-gradient-to-br from-emerald-500/40 to-violet-500/40" />
+              <p className="text-xs text-slate-500">Used Havenly for 6 weeks</p>
             </div>
           </ScrollReveal>
 
@@ -583,32 +579,23 @@ export default function HomeBelowFold() {
             {[
               {
                 quote: "This is the first journaling product that made me feel like my entries were going somewhere instead of just piling up.",
-                name: "Tariq A.",
                 detail: "Used Havenly for 3 months",
-                initial: "T",
                 gradient: "from-violet-500/40 to-blue-500/40",
               },
               {
                 quote: "The weekly summary connected entries I thought were unrelated. It made a pattern obvious without feeling intrusive.",
-                name: "Riya K.",
                 detail: "Premium member",
-                initial: "R",
                 gradient: "from-amber-500/40 to-rose-500/40",
               },
-            ].map(({ quote, name, detail, initial, gradient }) => (
-              <div key={name} className="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-5">
+            ].map(({ quote, detail, gradient }) => (
+              <div key={detail} className="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-5">
                 <div className="mb-3 text-sm text-amber-400">★★★★★</div>
                 <p className="text-sm italic leading-relaxed text-slate-300">
                   &ldquo;{quote}&rdquo;
                 </p>
                 <div className="mt-4 flex items-center gap-2">
-                  <div className={`flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-gradient-to-br ${gradient} text-xs font-semibold text-white`}>
-                    {initial}
-                  </div>
-                  <div>
-                    <p className="text-xs font-medium text-slate-300">{name}</p>
-                    <p className="text-[11px] text-slate-600">{detail}</p>
-                  </div>
+                  <div className={`h-8 w-8 rounded-full border border-white/10 bg-gradient-to-br ${gradient}`} />
+                  <p className="text-[11px] text-slate-500">{detail}</p>
                 </div>
               </div>
             ))}
@@ -697,10 +684,10 @@ export default function HomeBelowFold() {
                 The full pattern, not just the latest entry
               </p>
               <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                <span className="text-3xl font-bold text-white">$30</span>
+                <span className="text-3xl font-bold text-white">{PRICING.monthly}</span>
                 <span className="text-sm text-slate-400">/ month</span>
                 <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-medium text-emerald-400">
-                  About $1 a day
+                  {PRICING.valueLabel}
                 </span>
               </div>
               <p className="mt-1 text-xs text-slate-600">Cancel anytime</p>
