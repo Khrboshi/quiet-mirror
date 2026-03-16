@@ -50,12 +50,6 @@ function parseNextStep(step: string): { optionA: string; optionB: string; script
   return { optionA, optionB, script };
 }
 
-function getReflectionApiUrl() {
-  if (typeof window === "undefined") return "/api/ai/reflection";
-  const params = new URLSearchParams(window.location.search);
-  return params.get("debug") === "1" ? "/api/ai/reflection?debug=1" : "/api/ai/reflection";
-}
-
 function questionsHeading(count: number): string {
   if (count <= 0) return "Questions";
   if (count === 1) return "1 Question";
@@ -137,7 +131,7 @@ export default function JournalEntryClient({
     setBusy(true);
     setError(null);
     try {
-      const res = await fetch(getReflectionApiUrl(), {
+      const res = await fetch("/api/ai/reflection", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ entryId: entry.id }),
