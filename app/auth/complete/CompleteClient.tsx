@@ -35,54 +35,21 @@ export default function CompleteClient() {
   }, []);
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "#020617",
-        padding: 24,
-      }}
-    >
-      <div style={{ textAlign: "center", maxWidth: 420 }}>
-        <div
-          style={{
-            fontSize: 18,
-            fontWeight: 600,
-            color: "#f8fafc",
-            marginBottom: 8,
-          }}
-        >
+    <div className="flex min-h-screen items-center justify-center bg-slate-950 px-6">
+      <div className="text-center max-w-sm">
+        <h1 className="font-display text-lg font-semibold text-white">
           {closeBlocked ? "You're signed in." : "Signing you in\u2026"}
-        </div>
-        <div
-          style={{
-            opacity: 0.6,
-            fontSize: 14,
-            color: "#cbd5e1",
-            marginBottom: 24,
-            lineHeight: 1.6,
-          }}
-        >
+        </h1>
+        <p className="mt-2 text-sm leading-relaxed text-slate-400">
           {closeBlocked
             ? "Your original tab is ready. You can close this one."
             : ""}
-        </div>
+        </p>
 
         {closeBlocked && (
           <Link
             href={DESTINATION}
-            style={{
-              display: "inline-block",
-              padding: "10px 20px",
-              borderRadius: 9999,
-              background: "#3ee7b0",
-              color: "#020617",
-              fontWeight: 700,
-              textDecoration: "none",
-              fontSize: 14,
-            }}
+            className="mt-6 inline-flex items-center justify-center rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-slate-950 transition-colors hover:bg-emerald-400"
           >
             Go to dashboard &rarr;
           </Link>
