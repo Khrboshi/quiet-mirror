@@ -279,6 +279,9 @@ export default function UpgradePage() {
               Across your entries, Havenly finds what keeps surfacing — the emotions,
               themes, and questions that repeat without you noticing.
             </p>
+            <p className="mt-2 text-xs text-slate-600">
+              The cards below are illustrative examples — yours will be built from your own entries.
+            </p>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
