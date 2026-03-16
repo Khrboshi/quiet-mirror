@@ -101,52 +101,6 @@ function noStoreHeaders() {
   };
 }
 
-function contentFingerprint(s: string) {
-  let h = 2166136261;
-  for (let i = 0; i < s.length; i++) {
-    h ^= s.charCodeAt(i);
-    h = Math.imul(h, 16777619);
-  }
-  return (h >>> 0).toString(16);
-}
-
-type Domain = "WORK" | "RELATIONSHIP" | "FITNESS" | "GENERAL";
-function detectDomain(text: string): Domain {
-  const s = (text || "").toLowerCase();
-  const fitness =
-    /run|running|\bkm\b|workout|training|exercise|gym|lift|lifting|cardio|pace|steps|sore|recovery|rest|sleep|hydration/.test(s);
-  const work = /colleague|coworker|manager|team|meeting|work|office|client|boss/.test(s);
-  const rel = /partner|wife|husband|girlfriend|boyfriend|relationship|love|date|argue|fight|gift/.test(s);
-  if (fitness && !work && !rel) return "FITNESS";
-  if (work && !fitness && !rel) return "WORK";
-  if (rel && !fitness && !work) return "RELATIONSHIP";
-  return "GENERAL";
-}
-
-function extractAnchorsForDebug(entry: string): string[] {
-  const t = (entry || "").trim();
-  const anchors: string[] = [];
-  const add = (v: string) => {
-    const s = String(v || "").trim();
-    if (!s || anchors.includes(s)) return;
-    anchors.push(s);
-  };
-  const quoteMatches = t.match(/["""][^"""]+["""]/g) || [];
-  for (const q of quoteMatches) {
-    const cleaned = q.replace(/^["""]|["""]$/g, "").trim();
-    if (cleaned.length >= 4 && cleaned.length <= 90) add(`"${cleaned}"`);
-    if (anchors.length >= 3) break;
-  }
-  if (anchors.length < 2) {
-    const sentences = t.split(/\n|[.!?]/).map((s) => s.trim()).filter(Boolean).slice(0, 4);
-    for (const s of sentences) {
-      add(s.length > 110 ? s.slice(0, 110).trim() : s);
-      if (anchors.length >= 2) break;
-    }
-  }
-  return anchors.slice(0, 5);
-}
-
 function tryParseReflection(aiResponse: unknown) {
   if (typeof aiResponse !== "string") return null;
   try {
@@ -235,14 +189,6 @@ export async function POST(req: Request) {
     );
   }
 
-  const url = new URL(req.url);
-  const debugEnabled = url.searchParams.get("debug") === "1";
-
-  const fp = debugEnabled ? contentFingerprint(content) : undefined;
-  const snippet = debugEnabled ? content.slice(0, 120) : undefined;
-  const domain = debugEnabled ? detectDomain(`${title}\n${content}`) : undefined;
-  const anchors = debugEnabled ? extractAnchorsForDebug(content) : undefined;
-
   const { data: creditsRow, error: creditsErr } = await supabase
     .from("user_credits")
     .select("plan_type")
@@ -268,12 +214,6 @@ export async function POST(req: Request) {
       reflection: existingFull,
       remainingCredits: null,
     };
-    if (debugEnabled) {
-      payload.debug = {
-        entryId, fp, snippet, domain, anchors,
-        planType, effectiveTier, servedFromCache: true,
-      };
-    }
     return NextResponse.json(payload, { headers: noStoreHeaders() });
   }
 
@@ -345,13 +285,6 @@ export async function POST(req: Request) {
       reflection,
       remainingCredits: effectiveTier === "FREE" ? remainingAfterConsume : null,
     };
-
-    if (debugEnabled) {
-      payload.debug = {
-        entryId, fp, snippet, domain, anchors,
-        planType, effectiveTier, servedFromCache: false,
-      };
-    }
 
     return NextResponse.json(payload, { headers: noStoreHeaders() });
   } catch (err) {
