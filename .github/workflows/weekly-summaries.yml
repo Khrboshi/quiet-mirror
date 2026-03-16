@@ -1,0 +1,30 @@
+name: Weekly Summaries
+
+on:
+  schedule:
+    # Every Monday at 09:00 UTC
+    - cron: '0 9 * * 1'
+  # Also allows manual trigger from GitHub UI (Actions tab → Run workflow)
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Trigger weekly summary generation
+        run: |
+          response=$(curl -s -o response.json -w "%{http_code}" \
+            -X GET \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            https://havenly-2-1.vercel.app/api/cron/weekly-summaries)
+
+          echo "HTTP status: $response"
+          echo "Response body:"
+          cat response.json
+
+          if [ "$response" != "200" ]; then
+            echo "Cron endpoint returned non-200 status: $response"
+            exit 1
+          fi
