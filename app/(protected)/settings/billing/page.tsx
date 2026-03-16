@@ -61,7 +61,7 @@ export default async function BillingPage() {
 
   const { data: credits } = await supabase
     .from("user_credits")
-    .select("plan_type")
+    .select("plan_type, renewal_date")
     .eq("user_id", user.id)
     .maybeSingle();
 
@@ -70,6 +70,20 @@ export default async function BillingPage() {
     rawPlan === "PREMIUM" ? "PREMIUM" : rawPlan === "TRIAL" ? "TRIAL" : "FREE";
 
   const isPaid = plan === "PREMIUM" || plan === "TRIAL";
+
+  // Show refund window notice if user is within 7 days of subscribing.
+  // We derive the start date from renewal_date - 30 days.
+  let refundDaysLeft: number | null = null;
+  if (isPaid && (credits as any)?.renewal_date) {
+    const renewalDate = new Date((credits as any).renewal_date);
+    const startDate = new Date(renewalDate.getTime() - 30 * 24 * 60 * 60 * 1000);
+    const daysSinceStart = Math.floor(
+      (Date.now() - startDate.getTime()) / (1000 * 60 * 60 * 24)
+    );
+    if (daysSinceStart < 7) {
+      refundDaysLeft = 7 - daysSinceStart;
+    }
+  }
 
   return (
     <main className="mx-auto w-full max-w-5xl px-6 py-14 text-slate-200">
@@ -102,6 +116,25 @@ export default async function BillingPage() {
           </div>
         </div>
       </header>
+
+      {/* Refund window notice — only visible within first 7 days of Premium */}
+      {refundDaysLeft !== null && (
+        <div className="mb-6 flex items-start gap-3 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.06] px-5 py-4">
+          <span className="mt-0.5 text-base">🛡️</span>
+          <div>
+            <p className="text-sm font-semibold text-emerald-300">
+              {refundDaysLeft === 1
+                ? "Last day of your 7-day refund window"
+                : `${refundDaysLeft} days left in your 7-day refund window`}
+            </p>
+            <p className="mt-0.5 text-xs text-slate-400">
+              Not what you expected? Email{" "}
+              <span className="text-slate-200">support@havenly.app</span> for a
+              full refund — no questions asked.
+            </p>
+          </div>
+        </div>
+      )}
 
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Left: Plan card */}
