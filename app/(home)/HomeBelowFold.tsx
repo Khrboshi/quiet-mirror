@@ -581,7 +581,7 @@ export default function HomeBelowFold() {
               {
                 icon: "🛡️",
                 title: "7-day full refund",
-                body: "If Premium is not what you expected within 7 days of your first charge, email us and we refund in full. No forms, no friction, no questions asked.",
+                body: "If Premium is not what you expected within 7 days of your first charge, email support@havenly.app and we refund in full. No forms, no friction, no questions asked.",
                 border: "border-sky-500/20",
                 bg: "bg-sky-500/[0.03]",
               },
