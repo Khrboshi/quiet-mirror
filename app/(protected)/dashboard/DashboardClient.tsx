@@ -129,16 +129,6 @@ const ACCENT_CLASSES: Record<string, { border: string; label: string; dot: strin
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 
-function StreakBadge({ streak }: { streak: number }) {
-  if (streak === 0) return null;
-  return (
-    <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-300">
-      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-      {streak} day{streak !== 1 ? "s" : ""} writing
-    </span>
-  );
-}
-
 // ── Premium insight card ──────────────────────────────────────────────────────
 
 function PremiumInsightCard({
@@ -472,7 +462,7 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
   const prompts = useMemo(() => getDailyPrompts(), []);
 
   const {
-    entryCount, streak, writingDays, lastEntryId, lastEntryTitle, lastEntryDate,
+    entryCount, writingDays, lastEntryId, lastEntryTitle, lastEntryDate,
     lastEntryHasReflection, lastTopEmotion, lastTopTheme, lastCorepattern,
     wroteToday, reflectedThisWeek,
   } = data;
@@ -496,8 +486,6 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
             </h1>
             <p className="text-sm text-slate-500">{subline}</p>
           </div>
-
-          {/* StreakBadge removed — homepage FAQ explicitly says "there is no streak to maintain" */}
         </div>
 
         {/* ✅ Replaced debug-style pill badges with a subtle single-line status row */}
