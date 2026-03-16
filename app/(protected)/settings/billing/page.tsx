@@ -1,5 +1,4 @@
 // app/settings/billing/page.tsx
-import React from "react";
 import { redirect } from "next/navigation";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { ensureCreditsFresh } from "@/lib/creditRules";
