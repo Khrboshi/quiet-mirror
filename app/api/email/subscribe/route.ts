@@ -6,7 +6,7 @@ import { Resend } from "resend";
 export const runtime = "nodejs";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const FROM_ADDRESS = "Havenly <noreply@havenly.app>";
+const FROM_ADDRESS = "Havenly <onboarding@resend.dev>";
 
 // Rate limit: max 3 subscribe attempts per IP per hour
 const RATE_LIMIT_MAX = 3;
