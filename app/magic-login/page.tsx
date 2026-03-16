@@ -6,7 +6,7 @@ import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useSupabase } from "@/components/SupabaseSessionProvider";
+import { useSupabase } from "@/app/components/SupabaseSessionProvider";
 import { sendMagicLink } from "./sendMagicLink";
 import { verifyOtp } from "./verifyOtp";
 
