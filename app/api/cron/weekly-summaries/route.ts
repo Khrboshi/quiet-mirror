@@ -115,8 +115,9 @@ export async function GET(req: Request) {
         processed++;
         console.log(`[cron/weekly-summaries] ✓ ${userId} — generated at ${result.generatedAt}`);
       } else {
-        if (result.reason !== "no_data") errors++;
-        console.log(`[cron/weekly-summaries] ⚠ ${userId} — skipped (${result.reason})`);
+        const reason = result.reason;
+        if (reason !== "no_data") errors++;
+        console.log(`[cron/weekly-summaries] ⚠ ${userId} — skipped (${reason})`);
       }
     } catch (err) {
       errors++;
