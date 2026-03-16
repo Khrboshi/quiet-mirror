@@ -8,7 +8,7 @@ export const metadata = {
     title: "About Havenly — A Journal for Understanding Yourself",
     description:
       "Built for people who want to understand themselves better, not optimize themselves harder.",
-    url: "https://havenly-2-1.vercel.app/about",
+    url: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://havenly-2-1.vercel.app") + "/about",
   },
 };
 
