@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
-import { useSupabase } from "@/components/SupabaseSessionProvider";
+import { useSupabase } from "@/app/components/SupabaseSessionProvider";
 
 export interface UpgradeTriggerModalProps {
   open: boolean;
