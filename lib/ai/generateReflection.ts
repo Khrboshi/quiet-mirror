@@ -1224,6 +1224,14 @@ function qualityCheck(
     /what are some (specific )?(actions|things|ways)/i,
     /reignite your creative spark/i,
     /honor (his|her|their|your) memory in a way/i,
+    // Productivity / task-list advice masquerading as reflection
+    /list all the things (that are|that feel|currently)/i,
+    /identify one small task (you can|to) complete/i,
+    /clear some mental space/i,
+    /make a list of/i,
+    /write down (a list|all the|everything)/i,
+    /prioritize (your tasks|the tasks|what needs)/i,
+    /break (it|this|that) (down into|into smaller)/i,
   ];
 
   for (const q of questions) {

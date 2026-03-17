@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
-import { useSupabase } from "@/app/components/SupabaseSessionProvider";
 
 export interface UpgradeTriggerModalProps {
   open: boolean;
@@ -36,7 +35,6 @@ export default function UpgradeTriggerModal({
   cta,
   source,
 }: UpgradeTriggerModalProps) {
-  const { session } = useSupabase();
 
   useEffect(() => {
     if (!open) return;
@@ -62,24 +60,22 @@ export default function UpgradeTriggerModal({
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4">
       <div className="w-full max-w-md rounded-2xl border border-white/10 bg-[#020617] p-6 text-slate-200 shadow-2xl">
-        <div className="mb-4">
+        <div className="mb-5">
           <h3 className="text-xl font-semibold">{title}</h3>
-          <p className="mt-1 text-sm text-slate-400">{finalDescription}</p>
-
-          {session?.user?.email ? (
-            <p className="mt-3 text-xs text-slate-500">
-              Signed in as {session.user.email}
-              {source ? ` • ${source}` : ""}
-            </p>
-          ) : source ? (
-            <p className="mt-3 text-xs text-slate-500">{source}</p>
-          ) : null}
+          <p className="mt-2 text-sm leading-relaxed text-slate-400">{finalDescription}</p>
+          <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-xl border border-emerald-500/15 bg-emerald-500/[0.05] px-3 py-2">
+            <span className="text-sm text-slate-300">$30<span className="text-slate-500">/month</span></span>
+            <span className="text-slate-700">·</span>
+            <span className="text-xs text-slate-400">7-day full refund guarantee</span>
+            <span className="text-slate-700">·</span>
+            <span className="text-xs text-slate-400">Cancel anytime</span>
+          </div>
         </div>
 
         <div className="flex gap-3">
           <Link
             href={finalCtaHref}
-            className="flex-1 rounded-full bg-emerald-500 px-4 py-2 text-center text-sm font-semibold text-slate-950 hover:bg-emerald-400"
+            className="flex-1 rounded-full bg-emerald-500 px-4 py-2.5 text-center text-sm font-semibold text-slate-950 transition-colors hover:bg-emerald-400"
           >
             {finalCtaLabel}
           </Link>
@@ -87,7 +83,7 @@ export default function UpgradeTriggerModal({
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-white/10"
+            className="flex-1 rounded-full border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:bg-white/10"
           >
             Not now
           </button>

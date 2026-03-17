@@ -232,13 +232,19 @@ export default function JournalEntryClient({
             <button
               onClick={generateReflection}
               disabled={busy}
-              className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-4 py-2 text-xs font-semibold text-slate-950 transition-all hover:bg-emerald-400 disabled:opacity-50"
+              className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition-all disabled:opacity-50 ${
+                !isUnlimited && credits === 0
+                  ? "border border-white/10 bg-white/5 text-slate-400 hover:bg-white/10"
+                  : "bg-emerald-500 text-slate-950 hover:bg-emerald-400"
+              }`}
             >
               {busy ? (
                 <>
                   <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-slate-950/30 border-t-slate-950" />
                   Reflecting&hellip;
                 </>
+              ) : !isUnlimited && credits === 0 ? (
+                "Reflection limit reached"
               ) : (
                 "See reflection"
               )}
@@ -537,8 +543,8 @@ export default function JournalEntryClient({
       <UpgradeTriggerModal
         open={showUpgrade}
         onClose={() => setShowUpgrade(false)}
-        title="You've reached your reflection limit"
-        message="Upgrade to Premium for unlimited reflections and deeper insights when you need them most."
+        title="You've used your 3 free reflections"
+        message="Premium lets you keep going — and starts showing you what keeps repeating across everything you've written."
         source="reflection_limit"
         ctaHref="/upgrade"
         ctaLabel="Upgrade to Premium"
