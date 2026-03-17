@@ -579,6 +579,11 @@ function WeeklySummarySection({ hasRealData }: { hasRealData: boolean }) {
             ↻ Refresh
           </button>
         )}
+        {state.status === "loading" && (
+          <span className="shrink-0 text-xs text-slate-600 animate-pulse">
+            Generating…
+          </span>
+        )}
       </div>
 
       {state.status === "idle" && !hasRealData && (
@@ -820,14 +825,15 @@ export default function InsightsClient() {
               label="Momentum"
               value={data.momentum ?? "Steady"}
               sub={(() => {
-                if (!mounted || !data.firstEntryDate) return "Your entries";
-                const ageMs =
-                  Date.now() - new Date(data.firstEntryDate).getTime();
-                const ageDays = Math.floor(ageMs / (1000 * 60 * 60 * 24));
-                if (ageDays <= 1) return "Based on today";
-                if (ageDays <= 27)
-                  return `Last ${ageDays} day${ageDays === 1 ? "" : "s"}`;
-                return "Last 4 weeks";
+                const m = data.momentum ?? "Steady";
+                const descriptions: Record<string, string> = {
+                  Heavy: "Recent entries carry more emotional weight",
+                  Lifting: "Emotional weight has been easing lately",
+                  Shifting: "Something is changing in recent entries",
+                  Softening: "Intensity has been settling recently",
+                  Steady: "Consistent emotional tone across entries",
+                };
+                return descriptions[m] ?? "From your recent entries";
               })()}
               accent={mColor}
             />
@@ -891,7 +897,7 @@ export default function InsightsClient() {
                     {toSentenceCase(topCorepatterns[0][0])}
                   </p>
                   <span className="shrink-0 rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs tabular-nums text-emerald-400">
-                    {topCorepatterns[0][1]}×
+                    {topCorepatterns[0][1]}× across {entryCount} {entryCount === 1 ? "entry" : "entries"}
                   </span>
                 </div>
                 <p className="mt-2 text-xs text-slate-600 pl-4">
@@ -1018,9 +1024,27 @@ export default function InsightsClient() {
             </section>
           </div>
 
-          <p className="text-center text-xs text-slate-700">
-            Insights deepen as your reflection history grows.
-          </p>
+          {topCorepatterns.length > 0 && (
+            <section className="rounded-2xl border border-slate-800/60 bg-emerald-950/20 p-6 text-center">
+              <p className="text-sm font-medium text-white">
+                The pattern is clearer now.
+              </p>
+              <p className="mt-1 text-xs leading-relaxed text-slate-400">
+                The next entry is where you take it further.
+              </p>
+              <Link
+                href={`/journal/new?prompt=${encodeURIComponent(
+                  `I keep noticing ${topCorepatterns[0][0].toLowerCase()}. What's underneath it today?`
+                )}`}
+                className="mt-4 inline-flex items-center justify-center rounded-full bg-emerald-500 px-5 py-2.5 text-xs font-semibold text-slate-950 shadow-sm shadow-emerald-500/20 transition hover:bg-emerald-400"
+              >
+                Write about this →
+              </Link>
+              <p className="mt-3 text-xs text-slate-700">
+                Insights deepen as your reflection history grows.
+              </p>
+            </section>
+          )}
         </div>
       )}
     </div>
