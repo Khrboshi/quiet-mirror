@@ -71,6 +71,16 @@ export default async function BillingPage() {
 
   const isPaid = plan === "PREMIUM" || plan === "TRIAL";
 
+  // Next billing date label
+  const nextBillingLabel = isPaid && (credits as any)?.renewal_date
+    ? new Date((credits as any).renewal_date).toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        timeZone: "UTC",
+      })
+    : null;
+
   // Show refund window notice if user is within 7 days of subscribing.
   // We derive the start date from renewal_date - 30 days.
   let refundDaysLeft: number | null = null;
@@ -173,6 +183,22 @@ export default async function BillingPage() {
                   </>
                 )}
               </ul>
+
+              {/* Bug #10/12 fix: show price and next charge date */}
+              {isPaid && (
+                <div className="mt-4 space-y-2 border-t border-slate-800 pt-4">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-slate-500">Price</span>
+                    <span className="font-medium text-slate-200">$30 / month</span>
+                  </div>
+                  {nextBillingLabel && (
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-slate-500">Next charge</span>
+                      <span className="font-medium text-slate-200">{nextBillingLabel}</span>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             <div className="rounded-xl border border-slate-800 bg-slate-950/40 p-5">
@@ -195,6 +221,18 @@ export default async function BillingPage() {
                 <p className="mt-2 text-sm text-slate-400">
                   Premium unlocks unlimited reflections and deeper insights.
                 </p>
+              )}
+
+              {/* Bug #11 fix: always-visible refund guarantee for paid users */}
+              {isPaid && (
+                <div className="mt-4 rounded-lg border border-emerald-500/15 bg-emerald-500/5 px-3 py-2.5">
+                  <p className="text-xs font-medium text-emerald-300">
+                    🛡️ 7-day full refund guarantee
+                  </p>
+                  <p className="mt-0.5 text-xs text-slate-500">
+                    Email <span className="text-slate-300">support@havenly.app</span> — no questions asked.
+                  </p>
+                </div>
               )}
 
               {!isPaid ? (

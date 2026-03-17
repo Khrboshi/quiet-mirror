@@ -126,11 +126,12 @@ export default async function SettingsPage() {
     .select("id", { count: "exact", head: true })
     .eq("user_id", user.id);
 
-  // Member since
+  // Member since — use UTC to prevent server timezone shifting the month
   const memberSince = user.created_at
-    ? new Date(user.created_at).toLocaleDateString(undefined, {
+    ? new Date(user.created_at).toLocaleDateString("en-GB", {
         year: "numeric",
         month: "long",
+        timeZone: "UTC",
       })
     : null;
 

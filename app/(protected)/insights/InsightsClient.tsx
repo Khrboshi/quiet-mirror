@@ -542,10 +542,12 @@ function WeeklySummarySection({ hasRealData }: { hasRealData: boolean }) {
   const generatedLabel = useMemo(() => {
     if (state.status !== "ready") return null;
     const d = new Date(state.generatedAt);
+    // Use UTC date to prevent server timezone offset showing a different day
     return d.toLocaleDateString(undefined, {
       month: "short",
       day: "numeric",
       year: "numeric",
+      timeZone: "UTC",
     });
   }, [state]);
 
@@ -800,7 +802,7 @@ export default function InsightsClient() {
             <StatCard
               label="Top emotion"
               value={topEmotion ?? "—"}
-              sub={allEmotions[0] ? `${allEmotions[0][1]} times` : undefined}
+              sub={allEmotions[0] ? `${allEmotions[0][1]} ${allEmotions[0][1] === 1 ? "time" : "times"}` : undefined}
               accent="#a78bfa"
             />
             <StatCard
@@ -938,7 +940,7 @@ export default function InsightsClient() {
                   <button
                     type="button"
                     onClick={() => setShowAllThemes((v) => !v)}
-                    className="text-xs text-slate-600 hover:text-slate-400 transition"
+                    className="text-xs text-emerald-500/70 hover:text-emerald-400 transition font-medium"
                   >
                     {showAllThemes ? "Show less" : `+${allThemes.length - 6} more`}
                   </button>
@@ -981,7 +983,7 @@ export default function InsightsClient() {
                   <button
                     type="button"
                     onClick={() => setShowAllEmotions((v) => !v)}
-                    className="text-xs text-slate-600 hover:text-slate-400 transition"
+                    className="text-xs text-emerald-500/70 hover:text-emerald-400 transition font-medium"
                   >
                     {showAllEmotions
                       ? "Show less"

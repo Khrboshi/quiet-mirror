@@ -109,6 +109,21 @@ export default function UpgradeConfirmedPage() {
           </Link>
         </p>
 
+        {/* Bug #12 fix: price confirmation + refund guarantee */}
+        <div className="mt-6 rounded-2xl border border-slate-800/60 bg-slate-900/40 px-6 py-4 text-center">
+          <p className="text-xs text-slate-500">
+            You were charged <span className="font-medium text-slate-300">$30/month</span>.
+            {" "}Cancel anytime in{" "}
+            <Link href="/settings/billing" className="text-slate-400 underline underline-offset-2 hover:text-slate-300">
+              billing settings
+            </Link>
+            .
+          </p>
+          <p className="mt-2 text-xs text-emerald-500/70">
+            🛡️ 7-day full refund if it&apos;s not for you — email support@havenly.app
+          </p>
+        </div>
+
       </main>
     </div>
   );
