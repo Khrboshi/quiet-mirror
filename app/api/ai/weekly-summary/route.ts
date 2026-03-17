@@ -115,25 +115,25 @@ function buildSummaryPrompt(opts: {
     .map((d) => DOMAIN_LABELS[d] ?? d.toLowerCase())
     .join(", ");
 
-  const system = `You are Havenly, a calm and perceptive AI journaling companion.
-Your job is to write a short, warm, personal summary of what you've noticed across a user's journal entries.
+  const system = `You are Havenly — a private journaling companion that reflects back what it notices.
+Write a short, personal summary of what has been showing up across this person's journal entries.
 
 Rules:
 - Write 2-3 short paragraphs. No more.
-- Speak directly to the user ("you", "your") — warmly, not clinically.
+- Speak ONLY in second person — always "you" and "your". NEVER use "I", "I notice", "I sense", "I've noticed", "I wonder", "I've seen", "I'm curious", "As I read". You are a mirror, not a person.
 - Be specific: name their actual emotions, themes, and what areas of life they write about most.
 - Do NOT use therapy-speak, jargon, or prescriptive advice ("you should", "try to", "consider").
 - Do NOT list bullet points or use headers.
-- Sound like a thoughtful friend who has been quietly paying attention.
-- The first paragraph should name what they write about most and what emotion sits underneath it.
-- The second paragraph should name the pattern — what keeps showing up, and what it might mean.
+- The first paragraph names what they write about most and the emotion that sits underneath it.
+- The second paragraph names the pattern — what keeps showing up, what it connects to.
 - End with one quiet, open question — genuinely curious, not leading.
-- Keep it under 200 words total.`;
+- Keep it under 200 words total.
+- BANNED openers and phrases: "I notice", "I sense", "I can see", "I've noticed", "I've seen", "I'm curious", "Looking at your entries", "Based on your entries", "As I read", "It seems like", "It appears that", "I think", "I wonder"`;
 
-  const parts: string[] = [`This person has written ${entryCount} journal entries since ${since}.`];
+  const parts: string[] = [`You have written ${entryCount} journal entries since ${since}.`];
 
   if (domainLabels) {
-    parts.push(`The areas of life they write about most: ${domainLabels}.`);
+    parts.push(`The areas of life you write about most: ${domainLabels}.`);
   }
   if (topEmotions.length) {
     parts.push(`Emotions that appear most often: ${topEmotions.slice(0, 4).join(", ")}.`);
@@ -142,7 +142,7 @@ Rules:
     parts.push(`Recurring themes: ${topThemes.slice(0, 4).join(", ")}.`);
   }
   if (topCorepatterns.length) {
-    parts.push(`The core pattern Havenly detected most often: "${topCorepatterns[0]}".`);
+    parts.push(`The core pattern detected most often: "${topCorepatterns[0]}".`);
     if (topCorepatterns[1]) {
       parts.push(`Second most recurring: "${topCorepatterns[1]}".`);
     }
@@ -159,7 +159,7 @@ Rules:
 
   const user =
     parts.join("\n") +
-    "\n\nWrite the summary now. Start with what you've noticed about them — not a greeting, not a preamble.";
+    "\n\nWrite the summary now in second person (you/your). Do not start with 'I'. Start directly with what has been showing up.";
 
   return { system, user };
 }
@@ -382,6 +382,40 @@ export async function GET() {
       { status: 500 }
     );
   }
+
+  // Strip first-person "I" constructions regardless of what the model produced
+  summary = summary
+    .replace(/As I read through your entries,?\s*/gi, "Across your entries, ")
+    .replace(/As I'?ve been reading your entries,?\s*/gi, "Across your entries, ")
+    .replace(/As I'?ve been looking at your entries,?\s*/gi, "Across your entries, ")
+    .replace(/As I'?ve gone through your entries,?\s*/gi, "Across your entries, ")
+    .replace(/As I'?ve reviewed your entries,?\s*/gi, "Across your entries, ")
+    .replace(/As I'?ve read your entries,?\s*/gi, "Across your entries, ")
+    .replace(/I'?ve noticed that\s+/gi, "There's a pattern here: ")
+    .replace(/I'?ve noticed\s+/gi, "")
+    .replace(/I'?ve seen that\s+/gi, "")
+    .replace(/I'?ve seen\s+/gi, "")
+    .replace(/I notice that\s+/gi, "")
+    .replace(/I notice\s+/gi, "")
+    .replace(/I'?m curious\s*[—–-]\s*/gi, "")
+    .replace(/I'?m curious\s+/gi, "")
+    .replace(/I sense a\s+/gi, "There's a ")
+    .replace(/I sense\s+/gi, "There's a sense of ")
+    .replace(/I can see that\s+/gi, "")
+    .replace(/I can see\s+/gi, "")
+    .replace(/I see that\s+/gi, "")
+    .replace(/I see a\s+/gi, "There's a ")
+    .replace(/I'?d also note\s+/gi, "Worth noting: ")
+    .replace(/I'?d note\s+/gi, "Worth noting: ")
+    .replace(/I wonder\s*[—–-]\s*/gi, "")
+    .replace(/I wonder\s+/gi, "")
+    .replace(/I think that\s+/gi, "")
+    .replace(/I think\s+/gi, "")
+    .replace(/I'?m also noticing\s+/gi, "")
+    .replace(/I'?m noticing\s+/gi, "")
+    .replace(/(here:|noted:|pattern:|noting:)\s+([a-z])/g, (_, label, ch) => `${label} ${ch.toUpperCase()}`)
+    .replace(/\s{2,}/g, " ")
+    .trim();
 
   const adminClient = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
