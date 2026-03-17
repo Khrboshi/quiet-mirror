@@ -672,8 +672,8 @@ export default function HomeBelowFold() {
               },
               {
                 icon: "🛡️",
-                title: "7-day full refund",
-                body: "If Premium is not what you expected within 7 days of your first charge, email support@havenly.app and we refund in full. No forms, no friction, no questions asked.",
+                title: "7-day free trial",
+                body: "Try everything free for 7 days — full Insights, unlimited reflections, all tools. No charge until day 8. Cancel before then and you won't pay anything.",
                 border: "border-sky-500/20",
                 bg: "bg-sky-500/[0.03]",
               },
@@ -824,10 +824,10 @@ export default function HomeBelowFold() {
                 </Link>
                 <div className="rounded-xl border border-emerald-500/15 bg-emerald-500/[0.04] px-4 py-2.5 text-center">
                   <p className="text-xs font-medium text-slate-300">
-                    🛡️ 7-day full refund guarantee
+                    🛡️ 7-day free trial — no charge today
                   </p>
                   <p className="mt-0.5 text-[11px] leading-relaxed text-slate-600">
-                    Not what you expected? Full refund within 7 days — no questions asked.
+                    Try free for 7 days · then $30/month · Cancel anytime
                   </p>
                 </div>
                 <Link

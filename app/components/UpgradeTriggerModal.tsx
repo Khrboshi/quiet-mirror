@@ -64,9 +64,9 @@ export default function UpgradeTriggerModal({
           <h3 className="text-xl font-semibold">{title}</h3>
           <p className="mt-2 text-sm leading-relaxed text-slate-400">{finalDescription}</p>
           <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-xl border border-emerald-500/15 bg-emerald-500/[0.05] px-3 py-2">
-            <span className="text-sm text-slate-300">$30<span className="text-slate-500">/month</span></span>
+            <span className="text-sm font-medium text-emerald-400">Free for 7 days</span>
             <span className="text-slate-700">·</span>
-            <span className="text-xs text-slate-400">7-day full refund guarantee</span>
+            <span className="text-sm text-slate-300">then $30<span className="text-slate-500">/month</span></span>
             <span className="text-slate-700">·</span>
             <span className="text-xs text-slate-400">Cancel anytime</span>
           </div>

@@ -525,7 +525,7 @@ export default function JournalEntryClient({
                     href="/upgrade"
                     className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-4 py-2.5 text-xs font-semibold text-slate-950 shadow-sm shadow-emerald-500/20 transition hover:bg-emerald-400"
                   >
-                    Unlock your pattern history →
+                    Start 7-day free trial →
                   </Link>
                   <Link
                     href="/insights/preview"
@@ -584,11 +584,11 @@ export default function JournalEntryClient({
       <UpgradeTriggerModal
         open={showUpgrade}
         onClose={() => setShowUpgrade(false)}
-        title="You've used your 3 free reflections"
-        message="Premium lets you keep going — and starts showing you what keeps repeating across everything you've written."
+        title="Try Premium free for 7 days"
+        message="You've used your 3 free reflections. Start a free trial to keep going — no charge for 7 days, cancel anytime before then."
         source="reflection_limit"
         ctaHref="/upgrade"
-        ctaLabel="Upgrade to Premium"
+        ctaLabel="Start free trial"
       />
     </div>
   );

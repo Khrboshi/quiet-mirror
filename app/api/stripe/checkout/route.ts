@@ -70,6 +70,7 @@ export async function POST() {
       success_url: `${siteUrl}/upgrade/confirmed?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteUrl}/upgrade`,
       subscription_data: {
+        trial_period_days: 7,
         metadata: {
           supabase_user_id: user.id,
         },

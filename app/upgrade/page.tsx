@@ -12,7 +12,7 @@ const faqs = [
   },
   {
     q: "What is your refund policy?",
-    a: "If Havenly Premium is not what you expected, email support@havenly.app within 7 days of your first charge and we will issue a full refund — no questions asked. This applies to your first subscription period only.",
+    a: "Every new subscription starts with a 7-day free trial — no charge until day 8. Cancel any time before then and you won't be charged anything. After the trial, if Premium is not what you expected, email support@havenly.app and we will issue a full refund — no questions asked. This applies to your first subscription period only.",
   },
   {
     q: "What if I do not write very often?",
@@ -36,7 +36,7 @@ const faqs = [
 
 function UpgradeButton({
   className,
-  label = "Upgrade to Premium",
+  label = "Start 7-day free trial",
 }: {
   className?: string;
   label?: string;
@@ -172,16 +172,16 @@ export default function UpgradePage() {
                     {PRICING.valueLabel}
                   </span>
                 </div>
-                <p className="mb-4 text-xs text-slate-600">Cancel anytime · no questions asked</p>
+                <p className="mb-4 text-xs text-slate-600">Free for 7 days · then $30/month · Cancel anytime</p>
 
                 <div className="flex flex-col gap-2 sm:max-w-sm">
                   <UpgradeButton className="inline-flex w-full items-center justify-center rounded-full bg-emerald-500 px-6 py-4 text-base font-semibold text-slate-950 shadow-lg shadow-emerald-500/25 transition-all hover:bg-emerald-400 hover:-translate-y-px disabled:opacity-60 sm:py-3.5 sm:text-sm" />
 
                   {/* Refund — directly under button */}
                   <div className="rounded-xl border border-emerald-500/15 bg-emerald-500/[0.04] px-4 py-2.5 text-center">
-                    <p className="text-xs font-medium text-slate-300">🛡️ 7-day full refund guarantee</p>
+                    <p className="text-xs font-medium text-slate-300">🛡️ 7-day free trial — no charge today</p>
                     <p className="mt-0.5 text-[11px] leading-relaxed text-slate-600">
-                      Not what you expected? Email us within 7 days — full refund, no questions asked.
+                      Try everything free for 7 days. Cancel before then and you won't be charged.
                     </p>
                   </div>
 
@@ -452,7 +452,7 @@ export default function UpgradePage() {
           </p>
           <div className="flex flex-col items-center gap-2">
             <UpgradeButton className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-7 py-3.5 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition-all hover:bg-emerald-400 hover:-translate-y-px disabled:opacity-60" />
-            <p className="text-xs text-slate-600">{PRICING.monthlyCadence} · 7-day refund guarantee · Cancel anytime</p>
+            <p className="text-xs text-slate-600">Free for 7 days · then {PRICING.monthlyCadence} · Cancel anytime</p>
           </div>
         </div>
       </div>
@@ -495,7 +495,7 @@ export default function UpgradePage() {
           <div className="mt-7 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <UpgradeButton
               className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-7 py-4 text-base font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition-all hover:bg-emerald-400 hover:-translate-y-px disabled:opacity-60 sm:py-3.5 sm:text-sm"
-              label="Upgrade to Premium →"
+              label="Start 7-day free trial →"
             />
             <Link
               href="/magic-login"
@@ -505,7 +505,7 @@ export default function UpgradePage() {
             </Link>
           </div>
           <p className="mt-5 text-xs text-slate-700">
-            Private by default · Entries never train AI models · 7-day refund guarantee · No ads, ever
+            Free for 7 days · No charge today · Cancel anytime · No ads, ever
           </p>
         </div>
       </section>
