@@ -28,7 +28,7 @@ export default function InstallPage() {
             Keep Havenly one tap away.
           </h1>
           <p className="mt-5 max-w-lg text-base leading-relaxed text-slate-400">
-            Installing Havenly creates an app icon and usually makes returning to your
+            Installing Havenly creates an app icon and makes returning to your
             journal faster, cleaner, and more reliable.
           </p>
 

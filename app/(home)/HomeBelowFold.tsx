@@ -556,16 +556,15 @@ export default function HomeBelowFold() {
         <div className="mx-auto max-w-4xl px-5">
           <ScrollReveal className="text-center">
             <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/60">
-              Early access
+              Built with care
             </p>
             <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">
-              Havenly is new.{" "}
-              <span className="text-emerald-400">You&apos;d be among the first.</span>
+              A few things worth knowing{" "}
+              <span className="text-emerald-400">before you begin.</span>
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-slate-400">
-              There are no hundreds of reviews yet. What there is: a product
-              built carefully, a privacy model you can read in full, and a
-              7-day refund guarantee with no questions asked.
+              Havenly is a small, independent product built around one principle: your inner life
+              belongs to you. Here is what that means in practice.
             </p>
           </ScrollReveal>
 

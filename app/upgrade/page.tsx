@@ -135,6 +135,34 @@ export default function UpgradePage() {
                 ))}
               </ul>
 
+              {/* Free vs Premium comparison */}
+              <div className="mt-8 max-w-sm rounded-2xl border border-white/[0.07] bg-white/[0.03] overflow-hidden">
+                <div className="grid grid-cols-[1fr_auto_auto] text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-600 border-b border-white/[0.06] px-4 py-2.5">
+                  <span></span>
+                  <span className="w-16 text-center">Free</span>
+                  <span className="w-16 text-center text-emerald-400">Premium</span>
+                </div>
+                {[
+                  { label: "Journal entries",        free: "✓",       premium: "✓" },
+                  { label: "AI reflections",         free: "3 / mo",  premium: "Unlimited" },
+                  { label: "Pattern insights",       free: "—",       premium: "✓" },
+                  { label: "Weekly summary",         free: "—",       premium: "✓" },
+                  { label: "Why-it-keeps-happening", free: "—",       premium: "✓" },
+                  { label: "Private & ad-free",      free: "✓",       premium: "✓" },
+                ].map(({ label, free, premium }, i) => (
+                  <div
+                    key={label}
+                    className={`grid grid-cols-[1fr_auto_auto] items-center px-4 py-2.5 text-sm ${
+                      i % 2 === 0 ? "" : "bg-white/[0.015]"
+                    }`}
+                  >
+                    <span className="text-slate-400">{label}</span>
+                    <span className={`w-16 text-center text-xs ${free === "—" ? "text-slate-700" : "text-slate-400"}`}>{free}</span>
+                    <span className={`w-16 text-center text-xs font-medium ${premium === "✓" || premium === "Unlimited" ? "text-emerald-400" : "text-slate-400"}`}>{premium}</span>
+                  </div>
+                ))}
+              </div>
+
               {/* Price + CTA */}
               <div className="mt-8">
                 <div className="mb-3 flex flex-wrap items-baseline gap-x-2 gap-y-1">

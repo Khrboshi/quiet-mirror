@@ -58,8 +58,7 @@ export default function Navbar() {
   const publicLinks: NavLink[] = [
     { href: "/about",   label: "About"   },
     { href: "/blog",    label: "Blog"    },
-    { href: "/upgrade", label: "Pricing" }, // ← was "Premium"
-    { href: "/install", label: "Install" },
+    { href: "/upgrade", label: "Pricing" },
   ];
 
   const authLinks: NavLink[] = [

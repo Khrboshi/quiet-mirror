@@ -49,6 +49,9 @@ function MagicLoginInner() {
 
   const next = useMemo(() => safeNext(sp.get("next")), [sp]);
   const callbackError = sp.get("callback_error") === "1";
+  // Distinguish new vs returning visitors: logged_out=1 is set on logout redirect;
+  // returning=1 can be set by any authenticated link. Otherwise treat as new.
+  const isReturning = sp.get("logged_out") === "1" || sp.get("returning") === "1";
 
   const ios = useMemo(() => isIOS(), []);
   const standalone = useMemo(() => isStandalone(), []);
@@ -158,9 +161,19 @@ function MagicLoginInner() {
           </div>
 
           <h1 className="font-display max-w-sm text-4xl font-semibold leading-[1.1] tracking-tight text-white">
-            Welcome back.
-            <br />
-            <span className="text-slate-500">Your journal is waiting.</span>
+            {isReturning ? (
+              <>
+                Welcome back.
+                <br />
+                <span className="text-slate-500">Your journal is waiting.</span>
+              </>
+            ) : (
+              <>
+                Your private space
+                <br />
+                <span className="text-slate-500">to think out loud.</span>
+              </>
+            )}
           </h1>
 
           <div className="mt-8 max-w-sm rounded-2xl border border-white/[0.07] bg-white/[0.03] px-5 py-5">
@@ -168,6 +181,21 @@ function MagicLoginInner() {
               &ldquo;{sideQuote.text}&rdquo;
             </p>
           </div>
+
+          {!isReturning && (
+            <ul className="mt-7 max-w-xs space-y-3">
+              {[
+                "Write privately — your entries are never shared or sold",
+                "AI reflects back what it notices in your own words",
+                "See patterns across entries over time with Premium",
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-2.5 text-sm text-slate-400">
+                  <span className="mt-0.5 shrink-0 text-emerald-400">✓</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          )}
 
           <p className="mt-8 max-w-xs text-xs leading-relaxed text-slate-600">
             Your entries are private, never shared, and never used to train AI models.
@@ -197,19 +225,27 @@ function MagicLoginInner() {
                 />
                 <span className="text-sm font-semibold text-slate-300">Havenly</span>
               </div>
-              <h1 className="font-display text-3xl font-semibold tracking-tight text-white">Welcome back.</h1>
+              <h1 className="font-display text-3xl font-semibold tracking-tight text-white">
+                {isReturning ? "Welcome back." : "Your private journal."}
+              </h1>
               <p className="mt-1.5 text-sm leading-relaxed text-slate-400">
-                Your private space to write honestly, without the noise.
+                {isReturning
+                  ? "Your journal is waiting."
+                  : "Write honestly. Havenly reflects back what it notices — gently, and only when you ask."}
               </p>
             </div>
 
             {/* Desktop card header */}
             <div className="mb-5 hidden lg:block">
-              <h2 className="font-display text-2xl font-semibold text-white">Sign in to Havenly</h2>
+              <h2 className="font-display text-2xl font-semibold text-white">
+                {isReturning ? "Sign in to Havenly" : "Start your free journal"}
+              </h2>
               <p className="mt-1 text-sm text-slate-500">
                 {ios
                   ? "Use the code option — it works best on iPhone."
-                  : "Choose the method that fits this device."}
+                  : isReturning
+                  ? "Choose the method that fits this device."
+                  : "No password. No card required. One email to begin."}
               </p>
             </div>
 
