@@ -124,6 +124,46 @@ Rules:
   return { system, user };
 }
 
+// ── Voice sanitizer ───────────────────────────────────────────────────────────
+// Programmatically removes first-person "I" constructions that the model
+// produces despite prompt instructions. Runs after every generation.
+
+function sanitizeSummaryVoice(text: string): string {
+  return text
+    // "As I've been reading your entries, I've noticed..." → "Across your entries..."
+    .replace(/As I'?ve been reading your entries,?\s*/gi, "Across your entries, ")
+    .replace(/As I'?ve been looking at your entries,?\s*/gi, "Across your entries, ")
+    .replace(/As I'?ve gone through your entries,?\s*/gi, "Across your entries, ")
+    // "I've noticed that..." → "There's a pattern here:"
+    .replace(/I'?ve noticed that\s+/gi, "There's a pattern here: ")
+    .replace(/I'?ve noticed\s+/gi, "")
+    // "I notice..." → remove the phrase
+    .replace(/I notice that\s+/gi, "")
+    .replace(/I notice\s+/gi, "")
+    // "I sense a..." → "There's a..."
+    .replace(/I sense a\s+/gi, "There's a ")
+    .replace(/I sense\s+/gi, "There's a sense of ")
+    // "I can see..." → remove
+    .replace(/I can see that\s+/gi, "")
+    .replace(/I can see\s+/gi, "")
+    // "I see..." → remove
+    .replace(/I see that\s+/gi, "")
+    .replace(/I see a\s+/gi, "There's a ")
+    // "I'd also note..." → "Worth noting..."
+    .replace(/I'?d also note\s+/gi, "Worth noting: ")
+    .replace(/I'?d note\s+/gi, "Worth noting: ")
+    // "I wonder..." → "The question worth sitting with..."
+    .replace(/I wonder\s+/gi, "The question worth sitting with: ")
+    // "I think..." → remove
+    .replace(/I think that\s+/gi, "")
+    .replace(/I think\s+/gi, "")
+    // "It's like I'm seeing..." → remove
+    .replace(/It'?s like I'?m seeing\s+/gi, "")
+    // Clean up any double spaces left behind
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
 // ── Main export ───────────────────────────────────────────────────────────────
 
 export async function generateWeeklySummaryForUser(
@@ -232,6 +272,11 @@ export async function generateWeeklySummaryForUser(
   }
 
   if (!summary || summary.length < 50) return { ok: false, reason: "groq_failed" };
+
+  // Post-process: strip first-person "I" constructions the model keeps generating
+  // despite prompt instructions. These replacements run on every summary before
+  // it's saved or shown to the user.
+  summary = sanitizeSummaryVoice(summary);
 
   // Save to profiles
   const generatedAt = new Date().toISOString();
