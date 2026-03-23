@@ -10,5 +10,5 @@ export const PRICING = {
   /** Display string — price + cadence */
   monthlyCadence: "$1/month",
   /** Short value-framing used near the price */
-  valueLabel: "Almost Free Of Charge",
+  valueLabel: "7-day free trial included",
 } as const;
