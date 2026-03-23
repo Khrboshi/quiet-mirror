@@ -1,7 +1,5 @@
 import Link from "next/link";
 
-export const dynamic = "force-dynamic";
-
 export default function PrivacyPolicyPage() {
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
@@ -23,11 +21,7 @@ export default function PrivacyPolicyPage() {
         <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-900/40 p-5 text-sm">
           <p className="text-xs text-slate-300">
             <span className="font-semibold text-slate-100">Last updated:</span>{" "}
-            {new Date().toLocaleDateString(undefined, {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
+            June 1, 2025
           </p>
           <p className="mt-2 text-xs text-slate-300">
             If you have questions, contact us at{" "}
@@ -46,7 +40,9 @@ export default function PrivacyPolicyPage() {
             <p className="mt-2 text-slate-300">
               Havenly is a journaling and reflection companion. It is not a
               clinical service, not emergency support, and not a substitute for
-              professional care.
+              professional care. If you are in immediate danger or experiencing a
+              crisis, please contact your local emergency services or a crisis
+              helpline.
             </p>
           </section>
 
@@ -76,6 +72,14 @@ export default function PrivacyPolicyPage() {
                 and troubleshooting (for example, timestamps and basic request
                 metadata).
               </li>
+              <li>
+                <span className="font-semibold text-slate-100">
+                  Payment data:
+                </span>{" "}
+                if you subscribe to Premium, payment details are collected and
+                processed directly by Stripe. Havenly does not store your card
+                number.
+              </li>
             </ul>
           </section>
 
@@ -90,8 +94,12 @@ export default function PrivacyPolicyPage() {
                 default.
               </li>
               <li>
-                We do not use your private entries to train public models.
+                We do not use your private entries to train AI models — ours or
+                anyone else&apos;s. Our AI provider processes your text solely to
+                generate the reflection you requested and does not retain or
+                train on that data.
               </li>
+              <li>We do not serve ads or sell access to your data to advertisers.</li>
             </ul>
           </section>
 
@@ -112,20 +120,46 @@ export default function PrivacyPolicyPage() {
             </h2>
             <p className="mt-2 text-slate-300">
               If you choose to generate an AI reflection, the text you provide
-              may be processed to produce that reflection. We aim to keep this
-              processing minimal and aligned to your request.
+              is sent to our AI provider to produce that reflection. We aim to
+              keep this processing minimal and aligned to your request. The AI
+              provider does not use your data to train models.
             </p>
           </section>
 
           <section>
             <h2 className="text-lg font-semibold text-slate-100">
-              Data storage and processors
+              Data storage and subprocessors
             </h2>
             <p className="mt-2 text-slate-300">
-              Havenly uses third-party infrastructure to operate — including
-              authentication, database storage, and payment processing. Your
-              data is stored and processed by these providers strictly to
-              deliver the service to you, and for no other purpose.
+              Havenly uses third-party infrastructure to operate. Your data is
+              stored and processed by these providers strictly to deliver the
+              service to you, and for no other purpose. Our current
+              subprocessors are:
+            </p>
+            <ul className="mt-3 list-disc space-y-2 pl-5 text-slate-300">
+              <li>
+                <span className="font-semibold text-slate-100">Vercel</span>{" "}
+                — hosting and serverless functions.
+              </li>
+              <li>
+                <span className="font-semibold text-slate-100">Supabase</span>{" "}
+                — authentication, database storage, and row-level security.
+              </li>
+              <li>
+                <span className="font-semibold text-slate-100">Groq</span>{" "}
+                — AI inference for generating reflections.
+              </li>
+              <li>
+                <span className="font-semibold text-slate-100">Stripe</span>{" "}
+                — payment processing for Premium subscriptions.
+              </li>
+              <li>
+                <span className="font-semibold text-slate-100">Resend</span>{" "}
+                — transactional email delivery (magic links, sign-in codes).
+              </li>
+            </ul>
+            <p className="mt-3 text-slate-300">
+              We will update this list if subprocessors change.
             </p>
           </section>
 
@@ -136,7 +170,11 @@ export default function PrivacyPolicyPage() {
             <p className="mt-2 text-slate-300">
               We keep your data for as long as your account is active, or as
               needed to provide the service. You can request deletion of your
-              account and associated data.
+              account and all associated data by emailing{" "}
+              <span className="font-semibold text-slate-100">
+                havenly.support@gmail.com
+              </span>
+              . We will process deletion requests within 30 days.
             </p>
           </section>
 
@@ -155,9 +193,11 @@ export default function PrivacyPolicyPage() {
               Cookies and analytics
             </h2>
             <p className="mt-2 text-slate-300">
-              We may use essential cookies for login and session handling. If
-              analytics are added later, we will document what is collected and
-              how to opt out where applicable.
+              We use essential cookies for login and session handling. We may use
+              privacy-focused analytics to understand broad usage patterns (such
+              as page views and feature adoption). Analytics data is aggregated
+              and is not used to identify, profile, or target individual users. We
+              do not use advertising cookies or third-party tracking pixels.
             </p>
           </section>
 
@@ -171,9 +211,30 @@ export default function PrivacyPolicyPage() {
               <li>Choose what you write and what you submit for reflection.</li>
             </ul>
           </section>
+
+          <section>
+            <h2 className="text-lg font-semibold text-slate-100">
+              Changes to this policy
+            </h2>
+            <p className="mt-2 text-slate-300">
+              If we make material changes to this policy, we will update the
+              &ldquo;Last updated&rdquo; date at the top and, where appropriate,
+              notify you by email. Continued use of Havenly after changes are
+              posted constitutes acceptance of the updated policy.
+            </p>
+          </section>
         </div>
 
-        <div className="mt-12 rounded-2xl border border-slate-800 bg-slate-900/40 p-5 text-sm">
+        <div className="mt-12 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-700">
+          <Link
+            href="/terms"
+            className="text-emerald-600 transition-colors hover:text-emerald-500"
+          >
+            Terms of Service →
+          </Link>
+        </div>
+
+        <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-900/40 p-5 text-sm">
           <p className="font-semibold text-slate-100">
             Ready to try a private check-in?
           </p>
