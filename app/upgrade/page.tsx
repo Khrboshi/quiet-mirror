@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { PRICING } from "@/app/lib/pricing";
+import { PAYMENT } from "@/app/lib/payment";
 
 const faqs = [
   {
@@ -49,7 +50,7 @@ function UpgradeButton({
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/stripe/checkout", { method: "POST" });
+      const res = await fetch(PAYMENT.checkoutApiRoute, { method: "POST" });
       if (res.status === 401) {
         router.push("/magic-login?next=/upgrade");
         return;
@@ -193,7 +194,7 @@ export default function UpgradePage() {
                   </Link>
                 </div>
 
-                <p className="mt-3 text-xs text-slate-700">Secure checkout via Stripe</p>
+                <p className="mt-3 text-xs text-slate-700">{PAYMENT.checkoutTrustLine}</p>
               </div>
 
               {/* Already free? */}

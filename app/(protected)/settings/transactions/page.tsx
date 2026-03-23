@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useSupabase } from "@/app/components/SupabaseSessionProvider";
 import { useUserPlan } from "@/app/components/useUserPlan";
+import { PAYMENT } from "@/app/lib/payment";
 
 type InvoiceItem = {
   id: string;
@@ -57,7 +58,7 @@ export default function TransactionsPage() {
 
   const goToPortal = () => {
     // IMPORTANT: full navigation (no fetch, no Link) to avoid CORS issues.
-    window.location.href = "/api/stripe/portal?returnUrl=/settings/transactions";
+    window.location.href = PAYMENT.portalUrl("/settings/transactions");
   };
 
   useEffect(() => {
@@ -68,7 +69,7 @@ export default function TransactionsPage() {
         setInvLoading(true);
         setInvError(null);
 
-        const res = await fetch("/api/stripe/invoices", {
+        const res = await fetch(PAYMENT.invoicesApiRoute, {
           method: "GET",
           credentials: "include",
           headers: { "Content-Type": "application/json" },
@@ -170,7 +171,7 @@ export default function TransactionsPage() {
             </Link>
           </div>
 
-          <p className="mt-4 text-xs text-slate-500">Billing is managed securely by Stripe.</p>
+          <p className="mt-4 text-xs text-slate-500">{PAYMENT.billingManagedLine}</p>
         </div>
 
         {/* Payment history */}
@@ -251,7 +252,7 @@ export default function TransactionsPage() {
               onClick={goToPortal}
               className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-white/10"
             >
-              Open Stripe portal
+              {PAYMENT.portalLabel}
             </button>
 
             <Link

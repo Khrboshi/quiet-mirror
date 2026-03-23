@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { ensureCreditsFresh } from "@/lib/creditRules";
 import { PRICING } from "@/app/lib/pricing";
+import { PAYMENT } from "@/app/lib/payment";
 
 export const dynamic = "force-dynamic";
 
@@ -111,7 +112,7 @@ export default async function BillingPage() {
             <PlanBadge plan={plan} />
             {isPaid ? (
               <a
-                href="/api/stripe/portal?returnUrl=/settings/billing"
+                href={PAYMENT.portalUrl("/settings/billing")}
                 className="inline-flex items-center justify-center rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/15"
               >
                 Manage subscription
@@ -211,12 +212,12 @@ export default async function BillingPage() {
                 <p className="mt-2 text-sm text-slate-400">
                   Cancel anytime via{" "}
                   <a
-                    href="/api/stripe/portal?returnUrl=/settings/billing"
+                    href={PAYMENT.portalUrl("/settings/billing")}
                     className="text-emerald-300 hover:text-emerald-200"
                   >
                     Manage subscription
                   </a>{" "}
-                  in Stripe.
+                  in {PAYMENT.providerName}.
                 </p>
               ) : (
                 <p className="mt-2 text-sm text-slate-400">
@@ -275,10 +276,10 @@ export default async function BillingPage() {
 
           {isPaid ? (
             <a
-              href="/api/stripe/portal?returnUrl=/settings/billing"
+              href={PAYMENT.portalUrl("/settings/billing")}
               className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/15"
             >
-              Open Stripe portal
+              {PAYMENT.portalLabel}
             </a>
           ) : (
             <a

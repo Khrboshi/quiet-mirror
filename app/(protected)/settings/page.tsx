@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { ensureCreditsFresh } from "@/lib/creditRules";
+import { PAYMENT } from "@/app/lib/payment";
 
 export const dynamic = "force-dynamic";
 
@@ -65,7 +66,7 @@ function ActionLink({
       ? "rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-emerald-400 transition-colors"
       : "rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/15 transition-colors";
 
-  const isPortal = href.startsWith("/api/stripe/portal");
+  const isPortal = href.startsWith(PAYMENT.portalUrl("").split("?")[0]);
 
   if (isPortal) {
     return <a href={href} className={cls}>{children}</a>;
@@ -149,7 +150,7 @@ export default async function SettingsPage() {
 
   const creditsUsed = isPremium ? null : 3 - remainingCredits;
 
-  const portalReturn = encodeURIComponent("/settings");
+  const portalReturn = "/settings";
 
   return (
     <main className="mx-auto w-full max-w-5xl px-6 py-14 text-slate-200">
@@ -167,10 +168,10 @@ export default async function SettingsPage() {
             <PlanBadge plan={plan} />
             {isPremium ? (
               <ActionLink
-                href={`/api/stripe/portal?returnUrl=${portalReturn}`}
+                href={PAYMENT.portalUrl(portalReturn)}
                 variant="secondary"
               >
-                Manage subscription
+                {PAYMENT.manageLabel}
               </ActionLink>
             ) : (
               <ActionLink href="/upgrade" variant="primary">

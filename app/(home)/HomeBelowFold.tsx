@@ -1,6 +1,7 @@
 import Link from "next/link";
 import ScrollReveal from "@/app/components/ScrollReveal";
 import { PRICING } from "@/app/lib/pricing";
+import { PAYMENT } from "@/app/lib/payment";
 
 // ─── Data ──────────────────────────────────────────────────────────────────
 
@@ -838,7 +839,7 @@ export default function HomeBelowFold() {
                 </Link>
               </div>
               <p className="mt-3 text-center text-xs text-slate-700">
-                Secure checkout via Stripe
+                {PAYMENT.checkoutTrustLine}
               </p>
             </div>
           </ScrollReveal>
