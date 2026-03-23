@@ -2,10 +2,10 @@
 
 export const dynamic = "force-dynamic";
 
-import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useSupabase } from "@/app/components/SupabaseSessionProvider";
 import { sendMagicLink } from "./sendMagicLink";
 import { verifyOtp } from "./verifyOtp";
@@ -27,7 +27,7 @@ function isStandalone(): boolean {
   );
 }
 
-function safeNext(raw: string | null): string {
+function safeNext(raw: string | null | undefined): string {
   const v = (raw || "/dashboard").trim();
   if (!v.startsWith("/")) return "/dashboard";
   if (v.startsWith("//")) return "/dashboard";
@@ -44,26 +44,46 @@ const SIDE_QUOTES = [
 
 function MagicLoginInner() {
   const router = useRouter();
-  const sp = useSearchParams();
   const { session } = useSupabase();
 
-  const next = useMemo(() => safeNext(sp.get("next")), [sp]);
-  const callbackError = sp.get("callback_error") === "1";
-  // Distinguish new vs returning visitors: logged_out=1 is set on logout redirect;
-  // returning=1 can be set by any authenticated link. Otherwise treat as new.
-  const isReturning = sp.get("logged_out") === "1" || sp.get("returning") === "1";
+  const [paramsReady, setParamsReady] = useState(false);
+  const [next, setNext] = useState("/dashboard");
+  const [callbackError, setCallbackError] = useState(false);
+  const [isReturning, setIsReturning] = useState(false);
 
-  const ios = useMemo(() => isIOS(), []);
-  const standalone = useMemo(() => isStandalone(), []);
+  const [ios, setIos] = useState(false);
+  const [standalone, setStandalone] = useState(false);
+  const [quoteIndex, setQuoteIndex] = useState(0);
 
-  const [mode, setMode] = useState<Mode>(ios ? "code" : "link");
+  const [mode, setMode] = useState<Mode>("link");
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
 
-  const quoteIndex = useMemo(() => Math.floor(Math.random() * SIDE_QUOTES.length), []);
-  const sideQuote = SIDE_QUOTES[quoteIndex];
+  const sideQuote = SIDE_QUOTES[quoteIndex] ?? SIDE_QUOTES[0];
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const sp = new URLSearchParams(window.location.search);
+    const parsedNext = safeNext(sp.get("next"));
+    const parsedCallbackError = sp.get("callback_error") === "1";
+    const parsedReturning =
+      sp.get("logged_out") === "1" || sp.get("returning") === "1";
+
+    const deviceIsIOS = isIOS();
+    const appIsStandalone = isStandalone();
+
+    setNext(parsedNext);
+    setCallbackError(parsedCallbackError);
+    setIsReturning(parsedReturning);
+    setIos(deviceIsIOS);
+    setStandalone(appIsStandalone);
+    setMode(deviceIsIOS ? "code" : "link");
+    setQuoteIndex(Math.floor(Math.random() * SIDE_QUOTES.length));
+    setParamsReady(true);
+  }, []);
 
   const goNext = useCallback(
     (target?: string) => {
@@ -73,8 +93,9 @@ function MagicLoginInner() {
   );
 
   useEffect(() => {
+    if (!paramsReady) return;
     if (session?.user) router.replace(next);
-  }, [session?.user, router, next]);
+  }, [session?.user, router, next, paramsReady]);
 
   useEffect(() => {
     if (!callbackError) return;
@@ -87,35 +108,65 @@ function MagicLoginInner() {
 
   useEffect(() => {
     const STORAGE_KEY = "havenly:auth_complete";
+
     const onStorage = (e: StorageEvent) => {
       if (e.key !== STORAGE_KEY || !e.newValue) return;
-      try { goNext(JSON.parse(e.newValue)?.next); } catch { goNext(); }
+      try {
+        goNext(JSON.parse(e.newValue)?.next);
+      } catch {
+        goNext();
+      }
     };
+
     window.addEventListener("storage", onStorage);
+
     let bc: BroadcastChannel | null = null;
+
     try {
       bc = new BroadcastChannel("havenly_auth");
       bc.onmessage = (ev) => {
         if (ev?.data?.type === "AUTH_COMPLETE") goNext(ev.data?.next);
       };
     } catch {}
+
     return () => {
       window.removeEventListener("storage", onStorage);
-      try { bc?.close(); } catch {}
+      try {
+        bc?.close();
+      } catch {}
     };
   }, [goNext]);
+
+  useEffect(() => {
+    if (!paramsReady) return;
+    try {
+      window.localStorage.setItem("havenly:auth_next", next);
+    } catch {
+      // ignore storage errors
+    }
+  }, [next, paramsReady]);
 
   async function onSendEmail() {
     setStatus("loading");
     setMessage(null);
+
+    try {
+      window.localStorage.setItem("havenly:auth_next", next);
+    } catch {
+      // ignore
+    }
+
     const fd = new FormData();
     fd.set("email", email);
+
     const res = await sendMagicLink(fd);
+
     if (!res.success) {
       setStatus("error");
       setMessage(res.message || "Failed to send email.");
       return;
     }
+
     setStatus("success");
     setMessage(
       mode === "code"
@@ -127,15 +178,19 @@ function MagicLoginInner() {
   async function onVerifyCode() {
     setStatus("loading");
     setMessage(null);
+
     const fd = new FormData();
     fd.set("email", email);
     fd.set("token", token);
+
     const res = await verifyOtp(fd);
+
     if (!res.success) {
       setStatus("error");
       setMessage(res.message || "Invalid code.");
       return;
     }
+
     goNext();
   }
 
@@ -145,7 +200,6 @@ function MagicLoginInner() {
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto w-full max-w-6xl px-4 pt-24 pb-16 sm:px-6 lg:grid lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:px-8">
-
         {/* ── Left column ── */}
         <div className="hidden lg:flex lg:flex-col lg:justify-start">
           <div className="mb-8 flex items-center gap-2.5">
@@ -212,7 +266,6 @@ function MagicLoginInner() {
         {/* ── Right column — form ── */}
         <div className="w-full">
           <div className="mx-auto w-full max-w-md rounded-[1.75rem] border border-white/10 bg-slate-900/60 p-6 shadow-2xl shadow-black/40 backdrop-blur sm:p-7">
-
             {/* Mobile header */}
             <div className="mb-5 lg:hidden">
               <div className="mb-4 flex items-center gap-2">
@@ -252,7 +305,8 @@ function MagicLoginInner() {
             {standalone && (
               <div className="mb-5 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.06] p-4 text-sm leading-relaxed text-emerald-200">
                 You&apos;re using the Home Screen app.{" "}
-                <span className="font-semibold">Code sign-in</span> is usually the most reliable choice here.
+                <span className="font-semibold">Code sign-in</span> is usually the most reliable
+                choice here.
               </div>
             )}
 
@@ -340,9 +394,7 @@ function MagicLoginInner() {
                   </label>
                   <input
                     value={token}
-                    onChange={(e) =>
-                      setToken(e.target.value.replace(/\D/g, "").slice(0, 8))
-                    }
+                    onChange={(e) => setToken(e.target.value.replace(/\D/g, "").slice(0, 8))}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && tokenOk) onVerifyCode();
                     }}
@@ -359,7 +411,8 @@ function MagicLoginInner() {
                     {status === "loading" ? "Verifying…" : "Verify and sign in"}
                   </button>
                   <p className="mt-3 text-xs leading-relaxed text-slate-600">
-                    Tip: if the email shows spaces between numbers, just paste it. Havenly removes spaces automatically.
+                    Tip: if the email shows spaces between numbers, just paste it. Havenly removes
+                    spaces automatically.
                   </p>
                 </div>
               </div>
@@ -384,15 +437,5 @@ function MagicLoginInner() {
 }
 
 export default function MagicLoginPage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="flex min-h-screen items-center justify-center bg-slate-950 px-6 text-sm text-slate-300">
-          Loading…
-        </div>
-      }
-    >
-      <MagicLoginInner />
-    </Suspense>
-  );
+  return <MagicLoginInner />;
 }
