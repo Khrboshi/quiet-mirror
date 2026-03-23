@@ -10,7 +10,7 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-6 py-10">
         <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
 
-          {/* Brand — proper logo + wordmark, no sparkle emoji */}
+          {/* Brand */}
           <div className="space-y-3 max-w-xs">
             <Link
               href="/"
@@ -31,7 +31,6 @@ export default function Footer() {
               A private space to write, reflect, and notice what keeps happening
               in your life.
             </p>
-            {/* Privacy promise — promoted from invisible copyright bar */}
             <p className="text-[11px] leading-relaxed text-slate-600">
               Entries are private and never used to train AI models.
             </p>
@@ -115,6 +114,12 @@ export default function Footer() {
               </p>
               <div className="flex flex-col gap-2">
                 <Link
+                  href="/terms"
+                  className="hover:text-slate-300 transition-colors"
+                >
+                  Terms of Service
+                </Link>
+                <Link
                   href="/privacy"
                   className="hover:text-slate-300 transition-colors"
                 >
@@ -129,7 +134,7 @@ export default function Footer() {
         <div className="mt-8 border-t border-white/[0.05] pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs text-slate-700">
           <p>© {year} Havenly. All rights reserved.</p>
           <p className="text-emerald-900/60">
-            No ads · No data sales · 7-day refund guarantee
+            No ads · No data sales · 7-day free trial
           </p>
         </div>
       </div>
