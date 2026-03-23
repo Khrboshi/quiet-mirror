@@ -6,9 +6,9 @@ export const PRICING = {
   /** Monthly price in USD */
   monthlyUsd: 30,
   /** Display string — price only */
-  monthly: "$30",
+  monthly: "$1",
   /** Display string — price + cadence */
-  monthlyCadence: "$30/month",
+  monthlyCadence: "$1/month",
   /** Short value-framing used near the price */
-  valueLabel: "About $1 a day",
+  valueLabel: "About $0.03 a day",
 } as const;
