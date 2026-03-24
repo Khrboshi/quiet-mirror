@@ -9,11 +9,11 @@ const TRIAL_DAYS = 1; // ← the one number to change
 
 export const PRICING = {
   /** Monthly price in USD */
-  monthlyUsd: 1,
+  monthlyUsd: 9,
   /** Display string — price only */
-  monthly: "$1",
+  monthly: "$9",
   /** Display string — price + cadence */
-  monthlyCadence: "$1/month",
+  monthlyCadence: "$9/month",
 
   // ── Trial ────────────────────────────────────────────────────────────────
 
