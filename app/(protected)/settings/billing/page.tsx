@@ -4,6 +4,7 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { ensureCreditsFresh } from "@/lib/creditRules";
 import { PRICING } from "@/app/lib/pricing";
 import { PAYMENT } from "@/app/lib/payment";
+import { CONFIG } from "@/app/lib/config";
 
 export const dynamic = "force-dynamic";
 
@@ -58,7 +59,6 @@ export default async function BillingPage() {
 
   if (userErr || !user) redirect("/magic-login");
 
-  // Ensure credits are fresh before reading plan
   await ensureCreditsFresh({ supabase, userId: user.id });
 
   const { data: credits } = await supabase
@@ -73,7 +73,6 @@ export default async function BillingPage() {
 
   const isPaid = plan === "PREMIUM" || plan === "TRIAL";
 
-  // Next billing date label
   const nextBillingLabel = isPaid && (credits as any)?.renewal_date
     ? new Date((credits as any).renewal_date).toLocaleDateString("en-GB", {
         day: "numeric",
@@ -83,8 +82,9 @@ export default async function BillingPage() {
       })
     : null;
 
-  // Show refund window notice if user is within 7 days of subscribing.
+  // Show refund window notice if user is within the trial period of subscribing.
   // We derive the start date from renewal_date - 30 days.
+  // PRICING.trialDays is the single source of truth — change it in pricing.ts.
   let refundDaysLeft: number | null = null;
   if (isPaid && (credits as any)?.renewal_date) {
     const renewalDate = new Date((credits as any).renewal_date);
@@ -92,8 +92,8 @@ export default async function BillingPage() {
     const daysSinceStart = Math.floor(
       (Date.now() - startDate.getTime()) / (1000 * 60 * 60 * 24)
     );
-    if (daysSinceStart < 7) {
-      refundDaysLeft = 7 - daysSinceStart;
+    if (daysSinceStart < PRICING.trialDays) {
+      refundDaysLeft = PRICING.trialDays - daysSinceStart;
     }
   }
 
@@ -129,20 +129,25 @@ export default async function BillingPage() {
         </div>
       </header>
 
-      {/* Refund window notice — only visible within first 7 days of Premium */}
+      {/* Refund window notice — only visible within the trial period */}
       {refundDaysLeft !== null && (
         <div className="mb-6 flex items-start gap-3 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.06] px-5 py-4">
           <span className="mt-0.5 text-base">🛡️</span>
           <div>
             <p className="text-sm font-semibold text-emerald-300">
               {refundDaysLeft === 1
-                ? "Last day of your 7-day refund window"
-                : `${refundDaysLeft} days left in your 7-day refund window`}
+                ? `Last day of your ${PRICING.trialDays}-day refund window`
+                : `${refundDaysLeft} days left in your ${PRICING.trialDays}-day refund window`}
             </p>
             <p className="mt-0.5 text-xs text-slate-400">
               Not what you expected? Email{" "}
-              <span className="text-slate-200">havenly.support@gmail.com</span> for a
-              full refund — no questions asked.
+              <a
+                href={`mailto:${CONFIG.supportEmail}`}
+                className="text-slate-200 underline underline-offset-2 hover:text-emerald-300"
+              >
+                {CONFIG.supportEmail}
+              </a>{" "}
+              for a full refund — no questions asked.
             </p>
           </div>
         </div>
@@ -186,7 +191,6 @@ export default async function BillingPage() {
                 )}
               </ul>
 
-              {/* Bug #10/12 fix: show price and next charge date */}
               {isPaid && (
                 <div className="mt-4 space-y-2 border-t border-slate-800 pt-4">
                   <div className="flex items-center justify-between text-xs">
@@ -225,14 +229,21 @@ export default async function BillingPage() {
                 </p>
               )}
 
-              {/* Bug #11 fix: always-visible refund guarantee for paid users */}
+              {/* Refund guarantee — PRICING.trialDays drives the number */}
               {isPaid && (
                 <div className="mt-4 rounded-lg border border-emerald-500/15 bg-emerald-500/5 px-3 py-2.5">
                   <p className="text-xs font-medium text-emerald-300">
-                    🛡️ 7-day full refund guarantee
+                    🛡️ {PRICING.trialDays}-day full refund guarantee
                   </p>
                   <p className="mt-0.5 text-xs text-slate-500">
-                    Email <span className="text-slate-300">havenly.support@gmail.com</span> — no questions asked.
+                    Email{" "}
+                    <a
+                      href={`mailto:${CONFIG.supportEmail}`}
+                      className="text-slate-300 underline underline-offset-2 hover:text-emerald-300"
+                    >
+                      {CONFIG.supportEmail}
+                    </a>{" "}
+                    — no questions asked.
                   </p>
                 </div>
               )}
@@ -250,7 +261,7 @@ export default async function BillingPage() {
 
           <p className="mt-6 text-xs text-slate-500">
             {isPaid
-              ? "Thank you for supporting Havenly."
+              ? `Thank you for supporting ${CONFIG.appName}.`
               : "No pressure. Free remains fully usable."}
           </p>
         </section>
@@ -261,16 +272,19 @@ export default async function BillingPage() {
 
           <div className="rounded-xl border border-slate-800 bg-slate-950/40 p-5">
             <div className="text-xs font-semibold text-slate-400">Email</div>
-            <div className="mt-1 text-sm text-slate-200">
-              {user.email ?? "—"}
-            </div>
+            <div className="mt-1 text-sm text-slate-200">{user.email ?? "—"}</div>
           </div>
 
           <div className="mt-4 rounded-xl border border-slate-800 bg-slate-950/40 p-5">
             <div className="text-xs font-semibold text-slate-400">Support</div>
             <p className="mt-2 text-sm text-slate-400">
               Billing questions or cancellations:{" "}
-              <span className="text-slate-200">havenly.support@gmail.com</span>
+              <a
+                href={`mailto:${CONFIG.supportEmail}`}
+                className="text-slate-200 underline underline-offset-2 hover:text-emerald-300"
+              >
+                {CONFIG.supportEmail}
+              </a>
             </p>
           </div>
 
