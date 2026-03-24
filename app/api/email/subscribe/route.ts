@@ -7,7 +7,7 @@ import { CONFIG } from "@/app/lib/config";
 export const runtime = "nodejs";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const FROM_ADDRESS = "Havenly <onboarding@resend.dev>";
+const FROM_ADDRESS = CONFIG.emailFromAddress;
 
 // Rate limit: max 3 subscribe attempts per IP per hour
 const RATE_LIMIT_MAX = 3;
@@ -55,7 +55,7 @@ function confirmationEmailHtml(): string {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>You're in — Havenly Letters</title>
+  <title>You're in — ${CONFIG.newsletterName}</title>
 </head>
 <body style="margin:0;padding:0;background-color:#020617;font-family:'DM Sans',system-ui,sans-serif;color:#cbd5e1;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#020617;padding:40px 16px;">
@@ -64,7 +64,7 @@ function confirmationEmailHtml(): string {
         <table width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;">
           <tr>
             <td style="padding-bottom:32px;">
-              <span style="font-size:18px;font-weight:700;color:#f8fafc;letter-spacing:-0.02em;">Havenly</span>
+              <span style="font-size:18px;font-weight:700;color:#f8fafc;letter-spacing:-0.02em;">${CONFIG.appName}</span>
             </td>
           </tr>
           <tr>
@@ -107,7 +107,7 @@ function confirmationEmailHtml(): string {
           <tr>
             <td>
               <p style="margin:0;font-size:12px;line-height:1.6;color:#334155;">
-                You're receiving this because you signed up at Havenly.<br />
+                You're receiving this because you signed up at ${CONFIG.appName}.<br />
                 Your email address is never sold or shared.<br />
                 <a href="${CONFIG.siteUrl}/privacy" style="color:#475569;">Privacy Policy</a>
               </p>
@@ -166,7 +166,7 @@ export async function POST(req: Request) {
         const { error: emailError } = await resend.emails.send({
           from: FROM_ADDRESS,
           to: email,
-          subject: "You're in — Havenly Letters",
+          subject: CONFIG.emailConfirmSubject,
           html: confirmationEmailHtml(),
         });
         if (emailError) {

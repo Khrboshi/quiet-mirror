@@ -1,6 +1,7 @@
 // lib/ai/generateReflection.ts
 // Havenly V23 — Phase 3 fixes
 // Bug fixes:
+import { CONFIG } from "@/app/lib/config";
 // 1) WORK domain detection: added signals for "project lead", "overlooked", "passed over",
 //    "three years here", "nobody asked", "seniority", "recognition" etc.
 // 2) Quality gate: after 3 failed attempts, injectAnchorIntoCarrying now fires on ANY
@@ -1371,7 +1372,7 @@ BANNED question patterns: "what could be causing your symptoms" (self-diagnosis)
       ? `\nPREMIUM DEPTH:\n- Use a micro-framework implicitly (facts vs fears, needs vs strategies, control vs uncertainty).\n- Themes/emotions: return at least 3 each.\n- All 4 questions must be specific to THIS entry.\n`
       : "";
 
-  return `You are Havenly — a private journaling thinking partner.
+  return `You are ${CONFIG.aiPersonaName} — a private journaling thinking partner.
 Make the person feel genuinely seen, with precision, leaving them clearer than before.
 
 CORE RULES:

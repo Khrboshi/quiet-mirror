@@ -1,5 +1,6 @@
 // app/api/ai/tools/reflection/route.ts
 import { NextResponse } from "next/server";
+import { CONFIG } from "@/app/lib/config";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { ensureCreditsFresh } from "@/lib/creditRules";
 import { normalizeAIResponseSignals } from "@/lib/ai/normalizeInsightSignals";
@@ -135,7 +136,7 @@ export async function GET() {
     );
   }
 
-  const system = `You are Havenly, a calm and perceptive AI journaling companion.
+  const system = `You are ${CONFIG.aiPersonaName}, a calm and perceptive AI journaling companion.
 Your job is to write ONE reflection question for this person, shaped around what keeps showing up in their journal.
 
 Rules:

@@ -1,7 +1,7 @@
 // app/lib/config.ts
 // Single source of truth for all site-wide constants.
-// To rebrand: update the BRAND section below — every title, tag, and
-// metadata reference in the app updates automatically in one pass.
+// To rebrand: update the values below — every title, metadata, email,
+// AI persona, and UI string updates automatically in one pass.
 
 export const CONFIG = {
   // ── Brand ────────────────────────────────────────────────────────────────
@@ -22,6 +22,20 @@ export const CONFIG = {
   // ── Contact ──────────────────────────────────────────────────────────────
   /** Support email shown to users everywhere in the app */
   supportEmail: "havenly.support@gmail.com",
+
+  // ── Email / Newsletter ───────────────────────────────────────────────────
+  /** Newsletter name shown in EmailCapture component and email templates */
+  newsletterName: "Havenly Letters",
+
+  /** From address used in all outgoing emails (must match verified Resend domain) */
+  emailFromAddress: "Havenly <onboarding@resend.dev>",
+
+  /** Subject line for newsletter confirmation email */
+  emailConfirmSubject: "You're in — Havenly Letters",
+
+  // ── AI Persona ───────────────────────────────────────────────────────────
+  /** Name the AI uses to identify itself in all system prompts */
+  aiPersonaName: "Havenly",
 
   // ── URLs ─────────────────────────────────────────────────────────────────
   /** Public site URL — falls back to Vercel preview URL */

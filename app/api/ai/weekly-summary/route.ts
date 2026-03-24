@@ -1,5 +1,6 @@
 // app/api/ai/weekly-summary/route.ts
 import { NextResponse } from "next/server";
+import { CONFIG } from "@/app/lib/config";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { createClient } from "@supabase/supabase-js";
 import { ensureCreditsFresh } from "@/lib/creditRules";
@@ -115,7 +116,7 @@ function buildSummaryPrompt(opts: {
     .map((d) => DOMAIN_LABELS[d] ?? d.toLowerCase())
     .join(", ");
 
-  const system = `You are Havenly — a private journaling companion that reflects back what it notices.
+  const system = `You are ${CONFIG.aiPersonaName} — a private journaling companion that reflects back what it notices.
 Write a short, personal summary of what has been showing up across this person's journal entries.
 
 Rules:

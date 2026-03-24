@@ -3,6 +3,7 @@
 // Takes a userId + admin Supabase client, generates a summary, saves it to profiles.
 
 import { SupabaseClient } from "@supabase/supabase-js";
+import { CONFIG } from "@/app/lib/config";
 import {
   bucketCorepattern,
   normalizeAIResponseSignals,
@@ -91,7 +92,7 @@ function buildPrompt(opts: {
     .map((d) => DOMAIN_LABELS[d] ?? d.toLowerCase())
     .join(", ");
 
-  const system = `You are Havenly — a private journaling companion that reflects back what it notices.
+  const system = `You are ${CONFIG.aiPersonaName} — a private journaling companion that reflects back what it notices.
 Write a short, personal summary of what has been showing up across this person's journal entries.
 
 Rules:

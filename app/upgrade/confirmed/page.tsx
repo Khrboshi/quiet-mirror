@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { PRICING } from "@/app/lib/pricing";
+import { CONFIG } from "@/app/lib/config";
 
-export const metadata = { title: "Welcome to Premium | Havenly" };
+export const metadata = { title: `Welcome to Premium | ${CONFIG.appName}` };
 
 export default function UpgradeConfirmedPage() {
   return (

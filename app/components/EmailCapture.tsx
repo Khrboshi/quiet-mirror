@@ -2,6 +2,7 @@
 "use client";
 
 import { useState } from "react";
+import { CONFIG } from "@/app/lib/config";
 
 type Variant = "blog-index" | "article-inline";
 
@@ -80,7 +81,7 @@ export default function EmailCapture({ source = "blog", variant = "blog-index" }
       <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
         <div className="max-w-sm">
           <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-400/70">
-            Havenly Letters
+            {CONFIG.newsletterName}
           </p>
           <h3 className="mt-2 text-lg font-semibold leading-snug text-white">
             One quiet article a week.

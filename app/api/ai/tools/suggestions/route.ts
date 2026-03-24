@@ -1,5 +1,6 @@
 // app/api/ai/tools/suggestions/route.ts
 import { NextResponse } from "next/server";
+import { CONFIG } from "@/app/lib/config";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { ensureCreditsFresh } from "@/lib/creditRules";
 import { normalizeAIResponseSignals } from "@/lib/ai/normalizeInsightSignals";
@@ -164,7 +165,7 @@ export async function GET() {
     );
   }
 
-  const system = `You are Havenly, a calm AI journaling companion.
+  const system = `You are ${CONFIG.aiPersonaName}, a calm AI journaling companion.
 Your job is to suggest two small, gentle things this person could do or think about — drawn from what keeps showing up in their journal.
 
 Rules:
