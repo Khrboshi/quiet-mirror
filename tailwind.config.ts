@@ -14,29 +14,41 @@ const config: Config = {
         sans:    ["var(--font-body)",    "DM Sans",  "system-ui", "sans-serif"],
       },
       colors: {
-        // ─── Quiet Mirror brand palette — blue accent ──────────────────────
-        // Primary accent: override emerald-500 to brand blue #3b82f6.
-        // All bg-emerald-* CTAs, borders, and text automatically use blue.
-        // To revert to mint green: restore emerald.500 to "#3ee7b0"
+        // ─── Quiet Mirror evidence-based palette ──────────────────────────
+        // Periwinkle blue  #7c9fff — trust, calm (54% global brand preference)
+        // Soft violet      #9b8fd4 — creativity, introspection, self-exploration
+        // Deep navy bg     #0b1120 — safety, privacy, reduced eye strain
+        // Sources: Vivid Creative 2025, UXmatters 2024, Gel Press 2025
+        //
+        // emerald-* → mapped to periwinkle blue so all existing CTAs update
+        // violet-*  → mapped to soft violet for insight / reflection copy
         emerald: {
-          300: "#93c5fd",
-          400: "#60a5fa",
-          500: "#3b82f6",
-          600: "#2563eb",
-          700: "#1d4ed8",
-          800: "#1e40af",
-          900: "#1e3a8a",
-          950: "#172554",
+          300: "#b8caff",
+          400: "#97b1ff",
+          500: "#7c9fff",
+          600: "#6186f0",
+          700: "#4a6de0",
+          800: "#3455c8",
+          900: "#2040a8",
+          950: "#132580",
         },
-        // Slate backgrounds — deeper navy tones
+        violet: {
+          300: "#c4b8f0",
+          400: "#b0a0e8",
+          500: "#9b8fd4",
+          600: "#8070bc",
+          700: "#6655a4",
+          800: "#4d3e8c",
+          900: "#362a74",
+        },
         slate: {
-          950: "#030d1f",
-          900: "#0a1628",
+          950: "#0b1120",
+          900: "#0f1830",
         },
         hvn: {
-          bg:       "#030d1f",
-          elevated: "#050f24",
-          soft:     "#0a1628",
+          bg:       "#0b1120",
+          elevated: "#0f1830",
+          soft:     "#131e38",
         },
       },
       animation: {

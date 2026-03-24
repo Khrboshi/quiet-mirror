@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-  <rect width="512" height="512" rx="96" fill="#030d1f"/>
-  <ellipse cx="256" cy="256" rx="138" ry="182" fill="none" stroke="#3b82f6" stroke-width="18"/>
-  <ellipse cx="256" cy="256" rx="74" ry="106" fill="none" stroke="#3b82f6" stroke-width="13" opacity="0.55"/>
-  <circle cx="256" cy="256" r="26" fill="#3b82f6"/>
-  <line x1="46" y1="196" x2="118" y2="196" stroke="#3b82f6" stroke-width="10" stroke-linecap="round" opacity="0.22"/>
-  <line x1="46" y1="256" x2="118" y2="256" stroke="#3b82f6" stroke-width="10" stroke-linecap="round" opacity="0.22"/>
-  <line x1="46" y1="316" x2="118" y2="316" stroke="#3b82f6" stroke-width="10" stroke-linecap="round" opacity="0.22"/>
+  <rect width="512" height="512" rx="96" fill="#0b1120"/>
+  <ellipse cx="256" cy="256" rx="138" ry="182" fill="none" stroke="#7c9fff" stroke-width="18"/>
+  <ellipse cx="256" cy="256" rx="74" ry="106" fill="none" stroke="#7c9fff" stroke-width="13" opacity="0.55"/>
+  <circle cx="256" cy="256" r="26" fill="#7c9fff"/>
+  <line x1="46" y1="196" x2="118" y2="196" stroke="#7c9fff" stroke-width="10" stroke-linecap="round" opacity="0.22"/>
+  <line x1="46" y1="256" x2="118" y2="256" stroke="#7c9fff" stroke-width="10" stroke-linecap="round" opacity="0.22"/>
+  <line x1="46" y1="316" x2="118" y2="316" stroke="#7c9fff" stroke-width="10" stroke-linecap="round" opacity="0.22"/>
 </svg>
