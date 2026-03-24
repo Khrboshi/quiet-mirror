@@ -1,5 +1,5 @@
 // app/lib/pricing.ts
-// Single source of truth for Havenly pricing.
+// Single source of truth for Quiet Mirror pricing.
 // Update here and every reference in the app updates automatically.
 //
 // TO CHANGE THE TRIAL LENGTH: edit `trialDays` below.

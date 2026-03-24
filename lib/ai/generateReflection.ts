@@ -1,5 +1,5 @@
 // lib/ai/generateReflection.ts
-// Havenly V23 — Phase 3 fixes
+// Quiet Mirror V23 — Phase 3 fixes
 // Bug fixes:
 import { CONFIG } from "@/app/lib/config";
 // 1) WORK domain detection: added signals for "project lead", "overlooked", "passed over",
@@ -1636,7 +1636,7 @@ ${entryText}`.trim();
     try {
       raw = await callGroq({ apiKey, model, system, user: userPrompt, maxTokens, temperature });
     } catch (err) {
-      console.warn(`[Havenly] Attempt ${i + 1} threw:`, err);
+      console.warn(`[Quiet Mirror] Attempt ${i + 1} threw:`, err);
       continue;
     }
 
@@ -1651,7 +1651,7 @@ ${entryText}`.trim();
     }
 
     if (i === ATTEMPTS.length - 1) {
-      console.warn("[Havenly] Quality gate failed after 3 attempts. Domain:", domain, "Reasons:", (result as any).reasons);
+      console.warn("[Quiet Mirror] Quality gate failed after 3 attempts. Domain:", domain, "Reasons:", (result as any).reasons);
       return normalizeReflection(parsed, domain, secondaryDomains, short, plan, anchors);
     }
   }

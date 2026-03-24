@@ -3,7 +3,7 @@
     "apps": [],
     "details": [
       {
-        "appID": "TEAMID.com.khrboshi.havenly",
+        "appID": "TEAMID.me.quietmirror.app",
         "paths": [ "/auth/*" ]
       }
     ]

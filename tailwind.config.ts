@@ -14,7 +14,7 @@ const config: Config = {
         sans:    ["var(--font-body)",    "DM Sans",  "system-ui", "sans-serif"],
       },
       colors: {
-        // ─── Havenly brand palette ────────────────────────────────────────
+        // ─── Quiet Mirror brand palette ────────────────────────────────────────
         // Primary accent: override emerald-500 to brand mint #3ee7b0.
         // All bg-emerald-500 CTAs, borders, and text automatically use the
         // correct brand colour. Hover states (emerald-400 #34d399) remain
