@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { ARTICLES, getArticle } from "../articles";
 import EmailCapture from "@/app/components/EmailCapture";
 import { CONFIG } from "@/app/lib/config";
+import { PRICING } from "@/app/lib/pricing";
 
 const SITE_URL = CONFIG.siteUrl;
 
