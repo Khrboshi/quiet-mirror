@@ -1,3 +1,4 @@
+// app/upgrade/confirmed/page.tsx
 import Link from "next/link";
 import { PRICING } from "@/app/lib/pricing";
 import { CONFIG } from "@/app/lib/config";
@@ -29,10 +30,11 @@ export default function UpgradeConfirmedPage() {
           <span className="text-emerald-400">The deeper layer is open.</span>
         </h1>
 
+        {/* PRICING.trialDays drives "the next X days" — change one number in pricing.ts */}
         <p className="mx-auto mt-5 max-w-md text-center text-[15px] leading-relaxed text-slate-400">
-          Havenly will now read across your entries over time — not just today&apos;s. The
+          {CONFIG.appName} will now read across your entries over time — not just today&apos;s. The
           patterns, the weekly mirror, and the why-this-keeps-happening layer are all yours
-          for the next 7 days, and beyond if you choose to stay.
+          for the next {PRICING.trialDays} days, and beyond if you choose to stay.
         </p>
 
         {/* What just unlocked */}
@@ -42,26 +44,10 @@ export default function UpgradeConfirmedPage() {
           </p>
           <ul className="space-y-4">
             {[
-              {
-                label: "Unlimited reflections",
-                sub: "Reflect on every entry — no monthly limit.",
-                color: "text-emerald-400",
-              },
-              {
-                label: "Full pattern insights",
-                sub: "See what keeps surfacing across weeks and months.",
-                color: "text-violet-400",
-              },
-              {
-                label: "Weekly personal summary",
-                sub: "Every Monday, a written mirror of what Havenly noticed.",
-                color: "text-amber-400",
-              },
-              {
-                label: "Why-this-keeps-happening insights",
-                sub: "The recurring emotional loop underneath — named, gently.",
-                color: "text-sky-400",
-              },
+              { label: "Unlimited reflections", sub: "Reflect on every entry — no monthly limit.", color: "text-emerald-400" },
+              { label: "Full pattern insights", sub: "See what keeps surfacing across weeks and months.", color: "text-violet-400" },
+              { label: "Weekly personal summary", sub: "Every Monday, a written mirror of what Havenly noticed.", color: "text-amber-400" },
+              { label: "Why-this-keeps-happening insights", sub: "The recurring emotional loop underneath — named, gently.", color: "text-sky-400" },
             ].map(({ label, sub, color }) => (
               <li key={label} className="flex items-start gap-3">
                 <span className={`mt-0.5 shrink-0 ${color}`}>✓</span>
@@ -74,10 +60,9 @@ export default function UpgradeConfirmedPage() {
           </ul>
         </div>
 
-        {/* Soft note */}
         <p className="mt-6 text-center text-sm leading-relaxed text-slate-500">
           The patterns become clearer the more you write. You don&apos;t need to do anything
-          differently — just keep writing honestly, and Havenly does the noticing.
+          differently — just keep writing honestly, and {CONFIG.appName} does the noticing.
         </p>
 
         {/* CTAs */}
@@ -100,22 +85,15 @@ export default function UpgradeConfirmedPage() {
         <p className="mt-8 text-center text-xs text-slate-700">
           Your dashboard may take up to 30 seconds to reflect your new plan. If it doesn&apos;t
           update,{" "}
-          <Link href="/dashboard" className="text-slate-600 underline underline-offset-2 hover:text-slate-500">
-            refresh once
-          </Link>
+          <Link href="/dashboard" className="text-slate-600 underline underline-offset-2 hover:text-slate-500">refresh once</Link>
           .{" "}
-          <Link
-            href="/settings/billing"
-            className="text-slate-600 underline underline-offset-2 hover:text-slate-500"
-          >
-            Manage billing →
-          </Link>
+          <Link href="/settings/billing" className="text-slate-600 underline underline-offset-2 hover:text-slate-500">Manage billing →</Link>
         </p>
 
-        {/* Trial + billing note */}
+        {/* Trial badge — all copy derives from PRICING */}
         <div className="mt-6 rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.04] px-6 py-4 text-center">
           <p className="text-xs font-medium text-emerald-400">
-            🛡️ Your 7-day free trial has started — no charge today
+            🛡️ Your {PRICING.trialLabel} has started — no charge today
           </p>
           <p className="mt-1.5 text-xs text-slate-500">
             {PRICING.monthlyCadence} begins after your trial ends. Cancel any time before then in{" "}
