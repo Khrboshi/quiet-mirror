@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useInstallAvailability } from "@/app/hooks/useInstallAvailability";
 import { track } from "@/app/components/telemetry";
+import { CONFIG } from "@/app/lib/config";
 
 const SNOOZE_KEY = "hvn_install_snooze_until_v1";
 const SNOOZE_DAYS = 5;
@@ -125,7 +126,7 @@ export default function InstallPrompt() {
       <div className="rounded-2xl border border-white/10 bg-slate-950/90 p-4 shadow-2xl backdrop-blur">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-sm font-semibold text-slate-100">Install Havenly</p>
+            <p className="text-sm font-semibold text-slate-100">Install {CONFIG.appName}</p>
 
             {isIOS && isSafariIOS ? (
               <p className="mt-1 text-xs text-slate-300">

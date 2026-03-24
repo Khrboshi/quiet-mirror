@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { useSupabase } from "@/app/components/SupabaseSessionProvider";
 import { useInstallAvailability } from "@/app/hooks/useInstallAvailability";
+import { CONFIG } from "@/app/lib/config";
 
 type NavLink = { href: string; label: string };
 
@@ -104,18 +105,18 @@ export default function Navbar() {
             href="/"
             prefetch
             className="flex items-center gap-2 text-lg font-semibold text-white transition-opacity hover:opacity-90"
-            aria-label="Havenly home"
+            aria-label={`${CONFIG.appName} home`}
           >
             <Image
               src="/pwa/icon-192.png"
-              alt="Havenly"
+              alt={CONFIG.appName}
               width={24}
               height={24}
               className="rounded-md"
               priority
               unoptimized
             />
-            <span>Havenly</span>
+            <span>{CONFIG.appName}</span>
           </Link>
 
           {/* Desktop nav links */}

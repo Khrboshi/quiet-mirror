@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useInstallAvailability } from "@/app/hooks/useInstallAvailability";
+import { CONFIG } from "@/app/lib/config";
 
 export default function InstallPage() {
   const { isStandalone, isIOS, isSafariIOS, canPromptNative, promptInstall } =
@@ -22,13 +23,13 @@ export default function InstallPage() {
         {/* ── Left column ── */}
         <section className="hidden lg:block">
           <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-400/80">
-            Install Havenly
+            Install {CONFIG.appName}
           </p>
           <h1 className="font-display mt-4 max-w-xl text-5xl font-semibold leading-[1.05] tracking-tight text-white">
-            Keep Havenly one tap away.
+            Keep {CONFIG.appName} one tap away.
           </h1>
           <p className="mt-5 max-w-lg text-base leading-relaxed text-slate-400">
-            Installing Havenly creates an app icon and makes returning to your
+            Installing {CONFIG.appName} creates an app icon and makes returning to your
             journal faster, cleaner, and more reliable.
           </p>
 
@@ -37,7 +38,7 @@ export default function InstallPage() {
             <div className="relative shrink-0">
               <Image
                 src="/pwa/icon-192.png"
-                alt="Havenly app icon"
+                alt={`${CONFIG.appName} app icon`}
                 width={64}
                 height={64}
                 className="rounded-[22%] shadow-xl shadow-black/40"
@@ -47,7 +48,7 @@ export default function InstallPage() {
               </span>
             </div>
             <div>
-              <p className="text-sm font-semibold text-white">Havenly</p>
+              <p className="text-sm font-semibold text-white">{CONFIG.appName}</p>
               <p className="text-xs text-slate-500">Your sanctuary among the noise.</p>
               <p className="mt-1.5 text-xs text-slate-600">Lives on your Home Screen, opens instantly.</p>
             </div>
@@ -78,13 +79,13 @@ export default function InstallPage() {
             {/* Mobile header */}
             <div className="lg:hidden">
               <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-400/80">
-                Install Havenly
+                Install {CONFIG.appName}
               </p>
               <h1 className="font-display mt-3 text-3xl font-semibold tracking-tight text-white">
-                Install Havenly
+                Install {CONFIG.appName}
               </h1>
               <p className="mt-3 text-sm leading-relaxed text-slate-400">
-                Add Havenly to your device for faster access and a smoother return to your
+                Add {CONFIG.appName} to your device for faster access and a smoother return to your
                 journal.
               </p>
             </div>
@@ -101,7 +102,7 @@ export default function InstallPage() {
               <div className="mt-6 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.06] p-5">
                 <h3 className="text-lg font-semibold text-white">Already installed</h3>
                 <p className="mt-2 text-sm leading-relaxed text-emerald-100">
-                  This device already has Havenly installed. You can open it from your Home
+                  This device already has {CONFIG.appName} installed. You can open it from your Home
                   Screen or app launcher.
                 </p>
               </div>
@@ -118,7 +119,7 @@ export default function InstallPage() {
                       onClick={handleInstallClick}
                       className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-emerald-500 px-4 py-3.5 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400"
                     >
-                      Install Havenly
+                      Install {CONFIG.appName}
                     </button>
                     <p className="mt-3 text-center text-xs leading-relaxed text-slate-500">
                       If installation does not appear in Incognito, open a normal browser window.
@@ -163,7 +164,7 @@ export default function InstallPage() {
                               step: "4",
                               text: (
                                 <>
-                                  Open Havenly from your Home Screen for the more app-like experience.
+                                  Open {CONFIG.appName} from your Home Screen for the more app-like experience.
                                 </>
                               ),
                             },
@@ -195,7 +196,7 @@ export default function InstallPage() {
                             browser menu.
                           </li>
                           <li>
-                            Select <b className="text-white">Install Havenly</b>.
+                            Select <b className="text-white">Install {CONFIG.appName}</b>.
                           </li>
                         </ol>
                       </div>
@@ -208,7 +209,7 @@ export default function InstallPage() {
             <div className="mt-4 rounded-2xl border border-white/10 bg-slate-950/50 p-4">
               <p className="text-sm font-medium text-white">Helpful note</p>
               <p className="mt-1 text-sm leading-relaxed text-slate-400">
-                Installation improves convenience, but you can still use Havenly in your
+                Installation improves convenience, but you can still use {CONFIG.appName} in your
                 browser whenever you prefer.
               </p>
             </div>
@@ -221,7 +222,7 @@ export default function InstallPage() {
                 ← Back to Home
               </Link>
               <p className="max-w-md text-xs leading-relaxed text-slate-600">
-                Havenly works in the browser too. Installing it simply makes returning feel
+                {CONFIG.appName} works in the browser too. Installing it simply makes returning feel
                 quicker and more app-like.
               </p>
             </div>

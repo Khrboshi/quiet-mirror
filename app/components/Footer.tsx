@@ -1,6 +1,7 @@
 // app/components/Footer.tsx
 import Link from "next/link";
 import Image from "next/image";
+import { CONFIG } from "@/app/lib/config";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -14,17 +15,17 @@ export default function Footer() {
             <Link
               href="/"
               className="flex items-center gap-2 transition-opacity hover:opacity-80"
-              aria-label="Havenly home"
+              aria-label={`${CONFIG.appName} home`}
             >
               <Image
                 src="/pwa/icon-192.png"
-                alt="Havenly"
+                alt={CONFIG.appName}
                 width={22}
                 height={22}
                 className="rounded-md"
                 unoptimized
               />
-              <span className="text-sm font-semibold text-white">Havenly</span>
+              <span className="text-sm font-semibold text-white">{CONFIG.appName}</span>
             </Link>
 
             <p className="text-xs leading-relaxed text-slate-500">
@@ -103,7 +104,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-8 flex flex-col items-start justify-between gap-2 border-t border-white/[0.05] pt-6 text-xs text-slate-700 sm:flex-row sm:items-center">
-          <p>© {year} Havenly. All rights reserved.</p>
+          <p>© {year} {CONFIG.appName}. All rights reserved.</p>
           <p className="text-emerald-900/60">No ads · No data sales · 7-day free trial</p>
         </div>
       </div>

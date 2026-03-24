@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSupabase } from "@/app/components/SupabaseSessionProvider";
 import { sendMagicLink } from "./sendMagicLink";
+import { CONFIG } from "@/app/lib/config";
 import { verifyOtp } from "./verifyOtp";
 
 type Status = "idle" | "loading" | "success" | "error";
@@ -205,13 +206,13 @@ function MagicLoginInner() {
           <div className="mb-8 flex items-center gap-2.5">
             <Image
               src="/pwa/icon-192.png"
-              alt="Havenly"
+              alt={CONFIG.appName}
               width={32}
               height={32}
               className="rounded-xl"
               priority
             />
-            <span className="text-sm font-semibold text-slate-300">Havenly</span>
+            <span className="text-sm font-semibold text-slate-300">{CONFIG.appName}</span>
           </div>
 
           <h1 className="font-display max-w-sm text-4xl font-semibold leading-[1.1] tracking-tight text-white">
@@ -271,12 +272,12 @@ function MagicLoginInner() {
               <div className="mb-4 flex items-center gap-2">
                 <Image
                   src="/pwa/icon-192.png"
-                  alt="Havenly"
+                  alt={CONFIG.appName}
                   width={28}
                   height={28}
                   className="rounded-lg"
                 />
-                <span className="text-sm font-semibold text-slate-300">Havenly</span>
+                <span className="text-sm font-semibold text-slate-300">{CONFIG.appName}</span>
               </div>
               <h1 className="font-display text-3xl font-semibold tracking-tight text-white">
                 {isReturning ? "Welcome back." : "Your private journal."}
