@@ -274,7 +274,7 @@ export default function JournalForm(_props: Props) {
           {/* Only show the reflection hint if they have content */}
           {canSave && (
             <p className="hidden shrink-0 text-xs text-slate-600 sm:block">
-              Havenly will reflect this back when you&apos;re ready
+              Quiet Mirror will reflect this back when you&apos;re ready
             </p>
           )}
         </div>

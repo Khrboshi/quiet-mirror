@@ -37,7 +37,7 @@ export default function HomeBelowFold() {
 
           <ScrollReveal className="mb-8 text-center">
             <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/60">
-              After 3 weeks of entries — what Havenly noticed
+              After 3 weeks of entries — what Quiet Mirror noticed
             </p>
             <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">
               The pattern you&apos;ve been living
@@ -159,7 +159,7 @@ export default function HomeBelowFold() {
             </h2>
             <p className="mt-3 max-w-lg text-sm leading-relaxed text-slate-400">
               You write whatever is on your mind — honestly, messily, without editing yourself.
-              Havenly reads it and reflects back what it noticed. No advice. No diagnosis. Just a
+              Quiet Mirror reads it and reflects back what it noticed. No advice. No diagnosis. Just a
               mirror held up gently.
             </p>
           </ScrollReveal>
@@ -183,7 +183,7 @@ export default function HomeBelowFold() {
             </div>
             <div className="border-t border-emerald-500/10 bg-emerald-950/30 p-6 md:border-t-0">
               <div className="mb-4 flex items-center justify-between">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-500/70">Havenly reflects</p>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-500/70">Quiet Mirror reflects</p>
                 <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-400">Immediate</span>
               </div>
               <p className="text-[15px] leading-[1.75] text-slate-100">
@@ -231,14 +231,14 @@ export default function HomeBelowFold() {
           <ScrollReveal className="mb-10">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/70">What Havenly shows you</p>
+                <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/70">What Quiet Mirror shows you</p>
                 <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">
                   The patterns are easier to trust{" "}
                   <br className="hidden sm:block" />
                   <span className="text-emerald-400">when you can finally see them.</span>
                 </h2>
                 <p className="mt-3 max-w-lg text-sm leading-relaxed text-slate-400">
-                  Across your entries, Havenly finds what keeps surfacing — the emotions, themes,
+                  Across your entries, Quiet Mirror finds what keeps surfacing — the emotions, themes,
                   and questions that repeat without you noticing.
                 </p>
               </div>
@@ -327,11 +327,11 @@ export default function HomeBelowFold() {
         <div className="mx-auto max-w-6xl px-5">
           <ScrollReveal className="mb-8 max-w-2xl">
             <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/70">What makes it different</p>
-            <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">Most journaling tools keep entries.{" "}<span className="text-emerald-400">Havenly looks for the thread.</span></h2>
+            <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">Most journaling tools keep entries.{" "}<span className="text-emerald-400">Quiet Mirror looks for the thread.</span></h2>
           </ScrollReveal>
           <ScrollReveal stagger className="grid gap-4 sm:grid-cols-2">
             <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5 sm:p-6">
-              <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-500/70">Havenly is</p>
+              <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-500/70">Quiet Mirror is</p>
               <ul className="space-y-3">
                 {["A private place to write without judgment", "A gentle reflection on what you wrote", "A way to see patterns across weeks and months", "Respectful of your pace and privacy"].map((item) => (
                   <li key={item} className="flex items-start gap-3 text-sm text-slate-300"><span className="mt-0.5 shrink-0 text-emerald-500">✓</span>{item}</li>
@@ -339,7 +339,7 @@ export default function HomeBelowFold() {
               </ul>
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5 sm:p-6">
-              <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-500/70">Havenly is not</p>
+              <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-500/70">Quiet Mirror is not</p>
               <ul className="space-y-3">
                 {["Therapy or a substitute for clinical care", "A productivity or self-optimisation tool", "A public or social platform", "Something you have to use every day"].map((item) => (
                   <li key={item} className="flex items-start gap-3 text-sm text-slate-300"><span className="mt-0.5 shrink-0 text-amber-500">—</span>{item}</li>
@@ -355,7 +355,7 @@ export default function HomeBelowFold() {
         <div className="mx-auto max-w-5xl px-5">
           <ScrollReveal className="max-w-2xl">
             <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/60">What a reflection looks like</p>
-            <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">This is what Havenly actually <span className="text-emerald-400">says back.</span></h2>
+            <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">This is what Quiet Mirror actually <span className="text-emerald-400">says back.</span></h2>
             <p className="mt-3 text-sm leading-relaxed text-slate-400">These are illustrative examples built from the kinds of entries people write. Yours will be built from your own words.</p>
           </ScrollReveal>
 
@@ -383,7 +383,7 @@ export default function HomeBelowFold() {
                   <p className="mt-2 text-sm italic leading-relaxed text-slate-400">&ldquo;{wrote}&rdquo;</p>
                 </div>
                 <div className="flex-1 bg-emerald-950/20 px-5 py-4">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-500/70">Havenly reflected</p>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-500/70">Quiet Mirror reflected</p>
                   <p className="mt-2 text-sm leading-relaxed text-slate-200">{reflected}</p>
                   <div className="mt-3 flex flex-wrap gap-1.5">
                     {tags.map(e => <span key={e} className="rounded-full border border-slate-700 bg-slate-800/60 px-2.5 py-0.5 text-[11px] text-slate-400">{e}</span>)}
@@ -410,7 +410,7 @@ export default function HomeBelowFold() {
               <span className="text-emerald-400">before you begin.</span>
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-slate-400">
-              Havenly is a small, independent product built around one principle: your inner life
+              Quiet Mirror is a small, independent product built around one principle: your inner life
               belongs to you. Here is what that means in practice.
             </p>
           </ScrollReveal>
@@ -438,7 +438,7 @@ export default function HomeBelowFold() {
               {
                 icon: "✦",
                 title: "No ads, ever",
-                body: "Havenly earns revenue from Premium subscriptions only. That is the entire business model — designed deliberately so your data is never the product.",
+                body: "Quiet Mirror earns revenue from Premium subscriptions only. That is the entire business model — designed deliberately so your data is never the product.",
                 border: "border-violet-500/20",
                 bg: "bg-violet-500/[0.03]",
               },
@@ -469,7 +469,7 @@ export default function HomeBelowFold() {
           <ScrollReveal className="mb-8 max-w-2xl">
             <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/70">Free vs Premium</p>
             <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">Start privately. Upgrade when you want the deeper picture.</h2>
-            <p className="mt-3 text-sm leading-relaxed text-slate-400">Free is enough to begin honestly. Premium is for people who want Havenly to connect the dots across weeks and months.</p>
+            <p className="mt-3 text-sm leading-relaxed text-slate-400">Free is enough to begin honestly. Premium is for people who want Quiet Mirror to connect the dots across weeks and months.</p>
           </ScrollReveal>
 
           <ScrollReveal stagger className="flex flex-col-reverse gap-4 md:grid md:grid-cols-2 md:gap-5">
@@ -481,7 +481,7 @@ export default function HomeBelowFold() {
               <ul className="mt-5 space-y-3 text-sm text-slate-300">
                 {[
                   { label: "Write anytime", sub: "Your entries stay private" },
-                  { label: "3 AI reflections per month", sub: "Enough to see if Havenly fits how you think" },
+                  { label: "3 AI reflections per month", sub: "Enough to see if Quiet Mirror fits how you think" },
                   { label: "Gentle prompts", sub: "Helpful when you do not know how to begin" },
                   { label: "Encrypted & private", sub: "Your entries are never shared, sold, or used to train AI" },
                 ].map(({ label, sub }) => (
@@ -506,13 +506,13 @@ export default function HomeBelowFold() {
               <p className="mt-3 text-sm text-slate-300">Best for people who want to understand what keeps happening, not just document what happened today.</p>
               <div className="mt-4 rounded-xl border border-slate-700/60 bg-slate-900/50 p-3 text-xs text-slate-400">
                 <p><span className="text-slate-600">Without Premium:</span> you may sense a pattern but still be too close to it to name.</p>
-                <p className="mt-1"><span className="text-emerald-500/80">With Premium:</span>{" "}Havenly starts showing what repeats, what is shifting, and what may be underneath it.</p>
+                <p className="mt-1"><span className="text-emerald-500/80">With Premium:</span>{" "}Quiet Mirror starts showing what repeats, what is shifting, and what may be underneath it.</p>
               </div>
               <ul className="mt-5 space-y-3 text-sm text-slate-200">
                 {[
                   { label: "Unlimited reflections", sub: "Reflect on every entry, not just a few each month" },
                   { label: "Deeper pattern insights", sub: "See recurring themes across weeks and months" },
-                  { label: "Weekly personal summary", sub: "A concise mirror of what Havenly noticed this week" },
+                  { label: "Weekly personal summary", sub: "A concise mirror of what Quiet Mirror noticed this week" },
                   { label: "Why-this-keeps-happening insights", sub: "A clearer view of recurring loops and emotional drivers" },
                   { label: "Everything in Free", sub: "Nothing removed, just a deeper layer added" },
                 ].map(({ label, sub }) => (
@@ -544,12 +544,12 @@ export default function HomeBelowFold() {
           </ScrollReveal>
           <div className="mt-6 space-y-5 sm:mt-7 sm:space-y-6">
             {[
-              { q: "What does Havenly actually say when it reflects back?", a: "It depends entirely on what you write. The reflection reads your emotional language, names what seems to be underneath the surface, and connects it to what you have written before. See a live example in the insight preview." },
-              { q: "Is this therapy?", a: "No. Havenly is a private journaling companion. It can sit alongside therapy or personal reflection, but it is not clinical care and it does not replace professional support." },
-              { q: "Do I need to write every day for it to work?", a: "No. Some people write several times a week. Others only when life feels heavy. The more entries you have, the more Havenly has to notice — but there is no streak to maintain." },
-              { q: "What happens to my entries?", a: "They stay private. They are never used to train AI models, never sold, and never shared. Havenly is built around the idea that your inner life belongs to you." },
+              { q: "What does Quiet Mirror actually say when it reflects back?", a: "It depends entirely on what you write. The reflection reads your emotional language, names what seems to be underneath the surface, and connects it to what you have written before. See a live example in the insight preview." },
+              { q: "Is this therapy?", a: "No. Quiet Mirror is a private journaling companion. It can sit alongside therapy or personal reflection, but it is not clinical care and it does not replace professional support." },
+              { q: "Do I need to write every day for it to work?", a: "No. Some people write several times a week. Others only when life feels heavy. The more entries you have, the more Quiet Mirror has to notice — but there is no streak to maintain." },
+              { q: "What happens to my entries?", a: "They stay private. They are never used to train AI models, never sold, and never shared. Quiet Mirror is built around the idea that your inner life belongs to you." },
               { q: "Why would someone pay for Premium?", a: "Free helps you write and reflect. Premium helps you understand what your entries mean together over time: recurring themes, hidden patterns, weekly summaries, and clearer insight into why something keeps happening." },
-              { q: "How many reflections do I get on the free plan?", a: "Free includes 3 AI reflections per month — enough to experience how Havenly works. Premium gives you unlimited reflections on every entry." },
+              { q: "How many reflections do I get on the free plan?", a: "Free includes 3 AI reflections per month — enough to experience how Quiet Mirror works. Premium gives you unlimited reflections on every entry." },
             ].map(({ q, a }) => (
               <ScrollReveal key={q}>
                 <div className="border-b border-slate-800/60 pb-5">

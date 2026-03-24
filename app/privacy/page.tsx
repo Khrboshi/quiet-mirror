@@ -10,8 +10,8 @@ import { PAYMENT } from "@/app/lib/payment";
 const LAST_UPDATED = "June 1, 2025";
 
 // ─── SEO metadata ────────────────────────────────────────────────────────────
-// The root layout uses title.template = "%s | Havenly", so this renders as
-// "Privacy Policy | Havenly" in the tab and search results.
+// The root layout uses title.template = "%s | Quiet Mirror", so this renders as
+// "Privacy Policy | Quiet Mirror" in the tab and search results.
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description: `Learn how ${CONFIG.appName} collects, uses, and protects your data. Your journal entries are private and never used to train AI models.`,

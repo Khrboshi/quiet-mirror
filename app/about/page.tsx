@@ -22,7 +22,7 @@ export default function AboutPage() {
         <div className="mx-auto max-w-5xl px-6">
           <div className="max-w-4xl">
             <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-400/80">
-              About Havenly
+              About Quiet Mirror
             </p>
 
             <h1 className="mt-4 font-display text-[2.2rem] font-semibold leading-[1.08] tracking-tight text-white sm:text-5xl">
@@ -33,7 +33,7 @@ export default function AboutPage() {
             </h1>
 
             <p className="mt-5 max-w-3xl text-[15px] leading-relaxed text-slate-300 sm:text-[17px]">
-              Not a productivity tool. Not a mood tracker. Havenly is a place to
+              Not a productivity tool. Not a mood tracker. Quiet Mirror is a place to
               write honestly, get a gentle reflection back, and — over time — see
               the patterns that have quietly been shaping your weeks.
             </p>
@@ -73,7 +73,7 @@ export default function AboutPage() {
 
             <div className="mt-5 space-y-4 text-[15px] leading-relaxed text-slate-300/90">
               <p>
-                Havenly exists because journaling often feels like writing into a
+                Quiet Mirror exists because journaling often feels like writing into a
                 void. You pour something out, close the notebook, and still don&apos;t
                 fully understand what you were actually feeling — or why it keeps
                 happening.
@@ -87,7 +87,7 @@ export default function AboutPage() {
               </p>
 
               <p>
-                Havenly exists to close that loop. You write. It reflects. Over
+                Quiet Mirror exists to close that loop. You write. It reflects. Over
                 time, it helps you see what quietly repeats — not to diagnose you
                 or fix you, but because understanding yourself is genuinely useful.
               </p>
@@ -96,7 +96,7 @@ export default function AboutPage() {
             <div className="mt-8 rounded-[1.6rem] border border-emerald-500/15 bg-emerald-500/[0.03] px-6 py-5">
               <p className="font-display text-lg font-medium leading-relaxed text-white">
                 &ldquo;Your inner life isn&apos;t content. It&apos;s yours.
-                Havenly is built around that idea.&rdquo;
+                Quiet Mirror is built around that idea.&rdquo;
               </p>
             </div>
           </div>
@@ -111,7 +111,7 @@ export default function AboutPage() {
               {[
                 {
                   label: "No investors",
-                  body: "Havenly is independently built and funded. No venture capital, no board, no pressure to grow at the expense of the product.",
+                  body: "Quiet Mirror is independently built and funded. No venture capital, no board, no pressure to grow at the expense of the product.",
                   accent: "border-emerald-500/20 bg-emerald-500/[0.03]",
                   tag: "text-emerald-400/80",
                 },
@@ -123,7 +123,7 @@ export default function AboutPage() {
                 },
                 {
                   label: "One person accountable",
-                  body: "Havenly is built by a single independent developer. Every decision about privacy, product, and pricing has one person behind it — reachable at havenly.support@gmail.com.",
+                  body: "Quiet Mirror is built by a single independent developer. Every decision about privacy, product, and pricing has one person behind it — reachable at hello@quietmirror.me.",
                   accent: "border-sky-500/20 bg-sky-500/[0.03]",
                   tag: "text-sky-400/80",
                 },
@@ -141,10 +141,10 @@ export default function AboutPage() {
               <p className="text-sm leading-relaxed text-slate-400">
                 If something feels wrong, unclear, or broken —{" "}
                 <a
-                  href="mailto:havenly.support@gmail.com"
+                  href="mailto:hello@quietmirror.me"
                   className="font-medium text-emerald-400 transition-colors hover:text-emerald-300"
                 >
-                  email havenly.support@gmail.com
+                  email hello@quietmirror.me
                 </a>
                 . There is no support ticket system. You&apos;re writing to the person who built it.
               </p>
@@ -161,7 +161,7 @@ export default function AboutPage() {
               <div className="mt-5 space-y-4 text-[15px] leading-relaxed text-slate-300/90">
                 <p>
                   Most journaling apps store your entries. Some add reminders.
-                  Some let you tag your mood. Havenly does something different:
+                  Some let you tag your mood. Quiet Mirror does something different:
                   it reads what you&apos;ve written across time and looks for the
                   things that quietly repeat — the emotions that keep surfacing,
                   the themes you return to without realising, and the patterns
@@ -170,7 +170,7 @@ export default function AboutPage() {
 
                 <p>
                   You do not have to force structure onto yourself to make this
-                  happen. You write honestly, and Havenly does the noticing.
+                  happen. You write honestly, and Quiet Mirror does the noticing.
                 </p>
               </div>
             </div>
@@ -178,7 +178,7 @@ export default function AboutPage() {
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
               <div className="rounded-[1.5rem] border border-emerald-500/20 bg-emerald-500/[0.03] p-5">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-400/80">
-                  Havenly is
+                  Quiet Mirror is
                 </p>
                 <ul className="mt-4 space-y-2.5 text-sm leading-relaxed text-slate-300">
                   {[
@@ -197,7 +197,7 @@ export default function AboutPage() {
 
               <div className="rounded-[1.5rem] border border-slate-800 bg-slate-900/40 p-5">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-400/70">
-                  Havenly is not
+                  Quiet Mirror is not
                 </p>
                 <ul className="mt-4 space-y-2.5 text-sm leading-relaxed text-slate-400">
                   {[
@@ -261,7 +261,7 @@ export default function AboutPage() {
                 </p>
 
                 <p>
-                  We do not run ads and we do not sell data. Havenly earns
+                  We do not run ads and we do not sell data. Quiet Mirror earns
                   revenue from Premium subscriptions — that is the business
                   model, and it is designed that way deliberately.
                 </p>
@@ -281,7 +281,7 @@ export default function AboutPage() {
           {/* Bottom CTA strip */}
           <div className="flex flex-col gap-4 border-t border-slate-800/60 pt-8 sm:flex-row sm:items-center sm:justify-between">
             <p className="max-w-md text-sm leading-relaxed text-slate-500">
-              Havenly works best when you use it honestly, at your own pace.
+              Quiet Mirror works best when you use it honestly, at your own pace.
             </p>
 
             <div className="flex flex-wrap gap-3">

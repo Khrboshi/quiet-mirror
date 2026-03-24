@@ -34,7 +34,7 @@ function PostHogInit() {
       capture_pageview: false,            // we handle pageviews manually above
       capture_pageleave: true,
       autocapture: false,                 // privacy: no automatic click tracking
-      persistence: "memory",             // no cookies — fits Havenly's privacy stance
+      persistence: "memory",             // no cookies — fits Quiet Mirror's privacy stance
       loaded: (ph) => {
         if (process.env.NODE_ENV === "development") ph.debug();
       },

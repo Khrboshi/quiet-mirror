@@ -46,7 +46,7 @@ export default function HomePage() {
 
             {/* What it is */}
             <p className="animate-fade-in-up anim-delay-200 mt-5 text-base leading-relaxed text-slate-300 sm:text-[17px]">
-              Havenly is a private journal that reads what you write and{" "}
+              Quiet Mirror is a private journal that reads what you write and{" "}
               <span className="text-slate-200">gently reflects it back</span> —
               then, over time, shows you the patterns you&apos;ve been too close
               to see.
@@ -59,7 +59,7 @@ export default function HomePage() {
                 so long, you&apos;ve started to believe it.&rdquo;
               </p>
               <p className="mt-1 text-xs text-slate-600">
-                Sound familiar? That&apos;s what Havenly is for.
+                Sound familiar? That&apos;s what Quiet Mirror is for.
               </p>
             </blockquote>
 
@@ -137,7 +137,7 @@ export default function HomePage() {
                 <div className="mb-4 flex items-center gap-3">
                   <div className="h-px flex-1 bg-emerald-500/10" />
                   <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-500/70">
-                    Havenly reflects
+                    Quiet Mirror reflects
                   </span>
                   <div className="h-px flex-1 bg-emerald-500/10" />
                 </div>

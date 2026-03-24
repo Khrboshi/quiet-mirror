@@ -13,12 +13,12 @@ import { CONFIG } from "@/app/lib/config";
 
 const faqs = [
   {
-    q: "What does Havenly actually show me with Premium?",
+    q: "What does Quiet Mirror actually show me with Premium?",
     a: "Premium unlocks the layer that reads across all your entries over time — not just the one you wrote today. You start seeing which emotional themes appear most often, how they connect to each other, what has been shifting, and why something may keep happening. The weekly summary pulls it all together into one personal read each week.",
   },
   {
     q: "How many reflections do I get on the free plan?",
-    a: "Free includes 3 AI reflections per month — enough to experience how Havenly works. Premium gives you unlimited reflections on every entry.",
+    a: "Free includes 3 AI reflections per month — enough to experience how Quiet Mirror works. Premium gives you unlimited reflections on every entry.",
   },
   {
     q: "What is your refund policy?",
@@ -133,7 +133,7 @@ export default function UpgradePage() {
                 {[
                   { label: "Unlimited reflections", sub: "Reflect on every entry, not just a few each month", color: "text-emerald-400" },
                   { label: "Full pattern insights", sub: "See what repeats across weeks and months", color: "text-violet-400" },
-                  { label: "Weekly personal summary", sub: "A written mirror of what Havenly noticed this week", color: "text-amber-400" },
+                  { label: "Weekly personal summary", sub: "A written mirror of what Quiet Mirror noticed this week", color: "text-amber-400" },
                   { label: "Why-this-keeps-happening insights", sub: "Get closer to the recurring emotional loop underneath", color: "text-sky-400" },
                   { label: "Everything in Free", sub: "Nothing removed — just a deeper layer added", color: "text-slate-500" },
                 ].map(({ label, sub, color }) => (

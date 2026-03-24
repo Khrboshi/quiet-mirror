@@ -146,8 +146,8 @@ export default async function InsightsPreviewPage() {
           <h1 className="font-display text-3xl font-semibold text-white sm:text-4xl">Insights</h1>
           <p className="mt-1 text-sm text-slate-500">
             {hasData
-              ? <>What Havenly has noticed across your{" "}<span className="text-slate-400">{entryCount} {entryCount === 1 ? "entry" : "entries"}</span></>
-              : "What Havenly will notice once you start writing"}
+              ? <>What Quiet Mirror has noticed across your{" "}<span className="text-slate-400">{entryCount} {entryCount === 1 ? "entry" : "entries"}</span></>
+              : "What Quiet Mirror will notice once you start writing"}
           </p>
         </div>
 
@@ -184,7 +184,7 @@ export default async function InsightsPreviewPage() {
         {/* ── Weekly summary — always locked ──────────────────────────────── */}
         <div className="relative overflow-hidden rounded-2xl border border-slate-700/60 bg-gradient-to-br from-slate-900 to-slate-950 p-6 md:p-7">
           <div className="mb-4">
-            <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500">What Havenly has noticed</h2>
+            <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500">What Quiet Mirror has noticed</h2>
             <p className="mt-0.5 text-xs text-slate-700">A personal summary generated from your reflection history.</p>
           </div>
           {/* Blurred demo text — always the same, clearly decorative */}
@@ -206,7 +206,7 @@ export default async function InsightsPreviewPage() {
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-slate-950/50 backdrop-blur-[1px]">
             <p className="px-4 text-center text-sm font-medium text-slate-300">Your personal weekly summary</p>
             <p className="max-w-xs px-4 text-center text-xs text-slate-500">
-              Havenly reads all your entries and writes this in plain language — what it noticed, what&apos;s shifting, what keeps returning.
+              Quiet Mirror reads all your entries and writes this in plain language — what it noticed, what&apos;s shifting, what keeps returning.
             </p>
             <Link href="/upgrade?from=insights-preview"
               className="mt-1 rounded-full bg-emerald-500 px-5 py-2 text-xs font-semibold text-slate-950 transition hover:bg-emerald-400">
@@ -221,7 +221,7 @@ export default async function InsightsPreviewPage() {
           <p className="mb-5 text-xs text-slate-600">
             {hasData
               ? "Domain detected across all reflected entries."
-              : "Havenly detects what area of life each entry belongs to."}
+              : "Quiet Mirror detects what area of life each entry belongs to."}
           </p>
 
           {hasData ? (
@@ -273,7 +273,7 @@ export default async function InsightsPreviewPage() {
                 </div>
               ))}
               <p className="pt-2 text-xs text-slate-600">
-                Start writing and Havenly will detect what area of life each entry belongs to.
+                Start writing and Quiet Mirror will detect what area of life each entry belongs to.
               </p>
             </div>
           )}
@@ -301,7 +301,7 @@ export default async function InsightsPreviewPage() {
           ) : (
             <>
               <p className="text-base leading-relaxed text-slate-400">
-                As your entries build up, Havenly notices which emotion keeps surfacing — and what theme it keeps showing up alongside.
+                As your entries build up, Quiet Mirror notices which emotion keeps surfacing — and what theme it keeps showing up alongside.
               </p>
               <div className="mt-4 flex flex-wrap items-center gap-2 opacity-30 pointer-events-none select-none">
                 <span className="text-xs text-slate-600">Recently:</span>
@@ -317,7 +317,7 @@ export default async function InsightsPreviewPage() {
         {/* ── What you keep coming back to — locked ───────────────────────── */}
         <div className="relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-950/50 p-6">
           <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-1">What you keep coming back to</h2>
-          <p className="mb-5 text-xs text-slate-600">The specific dynamic Havenly noticed most often beneath your entries.</p>
+          <p className="mb-5 text-xs text-slate-600">The specific dynamic Quiet Mirror noticed most often beneath your entries.</p>
 
           {/* Top pattern card — shown (demo copy, same for everyone — it's a product example) */}
           <div className="mb-4 rounded-xl border border-emerald-500/15 bg-emerald-500/5 p-4">
@@ -479,8 +479,8 @@ export default async function InsightsPreviewPage() {
           </h3>
           <p className="mb-5 max-w-xl text-sm leading-relaxed text-slate-400">
             {hasData
-              ? `Havenly has already started building your pattern from your ${entryCount} ${entryCount === 1 ? "entry" : "entries"}. Premium unlocks the full picture — what keeps returning, the weekly summary, and what Havenly has noticed underneath.`
-              : "Start writing and Havenly will fill this with your actual patterns — the weekly summary, your full pattern history, and what keeps returning across weeks and months. Less than one therapy session per month."}
+              ? `Quiet Mirror has already started building your pattern from your ${entryCount} ${entryCount === 1 ? "entry" : "entries"}. Premium unlocks the full picture — what keeps returning, the weekly summary, and what Quiet Mirror has noticed underneath.`
+              : "Start writing and Quiet Mirror will fill this with your actual patterns — the weekly summary, your full pattern history, and what keeps returning across weeks and months. Less than one therapy session per month."}
           </p>
           <div className="flex flex-wrap gap-3">
             <Link

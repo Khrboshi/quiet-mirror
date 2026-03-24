@@ -252,7 +252,7 @@ export default function Navbar() {
                 )}
 
                 <p className="mt-5 text-center text-xs leading-relaxed text-slate-600">
-                  Havenly is built for quiet, private reflection — not
+                  Quiet Mirror is built for quiet, private reflection — not
                   performance.
                 </p>
               </div>

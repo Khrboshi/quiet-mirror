@@ -43,7 +43,7 @@ export default function UpgradeTriggerModal({
   const finalDescription =
     message ??
     description ??
-    "Premium unlocks unlimited reflections, pattern insights across time, and a weekly summary of what Havenly noticed.";
+    "Premium unlocks unlimited reflections, pattern insights across time, and a weekly summary of what Quiet Mirror noticed.";
 
   const finalCtaLabel = ctaLabel ?? cta ?? "Start 7-day free trial →";
   const finalCtaHref = ctaHref ?? "/upgrade";

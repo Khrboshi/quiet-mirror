@@ -45,7 +45,7 @@ export default function ReflectionToolPage() {
               One question worth sitting with.
             </h1>
             <p className="max-w-lg text-sm leading-relaxed text-slate-400">
-              Havenly reads what keeps showing up across your entries and shapes a question
+              Quiet Mirror reads what keeps showing up across your entries and shapes a question
               around what you seem to be carrying. Not a prompt to perform with — just
               something to sit with honestly.
             </p>
@@ -113,7 +113,7 @@ export default function ReflectionToolPage() {
               How this works
             </p>
             <p className="mt-3 text-sm leading-relaxed text-slate-400">
-              Havenly reads across your recent entries — the emotions, themes, and patterns
+              Quiet Mirror reads across your recent entries — the emotions, themes, and patterns
               that keep returning — and shapes a question around what it notices. The question
               changes as your writing does. It is not a prompt to answer correctly. Just
               something honest to sit with.

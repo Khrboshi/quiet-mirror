@@ -65,7 +65,7 @@ export default function RequirePremium({ children }: RequirePremiumProps) {
                 },
                 {
                   label: "Weekly personal summary",
-                  sub: "A concise mirror of what Havenly noticed this week",
+                  sub: "A concise mirror of what Quiet Mirror noticed this week",
                   dot: "bg-amber-400",
                 },
                 {

@@ -46,7 +46,7 @@ export default function UpgradeConfirmedPage() {
             {[
               { label: "Unlimited reflections", sub: "Reflect on every entry — no monthly limit.", color: "text-emerald-400" },
               { label: "Full pattern insights", sub: "See what keeps surfacing across weeks and months.", color: "text-violet-400" },
-              { label: "Weekly personal summary", sub: "Every Monday, a written mirror of what Havenly noticed.", color: "text-amber-400" },
+              { label: "Weekly personal summary", sub: "Every Monday, a written mirror of what Quiet Mirror noticed.", color: "text-amber-400" },
               { label: "Why-this-keeps-happening insights", sub: "The recurring emotional loop underneath — named, gently.", color: "text-sky-400" },
             ].map(({ label, sub, color }) => (
               <li key={label} className="flex items-start gap-3">

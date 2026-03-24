@@ -28,7 +28,7 @@ export default function BlogPage() {
         <div className="relative mx-auto max-w-6xl px-6 pb-14 pt-12 sm:pb-16 sm:pt-16">
           <div className="max-w-4xl">
             <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-400/80">
-              Havenly Journal
+              Quiet Mirror Journal
             </p>
 
             <h1 className="mt-4 font-display text-[2.2rem] font-semibold leading-[1.08] tracking-tight text-white sm:text-5xl">
@@ -42,7 +42,7 @@ export default function BlogPage() {
             </p>
 
             <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-400">
-              Havenly articles are written to be read quietly. Nothing here is
+              Quiet Mirror articles are written to be read quietly. Nothing here is
               clinical, diagnostic, or designed to push you into action.
               Reflection is allowed to stay slow.
             </p>
@@ -122,7 +122,7 @@ export default function BlogPage() {
           </h2>
 
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-300">
-            Havenly gives you a private place to put what you&apos;re carrying.
+            Quiet Mirror gives you a private place to put what you&apos;re carrying.
             The AI does not judge, diagnose, or rush you — it reflects patterns
             back gently, only when you ask.
           </p>

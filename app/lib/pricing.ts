@@ -5,7 +5,7 @@
 // TO CHANGE THE TRIAL LENGTH: edit `trialDays` below.
 // Every UI string, logic gate, and Stripe API call derives from it.
 
-const TRIAL_DAYS = 1; // ← the one number to change
+const TRIAL_DAYS = 7; // ← the one number to change
 
 export const PRICING = {
   /** Monthly price in USD */

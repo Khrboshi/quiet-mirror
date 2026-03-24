@@ -233,7 +233,7 @@ function FreeInsightTeaser({
           <span className="text-slate-200">
             {3 - entryCount} more {3 - entryCount === 1 ? "entry" : "entries"}
           </span>{" "}
-          and Havenly will start noticing what quietly repeats across your writing.
+          and Quiet Mirror will start noticing what quietly repeats across your writing.
         </p>
       </div>
     );
@@ -255,7 +255,7 @@ function FreeInsightTeaser({
         </p>
       ) : (
         <p className="text-sm leading-relaxed text-slate-300">
-          Havenly has noticed a recurring thread in your entries. Premium helps
+          Quiet Mirror has noticed a recurring thread in your entries. Premium helps
           you see what quietly repeats.
         </p>
       )}
@@ -347,13 +347,13 @@ function WelcomePanel() {
   return (
     <div className="mb-8 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.04] p-6">
       <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-500/70">
-        Welcome to Havenly
+        Welcome to Quiet Mirror
       </p>
       <h2 className="font-display text-lg font-semibold leading-snug text-white">
         This is your private space to think out loud.
       </h2>
       <p className="mt-2 text-sm leading-relaxed text-slate-400">
-        Write what&apos;s actually going on — Havenly reads it, reflects it back
+        Write what&apos;s actually going on — Quiet Mirror reads it, reflects it back
         gently, and starts noticing what quietly repeats across your entries over
         time. One sentence is always enough to start.
       </p>
@@ -385,7 +385,7 @@ function PatternStartedCard({
         Your pattern history has started
       </p>
       <p className="text-sm leading-relaxed text-slate-300">
-        Havenly has your first reflection.{" "}
+        Quiet Mirror has your first reflection.{" "}
         {emotion || theme ? (
           <>
             It noticed{" "}
@@ -431,7 +431,7 @@ function ProgressNudge({ entryCount }: { entryCount: number }) {
         <span className="text-slate-200">
           {remaining} more {remaining === 1 ? "entry" : "entries"}
         </span>{" "}
-        and Havenly will start showing you what quietly repeats across your
+        and Quiet Mirror will start showing you what quietly repeats across your
         writing.
       </p>
     </div>

@@ -103,7 +103,7 @@ function MagicLoginInner() {
     setMode("code");
     setStatus("error");
     setMessage(
-      "Sign-in did not complete in this browser context. On iPhone, Safari and the Home Screen app may not share login. Use code sign-in below in the same place you are using Havenly."
+      "Sign-in did not complete in this browser context. On iPhone, Safari and the Home Screen app may not share login. Use code sign-in below in the same place you are using Quiet Mirror."
     );
   }, [callbackError]);
 
@@ -172,7 +172,7 @@ function MagicLoginInner() {
     setMessage(
       mode === "code"
         ? "Email sent. If your email includes a code, enter it below. If it shows a button or link instead, you can still open it to sign in."
-        : "Email sent. Open the button or link in the same browser you started with. If you installed Havenly on iPhone, code sign-in is usually the safer option."
+        : "Email sent. Open the button or link in the same browser you started with. If you installed Quiet Mirror on iPhone, code sign-in is usually the safer option."
     );
   }
 
@@ -285,14 +285,14 @@ function MagicLoginInner() {
               <p className="mt-1.5 text-sm leading-relaxed text-slate-400">
                 {isReturning
                   ? "Your journal is waiting."
-                  : "Write honestly. Havenly reflects back what it notices — gently, and only when you ask."}
+                  : "Write honestly. Quiet Mirror reflects back what it notices — gently, and only when you ask."}
               </p>
             </div>
 
             {/* Desktop card header */}
             <div className="mb-5 hidden lg:block">
               <h2 className="font-display text-2xl font-semibold text-white">
-                {isReturning ? "Sign in to Havenly" : "Start your free journal"}
+                {isReturning ? "Sign in to Quiet Mirror" : "Start your free journal"}
               </h2>
               <p className="mt-1 text-sm text-slate-500">
                 {ios
@@ -412,7 +412,7 @@ function MagicLoginInner() {
                     {status === "loading" ? "Verifying…" : "Verify and sign in"}
                   </button>
                   <p className="mt-3 text-xs leading-relaxed text-slate-600">
-                    Tip: if the email shows spaces between numbers, just paste it. Havenly removes
+                    Tip: if the email shows spaces between numbers, just paste it. Quiet Mirror removes
                     spaces automatically.
                   </p>
                 </div>

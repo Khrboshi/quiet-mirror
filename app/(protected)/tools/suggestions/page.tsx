@@ -60,7 +60,7 @@ export default function SuggestionsToolPage() {
               One or two things worth trying.
             </h1>
             <p className="max-w-lg text-sm leading-relaxed text-slate-400">
-              Havenly looks at what keeps coming up in your entries — what drains you,
+              Quiet Mirror looks at what keeps coming up in your entries — what drains you,
               what you return to — and offers something small and specific. Not a plan.
               Just a quiet invitation, if it fits.
             </p>

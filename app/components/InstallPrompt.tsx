@@ -182,7 +182,7 @@ export default function InstallPrompt() {
         )}
 
         <p className="mt-2 text-[11px] text-slate-400">
-          This won’t appear when Havenly is opened as an installed app.
+          This won’t appear when Quiet Mirror is opened as an installed app.
         </p>
       </div>
     </div>

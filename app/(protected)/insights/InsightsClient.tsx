@@ -420,7 +420,7 @@ function NotEnoughData({ entryCount }: { entryCount: number }) {
         </h3>
         <p className="mx-auto max-w-sm text-sm text-slate-500">
           {needed > 0
-            ? `${needed} more ${needed === 1 ? "reflection" : "reflections"} and Havenly will start surfacing what quietly repeats across your entries.`
+            ? `${needed} more ${needed === 1 ? "reflection" : "reflections"} and Quiet Mirror will start surfacing what quietly repeats across your entries.`
             : "Generating your personal patterns now — check back after your next reflection."}
         </p>
       </div>
@@ -565,7 +565,7 @@ function WeeklySummarySection({ hasRealData }: { hasRealData: boolean }) {
       <div className="mb-4 flex items-center justify-between gap-4">
         <div>
           <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500">
-            What Havenly has noticed
+            What Quiet Mirror has noticed
           </h2>
           <p className="mt-0.5 text-xs text-slate-700">
             A personal summary generated from your reflection history.
@@ -591,7 +591,7 @@ function WeeklySummarySection({ hasRealData }: { hasRealData: boolean }) {
 
       {state.status === "idle" && !hasRealData && (
         <p className="text-sm text-slate-600">
-          Generate a few more reflections and Havenly will write a personal
+          Generate a few more reflections and Quiet Mirror will write a personal
           summary of what it's noticed.
         </p>
       )}
@@ -757,7 +757,7 @@ export default function InsightsClient() {
       <div>
         <h1 className="font-display text-3xl font-semibold text-white sm:text-4xl">Insights</h1>
         <p className="mt-1 text-sm text-slate-500">
-          What Havenly has noticed across your reflections
+          What Quiet Mirror has noticed across your reflections
           {totalEntryCount > 0 && (
             <>
               {" "}
@@ -887,7 +887,7 @@ export default function InsightsClient() {
                 What you keep coming back to
               </h2>
               <p className="mt-0.5 mb-5 text-xs text-slate-600">
-                The specific dynamic Havenly noticed most often beneath your
+                The specific dynamic Quiet Mirror noticed most often beneath your
                 entries.
               </p>
 

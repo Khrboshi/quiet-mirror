@@ -207,7 +207,7 @@ export default function JournalEntryClient({
           <div className="flex items-start gap-2 border-b border-white/6 bg-emerald-500/5 px-6 py-3">
             <span className="mt-0.5 text-sm text-emerald-400">&#10022;</span>
             <p className="text-xs leading-relaxed text-slate-400">
-              This reflection starts your pattern history &mdash; Havenly will
+              This reflection starts your pattern history &mdash; Quiet Mirror will
               notice what repeats across your entries over time.
             </p>
           </div>
@@ -216,7 +216,7 @@ export default function JournalEntryClient({
         <div className="flex items-center justify-between border-b border-white/6 px-6 py-4">
           <div>
             <h2 className="text-sm font-semibold tracking-tight text-white/90">
-              Havenly&apos;s reflection
+              Quiet Mirror&apos;s reflection
             </h2>
 
             {/* Credits counter — only show for free users */}
@@ -308,7 +308,7 @@ export default function JournalEntryClient({
 
         {!reflection && !busy && !isLimitReached && (
           <p className="px-6 py-5 text-xs leading-relaxed text-white/35">
-            When you&apos;re ready, Havenly will reflect back what it noticed
+            When you&apos;re ready, Quiet Mirror will reflect back what it noticed
             &mdash; themes, emotions, and a gentle next step. Each entry gets
             one reflection, saved permanently so your patterns stay accurate
             over time.
@@ -503,7 +503,7 @@ export default function JournalEntryClient({
 
             <div className="px-6 py-3">
               <p className="text-center text-[10px] text-white/18">
-                Saved permanently &middot; Havenly uses this to build your
+                Saved permanently &middot; Quiet Mirror uses this to build your
                 pattern history
               </p>
             </div>
@@ -522,7 +522,7 @@ export default function JournalEntryClient({
                   This is now part of your pattern history.
                 </p>
                 <p className="mt-1 text-xs leading-relaxed text-slate-500">
-                  Havenly tracks what keeps showing up across all your entries.
+                  Quiet Mirror tracks what keeps showing up across all your entries.
                   Your insights view shows the thread that connects them.
                 </p>
               </div>
