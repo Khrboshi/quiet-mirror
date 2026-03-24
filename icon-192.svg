@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <rect width="192" height="192" rx="38" fill="#0c1012"/>
+  <!-- Outer ellipse -->
+  <ellipse cx="96" cy="96" rx="52" ry="68" fill="none" stroke="#10b981" stroke-width="7"/>
+  <!-- Middle ellipse -->
+  <ellipse cx="96" cy="96" rx="28" ry="40" fill="none" stroke="#10b981" stroke-width="5" opacity="0.55"/>
+  <!-- Centre dot -->
+  <circle cx="96" cy="96" r="10" fill="#10b981"/>
+  <!-- Writing lines (left side) -->
+  <line x1="18" y1="76" x2="44" y2="76" stroke="#10b981" stroke-width="4" stroke-linecap="round" opacity="0.22"/>
+  <line x1="18" y1="96" x2="44" y2="96" stroke="#10b981" stroke-width="4" stroke-linecap="round" opacity="0.22"/>
+  <line x1="18" y1="116" x2="44" y2="116" stroke="#10b981" stroke-width="4" stroke-linecap="round" opacity="0.22"/>
+</svg>
