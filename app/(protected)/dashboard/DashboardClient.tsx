@@ -6,6 +6,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSupabase } from "@/app/components/SupabaseSessionProvider";
 import { useUserPlan } from "@/app/components/useUserPlan";
 import type { DashboardData } from "./page";
+import { PRICING } from "@/app/lib/pricing";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
