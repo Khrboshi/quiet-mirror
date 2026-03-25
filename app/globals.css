@@ -253,6 +253,7 @@
   .text-hvn-text-muted     { color: var(--hvn-text-muted); }
   .border-hvn-subtle    { border-color: var(--hvn-border-subtle); }
   .border-hvn-card      { border-color: var(--hvn-card-border); }
+  .bg-hvn-card          { background-color: var(--hvn-bg-soft); }
   .bg-hvn-accent-mint      { background-color: var(--hvn-accent-mint); }
   .bg-hvn-accent-mint-soft { background-color: var(--hvn-accent-mint-soft); }
   .bg-hvn-accent-blue-soft { background-color: var(--hvn-accent-blue-soft); }

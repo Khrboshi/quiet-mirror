@@ -377,16 +377,18 @@ export default function HomeBelowFold() {
                 tags: ["exhaustion", "frustration", "helplessness"],
               },
             ].map(({ wrote, reflected, tags }) => (
-              <ScrollReveal key={tags[0]} className="flex flex-col overflow-hidden rounded-[1.5rem] border border-slate-800 bg-slate-900/50">
-                <div className="border-b border-slate-800 bg-slate-950/60 px-5 py-4">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-600">What you wrote</p>
-                  <p className="mt-2 text-sm italic leading-relaxed text-slate-400">&ldquo;{wrote}&rdquo;</p>
+              <ScrollReveal key={tags[0]} className="flex flex-col overflow-hidden rounded-[1.5rem] border border-hvn-card">
+                {/* WHAT YOU WROTE — fixed min-height so dividing line stays consistent */}
+                <div className="min-h-[140px] border-b border-hvn-card bg-hvn-bg-elevated px-5 py-4">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-hvn-text-muted">What you wrote</p>
+                  <p className="mt-2 text-sm italic leading-relaxed text-hvn-text-secondary">&ldquo;{wrote}&rdquo;</p>
                 </div>
-                <div className="flex-1 bg-emerald-950/20 px-5 py-4">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-500/70">Quiet Mirror reflected</p>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-200">{reflected}</p>
+                {/* QUIET MIRROR REFLECTED — brand accent bg, no greenish tint */}
+                <div className="flex-1 bg-hvn-accent-mint-soft px-5 py-4">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-hvn-accent-mint">Quiet Mirror reflected</p>
+                  <p className="mt-2 text-sm leading-relaxed text-hvn-text-primary">{reflected}</p>
                   <div className="mt-3 flex flex-wrap gap-1.5">
-                    {tags.map(e => <span key={e} className="rounded-full border border-slate-700 bg-slate-800/60 px-2.5 py-0.5 text-[11px] text-slate-400">{e}</span>)}
+                    {tags.map(e => <span key={e} className="rounded-full border border-hvn-card bg-hvn-bg-elevated px-2.5 py-0.5 text-[11px] text-hvn-text-muted">{e}</span>)}
                   </div>
                 </div>
               </ScrollReveal>
