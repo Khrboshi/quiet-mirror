@@ -1,57 +1,43 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  darkMode: "media",
   content: [
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/components/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
+      colors: {
+        // Quiet Mirror brand palette — soft, muted, introspective
+        mirror: {
+          50: "#f5f7ff",
+          100: "#ebf0ff",
+          200: "#d6e0ff",
+          300: "#b8c9ff",
+          400: "#8b9dff",
+          500: "#7689f5",
+          600: "#5b6de8",
+          700: "#4a5bcc",
+          800: "#3d4da5",
+          900: "#354482",
+        },
+        quiet: {
+          50: "#f8f7fb",
+          100: "#f0eef6",
+          200: "#e0dded",
+          300: "#cbc4e0",
+          400: "#b1a5cf",
+          500: "#9a8dc0",
+          600: "#8676ae",
+          700: "#72639a",
+          800: "#5f5480",
+          900: "#4f4669",
+        },
+      },
       fontFamily: {
         display: ["var(--font-display)", "Fraunces", "Georgia", "serif"],
-        body:    ["var(--font-body)",    "DM Sans",  "system-ui", "sans-serif"],
-        sans:    ["var(--font-body)",    "DM Sans",  "system-ui", "sans-serif"],
-      },
-      colors: {
-        // ─── Quiet Mirror system-aware palette ────────────────────────────
-        // Dark mode:  periwinkle blue #7c9fff + soft violet #9b8fd4 + deep navy bg
-        // Light mode: royal blue #2563eb + emerald green #059669 + white bg
-        // All via CSS variables — tailwind reads them automatically
-        emerald: {
-          300: "var(--hvn-accent-mint)",
-          400: "var(--hvn-accent-mint)",
-          500: "var(--hvn-accent-mint)",
-          600: "var(--hvn-accent-mint-hover)",
-          700: "var(--hvn-accent-mint-hover)",
-        },
-        violet: {
-          400: "#a78bfa",
-          500: "var(--hvn-accent-blue)",
-        },
-        slate: {
-          950: "var(--hvn-bg)",
-          900: "var(--hvn-bg-elevated)",
-        },
-        hvn: {
-          bg:       "var(--hvn-bg)",
-          elevated: "var(--hvn-bg-elevated)",
-          soft:     "var(--hvn-bg-soft)",
-        },
-      },
-      animation: {
-        "fade-in-up": "fadeInUp 0.65s ease-out forwards",
-        "fade-in":    "fadeIn 0.5s ease-out forwards",
-      },
-      keyframes: {
-        fadeInUp: {
-          "0%":   { opacity: "0", transform: "translateY(20px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-        fadeIn: {
-          "0%":   { opacity: "0" },
-          "100%": { opacity: "1" },
-        },
+        body: ["var(--font-body)", "DM Sans", "system-ui", "sans-serif"],
       },
     },
   },
