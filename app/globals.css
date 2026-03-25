@@ -4,39 +4,37 @@
 
 /* ===========================
    QUIET MIRROR BRAND THEME
-   System-aware: adapts to phone/browser light or dark mode
-   Day  → white bg, blue + green accents (readable, energetic)
-   Night → deep navy bg, periwinkle + violet (calm, private)
-
-   Evidence base:
-   · Periwinkle blue #7c9fff — trust, calm (Vivid Creative 2025)
-   · Soft violet #9b8fd4 — creativity, introspection (Gel Press 2025)
-   · Deep navy bg — safety, reduced eye strain at night (Mockflow 2025)
-   · White bg — readability, clarity in daylight (UXmatters 2024)
+   System-aware: adapts to light or dark mode
+   
+   Dark mode → deep indigo, soft periwinkle, gentle violet
+   Light mode → warm paper, muted slate blue, soft sage
+   
+   Design principle: "Quiet" = low saturation, soft contrast, calm
+   "Mirror" = clarity without glare, reflective not bright
    =========================== */
 
-/* ── DARK MODE (default — night, OLED, system dark) ── */
+/* ── DARK MODE (default — night, system dark) ── */
 :root {
-  --hvn-bg:           #0b1120;
-  --hvn-bg-elevated:  #0f1830;
-  --hvn-bg-soft:      #131e38;
+  --hvn-bg:           #0a0e1a;
+  --hvn-bg-elevated:  #0f1422;
+  --hvn-bg-soft:      #151b2e;
 
-  --hvn-text-primary:   #e8edf8;
-  --hvn-text-secondary: #c8d4ec;
-  --hvn-text-muted:     #8896b3;
+  --hvn-text-primary:   #e6eaf4;
+  --hvn-text-secondary: #b8c2db;
+  --hvn-text-muted:     #7b8aaa;
 
-  --hvn-accent-mint:       #7c9fff;
-  --hvn-accent-mint-hover: #6186f0;
-  --hvn-accent-mint-soft:  rgba(124, 159, 255, 0.14);
+  --hvn-accent-mint:       #8b9dff;
+  --hvn-accent-mint-hover: #a3b3ff;
+  --hvn-accent-mint-soft:  rgba(139, 157, 255, 0.12);
 
-  --hvn-accent-blue:      #9b8fd4;
-  --hvn-accent-blue-soft: rgba(155, 143, 212, 0.14);
+  --hvn-accent-blue:      #9a94c9;
+  --hvn-accent-blue-soft: rgba(154, 148, 201, 0.12);
 
-  --hvn-border-subtle:      rgba(124, 159, 255, 0.16);
-  --hvn-card-border:        rgba(124, 159, 255, 0.10);
-  --hvn-shadow-soft:        0 18px 60px rgba(11, 17, 32, 0.65);
-  --hvn-shadow-card:        0 16px 40px rgba(11, 17, 32, 0.40);
-  --hvn-shadow-card-strong: 0 24px 70px rgba(11, 17, 32, 0.55);
+  --hvn-border-subtle:      rgba(139, 157, 255, 0.14);
+  --hvn-card-border:        rgba(139, 157, 255, 0.08);
+  --hvn-shadow-soft:        0 18px 60px rgba(10, 14, 26, 0.70);
+  --hvn-shadow-card:        0 12px 32px rgba(10, 14, 26, 0.45);
+  --hvn-shadow-card-strong: 0 24px 64px rgba(10, 14, 26, 0.60);
 
   --hvn-radius-lg: 18px;
   --hvn-radius-md: 14px;
@@ -48,41 +46,40 @@
 /* ── LIGHT MODE (day, system light) ── */
 @media (prefers-color-scheme: light) {
   :root {
-    /* ── Warm cream palette ─────────────────────────────────────────────
-       Background: warm parchment — feels like paper, the material journals
-       are made of. Eliminates glare from pure white. (Mockflow 2025,
-       C7 Healthcare 2025: soft warm hues keep wellness users on page longer)
-       Accent: royal blue #2563eb — trust + CTA engagement (Vivid Creative 2025)
-       Secondary: emerald #059669 — calm, balance, renewal (C7 Healthcare 2025)
+    /* ── Soft paper + muted slate blue ─────────────────────────────────
+       Background: warm off-white (#faf8f5) — paper-like, no glare
+       Accent: muted slate blue (#5b6e8f) — calm, trust, readable
+       Secondary: soft sage (#6b9080) — gentle, grounding, introspective
+       
+       Lower saturation = "quiet" feel. High-contrast text for readability.
     ── */
-    --hvn-bg:           #f5f0eb;
-    --hvn-bg-elevated:  #faf7f4;
-    --hvn-bg-soft:      #ede8e2;
+    --hvn-bg:           #faf8f5;
+    --hvn-bg-elevated:  #ffffff;
+    --hvn-bg-soft:      #f0ede8;
 
-    --hvn-text-primary:   #1a120b;
-    --hvn-text-secondary: #4a3728;
-    --hvn-text-muted:     #7a6355;
+    --hvn-text-primary:   #1a1614;
+    --hvn-text-secondary: #463e38;
+    --hvn-text-muted:     #736a62;
 
-    --hvn-accent-mint:       #2563eb;
-    --hvn-accent-mint-hover: #1d4ed8;
-    --hvn-accent-mint-soft:  rgba(37, 99, 235, 0.10);
+    --hvn-accent-mint:       #5b6e8f;
+    --hvn-accent-mint-hover: #4a5d7a;
+    --hvn-accent-mint-soft:  rgba(91, 110, 143, 0.10);
 
-    --hvn-accent-blue:      #059669;
-    --hvn-accent-blue-soft: rgba(5, 150, 105, 0.10);
+    --hvn-accent-blue:      #6b9080;
+    --hvn-accent-blue-soft: rgba(107, 144, 128, 0.10);
 
-    --hvn-border-subtle:      rgba(92, 74, 58, 0.20);
-    --hvn-card-border:        rgba(92, 74, 58, 0.14);
-    --hvn-shadow-soft:        0 18px 60px rgba(26, 18, 11, 0.08);
-    --hvn-shadow-card:        0 8px 24px rgba(26, 18, 11, 0.06);
-    --hvn-shadow-card-strong: 0 16px 48px rgba(26, 18, 11, 0.10);
+    --hvn-border-subtle:      rgba(70, 62, 56, 0.18);
+    --hvn-card-border:        rgba(70, 62, 56, 0.12);
+    --hvn-shadow-soft:        0 18px 60px rgba(26, 22, 20, 0.06);
+    --hvn-shadow-card:        0 8px 20px rgba(26, 22, 20, 0.05);
+    --hvn-shadow-card-strong: 0 16px 40px rgba(26, 22, 20, 0.08);
 
     color-scheme: light;
   }
 
   /* ── Light mode text overrides ─────────────────────────────────────
-     text-white and text-slate-100/200 are designed for dark backgrounds.
-     In light mode, override them to use the proper dark text so headings
-     and body text remain readable on warm cream backgrounds.
+     Tailwind's slate-* and white classes are designed for dark backgrounds.
+     Override them for readability on warm paper background.
   ── */
   .text-white,
   .text-slate-100,
@@ -90,41 +87,69 @@
     color: var(--hvn-text-primary) !important;
   }
 
-  /* Muted text — keep readable but softer */
   .text-slate-300,
   .text-slate-400 {
+    color: var(--hvn-text-secondary) !important;
+  }
+
+  .text-slate-500,
+  .text-slate-600 {
     color: var(--hvn-text-muted) !important;
   }
 
-  /* Borders — adapt dark borders to warm tones */
+  .text-slate-700 {
+    color: var(--hvn-text-muted) !important;
+  }
+
+  /* Borders */
   .border-slate-800,
   .border-slate-700\/60,
-  .border-slate-700 {
+  .border-slate-700,
+  .border-slate-600 {
+    border-color: var(--hvn-card-border) !important;
+  }
+
+  [class*="border-white\/"] {
     border-color: var(--hvn-card-border) !important;
   }
 
   /* Card backgrounds */
   .bg-slate-900\/40,
   .bg-slate-900\/35,
-  .bg-slate-900\/60 {
+  .bg-slate-900\/60,
+  .bg-slate-900\/50 {
     background-color: var(--hvn-bg-elevated) !important;
   }
 
-  /* White borders are invisible on light bg — use warm tone instead */
-  [class*="border-white\/"] {
-    border-color: var(--hvn-card-border) !important;
+  .bg-slate-950 {
+    background-color: var(--hvn-bg) !important;
   }
 
-  /* Slate text that's too dark in light mode */
-  .text-slate-500 { color: var(--hvn-text-muted) !important; }
-  .text-slate-600 { color: var(--hvn-text-muted) !important; }
+  /* Emerald colors in light mode — map to sage */
+  .text-emerald-400,
+  .text-emerald-500 {
+    color: var(--hvn-accent-blue) !important;
+  }
 
-  /* Scrollbar warm tones */
+  .bg-emerald-500 {
+    background-color: var(--hvn-accent-mint) !important;
+  }
+
+  .bg-emerald-400 {
+    background-color: var(--hvn-accent-mint-hover) !important;
+  }
+
+  .border-emerald-500\/20,
+  .border-emerald-500\/25 {
+    border-color: var(--hvn-border-subtle) !important;
+  }
+
+  /* Scrollbar */
   body::-webkit-scrollbar-thumb {
-    background: rgba(92, 74, 58, 0.25) !important;
+    background: rgba(70, 62, 56, 0.22) !important;
   }
   body::-webkit-scrollbar-thumb:hover {
-    background: rgba(92, 74, 58, 0.40) !important;
+    background: rgba(70, 62, 56, 0.35) !important;
   }
 }
 
@@ -136,20 +161,22 @@
   html, body { overflow-x: hidden; }
   body {
     margin: 0;
-    font-family: var(--font-body, "DM Sans"), system-ui, sans-serif;
+    font-family: var(--font-body, "DM Sans"), system-ui, -apple-system, sans-serif;
     background-color: var(--hvn-bg);
     color: var(--hvn-text-primary);
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  /* Subtle texture — only in dark mode */
   body::before {
     content: "";
     position: fixed;
     inset: 0;
     z-index: 999;
     pointer-events: none;
-    opacity: 0.015;
+    opacity: 0.012;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
     background-repeat: repeat;
     background-size: 128px 128px;
@@ -157,14 +184,17 @@
   @media (prefers-color-scheme: light) {
     body::before { opacity: 0; }
   }
+
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display, "Fraunces"), Georgia, serif;
     letter-spacing: -0.02em;
   }
+
   ::selection {
     background: var(--hvn-accent-mint-soft);
     color: var(--hvn-text-primary);
   }
+
   a, button, [role="button"] { -webkit-tap-highlight-color: transparent; }
   input, textarea, select { font-size: max(16px, 1rem); }
   input, textarea, select, button { font: inherit; }
@@ -200,44 +230,49 @@
   .stagger-children.is-visible > *:nth-child(5) { opacity: 1; transform: none; transition-delay: 0.45s; }
   .stagger-children.is-visible > *:nth-child(6) { opacity: 1; transform: none; transition-delay: 0.55s; }
 
-  /* Section backgrounds — adapt to mode */
+  /* Section backgrounds */
   .bg-hvn-page-gradient {
     background:
-      radial-gradient(circle at 0% 0%, rgba(124,159,255,0.12), transparent 38%),
-      radial-gradient(circle at 100% 0%, rgba(155,143,212,0.10), transparent 34%),
+      radial-gradient(circle at 0% 0%, rgba(139,157,255,0.10), transparent 40%),
+      radial-gradient(circle at 100% 0%, rgba(154,148,201,0.08), transparent 36%),
       var(--hvn-bg);
   }
   @media (prefers-color-scheme: light) {
     .bg-hvn-page-gradient {
       background:
-        radial-gradient(circle at 0% 0%, rgba(37,99,235,0.05), transparent 38%),
-        radial-gradient(circle at 100% 0%, rgba(5,150,105,0.04), transparent 34%),
+        radial-gradient(circle at 0% 0%, rgba(91,110,143,0.04), transparent 40%),
+        radial-gradient(circle at 100% 0%, rgba(107,144,128,0.03), transparent 36%),
         var(--hvn-bg);
     }
   }
+
   .bg-hvn-hero-gradient {
     background:
-      radial-gradient(ellipse 80% 50% at 50% -5%, rgba(124,159,255,0.11), transparent),
+      radial-gradient(ellipse 80% 50% at 50% -5%, rgba(139,157,255,0.09), transparent),
       var(--hvn-bg);
   }
   @media (prefers-color-scheme: light) {
     .bg-hvn-hero-gradient {
       background:
-        radial-gradient(ellipse 80% 50% at 50% -5%, rgba(37,99,235,0.06), transparent),
+        radial-gradient(ellipse 80% 50% at 50% -5%, rgba(91,110,143,0.05), transparent),
         var(--hvn-bg);
     }
   }
+
   .section-tinted { background: var(--hvn-bg-soft); }
+
   .section-purple-tint {
     background:
       radial-gradient(ellipse 60% 50% at 50% 0%, var(--hvn-accent-mint-soft), transparent),
       var(--hvn-bg);
   }
+
   .section-warm-tint {
     background:
-      radial-gradient(ellipse 60% 60% at 50% 0%, rgba(245,158,11,0.04), transparent),
+      radial-gradient(ellipse 60% 60% at 50% 0%, rgba(139,157,255,0.05), transparent),
       var(--hvn-bg);
   }
+
   .section-cta-gradient {
     background:
       radial-gradient(ellipse 80% 60% at 50% 100%, var(--hvn-accent-mint-soft), transparent),
@@ -265,14 +300,14 @@
 
   .ring-hvn-focus {
     box-shadow:
-      0 0 0 1px rgba(124,159,255,0.28),
-      0 0 0 4px rgba(124,159,255,0.08);
+      0 0 0 1px rgba(139,157,255,0.26),
+      0 0 0 4px rgba(139,157,255,0.08);
   }
   @media (prefers-color-scheme: light) {
     .ring-hvn-focus {
       box-shadow:
-        0 0 0 1px rgba(37,99,235,0.28),
-        0 0 0 4px rgba(37,99,235,0.08);
+        0 0 0 1px rgba(91,110,143,0.26),
+        0 0 0 4px rgba(91,110,143,0.08);
     }
   }
 
@@ -282,6 +317,7 @@
     backdrop-filter: blur(10px);
     box-shadow: var(--hvn-shadow-card);
   }
+
   .hvn-panel-strong {
     border: 1px solid var(--hvn-border-subtle);
     background: var(--hvn-bg-elevated);
@@ -327,12 +363,9 @@
   .hvn-btn-primary {
     border-radius: 9999px;
     background: var(--hvn-accent-mint);
-    color: #ffffff; /* white on blue — works in both modes */
-    font-weight: 700;
+    color: #ffffff;
+    font-weight: 600;
     transition: transform 0.16s ease, background-color 0.16s ease, box-shadow 0.16s ease, opacity 0.16s ease;
-  }
-  @media (prefers-color-scheme: dark) {
-    .hvn-btn-primary { color: #0b1120; }
   }
   .hvn-btn-primary:hover    { background: var(--hvn-accent-mint-hover); transform: translateY(-1px); }
   .hvn-btn-primary:active   { transform: translateY(0); }
@@ -343,9 +376,14 @@
     border: 1px solid var(--hvn-border-subtle);
     background: var(--hvn-bg-elevated);
     color: var(--hvn-text-primary);
+    font-weight: 500;
     transition: transform 0.16s ease, background-color 0.16s ease, border-color 0.16s ease;
   }
-  .hvn-btn-secondary:hover { border-color: var(--hvn-accent-mint); transform: translateY(-1px); }
+  .hvn-btn-secondary:hover { 
+    border-color: var(--hvn-accent-mint); 
+    background: var(--hvn-accent-mint-soft);
+    transform: translateY(-1px); 
+  }
   .hvn-btn-secondary:active { transform: translateY(0); }
 
   .hvn-input {
