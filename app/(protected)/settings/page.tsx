@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { ensureCreditsFresh } from "@/lib/creditRules";
 import { PAYMENT } from "@/app/lib/payment";
+import { CONFIG } from "@/app/lib/config";
 
 export const dynamic = "force-dynamic";
 
