@@ -48,26 +48,33 @@
 /* ── LIGHT MODE (day, system light) ── */
 @media (prefers-color-scheme: light) {
   :root {
-    --hvn-bg:           #f0f4ff;
-    --hvn-bg-elevated:  #ffffff;
-    --hvn-bg-soft:      #e8efff;
+    /* ── Warm cream palette ─────────────────────────────────────────────
+       Background: warm parchment — feels like paper, the material journals
+       are made of. Eliminates glare from pure white. (Mockflow 2025,
+       C7 Healthcare 2025: soft warm hues keep wellness users on page longer)
+       Accent: royal blue #2563eb — trust + CTA engagement (Vivid Creative 2025)
+       Secondary: emerald #059669 — calm, balance, renewal (C7 Healthcare 2025)
+    ── */
+    --hvn-bg:           #f5f0eb;
+    --hvn-bg-elevated:  #faf7f4;
+    --hvn-bg-soft:      #ede8e2;
 
-    --hvn-text-primary:   #0f172a;
-    --hvn-text-secondary: #1e3a5f;
-    --hvn-text-muted:     #4a6080;
+    --hvn-text-primary:   #1a120b;
+    --hvn-text-secondary: #4a3728;
+    --hvn-text-muted:     #7a6355;
 
     --hvn-accent-mint:       #2563eb;
     --hvn-accent-mint-hover: #1d4ed8;
-    --hvn-accent-mint-soft:  rgba(37, 99, 235, 0.12);
+    --hvn-accent-mint-soft:  rgba(37, 99, 235, 0.10);
 
     --hvn-accent-blue:      #059669;
-    --hvn-accent-blue-soft: rgba(5, 150, 105, 0.12);
+    --hvn-accent-blue-soft: rgba(5, 150, 105, 0.10);
 
-    --hvn-border-subtle:      rgba(37, 99, 235, 0.20);
-    --hvn-card-border:        rgba(37, 99, 235, 0.14);
-    --hvn-shadow-soft:        0 18px 60px rgba(15, 23, 42, 0.10);
-    --hvn-shadow-card:        0 8px 24px rgba(15, 23, 42, 0.08);
-    --hvn-shadow-card-strong: 0 16px 48px rgba(15, 23, 42, 0.12);
+    --hvn-border-subtle:      rgba(92, 74, 58, 0.20);
+    --hvn-card-border:        rgba(92, 74, 58, 0.14);
+    --hvn-shadow-soft:        0 18px 60px rgba(26, 18, 11, 0.08);
+    --hvn-shadow-card:        0 8px 24px rgba(26, 18, 11, 0.06);
+    --hvn-shadow-card-strong: 0 16px 48px rgba(26, 18, 11, 0.10);
 
     color-scheme: light;
   }
@@ -155,8 +162,8 @@
   @media (prefers-color-scheme: light) {
     .bg-hvn-page-gradient {
       background:
-        radial-gradient(circle at 0% 0%, rgba(37,99,235,0.06), transparent 38%),
-        radial-gradient(circle at 100% 0%, rgba(5,150,105,0.05), transparent 34%),
+        radial-gradient(circle at 0% 0%, rgba(37,99,235,0.05), transparent 38%),
+        radial-gradient(circle at 100% 0%, rgba(5,150,105,0.04), transparent 34%),
         var(--hvn-bg);
     }
   }
@@ -168,7 +175,7 @@
   @media (prefers-color-scheme: light) {
     .bg-hvn-hero-gradient {
       background:
-        radial-gradient(ellipse 80% 50% at 50% -5%, rgba(37,99,235,0.07), transparent),
+        radial-gradient(ellipse 80% 50% at 50% -5%, rgba(37,99,235,0.06), transparent),
         var(--hvn-bg);
     }
   }
@@ -271,7 +278,7 @@
   .hvn-btn-primary {
     border-radius: 9999px;
     background: var(--hvn-accent-mint);
-    color: #ffffff;
+    color: #ffffff; /* white on blue — works in both modes */
     font-weight: 700;
     transition: transform 0.16s ease, background-color 0.16s ease, box-shadow 0.16s ease, opacity 0.16s ease;
   }
