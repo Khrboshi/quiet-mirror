@@ -18,10 +18,10 @@ const base = CONFIG.siteUrl.replace(/\/$/, "");
 export default function sitemap(): MetadataRoute.Sitemap {
   const currentDate = new Date();
   
-  // Blog posts with dynamic lastModified (using article date if available)
+  // Blog posts — using currentDate since your BlogArticle type doesn't have publishedAt/updatedAt
   const blogPosts: MetadataRoute.Sitemap = ARTICLES.map((article) => ({
     url: `${base}/blog/${article.slug}`,
-    lastModified: article.publishedAt || article.updatedAt || currentDate,
+    lastModified: currentDate,
     changeFrequency: "monthly" as const,
     priority: 0.7,
   }));
@@ -47,27 +47,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
-      url: `${base}/pricing`,
+      url: `${base}/upgrade`,
       lastModified: currentDate,
       changeFrequency: "monthly" as const,
       priority: 0.8,
     },
-    {
-      url: `${base}/features`,
-      lastModified: currentDate,
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    },
-    {
-      url: `${base}/faq`,
-      lastModified: currentDate,
-      changeFrequency: "monthly" as const,
-      priority: 0.6,
-    },
-  ];
-
-  // Legal and essential pages (lower priority)
-  const legalPages: MetadataRoute.Sitemap = [
     {
       url: `${base}/privacy`,
       lastModified: currentDate,
@@ -80,17 +64,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly" as const,
       priority: 0.4,
     },
-    {
-      url: `${base}/cookies`,
-      lastModified: currentDate,
-      changeFrequency: "yearly" as const,
-      priority: 0.3,
-    },
   ];
 
   return [
     ...mainPages,
-    ...legalPages,
     ...blogPosts,
   ];
 }
