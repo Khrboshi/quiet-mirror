@@ -1,4 +1,16 @@
+// DESIGN AUDIT: Please review ALL files and identify:
+// 1. Any hardcoded color values (#xxx, rgb, Tailwind color classes like text-gray-900, bg-white)
+// 2. Any inline styles (style={{...}})
+// 3. Any hardcoded branding text ("Quiet Mirror", tagline, description)
+// 4. Any hardcoded spacing or font values
+// 5. Suggest replacements using these design tokens
+
 // Centralized Design System for Quiet Mirror
+// All colors, branding, and styling should come from here
+
+export const colors = {
+  // ... (rest of your existing code)
+  // Centralized Design System for Quiet Mirror
 // All colors, branding, and styling should come from here
 
 export const colors = {
