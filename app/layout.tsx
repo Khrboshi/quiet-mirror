@@ -1,3 +1,4 @@
+import { branding } from './design-tokens';
 // app/layout.tsx
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
