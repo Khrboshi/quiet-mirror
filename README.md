@@ -10,4 +10,4 @@ Copy `.env.example` to `.env.local` and fill in your values:
 - `NEXT_PUBLIC_SITE_URL` should be `https://quietmirror.me`
 - Add your Groq API key for AI reflections
 - Add your Supabase credentials
-- Add Stripe keys for Premium billing
+- Add Stripe keys for Premium billing 
