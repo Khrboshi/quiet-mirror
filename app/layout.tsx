@@ -1,4 +1,3 @@
-import { branding } from './design-tokens';
 // app/layout.tsx
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
@@ -101,8 +100,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#0a0d1a" }, // Updated to match your --qm-bg
-    { media: "(prefers-color-scheme: light)", color: "#faf9f7" }, // Updated to match your light mode --qm-bg
+    { media: "(prefers-color-scheme: dark)", color: "#0b1120" },
+    { media: "(prefers-color-scheme: light)", color: "#f5f0eb" },
   ],
   // Add viewport settings for better mobile accessibility
   width: "device-width",

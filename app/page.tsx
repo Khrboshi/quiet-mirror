@@ -1,4 +1,3 @@
-import { colors, branding } from './design-tokens';
 import Link from "next/link";
 import HomeBelowFold from "./(home)/HomeBelowFold";
 import { CONFIG, BRAND } from "@/app/lib/config";
