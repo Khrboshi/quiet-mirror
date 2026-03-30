@@ -8,20 +8,20 @@ import {
   bucketCorepattern,
   normalizeAIResponseSignals,
 } from "@/lib/ai/normalizeInsightSignals";
-import { type PlanType, normalizePlan } from "@/lib/planUtils";
+import {
+  type PlanType,
+  normalizePlan,
+  type UserCreditsRow,
+  type JournalAIRow,
+  type ProfileSummaryRow,
+  type GroqChatResponse,
+  parseAIResponse,
+} from "@/lib/planUtils";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
 
 const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
-
-function parseAI(raw: any) {
-  try {
-    return typeof raw === "string" ? JSON.parse(raw) : raw;
-  } catch {
-    return null;
-  }
-}
 
 async function callGroq(system: string, user: string): Promise<string> {
   const apiKey = process.env.GROQAPIKEY || process.env.GROQ_API_KEY;
@@ -56,7 +56,7 @@ async function callGroq(system: string, user: string): Promise<string> {
       throw new Error(`Groq ${res.status}: ${text}`);
     }
 
-    const data: any = await res.json();
+    const data: GroqChatResponse = await res.json();
     return String(data?.choices?.[0]?.message?.content ?? "").trim();
   } finally {
     clearTimeout(timer);
@@ -177,9 +177,9 @@ export async function GET() {
     .from("user_credits")
     .select("plan_type")
     .eq("user_id", userId)
-    .maybeSingle();
+    .maybeSingle() as { data: UserCreditsRow | null };
 
-  const plan = normalizePlan((credits as any)?.plan_type);
+  const plan = normalizePlan(credits?.plan_type);
   if (plan !== "PREMIUM" && plan !== "TRIAL") {
     return NextResponse.json({ error: "Premium required" }, { status: 402 });
   }
@@ -188,10 +188,10 @@ export async function GET() {
     .from("profiles")
     .select("weekly_summary, weekly_summary_generated_at")
     .eq("id", userId)
-    .maybeSingle();
+    .maybeSingle() as { data: ProfileSummaryRow | null };
 
-  const cachedSummary = (profile as any)?.weekly_summary as string | null;
-  const cachedAt = (profile as any)?.weekly_summary_generated_at as string | null;
+  const cachedSummary = profile?.weekly_summary ?? null;
+  const cachedAt = profile?.weekly_summary_generated_at ?? null;
 
   const isFresh =
     cachedSummary &&
@@ -211,7 +211,7 @@ export async function GET() {
     .eq("user_id", userId)
     .not("ai_response", "is", null)
     .order("created_at", { ascending: false })
-    .limit(2000);
+    .limit(2000) as { data: JournalAIRow[] | null };
 
   if (!rows?.length) {
     return NextResponse.json({ error: "Not enough data yet." }, { status: 422 });
@@ -230,14 +230,14 @@ export async function GET() {
   let entryCount = 0;
 
   for (const row of rows) {
-    const parsed = parseAI((row as any).ai_response);
+    const parsed = parseAIResponse(row.ai_response);
     if (!parsed) continue;
 
     const normalized = normalizeAIResponseSignals(parsed);
 
     entryCount++;
-    const created = (row as any).created_at;
-    if (!firstEntryDate || new Date(created) < new Date(firstEntryDate)) {
+    const created = row.created_at;
+    if (!firstEntryDate || new Date(created ?? 0) < new Date(firstEntryDate)) {
       firstEntryDate = created;
     }
 

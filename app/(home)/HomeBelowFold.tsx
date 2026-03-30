@@ -820,7 +820,7 @@ export default function HomeBelowFold() {
                 {[
                   { label: "Write anytime", sub: "Your entries stay private" },
                   {
-                    label: "3 AI reflections per month",
+                    label: `${PRICING.freeMonthlyCredits} AI reflections per month`,
                     sub: "Enough to see if Quiet Mirror fits how you think",
                   },
                   {
@@ -995,7 +995,7 @@ export default function HomeBelowFold() {
               {
                 q: "How many reflections do I get on the free plan?",
                 a:
-                  "Free includes 3 AI reflections per month — enough to experience how Quiet Mirror works. Premium gives you unlimited reflections on every entry.",
+                  `Free includes ${PRICING.freeMonthlyCredits} AI reflections per month — enough to experience how Quiet Mirror works. Premium gives you unlimited reflections on every entry.`,
               },
             ].map(({ q, a }) => (
               <ScrollReveal key={q}>

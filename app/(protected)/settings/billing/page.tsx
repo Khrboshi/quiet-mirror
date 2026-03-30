@@ -185,7 +185,7 @@ export default async function BillingPage() {
                   <>
                     <li>• Unlimited journaling</li>
                     <li>• Gentle prompts to begin</li>
-                    <li>• 3 AI reflections per month</li>
+                    <li>• {PRICING.freeMonthlyCredits} AI reflections per month</li>
                     <li>• Private by default</li>
                   </>
                 )}

@@ -268,7 +268,7 @@ export default function JournalEntryClient({
         {isLimitReached && !reflection && !busy && (
           <div className="border-b border-white/5 bg-emerald-500/[0.03] px-6 py-5">
             <p className="text-sm font-medium text-white/80">
-              You&apos;ve used your 3 free reflections this month.
+              You&apos;ve used your {PRICING.freeMonthlyCredits} free reflections this month.
             </p>
             <p className="mt-1.5 text-xs leading-relaxed text-slate-500">
               Premium unlocks unlimited reflections on every entry — plus
@@ -654,7 +654,7 @@ export default function JournalEntryClient({
       <UpgradeTriggerModal
         open={showUpgrade}
         onClose={() => setShowUpgrade(false)}
-        title="You've used your 3 free reflections this month."
+        title={`You've used your ${PRICING.freeMonthlyCredits} free reflections this month.`}
         message={`Start a free trial to keep reflecting on every entry — no charge for ${PRICING.trialDays} ${PRICING.trialDays === 1 ? "day" : "days"}, cancel anytime before then.`}
         source="reflection_limit"
         ctaHref="/upgrade"

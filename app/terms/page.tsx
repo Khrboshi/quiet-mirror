@@ -136,7 +136,7 @@ export default function TermsOfServicePage() {
             </h2>
             <p className="mt-2 text-qm-secondary">
               The free plan includes core journaling features and a limited
-              number of AI reflections per month (currently 3). We may adjust
+              number of AI reflections per month (currently {PRICING.freeMonthlyCredits}). We may adjust
               free-plan limits over time. Free accounts that remain inactive for
               an extended period may be subject to deletion after prior notice.
             </p>

@@ -4,6 +4,7 @@ import { CONFIG } from "@/app/lib/config";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { ensureCreditsFresh } from "@/lib/creditRules";
 import { normalizeAIResponseSignals } from "@/lib/ai/normalizeInsightSignals";
+import { normalizePlan, type UserCreditsRow, type JournalAIRow, type GroqChatResponse, parseAIResponse } from "@/lib/planUtils";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
@@ -40,7 +41,7 @@ async function callGroq(system: string, user: string): Promise<string> {
       throw new Error(`Groq ${res.status}: ${text}`);
     }
 
-    const data: any = await res.json();
+    const data: GroqChatResponse = await res.json();
     return String(data?.choices?.[0]?.message?.content ?? "").trim();
   } finally {
     clearTimeout(timer);
@@ -72,9 +73,9 @@ export async function GET() {
     .from("user_credits")
     .select("plan_type")
     .eq("user_id", userId)
-    .maybeSingle();
+    .maybeSingle() as { data: UserCreditsRow | null };
 
-  const plan = String((credits as any)?.plan_type ?? "FREE").toUpperCase();
+  const plan = normalizePlan(credits?.plan_type);
   if (plan !== "PREMIUM" && plan !== "TRIAL") {
     return NextResponse.json({ error: "Premium required" }, { status: 402 });
   }
@@ -85,7 +86,7 @@ export async function GET() {
     .eq("user_id", userId)
     .not("ai_response", "is", null)
     .order("created_at", { ascending: false })
-    .limit(30);
+    .limit(30) as { data: JournalAIRow[] | null };
 
   if (!rows?.length) {
     return NextResponse.json(
@@ -100,10 +101,7 @@ export async function GET() {
 
   for (const row of rows) {
     try {
-      const parsed =
-        typeof (row as any).ai_response === "string"
-          ? JSON.parse((row as any).ai_response)
-          : (row as any).ai_response;
+      const parsed = parseAIResponse(row.ai_response);
 
       const normalized = normalizeAIResponseSignals(parsed);
 

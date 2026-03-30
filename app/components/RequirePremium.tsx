@@ -124,7 +124,7 @@ export default function RequirePremium({ children }: RequirePremiumProps) {
           {/* Soft exit — no pressure */}
           <div className="qm-panel rounded-2xl px-6 py-5">
             <p className="text-sm leading-relaxed text-qm-secondary">
-              No pressure to upgrade. Free includes 3 reflections per month and
+              No pressure to upgrade. Free includes {PRICING.freeMonthlyCredits} reflections per month and
               full journaling — enough to keep writing honestly at your own
               pace.
             </p>

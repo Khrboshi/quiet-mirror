@@ -126,8 +126,8 @@ export default function RootLayout({
         <meta name="description" content={CONFIG.description} />
         
         {/* Additional SEO meta tags */}
-        <meta name="author" content="Quiet Mirror" />
-        <meta name="copyright" content={`${new Date().getFullYear()} Quiet Mirror`} />
+        <meta name="author" content={CONFIG.appName} />
+        <meta name="copyright" content={`${new Date().getFullYear()} ${CONFIG.appName}`} />
         
         {/* Accessibility: announce page language changes */}
         <meta httpEquiv="Content-Language" content="en" />

@@ -20,7 +20,7 @@ const faqs = [
   },
   {
     q: "How many reflections do I get on the free plan?",
-    a: "Free includes 3 AI reflections per month — enough to experience how Quiet Mirror works. Premium gives you unlimited reflections on every entry.",
+    a: `Free includes ${PRICING.freeMonthlyCredits} AI reflections per month — enough to experience how Quiet Mirror works. Premium gives you unlimited reflections on every entry.`,
   },
   {
     q: "What is your refund policy?",
@@ -188,7 +188,7 @@ export default function UpgradePage() {
                 </div>
                 {[
                   { label: "Journal entries", free: "✓", premium: "✓" },
-                  { label: "AI reflections", free: "3 / mo", premium: "Unlimited" },
+                  { label: "AI reflections", free: `${PRICING.freeMonthlyCredits} / mo`, premium: "Unlimited" },
                   { label: "Pattern insights", free: "—", premium: "✓" },
                   { label: "Weekly summary", free: "—", premium: "✓" },
                   { label: "Why-it-keeps-happening", free: "—", premium: "✓" },

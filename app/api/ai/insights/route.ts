@@ -6,7 +6,7 @@ import {
   bucketCorepattern,
   normalizeAIResponseSignals,
 } from "@/lib/ai/normalizeInsightSignals";
-import { type PlanType, normalizePlan } from "@/lib/planUtils";
+import { type PlanType, normalizePlan, type UserCreditsRow, type JournalAIRow, parseAIResponse } from "@/lib/planUtils";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
@@ -20,8 +20,8 @@ async function getUserPlanType(
     .from("user_credits")
     .select("plan_type")
     .eq("user_id", userId)
-    .maybeSingle();
-  return normalizePlan((data as any)?.plan_type);
+    .maybeSingle() as { data: UserCreditsRow | null };
+  return normalizePlan(data?.plan_type);
 }
 
 function isoWeek(date: Date): string {
@@ -59,7 +59,7 @@ export async function GET() {
     .eq("user_id", user.id)
     .not("ai_response", "is", null)
     .order("created_at", { ascending: true })
-    .limit(2000);
+    .limit(2000) as { data: JournalAIRow[] | null; error: unknown };
 
   if (error) {
     return NextResponse.json(
@@ -88,20 +88,13 @@ export async function GET() {
   let lastEntryDate: Date | null = null;
 
   for (const row of rows || []) {
-    let parsed: any = null;
-    try {
-      parsed =
-        typeof (row as any).ai_response === "string"
-          ? JSON.parse((row as any).ai_response)
-          : (row as any).ai_response;
-    } catch {
-      continue;
-    }
+    const parsed = parseAIResponse(row.ai_response);
+    if (!parsed) continue;
 
     const normalized = normalizeAIResponseSignals(parsed);
 
     entryCount++;
-    const entryDate = new Date((row as any).created_at ?? now);
+    const entryDate = new Date(row.created_at ?? now);
     if (!firstEntryDate) firstEntryDate = entryDate;
     lastEntryDate = entryDate;
 
