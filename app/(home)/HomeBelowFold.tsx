@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import ScrollReveal from "@/app/components/ScrollReveal";
 import { PRICING } from "@/app/lib/pricing";
