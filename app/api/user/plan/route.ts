@@ -5,6 +5,13 @@ import { type PlanType, normalizePlan } from "@/lib/planUtils";
 
 export const dynamic = "force-dynamic";
 
+// Local schema type — replace with Supabase generated types when available
+type UserCreditsRow = {
+  plan_type: string | null;
+  remaining_credits: number | null;
+  renewal_date: string | null;
+};
+
 function safeJson(data: {
   planType: PlanType;
   credits: number;
@@ -52,16 +59,12 @@ export async function GET() {
       return safeJson({ planType: "FREE", credits: 0, renewalDate: null });
     }
 
+    const row = data as UserCreditsRow;
+
     return safeJson({
-      planType: normalizePlan((data as any).plan_type),
-      credits:
-        typeof (data as any).remaining_credits === "number"
-          ? (data as any).remaining_credits
-          : 0,
-      renewalDate:
-        typeof (data as any).renewal_date === "string"
-          ? (data as any).renewal_date
-          : null,
+      planType: normalizePlan(row.plan_type),
+      credits: typeof row.remaining_credits === "number" ? row.remaining_credits : 0,
+      renewalDate: typeof row.renewal_date === "string" ? row.renewal_date : null,
     });
   } catch (err) {
     console.error("GET /api/user/plan failed:", err);

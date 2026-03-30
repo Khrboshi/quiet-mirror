@@ -4,6 +4,15 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { ensureCreditsFresh } from "@/lib/creditRules";
 import { generateReflectionFromEntry, detectCrisisContent } from "@/lib/ai/generateReflection";
 import { type PlanType, normalizePlan } from "@/lib/planUtils";
+import type { SupabaseClient } from "@supabase/supabase-js";
+
+// Local schema type — replace with Supabase generated types when available
+type JournalEntry = {
+  id: string;
+  title: string | null;
+  content: string | null;
+  ai_response: string | null;
+};
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
@@ -42,9 +51,9 @@ function isNoCreditsError(msg: string) {
   );
 }
 
-async function consumeOneCredit(supabase: any, userId: string): Promise<ConsumeResult> {
-  let rpcData: any = null;
-  let rpcErr: any = null;
+async function consumeOneCredit(supabase: SupabaseClient, userId: string): Promise<ConsumeResult> {
+  let rpcData: { remaining_credits?: number }[] | { remaining_credits?: number } | null = null;
+  let rpcErr: { message?: string } | null = null;
 
   const first = await supabase.rpc("consume_reflection_credit", {
     p_user_id: userId,
@@ -130,7 +139,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Missing entryId" }, { status: 400, headers: noStoreHeaders() });
   }
 
-  const { data: entry, error: entryErr } = await supabase
+  const { data: rawEntry, error: entryErr } = await supabase
     .from("journal_entries")
     .select("id,title,content,ai_response")
     .eq("id", entryId)
@@ -142,12 +151,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Failed to load entry" }, { status: 500, headers: noStoreHeaders() });
   }
 
+  const entry = rawEntry as JournalEntry | null;
+
   if (!entry?.id) {
     return NextResponse.json({ error: "Entry not found" }, { status: 404, headers: noStoreHeaders() });
   }
 
-  const content = typeof (entry as any)?.content === "string" ? String((entry as any).content).trim() : "";
-  const title = typeof (entry as any)?.title === "string" ? String((entry as any).title).trim() : "";
+  const content = typeof entry.content === "string" ? entry.content.trim() : "";
+  const title = typeof entry.title === "string" ? entry.title.trim() : "";
 
   if (!content) {
     return NextResponse.json({ error: "Entry has no content" }, { status: 400, headers: noStoreHeaders() });
@@ -191,7 +202,7 @@ export async function POST(req: Request) {
     console.error("[reflection] failed to read user_credits:", creditsErr);
   }
 
-  let planType = normalizePlan((creditsRow as any)?.plan_type);
+  let planType = normalizePlan((creditsRow as { plan_type?: unknown } | null)?.plan_type);
 
   await ensureCreditsFresh({ supabase, userId });
 
@@ -200,13 +211,12 @@ export async function POST(req: Request) {
   // subscription changes (active → past_due → cancelled → FREE).
   const effectiveTier: "FREE" | "PREMIUM" = (planType === "PREMIUM" || planType === "TRIAL") ? "PREMIUM" : "FREE";
 
-  const existingFull = tryParseReflection((entry as any)?.ai_response);
+  const existingFull = tryParseReflection(entry.ai_response);
   if (existingFull) {
-    const payload: any = {
-      reflection: existingFull,
-      remainingCredits: null,
-    };
-    return NextResponse.json(payload, { headers: noStoreHeaders() });
+    return NextResponse.json(
+      { reflection: existingFull, remainingCredits: null },
+      { headers: noStoreHeaders() }
+    );
   }
 
   const isUnlimited = effectiveTier === "PREMIUM";
@@ -237,7 +247,7 @@ export async function POST(req: Request) {
       if (recentEntries) {
         for (const row of recentEntries) {
           try {
-            const parsed = JSON.parse((row as any).ai_response);
+            const parsed = JSON.parse((row as { ai_response: string }).ai_response);
             if (Array.isArray(parsed?.themes)) {
               recentThemes.push(...parsed.themes.slice(0, 2));
             }
@@ -273,12 +283,10 @@ export async function POST(req: Request) {
       console.error("[reflection] reflection_usage insert failed:", usageErr);
     }
 
-    const payload: any = {
-      reflection,
-      remainingCredits: effectiveTier === "FREE" ? remainingAfterConsume : null,
-    };
-
-    return NextResponse.json(payload, { headers: noStoreHeaders() });
+    return NextResponse.json(
+      { reflection, remainingCredits: effectiveTier === "FREE" ? remainingAfterConsume : null },
+      { headers: noStoreHeaders() }
+    );
   } catch (err) {
     console.error("[reflection] generation failed:", err);
 
@@ -289,7 +297,7 @@ export async function POST(req: Request) {
           .update({
             remaining_credits: remainingAfterConsume + 1,
             updated_at: new Date().toISOString(),
-          } as any)
+          } as { remaining_credits: number; updated_at: string })
           .eq("user_id", userId);
       } catch (refundErr) {
         console.error("[reflection] refund failed:", refundErr);

@@ -1,9 +1,9 @@
 import { SupabaseClient } from "@supabase/supabase-js";
+import { type PlanType, normalizePlan } from "@/lib/planUtils";
+import { PRICING } from "@/app/lib/pricing";
 
-const FREE_MONTHLY_CREDITS = 3;
+// Trial credits are not in PRICING (trial behaviour differs from free tier)
 const TRIAL_MONTHLY_CREDITS = 10;
-
-export type PlanType = "FREE" | "TRIAL" | "PREMIUM";
 
 type CreditsRow = {
   user_id: string;
@@ -13,11 +13,22 @@ type CreditsRow = {
   renewal_date: string | null;
 };
 
-function normalizePlan(v: unknown): PlanType {
-  const p = String(v ?? "FREE").toUpperCase();
-  if (p === "PREMIUM" || p === "TRIAL") return p as PlanType;
-  return "FREE";
-}
+// Local schema types for Supabase write operations.
+// These replace `as any` casts until Supabase generated types are in place.
+type UserCreditsInsert = {
+  user_id: string;
+  plan_type: PlanType;
+  remaining_credits: number;
+  updated_at: string;
+  renewal_date: string | null;
+};
+
+type UserCreditsUpdate = {
+  remaining_credits?: number;
+  updated_at?: string;
+  renewal_date?: string | null;
+  plan_type?: PlanType;
+};
 
 function isSameUtcMonth(aIso: string, b: Date) {
   const a = new Date(aIso);
@@ -27,7 +38,7 @@ function isSameUtcMonth(aIso: string, b: Date) {
 async function getCreditsRow(params: {
   supabase: SupabaseClient;
   userId: string;
-}): Promise<{ row: CreditsRow | null; err: any | null }> {
+}): Promise<{ row: CreditsRow | null; err: unknown }> {
   const { supabase, userId } = params;
 
   const { data, error } = await supabase
@@ -39,15 +50,13 @@ async function getCreditsRow(params: {
   if (error) return { row: null, err: error };
   if (!data) return { row: null, err: null };
 
-  const r: any = data;
-
   return {
     row: {
-      user_id: String(r.user_id),
-      plan_type: normalizePlan(r.plan_type),
-      remaining_credits: typeof r.remaining_credits === "number" ? r.remaining_credits : 0,
-      updated_at: typeof r.updated_at === "string" ? r.updated_at : null,
-      renewal_date: typeof r.renewal_date === "string" ? r.renewal_date : null,
+      user_id: String(data.user_id),
+      plan_type: normalizePlan(data.plan_type),
+      remaining_credits: typeof data.remaining_credits === "number" ? data.remaining_credits : 0,
+      updated_at: typeof data.updated_at === "string" ? data.updated_at : null,
+      renewal_date: typeof data.renewal_date === "string" ? data.renewal_date : null,
     },
     err: null,
   };
@@ -69,10 +78,10 @@ async function ensureCreditRowExists(params: {
     {
       user_id: userId,
       plan_type: "FREE",
-      remaining_credits: FREE_MONTHLY_CREDITS,
+      remaining_credits: PRICING.freeMonthlyCredits,
       updated_at: nowIso,
       renewal_date: null,
-    } as any,
+    } as UserCreditsInsert,
     { onConflict: "user_id" }
   );
 }
@@ -103,14 +112,14 @@ export async function ensureCreditsFresh(params: {
   const now = new Date();
 
   // ✅ Clamp abnormal FREE credit balances immediately (e.g., leftover 9999)
-  if (row.remaining_credits > FREE_MONTHLY_CREDITS) {
+  if (row.remaining_credits > PRICING.freeMonthlyCredits) {
     await supabase
       .from("user_credits")
       .update({
-        remaining_credits: FREE_MONTHLY_CREDITS,
+        remaining_credits: PRICING.freeMonthlyCredits,
         updated_at: now.toISOString(),
         renewal_date: null,
-      } as any)
+      } as UserCreditsUpdate)
       .eq("user_id", userId);
 
     return;
@@ -121,10 +130,10 @@ export async function ensureCreditsFresh(params: {
     await supabase
       .from("user_credits")
       .update({
-        remaining_credits: FREE_MONTHLY_CREDITS,
+        remaining_credits: PRICING.freeMonthlyCredits,
         updated_at: now.toISOString(),
         renewal_date: null,
-      } as any)
+      } as UserCreditsUpdate)
       .eq("user_id", userId);
   }
 }
@@ -149,7 +158,7 @@ export async function decrementCreditIfAllowed(params: {
 
   await supabase
     .from("user_credits")
-    .update({ remaining_credits: remaining, updated_at: new Date().toISOString() } as any)
+    .update({ remaining_credits: remaining, updated_at: new Date().toISOString() } as UserCreditsUpdate)
     .eq("user_id", userId);
 
   return { ok: true, remaining };
@@ -169,7 +178,7 @@ export async function setUserPlan(params: {
       ? 9999
       : planType === "TRIAL"
       ? TRIAL_MONTHLY_CREDITS
-      : FREE_MONTHLY_CREDITS;
+      : PRICING.freeMonthlyCredits;
 
   await supabase.from("user_credits").upsert(
     {
@@ -178,7 +187,7 @@ export async function setUserPlan(params: {
       remaining_credits,
       updated_at: nowIso,
       renewal_date: null,
-    } as any,
+    } as UserCreditsInsert,
     { onConflict: "user_id" }
   );
 }
