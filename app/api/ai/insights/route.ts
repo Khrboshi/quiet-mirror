@@ -6,16 +6,10 @@ import {
   bucketCorepattern,
   normalizeAIResponseSignals,
 } from "@/lib/ai/normalizeInsightSignals";
+import { type PlanType, normalizePlan } from "@/lib/planUtils";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
-
-type PlanType = "FREE" | "TRIAL" | "PREMIUM";
-
-function normalizePlan(v: unknown): PlanType {
-  const p = String(v ?? "FREE").toUpperCase();
-  return p === "PREMIUM" || p === "TRIAL" ? (p as PlanType) : "FREE";
-}
 
 async function getUserPlanType(
   supabase: ReturnType<typeof createServerSupabase>,

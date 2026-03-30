@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
-
-type PlanType = "FREE" | "PREMIUM" | "TRIAL";
+import { type PlanType, normalizePlan } from "@/lib/planUtils";
 
 type PlanStateInternal = {
   loading: boolean;
@@ -22,11 +21,6 @@ let cachedAtMs = 0;
 
 // Avoid spamming requests across pages/routes
 const REVALIDATE_MS = 15_000;
-
-function normalizePlan(raw: unknown): PlanType {
-  const v = String(raw ?? "FREE").toUpperCase();
-  return v === "PREMIUM" ? "PREMIUM" : v === "TRIAL" ? "TRIAL" : "FREE";
-}
 
 export function useUserPlan(): PlanState {
   const [state, setState] = useState<PlanStateInternal>(() => {

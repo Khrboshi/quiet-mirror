@@ -19,6 +19,16 @@ export const PRICING = {
 
   // ── Trial ────────────────────────────────────────────────────────────────
 
+  // ── Free tier ─────────────────────────────────────────────────────────────
+
+  /**
+   * Number of AI reflections a free-plan user gets per month.
+   * Change this one value — the reflection API route enforces it automatically.
+   */
+  freeMonthlyCredits: 3,
+
+  // ── Trial ─────────────────────────────────────────────────────────────────
+
   /**
    * Length of the free trial in days.
    * Drives: Stripe checkout, billing page logic, and all UI copy.

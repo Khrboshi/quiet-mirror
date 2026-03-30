@@ -1,15 +1,9 @@
 import { NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { ensureCreditsFresh } from "@/lib/creditRules";
+import { type PlanType, normalizePlan } from "@/lib/planUtils";
 
 export const dynamic = "force-dynamic";
-
-type PlanType = "FREE" | "TRIAL" | "PREMIUM";
-
-function normalizePlan(v: unknown): PlanType {
-  const p = String(v ?? "FREE").toUpperCase();
-  return p === "PREMIUM" || p === "TRIAL" ? (p as PlanType) : "FREE";
-}
 
 function safeJson(data: {
   planType: PlanType;

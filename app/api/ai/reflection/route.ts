@@ -3,20 +3,12 @@ import { NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { ensureCreditsFresh } from "@/lib/creditRules";
 import { generateReflectionFromEntry, detectCrisisContent } from "@/lib/ai/generateReflection";
+import { type PlanType, normalizePlan } from "@/lib/planUtils";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
 export const revalidate = 0;
 export const runtime = "nodejs";
-
-const FREE_MONTHLY_CREDITS = 3;
-
-type PlanType = "FREE" | "TRIAL" | "PREMIUM";
-
-function normalizePlan(v: unknown): PlanType {
-  const p = String(v ?? "FREE").toUpperCase();
-  return p === "PREMIUM" || p === "TRIAL" ? (p as PlanType) : "FREE";
-}
 
 type ConsumeOk = { ok: true; remaining: number };
 type ConsumeFail = { ok: false; status: number; error: string };
@@ -118,7 +110,7 @@ function tryParseReflection(aiResponse: unknown) {
 }
 
 export async function POST(req: Request) {
-  const supabase = await createServerSupabase();
+  const supabase = createServerSupabase();
 
   const {
     data: { user },
