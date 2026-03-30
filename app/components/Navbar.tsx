@@ -97,14 +97,14 @@ export default function Navbar() {
   return (
     <>
       {/* ── Desktop / shared header ─────────────────────────────────────── */}
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-hvn-bg/80 backdrop-blur-xl">
+      <header className="fixed inset-x-0 top-0 z-50 border-b bg-hvn-bg/80 backdrop-blur-xl" style={{ borderColor: "var(--qm-border-card)" }}>
         <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-4">
 
           {/* Logo */}
           <Link
             href="/"
             prefetch
-            className="flex items-center gap-2 text-lg font-semibold text-white transition-opacity hover:opacity-90"
+            className="flex items-center gap-2 text-lg font-semibold text-qm-primary transition-opacity hover:opacity-90"
             aria-label={`${CONFIG.appName} home`}
           >
             <Image
@@ -130,8 +130,8 @@ export default function Navbar() {
                   prefetch
                   className={`rounded-full px-3 py-2 text-sm font-medium transition-colors ${
                     active
-                      ? "bg-emerald-500/10 text-emerald-300"
-                      : "text-slate-300 hover:bg-white/[0.04] hover:text-emerald-300"
+                      ? "bg-qm-accent-soft text-qm-accent"
+                      : "text-qm-secondary hover:bg-qm-accent-soft hover:text-qm-accent"
                   }`}
                 >
                   {link.label}
@@ -144,7 +144,7 @@ export default function Navbar() {
               <Link
                 href="/magic-login"
                 prefetch
-                className="ml-2 inline-flex items-center justify-center rounded-full bg-[color:var(--hvn-accent-mint)] px-4 py-2 text-sm font-semibold text-white shadow-lg transition-all hover:bg-[color:var(--hvn-accent-mint-hover)] hover:-translate-y-px"
+                className="qm-btn-primary ml-2 inline-flex items-center justify-center px-4 py-2 text-sm"
               >
                 Start free
               </Link>
@@ -162,7 +162,7 @@ export default function Navbar() {
           {/* Mobile hamburger */}
           <button
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-slate-200 transition-colors hover:bg-white/5 md:hidden"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-qm-secondary transition-colors hover:bg-qm-accent-soft md:hidden"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
@@ -184,7 +184,8 @@ export default function Navbar() {
             type="button"
             aria-label="Close menu backdrop"
             onClick={() => setMobileOpen(false)}
-            className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm"
+            className="fixed inset-0 z-40 backdrop-blur-sm"
+            style={{ backgroundColor: "rgba(10, 13, 26, 0.75)" }}
           />
 
           {/* Slide-down panel */}
@@ -194,7 +195,7 @@ export default function Navbar() {
           >
             <div className="flex-1 overflow-y-auto px-5 pb-8 pt-5">
               <div className="mx-auto flex max-w-xl flex-col">
-                <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/70">
+                <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.2em] text-qm-accent" style={{ opacity: 0.7 }}>
                   {isLoggedIn
                     ? "Your space"
                     : "Private journaling that reflects back"}
@@ -211,8 +212,8 @@ export default function Navbar() {
                         onClick={() => setMobileOpen(false)}
                         className={`rounded-2xl border px-4 py-4 text-base font-medium transition-colors ${
                           active
-                            ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
-                            : "border-white/10 bg-white/[0.02] text-slate-200 hover:bg-white/[0.04]"
+                            ? "border-qm-accent bg-qm-accent-soft text-qm-accent"
+                            : "border-qm-card bg-qm-card text-qm-primary hover:bg-qm-soft"
                         }`}
                       >
                         {link.label}
@@ -223,11 +224,11 @@ export default function Navbar() {
 
                 {!isLoggedIn ? (
                   pathname !== "/magic-login" ? (
-                  <div className="mt-6 rounded-3xl border border-white/10 bg-white/[0.03] p-4">
-                    <p className="text-sm font-medium text-white">
+                  <div className="mt-6 qm-panel rounded-3xl p-4">
+                    <p className="text-sm font-medium text-qm-primary">
                       Start with a private journal entry.
                     </p>
-                    <p className="mt-1 text-sm leading-relaxed text-slate-400">
+                    <p className="mt-1 text-sm leading-relaxed text-qm-secondary">
                       No feed, no pressure, no card required. Just a calmer
                       place to put what is on your mind.
                     </p>
@@ -236,7 +237,7 @@ export default function Navbar() {
                       href="/magic-login"
                       prefetch
                       onClick={() => setMobileOpen(false)}
-                      className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-[color:var(--hvn-accent-mint)] px-5 py-3.5 text-sm font-semibold text-white shadow-lg transition-all hover:bg-[color:var(--hvn-accent-mint-hover)]"
+                      className="qm-btn-primary mt-4 inline-flex w-full items-center justify-center px-5 py-3.5 text-sm"
                     >
                       Write your first entry free →
                     </Link>
@@ -251,7 +252,7 @@ export default function Navbar() {
                   </button>
                 )}
 
-                <p className="mt-5 text-center text-xs leading-relaxed text-slate-600">
+                <p className="mt-5 text-center text-xs leading-relaxed text-qm-faint">
                   Quiet Mirror is built for quiet, private reflection — not
                   performance.
                 </p>

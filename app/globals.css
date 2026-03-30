@@ -29,6 +29,10 @@
   --qm-accent-2:       #9a8dc0;
   --qm-accent-2-soft:  rgba(154, 141, 192, 0.11);
 
+  --qm-signal-warm:        #c8aa64;
+  --qm-signal-warm-bg:     rgba(200, 170, 100, 0.10);
+  --qm-signal-warm-border: rgba(200, 170, 100, 0.25);
+
   --qm-border-subtle:     rgba(184, 195, 219, 0.10);
   --qm-border-card:       rgba(184, 195, 219, 0.08);
   --qm-shadow-soft:       0 20px 60px rgba(10, 13, 26, 0.70);
@@ -62,6 +66,10 @@
 
     --qm-accent-2:       #8676ae;
     --qm-accent-2-soft:  rgba(134, 118, 174, 0.10);
+
+    --qm-signal-warm:        #9a7a32;
+    --qm-signal-warm-bg:     rgba(154, 122, 50, 0.10);
+    --qm-signal-warm-border: rgba(154, 122, 50, 0.25);
 
     --qm-border-subtle:     rgba(28, 25, 22, 0.12);
     --qm-border-card:       rgba(28, 25, 22, 0.08);

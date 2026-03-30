@@ -247,9 +247,9 @@ export default function HomePage() {
                     },
                     {
                       label: "Burnout signal",
-                      border: "rgba(200, 170, 100, 0.25)",
-                      bg: "rgba(200, 170, 100, 0.10)",
-                      text: "#c8aa64",
+                      border: "var(--qm-signal-warm-border)",
+                      bg: "var(--qm-signal-warm-bg)",
+                      text: "var(--qm-signal-warm)",
                     },
                   ].map(({ label, border, bg, text }) => (
                     <span
