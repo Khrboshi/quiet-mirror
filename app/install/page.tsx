@@ -6,12 +6,6 @@ import Image from "next/image";
 import { useInstallAvailability } from "@/app/hooks/useInstallAvailability";
 import { CONFIG } from "@/app/lib/config";
 
-export const metadata = {
-  title: "Install the App | Quiet Mirror",
-  description: "Add Quiet Mirror to your home screen for a faster, app-like journaling experience. No app store needed.",
-};
-
-
 export default function InstallPage() {
   const { isStandalone, isIOS, isSafariIOS, canPromptNative, promptInstall } =
     useInstallAvailability({ allowPreventDefault: false });
