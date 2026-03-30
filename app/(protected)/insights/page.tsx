@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { createServerSupabase } from "@/lib/supabase/server";
-import { PlanType } from "@/lib/creditRules";
+import { type PlanType } from "@/lib/planUtils";
 import InsightsClient from "./InsightsClient";
 
 export const dynamic = "force-dynamic";
