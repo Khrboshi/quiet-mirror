@@ -5,7 +5,9 @@
 // TO CHANGE THE TRIAL LENGTH: edit `TRIAL_DAYS` below.
 // Every UI string, logic gate, and Stripe API call derives from it.
 
-const TRIAL_DAYS = 1; // ← the one number to change
+const TRIAL_DAYS: number = 3; // ← the one number to change
+// Derived once here — shared by trialDayWord and trialFreeFor below
+const TRIAL_DAY_WORD: string = TRIAL_DAYS === 1 ? "day" : "days";
 
 export const PRICING = {
   /** Monthly price in USD */
@@ -42,11 +44,14 @@ export const PRICING = {
   /** "1-day free trial included" — used in the pricing badge */
   valueLabel: `${TRIAL_DAYS}-day free trial included`,
 
-  /** "Free for 1 day" / "Free for 7 days" — used in sub-CTA lines */
-  trialFreeFor: `Free for ${TRIAL_DAYS} day${TRIAL_DAYS === 1 ? "" : "s"}`,
+  /** "day" or "days" — singular/plural; use instead of PRICING.trialDays === 1 checks */
+  trialDayWord: TRIAL_DAY_WORD,
+
+  /** "Free for 1 day" / "Free for 3 days" — used in sub-CTA lines */
+  trialFreeFor: `Free for ${TRIAL_DAYS} ${TRIAL_DAY_WORD}`,
 
   /**
-   * "no charge until day 2" / "no charge until day 8" — refund/charge copy.
+   * "no charge until day 2" / "no charge until day 4" — refund/charge copy.
    * Always one more than trialDays.
    */
   trialNoChargeUntil: `no charge until day ${TRIAL_DAYS + 1}`,

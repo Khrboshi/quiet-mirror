@@ -290,7 +290,7 @@ export default function JournalEntryClient({
               </Link>
             </div>
             <p className="mt-3 text-[11px] text-slate-700">
-              {`🛡️ No charge for ${PRICING.trialDays} ${PRICING.trialDays === 1 ? "day" : "days"} · Cancel anytime · `}{" "}
+              {`🛡️ No charge for ${PRICING.trialDays} ${PRICING.trialDayWord} · Cancel anytime · `}{" "}
               <Link
                 href="/terms"
                 className="underline underline-offset-2 transition-colors hover:text-slate-500"
@@ -600,7 +600,7 @@ export default function JournalEntryClient({
                   </Link>
                 </div>
                 <p className="mt-3 text-[11px] text-slate-700">
-                  {`🛡️ No charge for ${PRICING.trialDays} ${PRICING.trialDays === 1 ? "day" : "days"} · Cancel anytime ·`}{" "}
+                  {`🛡️ No charge for ${PRICING.trialDays} ${PRICING.trialDayWord} · Cancel anytime ·`}{" "}
                   <Link
                     href="/terms"
                     className="underline underline-offset-2 transition-colors hover:text-slate-500"
@@ -655,7 +655,7 @@ export default function JournalEntryClient({
         open={showUpgrade}
         onClose={() => setShowUpgrade(false)}
         title={`You've used your ${PRICING.freeMonthlyCredits} free reflections this month.`}
-        message={`Start a free trial to keep reflecting on every entry — no charge for ${PRICING.trialDays} ${PRICING.trialDays === 1 ? "day" : "days"}, cancel anytime before then.`}
+        message={`Start a free trial to keep reflecting on every entry — no charge for ${PRICING.trialDays} ${PRICING.trialDayWord}, cancel anytime before then.`}
         source="reflection_limit"
         ctaHref="/upgrade"
         ctaLabel={`Start ${PRICING.trialLabel} →`}
