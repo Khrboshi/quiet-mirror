@@ -2,6 +2,7 @@
 import { createServerSupabase } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { JOURNAL } from "@/app/lib/copy";
 
 export const dynamic = "force-dynamic";
 
@@ -82,7 +83,7 @@ function entryTitle(title: string | null, content: string | null): string {
   // Use first sentence of content, capped at 60 chars
   const first = (content ?? "").split(/[.!?\n]/)[0].trim();
   if (first.length > 4) return first.length > 60 ? first.slice(0, 57) + "…" : first;
-  return "Untitled entry";
+  return JOURNAL.untitledEntry;
 }
 
 function parseAI(raw: any): any {

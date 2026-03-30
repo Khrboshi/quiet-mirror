@@ -7,11 +7,12 @@ import { useSupabase } from "@/app/components/SupabaseSessionProvider";
 import { useUserPlan } from "@/app/components/useUserPlan";
 import type { DashboardData } from "./page";
 import { PRICING } from "@/app/lib/pricing";
+import { ERRORS, NAV, JOURNAL } from "@/app/lib/copy";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 function titleOrUntitled(title: string | null) {
-  return title?.trim() ? title.trim() : "Untitled entry";
+  return title?.trim() ? title.trim() : JOURNAL.untitledEntry;
 }
 
 function friendlyNameFromUser(user: any): string | null {
@@ -476,7 +477,7 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
   } = data;
 
   const subline = useMemo(() => {
-    if (entryCount === 0) return "Start writing — one sentence is always enough.";
+    if (entryCount === 0) return JOURNAL.emptyStateNudge;
     if (wroteToday) return "You've written today.";
     return "Choose a prompt to begin.";
   }, [entryCount, wroteToday]);

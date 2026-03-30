@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { PRICING } from "@/app/lib/pricing";
+import { REFLECTION } from "@/app/lib/copy";
 import { PAYMENT } from "@/app/lib/payment";
 import { CONFIG } from "@/app/lib/config";
 
@@ -160,7 +161,7 @@ export default function UpgradePage() {
                   },
                   {
                     label: "Everything in Free",
-                    sub: "Nothing removed — just a deeper layer added",
+                    sub: REFLECTION.nothingRemoved,
                     color: "text-slate-500",
                   },
                 ].map(({ label, sub, color }) => (

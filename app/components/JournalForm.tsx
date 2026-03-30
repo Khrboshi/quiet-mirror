@@ -2,15 +2,9 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { JOURNAL, ERRORS } from "@/app/lib/copy";
 
 type Props = Record<string, never>;
-
-const starterPrompts = [
-  "What has been weighing on you lately?",
-  "Is there something you keep thinking about today?",
-  "Did anything today leave a strong emotional impact?",
-  "What conversation or moment is still on your mind?",
-];
 
 function safeSlice(value: string, max: number) {
   const s = (value || "").trim();
@@ -80,7 +74,7 @@ export default function JournalForm(_props: Props) {
     const contentTrimmed = content.trim();
     if (!contentTrimmed) {
       setStatus("error");
-      setError("Please write a few words before saving.");
+      setError(ERRORS.entryEmpty);
       return;
     }
     setStatus("saving");
@@ -94,7 +88,7 @@ export default function JournalForm(_props: Props) {
       const json = await res.json().catch(() => ({}));
       if (!res.ok) {
         setStatus("error");
-        setError(json?.error || json?.message || "Failed to save journal entry. Please try again.");
+        setError(json?.error || json?.message || ERRORS.entrySaveFailed);
         return;
       }
       setStatus("success");
@@ -111,7 +105,7 @@ export default function JournalForm(_props: Props) {
       router.refresh();
     } catch (err: unknown) {
       setStatus("error");
-      setError(err instanceof Error ? err.message : "Network error. Please try again.");
+      setError(err instanceof Error ? err.message : ERRORS.networkError);
     }
   }
 
@@ -123,22 +117,22 @@ export default function JournalForm(_props: Props) {
       {/* Header */}
       <div className="mb-8 pt-8">
         <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-qm-accent" style={{ opacity: 0.7 }}>
-          New entry
+          {JOURNAL.newEntryLabel}
         </p>
         <h1 className="font-display mt-2 text-2xl font-semibold leading-snug text-qm-primary sm:text-3xl">
-          {hasIncomingPrompt ? incomingPrompt : "What's on your mind?"}
+          {hasIncomingPrompt ? incomingPrompt : JOURNAL.newEntryHeading}
         </h1>
         <p className="mt-2 text-sm text-qm-secondary">
-          Write however feels natural. One sentence is always enough.
+          {JOURNAL.newEntrySubheading}
         </p>
       </div>
 
       {/* Starter prompts */}
       {!hasIncomingPrompt && content.trim().length === 0 && (
         <div className="mb-6">
-          <p className="mb-2.5 text-xs text-qm-muted">Not sure where to start?</p>
+          <p className="mb-2.5 text-xs text-qm-muted">{JOURNAL.notSureWhereToStart}</p>
           <div className="flex flex-wrap gap-2">
-            {starterPrompts.map((prompt) => (
+            {JOURNAL.starterPrompts.map((prompt) => (
               <button
                 key={prompt}
                 type="button"
@@ -158,7 +152,7 @@ export default function JournalForm(_props: Props) {
           ref={textareaRef}
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          placeholder="Start writing here…"
+          placeholder={JOURNAL.textareaPlaceholder}
           autoFocus={!hasIncomingPrompt}
           className="qm-input w-full min-h-[50vh] resize-none px-5 py-5 text-base leading-relaxed placeholder:text-qm-faint outline-none sm:text-[17px]"
         />
@@ -177,13 +171,13 @@ export default function JournalForm(_props: Props) {
             onClick={() => setShowTitle(true)}
             className="text-xs text-qm-muted transition hover:text-qm-secondary"
           >
-            + Add a title (optional)
+            {JOURNAL.addTitleOptional}
           </button>
         ) : (
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="Give this entry a title (optional)"
+            placeholder={JOURNAL.titlePlaceholder}
             autoFocus
             className="qm-input w-full px-4 py-3 text-sm placeholder:text-qm-faint outline-none"
             maxLength={120}
@@ -193,7 +187,7 @@ export default function JournalForm(_props: Props) {
 
       {/* Privacy reminder */}
       <p className="mt-4 text-xs text-qm-faint">
-        Your journal is private. No one else can read what you write. Entries are never used to train AI models.
+        {JOURNAL.privacyReminder}
       </p>
 
       {/* Progress nudge */}
@@ -230,11 +224,11 @@ export default function JournalForm(_props: Props) {
             disabled={!canSave}
             className="qm-btn-primary flex-1 px-6 py-3.5 text-sm disabled:cursor-not-allowed disabled:opacity-40"
           >
-            {status === "saving" ? "Saving…" : "Write"}
+            {status === "saving" ? JOURNAL.savingLabel : JOURNAL.saveButtonLabel}
           </button>
           {canSave && (
             <p className="hidden shrink-0 text-xs text-qm-muted sm:block">
-              Quiet Mirror will reflect this back when you&apos;re ready
+              {JOURNAL.saveReflectNudge}
             </p>
           )}
         </div>

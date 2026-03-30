@@ -1,8 +1,9 @@
-// app/(protected)/insights/InsightsClient.tsx
 "use client";
+// app/(protected)/insights/InsightsClient.tsx
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { ERRORS, UI } from "@/app/lib/copy";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -415,7 +416,7 @@ function NotEnoughData({ entryCount }: { entryCount: number }) {
       <div className="space-y-1">
         <h3 className="text-sm font-semibold text-slate-200">
           {entryCount === 0
-            ? "No reflections yet"
+            ? UI.noReflectionsYet
             : `${entryCount} ${entryCount === 1 ? "reflection" : "reflections"} so far`}
         </h3>
         <p className="mx-auto max-w-sm text-sm text-slate-500">
@@ -539,7 +540,7 @@ function WeeklySummarySection({ hasRealData }: { hasRealData: boolean }) {
     } catch {
       setState({
         status: "error",
-        message: "Network error. Try again in a moment.",
+        message: ERRORS.networkRetry,
       });
     }
   }
@@ -665,12 +666,12 @@ export default function InsightsClient() {
         const res = await fetch("/api/ai/insights", { cache: "no-store" });
         if (!res.ok) {
           const j = await res.json().catch(() => ({} as any));
-          setError(j?.error || "Failed to load insights.");
+          setError(j?.error || ERRORS.insightsFailed);
           return;
         }
         setData(await res.json());
       } catch {
-        setError("Failed to load insights.");
+        setError(ERRORS.insightsFailed);
       }
     }
     load();

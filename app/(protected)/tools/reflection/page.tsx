@@ -6,6 +6,7 @@ export const dynamic = "force-dynamic";
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import RequirePremium from "@/app/components/RequirePremium";
+import { TOOLS } from "@/app/lib/copy";
 
 type State =
   | { status: "loading" }
@@ -68,7 +69,7 @@ export default function ReflectionToolPage() {
               {state.status === "error" && (
                 <div className="space-y-4">
                   <p className="text-sm text-slate-400">
-                    Something went wrong generating your question. Try again in a moment.
+                    {TOOLS.somethingWentWrong("question")}
                   </p>
                   <button
                     onClick={fetchQuestion}

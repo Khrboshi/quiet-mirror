@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ERRORS, NAV } from "@/app/lib/copy";
 import { useEffect, useMemo, useState } from "react";
 import { useSupabase } from "@/app/components/SupabaseSessionProvider";
 import { useUserPlan } from "@/app/components/useUserPlan";
@@ -84,7 +85,7 @@ export default function TransactionsPage() {
         const items = Array.isArray(data?.items) ? (data.items as InvoiceItem[]) : [];
         if (alive) setInvoices(items);
       } catch (e: any) {
-        if (alive) setInvError(e?.message || "Failed to load invoices.");
+        if (alive) setInvError(e?.message || ERRORS.invoicesFailed);
       } finally {
         if (alive) setInvLoading(false);
       }

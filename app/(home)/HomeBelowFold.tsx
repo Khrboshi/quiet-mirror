@@ -1,6 +1,7 @@
 import Link from "next/link";
 import ScrollReveal from "@/app/components/ScrollReveal";
 import { PRICING } from "@/app/lib/pricing";
+import { REFLECTION } from "@/app/lib/copy";
 import { PAYMENT } from "@/app/lib/payment";
 
 // ─── Data ──────────────────────────────────────────────────────────────────
@@ -911,7 +912,7 @@ export default function HomeBelowFold() {
                   {
                     label: "Everything in Free",
                     sub:
-                      "Nothing removed, just a deeper layer added",
+                      REFLECTION.nothingRemoved,
                   },
                 ].map(({ label, sub }) => (
                   <li key={label} className="flex items-start gap-2">

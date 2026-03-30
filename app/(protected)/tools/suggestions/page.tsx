@@ -6,6 +6,7 @@ export const dynamic = "force-dynamic";
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import RequirePremium from "@/app/components/RequirePremium";
+import { TOOLS } from "@/app/lib/copy";
 
 type Suggestion = { text: string; prompt: string };
 
@@ -83,7 +84,7 @@ export default function SuggestionsToolPage() {
           {state.status === "error" && (
             <div className="rounded-2xl border border-slate-800 bg-slate-900/30 px-6 py-6">
               <p className="text-sm text-slate-400">
-                Something went wrong generating your suggestions. Try again in a moment.
+                {TOOLS.somethingWentWrong("suggestions")}
               </p>
               <button
                 onClick={fetchSuggestions}

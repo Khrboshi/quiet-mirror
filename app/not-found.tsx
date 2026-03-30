@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { NAV } from "@/app/lib/copy";
 
 export default function NotFound() {
   return (
@@ -19,13 +20,13 @@ export default function NotFound() {
             href="/dashboard"
             className="rounded-full bg-[color:var(--hvn-accent-mint)] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[color:var(--hvn-accent-mint-hover)]"
           >
-            Go to dashboard
+            {NAV.goToDashboard}
           </Link>
           <Link
             href="/"
             className="rounded-full border border-slate-700 px-5 py-2.5 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-800"
           >
-            Back to home
+            {NAV.backToHome}
           </Link>
         </div>
       </div>
