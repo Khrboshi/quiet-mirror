@@ -30,7 +30,7 @@ export async function POST() {
       .eq("user_id", user.id)
       .maybeSingle();
 
-    const currentPlan = String((creditsRow as any)?.plan_type ?? "FREE").toUpperCase();
+    const currentPlan = String(creditsRow?.plan_type ?? "FREE").toUpperCase();
     if (currentPlan === "PREMIUM" || currentPlan === "TRIAL") {
       return NextResponse.json(
         { error: "Already subscribed" },

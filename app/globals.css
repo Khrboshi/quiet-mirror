@@ -659,6 +659,14 @@ body::-webkit-scrollbar-thumb:hover { background: var(--qm-border-subtle); }
   color: var(--qm-accent) !important;
 }
 
+/* Opacity variants: text-emerald/green/teal with /N suffix → QM accent
+   (matches the same pattern used for bg-emerald and border-emerald above) */
+[class*="text-emerald"][class*="\/"],
+[class*="text-green"][class*="\/"],
+[class*="text-teal"][class*="\/"] {
+  color: var(--qm-accent) !important;
+}
+
 /* Hover text overrides */
 .hover\:text-emerald-300:hover, .hover\:text-emerald-400:hover,
 .hover\:text-emerald-500:hover, .hover\:text-emerald-600:hover,
