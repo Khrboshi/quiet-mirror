@@ -177,7 +177,7 @@ export async function GET() {
     .from("user_credits")
     .select("plan_type")
     .eq("user_id", userId)
-    .maybeSingle() as { data: UserCreditsRow | null };
+    .maybeSingle() as { data: UserCreditsRow | null; error: unknown };
 
   const plan = normalizePlan(credits?.plan_type);
   if (plan !== "PREMIUM" && plan !== "TRIAL") {
@@ -188,7 +188,7 @@ export async function GET() {
     .from("profiles")
     .select("weekly_summary, weekly_summary_generated_at")
     .eq("id", userId)
-    .maybeSingle() as { data: ProfileSummaryRow | null };
+    .maybeSingle() as { data: ProfileSummaryRow | null; error: unknown };
 
   const cachedSummary = profile?.weekly_summary ?? null;
   const cachedAt = profile?.weekly_summary_generated_at ?? null;
@@ -211,7 +211,7 @@ export async function GET() {
     .eq("user_id", userId)
     .not("ai_response", "is", null)
     .order("created_at", { ascending: false })
-    .limit(2000) as { data: JournalAIRow[] | null };
+    .limit(2000) as { data: JournalAIRow[] | null; error: unknown };
 
   if (!rows?.length) {
     return NextResponse.json({ error: "Not enough data yet." }, { status: 422 });
@@ -237,7 +237,8 @@ export async function GET() {
 
     entryCount++;
     const created = row.created_at;
-    if (!firstEntryDate || new Date(created ?? 0) < new Date(firstEntryDate)) {
+    if (!created) continue;
+    if (!firstEntryDate || new Date(created) < new Date(firstEntryDate)) {
       firstEntryDate = created;
     }
 

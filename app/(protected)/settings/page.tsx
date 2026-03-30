@@ -150,7 +150,7 @@ export default async function SettingsPage() {
         1
       ).toLocaleDateString(undefined, { month: "short", day: "numeric" });
 
-  const creditsUsed = isPremium ? null : 3 - remainingCredits;
+  const creditsUsed = isPremium ? null : PRICING.freeMonthlyCredits - remainingCredits;
 
   const portalReturn = "/settings";
 
@@ -258,7 +258,7 @@ export default async function SettingsPage() {
                         <span className={remainingCredits === 0 ? "text-slate-500" : "text-slate-100 font-medium"}>
                           {remainingCredits === 0
                             ? "0 remaining"
-                            : `${remainingCredits} of 3 remaining`}
+                            : `${remainingCredits} of ${PRICING.freeMonthlyCredits} remaining`}
                         </span>
                       </span>
                     }

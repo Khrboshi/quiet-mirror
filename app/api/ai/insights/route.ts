@@ -20,7 +20,7 @@ async function getUserPlanType(
     .from("user_credits")
     .select("plan_type")
     .eq("user_id", userId)
-    .maybeSingle() as { data: UserCreditsRow | null };
+    .maybeSingle() as { data: UserCreditsRow | null; error: unknown };
   return normalizePlan(data?.plan_type);
 }
 
