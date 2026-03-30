@@ -1,9 +1,9 @@
-import { ERRORS, NAV, UI } from "@/app/lib/copy";
-// app/(protected)/insights/InsightsClient.tsx
 "use client";
+// app/(protected)/insights/InsightsClient.tsx
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { ERRORS, UI } from "@/app/lib/copy";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
