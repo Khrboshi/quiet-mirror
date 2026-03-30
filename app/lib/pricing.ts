@@ -6,6 +6,8 @@
 // Every UI string, logic gate, and Stripe API call derives from it.
 
 const TRIAL_DAYS: number = 3; // ← the one number to change
+// Derived once here — shared by trialDayWord and trialFreeFor below
+const TRIAL_DAY_WORD: string = TRIAL_DAYS === 1 ? "day" : "days";
 
 export const PRICING = {
   /** Monthly price in USD */
@@ -43,10 +45,10 @@ export const PRICING = {
   valueLabel: `${TRIAL_DAYS}-day free trial included`,
 
   /** "day" or "days" — singular/plural; use instead of PRICING.trialDays === 1 checks */
-  trialDayWord: (TRIAL_DAYS === 1 ? "day" : "days") as string,
+  trialDayWord: TRIAL_DAY_WORD,
 
   /** "Free for 1 day" / "Free for 3 days" — used in sub-CTA lines */
-  trialFreeFor: `Free for ${TRIAL_DAYS} ${TRIAL_DAYS === 1 ? "day" : "days"}`,
+  trialFreeFor: `Free for ${TRIAL_DAYS} ${TRIAL_DAY_WORD}`,
 
   /**
    * "no charge until day 2" / "no charge until day 4" — refund/charge copy.
