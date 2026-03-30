@@ -221,7 +221,7 @@ export default function JournalForm(_props: Props) {
         className="fixed bottom-0 left-0 right-0 z-40 border-t backdrop-blur-sm px-4 py-3 pb-safe-4"
         style={{
           borderColor: "var(--qm-border-card)",
-          backgroundColor: "color-mix(in srgb, var(--qm-bg) 95%, transparent)",
+          backgroundColor: "var(--qm-bg-glass-95)",
         }}
       >
         <div className="mx-auto flex max-w-3xl items-center gap-3">

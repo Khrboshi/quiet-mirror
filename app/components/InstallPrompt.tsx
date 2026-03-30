@@ -123,7 +123,14 @@ export default function InstallPrompt() {
 
   return (
     <div className="fixed bottom-4 left-1/2 z-50 w-[calc(100%-2rem)] max-w-xl -translate-x-1/2">
-      <div className="qm-panel-strong rounded-2xl p-4 shadow-2xl backdrop-blur">
+      <div
+        className="rounded-2xl border p-4 shadow-2xl backdrop-blur-xl"
+        style={{
+          backgroundColor: "var(--qm-bg-elevated)",
+          borderColor: "var(--qm-border-subtle)",
+          boxShadow: "var(--qm-shadow-card-lift)",
+        }}
+      >
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <p className="text-sm font-semibold text-qm-primary">Install {CONFIG.appName}</p>

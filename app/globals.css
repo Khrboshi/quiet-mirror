@@ -57,6 +57,10 @@
   --qm-focus-ring-offset: 2px;
   --qm-focus-ring-width:  2px;
 
+  /* Glass backgrounds — rgba equivalents for browser compatibility */
+  --qm-bg-glass-80: rgba(10, 13, 26, 0.80);
+  --qm-bg-glass-95: rgba(10, 13, 26, 0.95);
+
   color-scheme: dark;
 }
 
@@ -90,6 +94,10 @@
     --qm-shadow-soft:       0 20px 60px rgba(28, 25, 22, 0.06);
     --qm-shadow-card:       0 8px 24px rgba(28, 25, 22, 0.05);
     --qm-shadow-card-lift:  0 16px 48px rgba(28, 25, 22, 0.08);
+
+    /* Glass backgrounds — rgba equivalents for browser compatibility */
+    --qm-bg-glass-80: rgba(250, 249, 247, 0.80);
+    --qm-bg-glass-95: rgba(250, 249, 247, 0.95);
 
     color-scheme: light;
   }
@@ -722,10 +730,10 @@ body::-webkit-scrollbar-thumb:hover { background: var(--qm-border-subtle); }
 
 /* Opacity variants — Tailwind encodes these as background-color with alpha   */
 .bg-hvn-bg\/80 {
-  background-color: color-mix(in srgb, var(--qm-bg) 80%, transparent) !important;
+  background-color: var(--qm-bg-glass-80) !important;
 }
 .bg-hvn-bg\/95 {
-  background-color: color-mix(in srgb, var(--qm-bg) 95%, transparent) !important;
+  background-color: var(--qm-bg-glass-95) !important;
 }
 
 .text-hvn-text-primary   { color: var(--qm-text-primary)   !important; }
