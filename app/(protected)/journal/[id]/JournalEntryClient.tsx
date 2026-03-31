@@ -49,11 +49,6 @@ function parseNextStep(step: string): { optionA: string; optionB: string; script
   return { optionA, optionB, script };
 }
 
-function questionsHeading(count: number): string {
-  if (count <= 0) return "Questions";
-  if (count === 1) return "1 Question";
-  return `${count} Questions`;
-}
 
 const EMOTION_COLORS: Record<string, string> = {
   anxiety: "bg-amber-500/15 text-amber-300 border-amber-500/25",
@@ -121,7 +116,7 @@ export default function JournalEntryClient({
   );
 
   const questionsTitle = useMemo(
-    () => questionsHeading(reflection?.questions?.length ?? 0),
+    () => t.ui.questionsHeading(reflection?.questions?.length ?? 0),
     [reflection?.questions?.length]
   );
 
@@ -404,7 +399,7 @@ export default function JournalEntryClient({
             {reflection.corepattern && (
               <div className="px-6 py-5">
                 <p className="mb-2 text-[10px] font-semibold uppercase tracking-widest text-white/30">
-                  {parsedSummary?.happening ? "Key pattern" : "What's really happening"}
+                  {parsedSummary?.happening ? t.reflection.keyPattern : t.reflection.whatsReallyHappening}
                 </p>
                 <p className="text-sm italic leading-relaxed text-white/80">
                   {reflection.corepattern}

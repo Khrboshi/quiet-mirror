@@ -35,21 +35,21 @@ function buildHref(prompt: string) {
   return `/journal/new?prompt=${encodeURIComponent(prompt)}`;
 }
 
-function greetingByHour() {
+function greetingByHour(t: { dashboard: { goodMorning: string; goodAfternoon: string; goodEvening: string } }) {
   const h = new Date().getHours();
-  if (h < 12) return "Good morning";
-  if (h < 18) return "Good afternoon";
-  return "Good evening";
+  if (h < 12) return t.dashboard.goodMorning;
+  if (h < 18) return t.dashboard.goodAfternoon;
+  return t.dashboard.goodEvening;
 }
 
-function friendlyDate(iso: string, isMounted = false) {
+function friendlyDate(iso: string, isMounted = false, t?: { dashboard: { today: string; yesterday: string } }) {
   const d = new Date(iso);
   const today = new Date();
   const yesterday = new Date(today);
   yesterday.setDate(today.getDate() - 1);
   const isoDate = (x: Date) => x.toISOString().slice(0, 10);
-  if (isoDate(d) === isoDate(today)) return "today";
-  if (isoDate(d) === isoDate(yesterday)) return "yesterday";
+  if (isoDate(d) === isoDate(today)) return t?.dashboard.today ?? "today";
+  if (isoDate(d) === isoDate(yesterday)) return t?.dashboard.yesterday ?? "yesterday";
   return isMounted ? d.toLocaleDateString(undefined, { month: "short", day: "numeric" }) : iso.slice(0, 10);
 }
 
@@ -76,24 +76,18 @@ function sanitiseCorePattern(raw: string | null): string | null {
   return raw;
 }
 
-const PROMPT_POOL = [
-  { q: "How is your body feeling right now?", sub: "Tension, calm, tired, restless — anything you notice.", accent: "emerald" },
-  { q: "What is one thing occupying your mind?", sub: "One sentence is enough.", accent: "violet" },
-  { q: "What are you avoiding thinking about?", sub: "You don't have to solve it — just name it.", accent: "amber" },
-  { q: "What do you need more of right now?", sub: "Rest, space, connection, clarity — anything.", accent: "sky" },
-  { q: "What felt heavy this week?", sub: "No need to explain why.", accent: "rose" },
-  { q: "What are you proud of, even quietly?", sub: "Small things count.", accent: "emerald" },
-  { q: "Just free write", sub: "No structure. No rules. Start anywhere.", accent: "slate" },
-];
+// Prompts are defined in t.dashboard.prompts (app/lib/i18n/)
 
-function getDailyPrompts(): typeof PROMPT_POOL {
+function getDailyPrompts<T extends { q: string; sub: string; accent: string }>(
+  pool: readonly T[]
+): [T, T, T] {
   const day = new Date().getDay();
-  const start = day % PROMPT_POOL.length;
+  const start = day % pool.length;
   return [
-    PROMPT_POOL[start % PROMPT_POOL.length],
-    PROMPT_POOL[(start + 1) % PROMPT_POOL.length],
-    PROMPT_POOL[(start + 2) % PROMPT_POOL.length],
-  ];
+    pool[start % pool.length],
+    pool[(start + 1) % pool.length],
+    pool[(start + 2) % pool.length],
+  ] as [T, T, T];
 }
 
 // Map accent name → Tailwind classes
@@ -222,6 +216,7 @@ function FreeInsightTeaser({
   emotion: string | null;
   theme: string | null;
 }) {
+  const { t } = useTranslation();
   const hasHint = emotion || theme;
 
   if (entryCount < 3) {
@@ -233,7 +228,7 @@ function FreeInsightTeaser({
         <p className="text-sm leading-relaxed text-slate-400">
           Write{" "}
           <span className="text-slate-200">
-            {3 - entryCount} more {3 - entryCount === 1 ? "entry" : "entries"}
+            {t.dashboard.moreEntries(3 - entryCount)}
           </span>{" "}
           and Quiet Mirror will start noticing what quietly repeats across your writing.
         </p>
@@ -290,26 +285,26 @@ function ThreadCard({
   const { t } = useTranslation();
   const [mounted, setMounted] = useState(false);
   useEffect(() => { setMounted(true); }, []);
-  const when = lastEntryDate ? friendlyDate(lastEntryDate, mounted) : null;
+  const when = lastEntryDate ? friendlyDate(lastEntryDate, mounted, t) : null;
   const title = titleOrUntitled(lastEntryTitle, t.journal.untitledEntry);
 
   const sectionLabel = wroteToday
-    ? "You wrote today"
+    ? t.dashboard.wroteToday
     : lastEntryId
-    ? "Pick up the thread"
-    : "Start here";
+    ? t.dashboard.pickUpThread
+    : t.dashboard.startHere;
 
   // Don't echo the raw entry title into the prompt body — feels broken with test titles
   const body = wroteToday
-    ? "How has the day evolved since you last wrote?"
+    ? t.dashboard.dayEvolved
     : lastEntryId && lastTopEmotion
     ? `You wrote ${when}. ${lastTopEmotion} was present. Has anything shifted?`
     : lastEntryId
     ? `You last wrote ${when}. Has anything softened since?`
-    : "One honest sentence is always enough to start.";
+    : t.dashboard.oneHonestSentence;
 
   const threadPrompt = wroteToday
-    ? "You've already written today — how has the day evolved?"
+    ? t.dashboard.alreadyWroteToday
     : lastTopEmotion
     ? `Following up on your last entry — ${lastTopEmotion} was present. Has anything shifted?`
     : `Following up on your last entry — has anything softened since you wrote?`;
@@ -328,7 +323,7 @@ function ThreadCard({
           href={buildHref(threadPrompt)}
           className="inline-flex rounded-full bg-[color:var(--hvn-accent-mint)] px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[color:var(--hvn-accent-mint-hover)]"
         >
-          {wroteToday ? "Add to today" : "Write now"}
+          {wroteToday ? t.dashboard.addToToday : t.dashboard.writeNow}
         </Link>
 
         {lastEntryId && (
@@ -347,6 +342,7 @@ function ThreadCard({
 // ── Welcome panel (zero entries) ──────────────────────────────────────────────
 
 function WelcomePanel() {
+  const { t } = useTranslation();
   return (
     <div className="mb-8 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.04] p-6">
       <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-500/70">
@@ -411,6 +407,7 @@ function PatternStartedCard({
 // ── Progress nudge (2–4 entries) ──────────────────────────────────────────────
 
 function ProgressNudge({ entryCount }: { entryCount: number }) {
+  const { t } = useTranslation();
   const remaining = 5 - entryCount;
   if (remaining <= 0) return null;
 
@@ -432,7 +429,7 @@ function ProgressNudge({ entryCount }: { entryCount: number }) {
       </div>
       <p className="text-sm text-slate-400">
         <span className="text-slate-200">
-          {remaining} more {remaining === 1 ? "entry" : "entries"}
+          {t.dashboard.moreEntries(remaining)}
         </span>{" "}
         and Quiet Mirror will start showing you what quietly repeats across your
         writing.
@@ -464,14 +461,14 @@ export default function DashboardClient({
   const reflectionsPaused = isFree && (credits ?? 0) === 0;
   const resetLabel = startOfNextMonth();
   const readablePlan = isPremium
-    ? planType === "TRIAL" ? "Trial" : "Premium"
-    : "Free";
+    ? planType === "TRIAL" ? t.dashboard.trial : t.dashboard.premium
+    : t.dashboard.free;
 
   const greeting = displayName
-    ? `${greetingByHour()}, ${displayName}`
-    : greetingByHour();
+    ? `${greetingByHour(t)}, ${displayName}`
+    : greetingByHour(t);
 
-  const prompts = useMemo(() => getDailyPrompts(), []);
+  const prompts = useMemo(() => getDailyPrompts(t.dashboard.prompts), [t.dashboard.prompts]);
 
   const {
     entryCount, writingDays, lastEntryId, lastEntryTitle, lastEntryDate,
@@ -481,8 +478,8 @@ export default function DashboardClient({
 
   const subline = useMemo(() => {
     if (entryCount === 0) return t.journal.emptyStateNudge;
-    if (wroteToday) return "You've written today.";
-    return "Choose a prompt to begin.";
+    if (wroteToday) return t.dashboard.writtenToday;
+    return t.dashboard.choosePrompt;
   }, [entryCount, wroteToday]);
 
   return (
@@ -533,7 +530,7 @@ export default function DashboardClient({
             <>
               <span className="text-slate-800">·</span>
               <span>
-                {entryCount} {entryCount === 1 ? "entry" : "entries"}
+                {entryCount} {entryCount === 1 ? t.dashboard.entry : t.dashboard.entries}
               </span>
             </>
           )}
@@ -652,7 +649,7 @@ export default function DashboardClient({
               <div className="flex items-center justify-between text-sm">
                 <span className="text-slate-500">Last entry</span>
                 <span className="font-medium text-slate-200" suppressHydrationWarning>
-                  {friendlyDate(lastEntryDate, mounted)}
+                  {friendlyDate(lastEntryDate, mounted, t)}
                 </span>
               </div>
             )}

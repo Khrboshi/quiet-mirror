@@ -60,18 +60,18 @@ export default function Navbar() {
   // ─── Nav link definitions ─────────────────────────────────────────────────
   // "Premium" renamed to "Pricing" — clearer for cold visitors
   const publicLinks: NavLink[] = [
-    { href: "/about",   label: "About"   },
-    { href: "/blog",    label: "Blog"    },
-    { href: "/upgrade", label: "Pricing" },
+    { href: "/about",   label: t.navbar.about   },
+    { href: "/blog",    label: t.navbar.blog     },
+    { href: "/upgrade", label: t.navbar.pricing  },
   ];
 
   const authLinks: NavLink[] = [
-    { href: "/dashboard", label: "Dashboard" },
-    { href: "/journal",   label: "Journal"   },
-    { href: "/insights",  label: "Insights"  },
-    { href: "/tools",     label: "Tools"     },
-    { href: "/settings",  label: "Settings"  },
-    { href: "/install",   label: "Install"   },
+    { href: "/dashboard", label: t.navbar.dashboard },
+    { href: "/journal",   label: t.navbar.journal   },
+    { href: "/insights",  label: t.navbar.insights  },
+    { href: "/tools",     label: t.navbar.tools     },
+    { href: "/settings",  label: t.navbar.settings  },
+    { href: "/install",   label: t.navbar.install   },
   ];
 
   const shouldShowInstall = useMemo(() => !isStandalone, [isStandalone]);
@@ -202,7 +202,7 @@ export default function Navbar() {
                 <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.2em] text-qm-accent" style={{ opacity: 0.7 }}>
                   {isLoggedIn
                     ? t.navbar.yourSpace
-                    : "Private journaling that reflects back"}
+                    : t.navbar.privateJournalingTagline}
                 </p>
 
                 <nav className="flex flex-col gap-2">

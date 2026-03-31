@@ -108,7 +108,7 @@ export default function SuggestionsToolPage() {
                 return (
                   <div key={i} className={`rounded-2xl border ${accent.border} ${accent.bg} px-6 py-6`}>
                     <p className={`text-[10px] font-semibold uppercase tracking-[0.22em] ${accent.label}`}>
-                      {i === 0 ? "First suggestion" : "Second suggestion"}
+                      {i === 0 ? t.insights.firstSuggestion : t.insights.secondSuggestion}
                     </p>
                     <p className="mt-3 font-display text-[1.05rem] font-medium leading-relaxed text-white">
                       {suggestion.text}

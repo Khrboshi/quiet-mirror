@@ -128,6 +128,16 @@ export interface Translations {
   navbar: {
     signIn:         string;
     startFree:      string;
+    // Nav link labels
+    about:          string;
+    blog:           string;
+    pricing:        string;
+    install:        string;
+    dashboard:      string;
+    journal:        string;
+    insights:       string;
+    tools:          string;
+    settings:       string;
     logout:         string;
     yourSpace:      string;
     openMenu:       string;
@@ -135,5 +145,48 @@ export interface Translations {
     writeFreeEntry: string;
     privateNoCred:  string;
     privateTagline: string;
+    privateJournalingTagline: string;
+  };
+
+  insights: {
+    regenerateSummary: string;
+    entries:           string;
+    sinceJoined:       string;
+    topEmotion:        string;
+    topTheme:          string;
+    firstSuggestion:   string;
+    secondSuggestion:  string;
+    momentum:          string;
+    momentumDefault:   string;
+    momentumDescriptions: Record<string, string>;
+  };
+
+  dashboard: {
+    goodMorning:    string;
+    goodAfternoon:  string;
+    goodEvening:    string;
+    today:          string;
+    yesterday:      string;
+    wroteToday:     string;
+    pickUpThread:   string;
+    startHere:      string;
+    dayEvolved:     string;
+    oneHonestSentence: string;
+    alreadyWroteToday: string;
+    addToToday:     string;
+    writeNow:       string;
+    writtenToday:   string;
+    choosePrompt:   string;
+    entry:          string;
+    entries:        string;
+    moreEntries:    (n: number) => string;
+    trial:          string;
+    premium:        string;
+    free:           string;
+    prompts: readonly {
+      q: string;
+      sub: string;
+      accent: string;
+    }[];
   };
 }

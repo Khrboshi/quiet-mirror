@@ -580,7 +580,7 @@ function WeeklySummarySection({ hasRealData }: { hasRealData: boolean }) {
             type="button"
             onClick={() => fetchSummary(true)}
             className="shrink-0 text-xs text-slate-600 hover:text-slate-400 transition"
-            title="Regenerate summary"
+            title={t.insights.regenerateSummary}
           >
             ↻ Refresh
           </button>
@@ -804,41 +804,34 @@ export default function InsightsClient() {
             suppressHydrationWarning
           >
             <StatCard
-              label="Entries"
+              label={t.insights.entries}
               value={String(totalEntryCount)}
               sub={
                 data.firstEntryDate && mounted
                   ? `Since ${friendlyDate(data.firstEntryDate)}`
                   : data.firstEntryDate
-                  ? "Since joined"
+                  ? t.insights.sinceJoined
                   : undefined
               }
             />
             <StatCard
-              label="Top emotion"
+              label={t.insights.topEmotion}
               value={topEmotion ?? "—"}
               sub={allEmotions[0] ? `${allEmotions[0][1]} ${allEmotions[0][1] === 1 ? "time" : "times"}` : undefined}
               accent="var(--qm-dv-grief)"
             />
             <StatCard
-              label="Top theme"
+              label={t.insights.topTheme}
               value={topTheme ?? "—"}
               sub={allThemes[0] ? `${allThemes[0][1]} entries` : undefined}
               accent="var(--qm-dv-positive)"
             />
             <StatCard
-              label="Momentum"
-              value={data.momentum ?? "Steady"}
+              label={t.insights.momentum}
+              value={data.momentum ?? t.insights.momentumDefault}
               sub={(() => {
                 const m = data.momentum ?? "Steady";
-                const descriptions: Record<string, string> = {
-                  Heavy: "Recent entries carry more emotional weight",
-                  Lifting: "Emotional weight has been easing lately",
-                  Shifting: "Something is changing in recent entries",
-                  Softening: "Intensity has been settling recently",
-                  Steady: "Consistent emotional tone across entries",
-                };
-                return descriptions[m] ?? "From your recent entries";
+                return t.insights.momentumDescriptions[m] ?? t.insights.momentumDescriptions["Steady"];
               })()}
               accent={mColor}
             />
