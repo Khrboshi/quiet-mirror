@@ -70,6 +70,36 @@ const config: Config = {
           "accent-2-soft":"var(--qm-accent-2-soft)",
           "border-subtle":"var(--qm-border-subtle)",
           "border-card": "var(--qm-border-card)",
+
+          // ── Semantic status tokens ─────────────────────────────────────
+          // One alias per meaning. Change globals.css → updates everywhere.
+          "positive":        "var(--qm-positive)",
+          "positive-strong": "var(--qm-positive-strong)",
+          "positive-soft":   "var(--qm-positive-soft)",
+          "positive-border": "var(--qm-positive-border)",
+          "positive-muted":  "var(--qm-positive-muted)",
+          "positive-bg":     "var(--qm-positive-bg)",
+
+          "premium":         "var(--qm-premium)",
+          "premium-strong":  "var(--qm-premium-strong)",
+          "premium-soft":    "var(--qm-premium-soft)",
+          "premium-border":  "var(--qm-premium-border)",
+          "premium-muted":   "var(--qm-premium-muted)",
+          "premium-bg":      "var(--qm-premium-bg)",
+
+          "danger":          "var(--qm-danger)",
+          "danger-strong":   "var(--qm-danger-strong)",
+          "danger-soft":     "var(--qm-danger-soft)",
+          "danger-border":   "var(--qm-danger-border)",
+          "danger-muted":    "var(--qm-danger-muted)",
+          "danger-bg":       "var(--qm-danger-bg)",
+
+          "warning":         "var(--qm-warning)",
+          "warning-strong":  "var(--qm-warning-strong)",
+          "warning-soft":    "var(--qm-warning-soft)",
+          "warning-border":  "var(--qm-warning-border)",
+          "warning-muted":   "var(--qm-warning-muted)",
+          "warning-bg":      "var(--qm-warning-bg)",
         },
       },
       fontFamily: {

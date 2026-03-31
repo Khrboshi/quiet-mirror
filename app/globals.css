@@ -61,6 +61,42 @@
   --qm-bg-glass-80: rgba(10, 13, 26, 0.80);
   --qm-bg-glass-95: rgba(10, 13, 26, 0.95);
 
+  /* ── Semantic status tokens ───────────────────────────────────────────────
+     One variable per semantic meaning. Change here → updates everywhere.
+     These adapt between light and dark mode for legibility.               */
+
+  /* Positive — success, active, streaks, saved states */
+  --qm-positive:          #34d399;   /* emerald-400  */
+  --qm-positive-strong:   #10b981;   /* emerald-500  */
+  --qm-positive-soft:     rgba(52, 211, 153, 0.10);
+  --qm-positive-border:   rgba(52, 211, 153, 0.20);
+  --qm-positive-muted:    rgba(52, 211, 153, 0.60);
+  --qm-positive-bg:       rgba(52, 211, 153, 0.06);
+
+  /* Premium — insights, upgrade, premium features */
+  --qm-premium:           #a78bfa;   /* violet-400   */
+  --qm-premium-strong:    #8b5cf6;   /* violet-500   */
+  --qm-premium-soft:      rgba(167, 139, 250, 0.10);
+  --qm-premium-border:    rgba(167, 139, 250, 0.20);
+  --qm-premium-muted:     rgba(167, 139, 250, 0.60);
+  --qm-premium-bg:        rgba(167, 139, 250, 0.06);
+
+  /* Danger — delete, errors, destructive actions */
+  --qm-danger:            #f87171;   /* red-400      */
+  --qm-danger-strong:     #ef4444;   /* red-500      */
+  --qm-danger-soft:       rgba(248, 113, 113, 0.10);
+  --qm-danger-border:     rgba(248, 113, 113, 0.20);
+  --qm-danger-muted:      rgba(248, 113, 113, 0.60);
+  --qm-danger-bg:         rgba(248, 113, 113, 0.05);
+
+  /* Warning — caution, limits, notices */
+  --qm-warning:           #fbbf24;   /* amber-400    */
+  --qm-warning-strong:    #f59e0b;   /* amber-500    */
+  --qm-warning-soft:      rgba(251, 191, 36, 0.10);
+  --qm-warning-border:    rgba(251, 191, 36, 0.20);
+  --qm-warning-muted:     rgba(251, 191, 36, 0.60);
+  --qm-warning-bg:        rgba(251, 191, 36, 0.05);
+
   color-scheme: dark;
 }
 
@@ -98,6 +134,41 @@
     /* Glass backgrounds — rgba equivalents for browser compatibility */
     --qm-bg-glass-80: rgba(250, 249, 247, 0.80);
     --qm-bg-glass-95: rgba(250, 249, 247, 0.95);
+
+    /* ── Semantic status tokens — light mode overrides ──────────────────────
+       Darker shades for legibility on the cream background.               */
+
+    /* Positive */
+    --qm-positive:          #059669;   /* emerald-600  */
+    --qm-positive-strong:   #047857;   /* emerald-700  */
+    --qm-positive-soft:     rgba(5, 150, 105, 0.10);
+    --qm-positive-border:   rgba(5, 150, 105, 0.22);
+    --qm-positive-muted:    rgba(5, 150, 105, 0.60);
+    --qm-positive-bg:       rgba(5, 150, 105, 0.06);
+
+    /* Premium */
+    --qm-premium:           #7c3aed;   /* violet-600   */
+    --qm-premium-strong:    #6d28d9;   /* violet-700   */
+    --qm-premium-soft:      rgba(124, 58, 237, 0.10);
+    --qm-premium-border:    rgba(124, 58, 237, 0.22);
+    --qm-premium-muted:     rgba(124, 58, 237, 0.60);
+    --qm-premium-bg:        rgba(124, 58, 237, 0.06);
+
+    /* Danger */
+    --qm-danger:            #dc2626;   /* red-600      */
+    --qm-danger-strong:     #b91c1c;   /* red-700      */
+    --qm-danger-soft:       rgba(220, 38, 38, 0.10);
+    --qm-danger-border:     rgba(220, 38, 38, 0.20);
+    --qm-danger-muted:      rgba(220, 38, 38, 0.60);
+    --qm-danger-bg:         rgba(220, 38, 38, 0.05);
+
+    /* Warning */
+    --qm-warning:           #d97706;   /* amber-600    */
+    --qm-warning-strong:    #b45309;   /* amber-700    */
+    --qm-warning-soft:      rgba(217, 119, 6, 0.10);
+    --qm-warning-border:    rgba(217, 119, 6, 0.20);
+    --qm-warning-muted:     rgba(217, 119, 6, 0.60);
+    --qm-warning-bg:        rgba(217, 119, 6, 0.05);
 
     color-scheme: light;
   }
