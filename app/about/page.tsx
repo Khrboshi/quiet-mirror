@@ -20,7 +20,7 @@ export default function AboutPage() {
       <section className="border-b border-qm-border-subtle pb-16 pt-12 sm:pb-20 sm:pt-16">
         <div className="mx-auto max-w-5xl px-6">
           <div className="max-w-4xl">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-qm-positive">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-qm-positive-muted">
               About {CONFIG.appName}
             </p>
 
@@ -112,7 +112,7 @@ export default function AboutPage() {
                   body: `${CONFIG.appName} is independently built and funded. No venture capital, no board, no pressure to grow at the expense of the product or your privacy.`,
                   accent:
                     "border-qm-positive-border bg-qm-positive-strong/[0.03]",
-                  tag: "text-qm-positive",
+                  tag: "text-qm-positive-muted",
                 },
                 {
                   label: "No ads, ever",
@@ -120,14 +120,14 @@ export default function AboutPage() {
                     "Revenue comes entirely from Premium subscriptions. Your data is never sold, shared, or used to train AI models. That is the complete business model.",
                   accent:
                     "border-qm-premium-border bg-qm-premium-strong/[0.03]",
-                  tag: "text-qm-premium",
+                  tag: "text-qm-premium-muted",
                 },
                 {
                   label: "One person accountable",
                   body: `${CONFIG.appName} is built by a single independent developer. Every decision about privacy, product, and pricing has one person behind it — reachable directly at ${CONFIG.supportEmail}.`,
                   accent:
                     "border-qm-positive-border bg-qm-positive-strong/[0.03]",
-                  tag: "text-qm-positive",
+                  tag: "text-qm-positive-muted",
                 },
               ].map(({ label, body, accent, tag }) => (
                 <div

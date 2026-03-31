@@ -598,7 +598,7 @@ export default function JournalEntryClient({
                   {`🛡️ No charge for ${PRICING.trialDays} ${PRICING.trialDayWord} · Cancel anytime ·`}{" "}
                   <Link
                     href="/terms"
-                    className="underline underline-offset-2 transition-colors hover:text-qm-faint"
+                    className="underline underline-offset-2 transition-colors hover:text-qm-secondary"
                   >
                     Terms
                   </Link>

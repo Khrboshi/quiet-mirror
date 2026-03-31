@@ -85,9 +85,9 @@ export default function UpgradeConfirmedPage() {
         <p className="mt-8 text-center text-xs text-qm-faint">
           Your dashboard may take up to 30 seconds to reflect your new plan. If it doesn&apos;t
           update,{" "}
-          <Link href="/dashboard" className="text-qm-faint underline underline-offset-2 hover:text-qm-faint">refresh once</Link>
+          <Link href="/dashboard" className="text-qm-faint underline underline-offset-2 hover:text-qm-secondary">refresh once</Link>
           .{" "}
-          <Link href="/settings/billing" className="text-qm-faint underline underline-offset-2 hover:text-qm-faint">Manage billing →</Link>
+          <Link href="/settings/billing" className="text-qm-faint underline underline-offset-2 hover:text-qm-secondary">Manage billing →</Link>
         </p>
 
         {/* Trial badge — all copy derives from PRICING */}

@@ -131,7 +131,7 @@ export default async function BillingPage() {
 
       {/* Refund window notice — only visible within the trial period */}
       {refundDaysLeft !== null && (
-        <div className="mb-6 flex items-start gap-3 rounded-2xl border border-qm-positive-border bg-qm-positive-strong/[0.06] px-5 py-4">
+        <div className="mb-6 flex items-start gap-3 rounded-2xl border border-qm-positive-border bg-qm-positive-bg px-5 py-4">
           <span className="mt-0.5 text-base">🛡️</span>
           <div>
             <p className="text-sm font-semibold text-qm-positive">
