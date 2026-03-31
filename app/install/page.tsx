@@ -43,7 +43,7 @@ export default function InstallPage() {
                 height={64}
                 className="rounded-[22%] shadow-xl shadow-black/40"
               />
-              <span className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[color:var(--hvn-accent-mint)] text-[9px] font-bold text-white">
+              <span className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-qm-accent text-[9px] font-bold text-white">
                 ✓
               </span>
             </div>
@@ -117,7 +117,7 @@ export default function InstallPage() {
                     </p>
                     <button
                       onClick={handleInstallClick}
-                      className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-[color:var(--hvn-accent-mint)] px-4 py-3.5 text-sm font-semibold text-white transition hover:bg-[color:var(--hvn-accent-mint-hover)]"
+                      className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-4 py-3.5 text-sm font-semibold text-white transition hover:bg-qm-accent-hover"
                     >
                       Install {CONFIG.appName}
                     </button>
