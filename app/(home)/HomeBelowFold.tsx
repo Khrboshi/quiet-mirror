@@ -11,20 +11,20 @@ const recognitions = [
   {
     quote:
       "You keep being the steady one for everyone else, and then wonder why you feel so depleted.",
-    accent: "border-violet-500/20 bg-violet-500/[0.04]",
-    dot: "bg-violet-400",
+    accent: "border-qm-premium-border bg-qm-premium-strong/[0.04]",
+    dot: "bg-qm-premium",
   },
   {
     quote:
       "The same tension keeps showing up in different situations, but you cannot quite see the pattern yet.",
-    accent: "border-emerald-500/20 bg-emerald-500/[0.04]",
-    dot: "bg-emerald-400",
+    accent: "border-qm-positive-border bg-qm-positive-strong/[0.04]",
+    dot: "bg-qm-positive",
   },
   {
     quote:
       "You want journaling to help, but blank pages and generic prompts never seem to meet you where you are.",
-    accent: "border-amber-500/20 bg-amber-500/[0.04]",
-    dot: "bg-amber-400",
+    accent: "border-qm-warning-border bg-qm-warning-strong/[0.04]",
+    dot: "bg-qm-warning",
   },
 ];
 
@@ -35,16 +35,16 @@ export default function HomeBelowFold() {
   return (
     <>
       {/* ── 0. PROOF INTERRUPTION ─────────────────────────────────────────── */}
-      <section className="border-b border-emerald-500/10 bg-emerald-500/[0.03] py-12 sm:py-16">
+      <section className="border-b border-qm-positive-border bg-qm-positive-strong/[0.03] py-12 sm:py-16">
         <div className="mx-auto max-w-4xl px-5">
           <ScrollReveal className="mb-8 text-center">
-            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/60">
+            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-qm-positive">
               After 3 weeks of entries — what Quiet Mirror noticed
             </p>
-            <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">
+            <h2 className="mt-3 font-display text-2xl font-semibold text-qm-primary sm:text-3xl">
               The pattern you&apos;ve been living
               <br className="hidden sm:block" />
-              <span className="text-emerald-400">
+              <span className="text-qm-positive">
                 {" "}
                 but couldn&apos;t quite name.
               </span>
@@ -52,24 +52,24 @@ export default function HomeBelowFold() {
           </ScrollReveal>
 
           <ScrollReveal>
-            <div className="overflow-hidden rounded-[1.75rem] border border-emerald-500/20 shadow-2xl shadow-black/50">
-              <div className="flex items-center justify-between border-b border-emerald-500/15 bg-emerald-500/[0.08] px-6 py-4 sm:px-8">
+            <div className="overflow-hidden rounded-[1.75rem] border border-qm-positive-border shadow-2xl shadow-black/50">
+              <div className="flex items-center justify-between border-b border-qm-positive-border bg-qm-positive-strong/[0.08] px-6 py-4 sm:px-8">
                 <div className="flex items-center gap-2.5">
-                  <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400/60" />
-                  <p className="text-sm font-medium text-emerald-300">
+                  <span className="h-2 w-2 rounded-full bg-qm-positive shadow-sm shadow-emerald-400/60" />
+                  <p className="text-sm font-medium text-qm-positive">
                     Your hidden pattern
                   </p>
                 </div>
-                <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-emerald-400">
+                <span className="rounded-full border border-qm-positive-border bg-qm-positive-soft px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-qm-positive">
                   Premium insight
                 </span>
               </div>
 
               <div className="bg-qm-elevated px-6 py-7 sm:px-8 sm:py-8">
-                <p className="font-display text-xl font-medium leading-relaxed text-white sm:text-2xl">
+                <p className="font-display text-xl font-medium leading-relaxed text-qm-primary sm:text-2xl">
                   &ldquo;You often sound most overwhelmed when you feel
                   responsible for{" "}
-                  <span className="text-emerald-300">
+                  <span className="text-qm-positive">
                     keeping everything steady for everyone else
                   </span>{" "}
                   — and rarely give yourself the same patience.&rdquo;
@@ -77,7 +77,7 @@ export default function HomeBelowFold() {
 
                 <div className="mt-7 grid gap-5 sm:grid-cols-[1fr_auto]">
                   <div>
-                    <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+                    <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-faint">
                       What keeps appearing in your entries
                     </p>
                     <div className="space-y-2.5">
@@ -85,30 +85,30 @@ export default function HomeBelowFold() {
                         {
                           label: "Emotional load",
                           pct: 64,
-                          color: "bg-emerald-400",
+                          color: "bg-qm-positive",
                         },
                         {
                           label: "Responsibility for others",
                           pct: 50,
-                          color: "bg-emerald-500/70",
+                          color: "bg-qm-positive-muted",
                         },
                         {
                           label: "Overwhelm / exhaustion",
                           pct: 45,
-                          color: "bg-violet-400/70",
+                          color: "bg-qm-premium-soft",
                         },
                         {
                           label: "Clarity (↑ rising)",
                           pct: 28,
-                          color: "bg-violet-400/60",
+                          color: "bg-qm-premium-soft",
                         },
                       ].map(({ label, pct, color }) => (
                         <div key={label}>
                           <div className="mb-1 flex items-center justify-between">
-                            <span className="text-xs text-slate-400">
+                            <span className="text-xs text-qm-muted">
                               {label}
                             </span>
-                            <span className="text-xs text-slate-600">
+                            <span className="text-xs text-qm-faint">
                               {pct}%
                             </span>
                           </div>
@@ -125,26 +125,26 @@ export default function HomeBelowFold() {
 
                   <div className="flex flex-row gap-3 sm:flex-col sm:justify-center">
                     <div className="rounded-2xl border border-qm-border-card bg-qm-soft px-4 py-3 text-center sm:px-5">
-                      <p className="font-display text-2xl font-bold text-white sm:text-3xl">
+                      <p className="font-display text-2xl font-bold text-qm-primary sm:text-3xl">
                         14
-                        <span className="text-base font-normal text-slate-500">
+                        <span className="text-base font-normal text-qm-faint">
                           /22
                         </span>
                       </p>
-                      <p className="mt-1 text-[11px] leading-snug text-slate-500">
+                      <p className="mt-1 text-[11px] leading-snug text-qm-faint">
                         entries with
                         <br />
                         emotional load
                       </p>
                     </div>
                     <div className="rounded-2xl border border-qm-border-card bg-qm-soft px-4 py-3 text-center sm:px-5">
-                      <p className="font-display text-2xl font-bold text-white sm:text-3xl">
+                      <p className="font-display text-2xl font-bold text-qm-primary sm:text-3xl">
                         3
-                        <span className="text-base font-normal text-slate-500">
+                        <span className="text-base font-normal text-qm-faint">
                           wks
                         </span>
                       </p>
-                      <p className="mt-1 text-[11px] leading-snug text-slate-500">
+                      <p className="mt-1 text-[11px] leading-snug text-qm-faint">
                         pattern has
                         <br />
                         been building
@@ -153,7 +153,7 @@ export default function HomeBelowFold() {
                   </div>
                 </div>
 
-                <p className="mt-5 text-[11px] text-slate-600">
+                <p className="mt-5 text-[11px] text-qm-faint">
                   Generated from your private entries. Only you can see this.
                 </p>
               </div>
@@ -161,12 +161,12 @@ export default function HomeBelowFold() {
           </ScrollReveal>
 
           <ScrollReveal>
-            <p className="mt-6 text-center text-sm text-slate-500">
+            <p className="mt-6 text-center text-sm text-qm-faint">
               This is what Premium unlocks — the pattern underneath the
               entries.{" "}
               <Link
                 href="/insights/preview"
-                className="text-emerald-500 transition-colors hover:text-emerald-400"
+                className="text-qm-positive transition-colors hover:text-qm-positive"
               >
                 See a full example →
               </Link>
@@ -179,7 +179,7 @@ export default function HomeBelowFold() {
       <section className="border-y border-qm-border-subtle py-10 sm:py-14">
         <div className="mx-auto max-w-6xl px-5">
           <ScrollReveal>
-            <p className="mb-6 text-[11px] font-medium uppercase tracking-[0.2em] text-slate-500">
+            <p className="mb-6 text-[11px] font-medium uppercase tracking-[0.2em] text-qm-faint">
               If any of this sounds familiar, you&apos;re in the right place.
             </p>
           </ScrollReveal>
@@ -192,7 +192,7 @@ export default function HomeBelowFold() {
                 <span
                   className={`mb-3 block h-1.5 w-1.5 rounded-full ${dot}`}
                 />
-                <p className="text-sm italic leading-relaxed text-slate-300">
+                <p className="text-sm italic leading-relaxed text-qm-secondary">
                   &ldquo;{quote}&rdquo;
                 </p>
               </div>
@@ -205,14 +205,14 @@ export default function HomeBelowFold() {
       <section className="border-b border-qm-border-subtle section-tinted py-14 sm:py-20">
         <div className="mx-auto max-w-6xl px-5">
           <ScrollReveal className="mb-10 max-w-2xl">
-            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/70">
+            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-qm-positive">
               What actually happens
             </p>
-            <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">
+            <h2 className="mt-3 font-display text-2xl font-semibold text-qm-primary sm:text-3xl">
               Write once. Hear it back{" "}
-              <span className="text-emerald-400">differently.</span>
+              <span className="text-qm-positive">differently.</span>
             </h2>
-            <p className="mt-3 max-w-lg text-sm leading-relaxed text-slate-400">
+            <p className="mt-3 max-w-lg text-sm leading-relaxed text-qm-muted">
               You write whatever is on your mind — honestly, messily, without
               editing yourself. Quiet Mirror reads it and reflects back what it
               noticed. No advice. No diagnosis. Just a mirror held up gently.
@@ -222,14 +222,14 @@ export default function HomeBelowFold() {
           <ScrollReveal className="overflow-hidden rounded-[1.5rem] border border-qm-border-card md:grid md:grid-cols-2">
             <div className="border-b border-qm-border-subtle bg-qm-elevated p-6 md:border-b-0 md:border-r">
               <div className="mb-4 flex items-center justify-between">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-600">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-faint">
                   What you write
                 </p>
-                <span className="rounded-full border border-qm-border-card px-2 py-0.5 text-[10px] text-slate-600">
+                <span className="rounded-full border border-qm-border-card px-2 py-0.5 text-[10px] text-qm-faint">
                   ~2 min
                 </span>
               </div>
-              <p className="text-[15px] leading-[1.75] text-slate-200">
+              <p className="text-[15px] leading-[1.75] text-qm-primary">
                 &ldquo;Work has been overwhelming. I keep saying yes and then
                 resenting it. At home it&apos;s the same — I handle everything
                 and feel guilty even thinking about stepping back.&rdquo;
@@ -238,23 +238,23 @@ export default function HomeBelowFold() {
                 {["Honest", "Unfiltered", "No structure needed"].map((t) => (
                   <span
                     key={t}
-                    className="rounded-full border border-qm-border-card px-2.5 py-0.5 text-[11px] text-slate-500"
+                    className="rounded-full border border-qm-border-card px-2.5 py-0.5 text-[11px] text-qm-faint"
                   >
                     {t}
                   </span>
                 ))}
               </div>
             </div>
-            <div className="border-t border-emerald-500/10 bg-emerald-950/30 p-6 md:border-t-0">
+            <div className="border-t border-qm-positive-border bg-qm-positive-bg p-6 md:border-t-0">
               <div className="mb-4 flex items-center justify-between">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-500/70">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-positive">
                   Quiet Mirror reflects
                 </p>
-                <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-400">
+                <span className="rounded-full border border-qm-positive-border bg-qm-positive-soft px-2 py-0.5 text-[10px] font-medium text-qm-positive">
                   Immediate
                 </span>
               </div>
-              <p className="text-[15px] leading-[1.75] text-slate-100">
+              <p className="text-[15px] leading-[1.75] text-qm-primary">
                 There&apos;s a pattern worth noticing: you&apos;re absorbing
                 other people&apos;s needs to the point of exhaustion, then
                 feeling guilty for wanting relief. That guilt isn&apos;t proof
@@ -265,17 +265,17 @@ export default function HomeBelowFold() {
                   {
                     label: "Emotional load",
                     color:
-                      "border-emerald-500/20 bg-emerald-500/10 text-emerald-300",
+                      "border-qm-positive-border bg-qm-positive-soft text-qm-positive",
                   },
                   {
                     label: "People-pleasing",
                     color:
-                      "border-violet-500/20 bg-violet-500/10 text-violet-300",
+                      "border-qm-premium-border bg-qm-premium-soft text-qm-premium",
                   },
                   {
                     label: "Resentment cycle",
                     color:
-                      "border-amber-500/20 bg-amber-500/10 text-amber-300",
+                      "border-qm-warning-border bg-qm-warning-soft text-qm-warning",
                   },
                 ].map(({ label, color }) => (
                   <span
@@ -298,22 +298,22 @@ export default function HomeBelowFold() {
                 step: "1",
                 label: "Write the version that is actually true",
                 sub: "One honest sentence is enough to begin.",
-                accent: "text-emerald-400",
-                border: "border-emerald-500/20",
+                accent: "text-qm-positive",
+                border: "border-qm-positive-border",
               },
               {
                 step: "2",
                 label: "Get a reflection that names what you feel",
                 sub: "Not advice. A mirror. Short, thoughtful, honest.",
-                accent: "text-violet-400",
-                border: "border-violet-500/20",
+                accent: "text-qm-premium",
+                border: "border-qm-premium-border",
               },
               {
                 step: "3",
                 label: "See what keeps returning over time",
                 sub: "Patterns across weeks and months, not just today.",
-                accent: "text-amber-400",
-                border: "border-amber-500/20",
+                accent: "text-qm-warning",
+                border: "border-qm-warning-border",
               },
             ].map(({ step, label, sub, accent, border }) => (
               <div
@@ -325,10 +325,10 @@ export default function HomeBelowFold() {
                 >
                   Step {step}
                 </p>
-                <p className="text-[15px] font-medium leading-snug text-white">
+                <p className="text-[15px] font-medium leading-snug text-qm-primary">
                   {label}
                 </p>
-                <p className="mt-1.5 text-sm leading-relaxed text-slate-500">
+                <p className="mt-1.5 text-sm leading-relaxed text-qm-faint">
                   {sub}
                 </p>
               </div>
@@ -338,7 +338,7 @@ export default function HomeBelowFold() {
           <div className="mt-8 text-center">
             <Link
               href="/magic-login"
-              className="inline-flex items-center justify-center rounded-full bg-qm-accent px-6 py-3.5 text-sm font-semibold text-white shadow transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
+              className="inline-flex items-center justify-center rounded-full bg-qm-accent px-6 py-3.5 text-sm font-semibold text-qm-primary shadow transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
             >
               Write your first entry free →
             </Link>
@@ -352,24 +352,24 @@ export default function HomeBelowFold() {
           <ScrollReveal className="mb-10">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/70">
+                <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-qm-positive">
                   What Quiet Mirror shows you
                 </p>
-                <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">
+                <h2 className="mt-3 font-display text-2xl font-semibold text-qm-primary sm:text-3xl">
                   The patterns are easier to trust{" "}
                   <br className="hidden sm:block" />
-                  <span className="text-emerald-400">
+                  <span className="text-qm-positive">
                     when you can finally see them.
                   </span>
                 </h2>
-                <p className="mt-3 max-w-lg text-sm leading-relaxed text-slate-400">
+                <p className="mt-3 max-w-lg text-sm leading-relaxed text-qm-muted">
                   Across your entries, Quiet Mirror finds what keeps surfacing
                   — the emotions, themes, and questions that repeat without you
                   noticing.
                 </p>
               </div>
               <div className="shrink-0">
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-400">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-qm-positive-border bg-qm-positive-soft px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-qm-positive">
                   ✦ Premium feature
                 </span>
               </div>
@@ -380,25 +380,25 @@ export default function HomeBelowFold() {
             stagger
             className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
           >
-            <div className="rounded-[1.5rem] border border-violet-500/20 bg-violet-500/[0.04] p-6">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-violet-400">
+            <div className="rounded-[1.5rem] border border-qm-premium-border bg-qm-premium-strong/[0.04] p-6">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-premium">
                 What shows up most
               </p>
-              <p className="mt-3 text-lg font-semibold leading-snug text-white sm:text-xl">
+              <p className="mt-3 text-lg font-semibold leading-snug text-qm-primary sm:text-xl">
                 Emotional load appears in{" "}
-                <span className="text-violet-300">14 of your last 22</span>{" "}
+                <span className="text-qm-premium">14 of your last 22</span>{" "}
                 entries.
               </p>
               <div className="mt-4 space-y-2">
                 {[
-                  { label: "Emotional load", pct: 64, color: "bg-violet-400" },
-                  { label: "Overwhelm", pct: 45, color: "bg-violet-500/60" },
-                  { label: "Clarity", pct: 28, color: "bg-violet-600/50" },
+                  { label: "Emotional load", pct: 64, color: "bg-qm-premium" },
+                  { label: "Overwhelm", pct: 45, color: "bg-qm-premium-soft" },
+                  { label: "Clarity", pct: 28, color: "bg-qm-premium-soft" },
                 ].map(({ label, pct, color }) => (
                   <div key={label}>
                     <div className="mb-1 flex items-center justify-between">
-                      <span className="text-xs text-slate-500">{label}</span>
-                      <span className="text-xs text-slate-600">{pct}%</span>
+                      <span className="text-xs text-qm-faint">{label}</span>
+                      <span className="text-xs text-qm-faint">{pct}%</span>
                     </div>
                     <div className="h-1.5 w-full rounded-full bg-qm-soft">
                       <div
@@ -411,13 +411,13 @@ export default function HomeBelowFold() {
               </div>
             </div>
 
-            <div className="rounded-[1.5rem] border border-emerald-500/20 bg-emerald-500/[0.04] p-6">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-400">
+            <div className="rounded-[1.5rem] border border-qm-positive-border bg-qm-positive-strong/[0.04] p-6">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-positive">
                 What keeps returning
               </p>
-              <p className="mt-3 text-lg font-semibold leading-snug text-white sm:text-xl">
+              <p className="mt-3 text-lg font-semibold leading-snug text-qm-primary sm:text-xl">
                 Responsibility and communication are the{" "}
-                <span className="text-emerald-300">
+                <span className="text-qm-positive">
                   two themes most often linked
                 </span>{" "}
                 together.
@@ -428,25 +428,25 @@ export default function HomeBelowFold() {
                     label: "Responsibility",
                     count: "11×",
                     color:
-                      "border-emerald-500/20 bg-emerald-500/10 text-emerald-300",
+                      "border-qm-positive-border bg-qm-positive-soft text-qm-positive",
                   },
                   {
                     label: "Communication",
                     count: "9×",
                     color:
-                      "border-emerald-500/20 bg-emerald-500/10 text-emerald-300",
+                      "border-qm-positive-border bg-qm-positive-soft text-qm-positive",
                   },
                   {
                     label: "Boundary-setting",
                     count: "7×",
                     color:
-                      "border-qm-border-card bg-qm-soft text-slate-400",
+                      "border-qm-border-card bg-qm-soft text-qm-muted",
                   },
                   {
                     label: "Exhaustion",
                     count: "6×",
                     color:
-                      "border-qm-border-card bg-qm-soft text-slate-400",
+                      "border-qm-border-card bg-qm-soft text-qm-muted",
                   },
                 ].map(({ label, count, color }) => (
                   <div
@@ -462,82 +462,82 @@ export default function HomeBelowFold() {
               </div>
             </div>
 
-            <div className="relative rounded-[1.5rem] border border-amber-500/20 bg-amber-500/[0.04] p-6 sm:col-span-2 lg:col-span-1">
+            <div className="relative rounded-[1.5rem] border border-qm-warning-border bg-qm-warning-strong/[0.04] p-6 sm:col-span-2 lg:col-span-1">
               <div className="flex items-start justify-between gap-3">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-amber-400">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-warning">
                   What may be driving it
                 </p>
-                <span className="shrink-0 rounded-full border border-amber-500/20 bg-amber-500/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-amber-400">
+                <span className="shrink-0 rounded-full border border-qm-warning-border bg-qm-warning-soft px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-qm-warning">
                   Premium
                 </span>
               </div>
-              <p className="mt-3 text-[15px] leading-[1.7] text-slate-200">
+              <p className="mt-3 text-[15px] leading-[1.7] text-qm-primary">
                 You often sound most overwhelmed when you feel responsible for{" "}
-                <span className="text-amber-300">
+                <span className="text-qm-warning">
                   keeping everything steady for everyone else
                 </span>{" "}
                 — and rarely give yourself the same patience.
               </p>
-              <div className="mt-4 rounded-xl border border-amber-500/10 bg-amber-500/[0.04] p-3">
-                <p className="text-xs leading-relaxed text-slate-400">
+              <div className="mt-4 rounded-xl border border-qm-warning-border bg-qm-warning-strong/[0.04] p-3">
+                <p className="text-xs leading-relaxed text-qm-muted">
                   This pattern appeared in your last 3 weeks of entries. It
                   tends to peak on Sundays.
                 </p>
               </div>
             </div>
 
-            <div className="relative rounded-[1.5rem] border border-violet-500/20 bg-violet-500/[0.04] p-6">
+            <div className="relative rounded-[1.5rem] border border-qm-premium-border bg-qm-premium-strong/[0.04] p-6">
               <div className="flex items-start justify-between gap-3">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-violet-400">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-premium">
                   What is shifting
                 </p>
-                <span className="shrink-0 rounded-full border border-violet-500/20 bg-violet-500/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-violet-400">
+                <span className="shrink-0 rounded-full border border-qm-premium-border bg-qm-premium-soft px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-qm-premium">
                   Premium
                 </span>
               </div>
-              <p className="mt-3 text-[15px] leading-[1.7] text-slate-200">
+              <p className="mt-3 text-[15px] leading-[1.7] text-qm-primary">
                 Curiosity and honesty are{" "}
-                <span className="text-violet-300">rising in recent entries</span>{" "}
+                <span className="text-qm-premium">rising in recent entries</span>{" "}
                 — which often signals that something important is becoming
                 clearer.
               </p>
-              <div className="mt-4 flex items-center gap-2 text-xs text-slate-500">
-                <span className="text-violet-400">↑</span>
+              <div className="mt-4 flex items-center gap-2 text-xs text-qm-faint">
+                <span className="text-qm-premium">↑</span>
                 <span>Clarity signal up over the last 2 weeks</span>
               </div>
             </div>
 
-            <div className="relative rounded-[1.5rem] border border-rose-500/20 bg-rose-500/[0.04] p-6">
+            <div className="relative rounded-[1.5rem] border border-qm-danger-border bg-qm-danger-strong/[0.04] p-6">
               <div className="flex items-start justify-between gap-3">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-rose-400">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-danger">
                   Your weekly mirror
                 </p>
-                <span className="shrink-0 rounded-full border border-rose-500/20 bg-rose-500/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-rose-400">
+                <span className="shrink-0 rounded-full border border-qm-danger-border bg-qm-danger-soft px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-qm-danger">
                   Premium
                 </span>
               </div>
-              <p className="mt-3 text-[15px] leading-[1.7] text-slate-200">
+              <p className="mt-3 text-[15px] leading-[1.7] text-qm-primary">
                 This week, your entries returned most often to questions of
                 worth, pace, and{" "}
-                <span className="text-rose-300">
+                <span className="text-qm-danger">
                   what you&apos;re actually allowed to need
                 </span>
                 .
               </p>
-              <p className="mt-3 text-[11px] text-slate-500">
+              <p className="mt-3 text-[11px] text-qm-faint">
                 Generated every Monday · Personal to your entries only
               </p>
             </div>
 
-            <div className="rounded-[1.5rem] border border-slate-500/20 bg-slate-500/[0.04] p-6">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+            <div className="rounded-[1.5rem] border border-qm-border-subtle bg-qm-muted/[0.04] p-6">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-muted">
                 A question worth sitting with
               </p>
-              <p className="mt-3 text-lg font-medium leading-snug text-white sm:text-xl">
+              <p className="mt-3 text-lg font-medium leading-snug text-qm-primary sm:text-xl">
                 &ldquo;What keeps making you say you&apos;re fine before
                 you&apos;ve had a chance to ask whether you are?&rdquo;
               </p>
-              <p className="mt-3 text-xs text-slate-600">
+              <p className="mt-3 text-xs text-qm-faint">
                 Generated from your last 6 entries. Not a prompt to answer —
                 just something to carry.
               </p>
@@ -547,7 +547,7 @@ export default function HomeBelowFold() {
           <ScrollReveal className="mt-8 text-center">
             <Link
               href="/insights/preview"
-              className="inline-flex items-center justify-center gap-2 text-sm font-medium text-emerald-400 transition-colors hover:text-emerald-300"
+              className="inline-flex items-center justify-center gap-2 text-sm font-medium text-qm-positive transition-colors hover:text-qm-positive"
             >
               See a fuller example of Premium insights →
             </Link>
@@ -559,19 +559,19 @@ export default function HomeBelowFold() {
       <section className="border-b border-qm-border-subtle py-12 sm:py-16">
         <div className="mx-auto max-w-6xl px-5">
           <ScrollReveal className="mb-8 max-w-2xl">
-            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/70">
+            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-qm-positive">
               What makes it different
             </p>
-            <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">
+            <h2 className="mt-3 font-display text-2xl font-semibold text-qm-primary sm:text-3xl">
               Most journaling tools keep entries.{" "}
-              <span className="text-emerald-400">
+              <span className="text-qm-positive">
                 Quiet Mirror looks for the thread.
               </span>
             </h2>
           </ScrollReveal>
           <ScrollReveal stagger className="grid gap-4 sm:grid-cols-2">
             <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5 sm:p-6">
-              <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-500/70">
+              <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-qm-positive">
                 Quiet Mirror is
               </p>
               <ul className="space-y-3">
@@ -583,16 +583,16 @@ export default function HomeBelowFold() {
                 ].map((item) => (
                   <li
                     key={item}
-                    className="flex items-start gap-3 text-sm text-slate-300"
+                    className="flex items-start gap-3 text-sm text-qm-secondary"
                   >
-                    <span className="mt-0.5 shrink-0 text-emerald-500">✓</span>
+                    <span className="mt-0.5 shrink-0 text-qm-positive">✓</span>
                     {item}
                   </li>
                 ))}
               </ul>
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5 sm:p-6">
-              <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-500/70">
+              <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-qm-warning">
                 Quiet Mirror is not
               </p>
               <ul className="space-y-3">
@@ -604,9 +604,9 @@ export default function HomeBelowFold() {
                 ].map((item) => (
                   <li
                     key={item}
-                    className="flex items-start gap-3 text-sm text-slate-300"
+                    className="flex items-start gap-3 text-sm text-qm-secondary"
                   >
-                    <span className="mt-0.5 shrink-0 text-amber-500">—</span>
+                    <span className="mt-0.5 shrink-0 text-qm-warning">—</span>
                     {item}
                   </li>
                 ))}
@@ -620,14 +620,14 @@ export default function HomeBelowFold() {
       <section className="border-b border-qm-border-subtle py-12 sm:py-16">
         <div className="mx-auto max-w-5xl px-5">
           <ScrollReveal className="max-w-2xl">
-            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/60">
+            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-qm-positive">
               What a reflection looks like
             </p>
-            <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">
+            <h2 className="mt-3 font-display text-2xl font-semibold text-qm-primary sm:text-3xl">
               This is what Quiet Mirror actually{" "}
-              <span className="text-emerald-400">says back.</span>
+              <span className="text-qm-positive">says back.</span>
             </h2>
-            <p className="mt-3 text-sm leading-relaxed text-slate-400">
+            <p className="mt-3 text-sm leading-relaxed text-qm-muted">
               These are illustrative examples built from the kinds of entries
               people write. Yours will be built from your own words.
             </p>
@@ -696,11 +696,11 @@ export default function HomeBelowFold() {
           <ScrollReveal className="mt-8 text-center">
             <Link
               href="/magic-login"
-              className="inline-flex items-center justify-center rounded-full bg-qm-accent px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
+              className="inline-flex items-center justify-center rounded-full bg-qm-accent px-6 py-3 text-sm font-semibold text-qm-primary shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
             >
               Write your first entry free →
             </Link>
-            <p className="mt-3 text-xs text-slate-600">
+            <p className="mt-3 text-xs text-qm-faint">
               No card required. Free is fully usable.
             </p>
           </ScrollReveal>
@@ -711,14 +711,14 @@ export default function HomeBelowFold() {
       <section className="border-b border-qm-border-subtle py-12 sm:py-16">
         <div className="mx-auto max-w-4xl px-5">
           <ScrollReveal className="text-center">
-            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/60">
+            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-qm-positive">
               Built with care
             </p>
-            <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">
+            <h2 className="mt-3 font-display text-2xl font-semibold text-qm-primary sm:text-3xl">
               A few things worth knowing{" "}
-              <span className="text-emerald-400">before you begin.</span>
+              <span className="text-qm-positive">before you begin.</span>
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-slate-400">
+            <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-qm-muted">
               Quiet Mirror is a small, independent product built around one
               principle: your inner life belongs to you. Here is what that means
               in practice.
@@ -731,8 +731,8 @@ export default function HomeBelowFold() {
                 icon: "🔒",
                 title: "Private by design",
                 body: "Your entries are never used to train AI models, never sold, and never seen by anyone but you. That is not a policy footnote — it is the foundation.",
-                border: "border-emerald-500/20",
-                bg: "bg-emerald-500/[0.03]",
+                border: "border-qm-positive-border",
+                bg: "bg-qm-positive-strong/[0.03]",
               },
               {
                 icon: "🛡️",
@@ -743,15 +743,15 @@ export default function HomeBelowFold() {
                   PRICING.trialNoChargeUntil.charAt(0).toUpperCase() +
                   PRICING.trialNoChargeUntil.slice(1)
                 }. Cancel before then and you won't pay anything.`,
-                border: "border-violet-500/20",
-                bg: "bg-violet-500/[0.03]",
+                border: "border-qm-premium-border",
+                bg: "bg-qm-premium-strong/[0.03]",
               },
               {
                 icon: "✦",
                 title: "No ads, ever",
                 body: "Quiet Mirror earns revenue from Premium subscriptions only. That is the entire business model — designed deliberately so your data is never the product.",
-                border: "border-violet-500/20",
-                bg: "bg-violet-500/[0.03]",
+                border: "border-qm-premium-border",
+                bg: "bg-qm-premium-strong/[0.03]",
               },
             ].map(({ icon, title, body, border, bg }) => (
               <div
@@ -759,10 +759,10 @@ export default function HomeBelowFold() {
                 className={`rounded-2xl border p-5 ${border} ${bg}`}
               >
                 <p className="text-2xl">{icon}</p>
-                <p className="mt-3 text-sm font-semibold text-white">
+                <p className="mt-3 text-sm font-semibold text-qm-primary">
                   {title}
                 </p>
-                <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                <p className="mt-2 text-sm leading-relaxed text-qm-muted">
                   {body}
                 </p>
               </div>
@@ -774,9 +774,9 @@ export default function HomeBelowFold() {
       {/* ── Pattern interrupt ─────────────────────────────────────────────── */}
       <div className="border-y border-qm-border-subtle py-12 sm:py-14">
         <ScrollReveal className="mx-auto max-w-4xl px-5 text-center">
-          <p className="font-display text-2xl font-medium leading-relaxed text-white sm:text-3xl sm:leading-relaxed">
+          <p className="font-display text-2xl font-medium leading-relaxed text-qm-primary sm:text-3xl sm:leading-relaxed">
             Most people don&apos;t lack self-awareness.{" "}
-            <span className="text-slate-500">
+            <span className="text-qm-faint">
               They&apos;re just too close to their own life to see the pattern
               clearly.
             </span>
@@ -788,13 +788,13 @@ export default function HomeBelowFold() {
       <section className="border-b border-qm-border-subtle section-tinted py-12 sm:py-20">
         <div className="mx-auto max-w-6xl px-5">
           <ScrollReveal className="mb-8 max-w-2xl">
-            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/70">
+            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-qm-positive">
               Free vs Premium
             </p>
-            <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">
+            <h2 className="mt-3 font-display text-2xl font-semibold text-qm-primary sm:text-3xl">
               Start privately. Upgrade when you want the deeper picture.
             </h2>
-            <p className="mt-3 text-sm leading-relaxed text-slate-400">
+            <p className="mt-3 text-sm leading-relaxed text-qm-muted">
               Free is enough to begin honestly. Premium is for people who want
               Quiet Mirror to connect the dots across weeks and months.
             </p>
@@ -805,21 +805,21 @@ export default function HomeBelowFold() {
             className="flex flex-col-reverse gap-4 md:grid md:grid-cols-2 md:gap-5"
           >
             <div className="flex flex-col rounded-2xl border border-qm-border-card bg-qm-elevated p-5 sm:p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-qm-faint">
                 Free
               </p>
-              <p className="mt-1 font-display text-xl font-semibold text-white sm:text-2xl">
+              <p className="mt-1 font-display text-xl font-semibold text-qm-primary sm:text-2xl">
                 A private place to start
               </p>
               <div className="mt-2 flex items-baseline gap-1.5">
-                <span className="text-3xl font-bold text-white">$0</span>
-                <span className="text-sm text-slate-400">/ month</span>
+                <span className="text-3xl font-bold text-qm-primary">$0</span>
+                <span className="text-sm text-qm-muted">/ month</span>
               </div>
-              <p className="mt-3 text-sm text-slate-500">
+              <p className="mt-3 text-sm text-qm-faint">
                 A calm place to write honestly, with no commitment, no
                 pressure, and no audience.
               </p>
-              <ul className="mt-5 space-y-3 text-sm text-slate-300">
+              <ul className="mt-5 space-y-3 text-sm text-qm-secondary">
                 {[
                   { label: "Write anytime", sub: "Your entries stay private" },
                   {
@@ -837,10 +837,10 @@ export default function HomeBelowFold() {
                   },
                 ].map(({ label, sub }) => (
                   <li key={label} className="flex items-start gap-2">
-                    <span className="mt-0.5 shrink-0 text-emerald-600">✓</span>
+                    <span className="mt-0.5 shrink-0 text-qm-positive-strong">✓</span>
                     <div>
                       <p>{label}</p>
-                      <p className="text-xs text-slate-500">{sub}</p>
+                      <p className="text-xs text-qm-faint">{sub}</p>
                     </div>
                   </li>
                 ))}
@@ -852,45 +852,45 @@ export default function HomeBelowFold() {
                 >
                   Start free
                 </Link>
-                <p className="mt-2 text-center text-xs text-slate-700">
+                <p className="mt-2 text-center text-xs text-qm-faint">
                   No card required. No expiry.
                 </p>
               </div>
             </div>
 
-            <div className="relative flex flex-col rounded-2xl border border-emerald-500/25 bg-emerald-500/[0.04] p-5 sm:p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-500/70">
+            <div className="relative flex flex-col rounded-2xl border border-qm-positive-border bg-qm-positive-strong/[0.04] p-5 sm:p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-qm-positive">
                 Premium
               </p>
-              <p className="mt-1 font-display text-xl font-semibold text-white sm:text-2xl">
+              <p className="mt-1 font-display text-xl font-semibold text-qm-primary sm:text-2xl">
                 The full pattern, not just the latest entry
               </p>
               <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                <span className="text-3xl font-bold text-white">
+                <span className="text-3xl font-bold text-qm-primary">
                   {PRICING.monthly}
                 </span>
-                <span className="text-sm text-slate-400">/ month</span>
-                <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-medium text-emerald-400">
+                <span className="text-sm text-qm-muted">/ month</span>
+                <span className="rounded-full border border-qm-positive-border bg-qm-positive-soft px-2.5 py-0.5 text-[11px] font-medium text-qm-positive">
                   {PRICING.valueLabel}
                 </span>
               </div>
-              <p className="mt-1 text-xs text-slate-600">Cancel anytime</p>
-              <p className="mt-3 text-sm text-slate-300">
+              <p className="mt-1 text-xs text-qm-faint">Cancel anytime</p>
+              <p className="mt-3 text-sm text-qm-secondary">
                 Best for people who want to understand what keeps happening,
                 not just document what happened today.
               </p>
-              <div className="mt-4 rounded-xl border border-qm-border-card bg-qm-elevated p-3 text-xs text-slate-400">
+              <div className="mt-4 rounded-xl border border-qm-border-card bg-qm-elevated p-3 text-xs text-qm-muted">
                 <p>
-                  <span className="text-slate-600">Without Premium:</span> you
+                  <span className="text-qm-faint">Without Premium:</span> you
                   may sense a pattern but still be too close to it to name.
                 </p>
                 <p className="mt-1">
-                  <span className="text-emerald-500/80">With Premium:</span>{" "}
+                  <span className="text-qm-positive">With Premium:</span>{" "}
                   Quiet Mirror starts showing what repeats, what is shifting,
                   and what may be underneath it.
                 </p>
               </div>
-              <ul className="mt-5 space-y-3 text-sm text-slate-200">
+              <ul className="mt-5 space-y-3 text-sm text-qm-primary">
                 {[
                   {
                     label: "Unlimited reflections",
@@ -918,12 +918,12 @@ export default function HomeBelowFold() {
                   },
                 ].map(({ label, sub }) => (
                   <li key={label} className="flex items-start gap-2">
-                    <span className="mt-0.5 shrink-0 text-emerald-400">
+                    <span className="mt-0.5 shrink-0 text-qm-positive">
                       ✓
                     </span>
                     <div>
                       <p>{label}</p>
-                      <p className="text-xs text-slate-500">{sub}</p>
+                      <p className="text-xs text-qm-faint">{sub}</p>
                     </div>
                   </li>
                 ))}
@@ -931,16 +931,16 @@ export default function HomeBelowFold() {
               <div className="mt-auto flex flex-col gap-2 pt-6">
                 <Link
                   href="/upgrade"
-                  className="inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-5 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
+                  className="inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-5 py-3 text-sm font-semibold text-qm-primary shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
                 >
                   Start seeing the pattern →
                 </Link>
                 {/* Trust badge — all copy derives from PRICING */}
-                <div className="rounded-xl border border-emerald-500/15 bg-emerald-500/[0.04] px-4 py-2.5 text-center">
-                  <p className="text-xs font-medium text-slate-300">
+                <div className="rounded-xl border border-qm-positive-border bg-qm-positive-strong/[0.04] px-4 py-2.5 text-center">
+                  <p className="text-xs font-medium text-qm-secondary">
                     🛡️ {PRICING.trialLabel} — no charge today
                   </p>
-                  <p className="mt-0.5 text-[11px] leading-relaxed text-slate-600">
+                  <p className="mt-0.5 text-[11px] leading-relaxed text-qm-faint">
                     {PRICING.trialFreeFor} · then {PRICING.monthlyCadence} ·
                     Cancel anytime
                   </p>
@@ -952,7 +952,7 @@ export default function HomeBelowFold() {
                   Preview Premium insights
                 </Link>
               </div>
-              <p className="mt-3 text-center text-xs text-slate-700">
+              <p className="mt-3 text-center text-xs text-qm-faint">
                 {PAYMENT.checkoutTrustLine}
               </p>
             </div>
@@ -964,7 +964,7 @@ export default function HomeBelowFold() {
       <section className="bg-qm-bg py-12 sm:py-14">
         <div className="mx-auto max-w-3xl px-5">
           <ScrollReveal>
-            <h2 className="font-display text-xl font-semibold text-white sm:text-2xl">
+            <h2 className="font-display text-xl font-semibold text-qm-primary sm:text-2xl">
               A few honest answers
             </h2>
           </ScrollReveal>
@@ -1003,20 +1003,20 @@ export default function HomeBelowFold() {
             ].map(({ q, a }) => (
               <ScrollReveal key={q}>
                 <div className="border-b border-qm-border-subtle pb-5">
-                  <p className="text-[15px] font-medium text-white sm:text-base">
+                  <p className="text-[15px] font-medium text-qm-primary sm:text-base">
                     {q}
                   </p>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-500">
+                  <p className="mt-2 text-sm leading-relaxed text-qm-faint">
                     {a}
                   </p>
                 </div>
               </ScrollReveal>
             ))}
           </div>
-          <div className="mt-8 text-xs text-slate-700">
+          <div className="mt-8 text-xs text-qm-faint">
             <Link
               href="/privacy"
-              className="text-emerald-600 transition-colors hover:text-emerald-500"
+              className="text-qm-positive-strong transition-colors hover:text-qm-positive"
             >
               Read the Privacy Policy &rarr;
             </Link>
@@ -1026,33 +1026,33 @@ export default function HomeBelowFold() {
 
       {/* ── 9. Closing CTA ────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-t border-qm-border-subtle section-cta-gradient py-20 sm:py-28">
-        <div className="pointer-events-none absolute bottom-0 left-1/2 h-[400px] w-[600px] -translate-x-1/2 rounded-full bg-emerald-500/[0.08] blur-[120px]" />
+        <div className="pointer-events-none absolute bottom-0 left-1/2 h-[400px] w-[600px] -translate-x-1/2 rounded-full bg-qm-positive-strong/[0.08] blur-[120px]" />
         <div className="relative mx-auto max-w-3xl px-5 text-center">
           <ScrollReveal>
-            <p className="mb-4 text-[11px] font-medium uppercase tracking-[0.2em] text-emerald-500/60">
+            <p className="mb-4 text-[11px] font-medium uppercase tracking-[0.2em] text-qm-positive">
               Ready when you are
             </p>
-            <h2 className="font-display text-3xl font-semibold leading-[1.08] text-white sm:text-4xl">
+            <h2 className="font-display text-3xl font-semibold leading-[1.08] text-qm-primary sm:text-4xl">
               Something is trying to become clear.
               <br />
-              <span className="text-emerald-400">
+              <span className="text-qm-positive">
                 Let&apos;s help you hear it.
               </span>
             </h2>
-            <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-slate-400">
+            <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-qm-muted">
               You don&apos;t need to have it figured out to begin. One honest
               sentence is enough.
             </p>
             <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
               <Link
                 href="/magic-login"
-                className="inline-flex items-center justify-center rounded-full bg-qm-accent px-8 py-4 text-base font-semibold text-white shadow-xl transition-all hover:bg-qm-accent-hover hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center rounded-full bg-qm-accent px-8 py-4 text-base font-semibold text-qm-primary shadow-xl transition-all hover:bg-qm-accent-hover hover:-translate-y-0.5"
               >
                 Write your first entry free →
               </Link>
             </div>
             {/* All trust signals derive from PRICING — change trialDays in pricing.ts */}
-            <div className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs text-slate-600">
+            <div className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs text-qm-faint">
               <span>✓ Private by default</span>
               <span>✓ Never trains AI models</span>
               <span>✓ {PRICING.trialLabel}</span>

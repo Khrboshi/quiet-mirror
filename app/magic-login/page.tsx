@@ -212,27 +212,27 @@ function MagicLoginInner() {
               className="rounded-xl"
               priority
             />
-            <span className="text-sm font-semibold text-slate-300">{CONFIG.appName}</span>
+            <span className="text-sm font-semibold text-qm-secondary">{CONFIG.appName}</span>
           </div>
 
-          <h1 className="font-display max-w-sm text-4xl font-semibold leading-[1.1] tracking-tight text-white">
+          <h1 className="font-display max-w-sm text-4xl font-semibold leading-[1.1] tracking-tight text-qm-primary">
             {isReturning ? (
               <>
                 Welcome back.
                 <br />
-                <span className="text-slate-500">Your journal is waiting.</span>
+                <span className="text-qm-faint">Your journal is waiting.</span>
               </>
             ) : (
               <>
                 Your private space
                 <br />
-                <span className="text-slate-500">to think out loud.</span>
+                <span className="text-qm-faint">to think out loud.</span>
               </>
             )}
           </h1>
 
           <div className="mt-8 max-w-sm rounded-2xl border border-white/[0.07] bg-white/[0.03] px-5 py-5">
-            <p className="text-base italic leading-relaxed text-slate-300">
+            <p className="text-base italic leading-relaxed text-qm-secondary">
               &ldquo;{sideQuote.text}&rdquo;
             </p>
           </div>
@@ -244,21 +244,21 @@ function MagicLoginInner() {
                 "AI reflects back what it notices in your own words",
                 "See patterns across entries over time with Premium",
               ].map((item) => (
-                <li key={item} className="flex items-start gap-2.5 text-sm text-slate-400">
-                  <span className="mt-0.5 shrink-0 text-emerald-400">✓</span>
+                <li key={item} className="flex items-start gap-2.5 text-sm text-qm-muted">
+                  <span className="mt-0.5 shrink-0 text-qm-positive">✓</span>
                   {item}
                 </li>
               ))}
             </ul>
           )}
 
-          <p className="mt-8 max-w-xs text-xs leading-relaxed text-slate-600">
+          <p className="mt-8 max-w-xs text-xs leading-relaxed text-qm-faint">
             Your entries are private, never shared, and never used to train AI models.
           </p>
 
           <Link
             href="/"
-            className="mt-6 inline-flex items-center gap-1 text-xs font-medium text-slate-600 transition-colors hover:text-slate-400"
+            className="mt-6 inline-flex items-center gap-1 text-xs font-medium text-qm-faint transition-colors hover:text-qm-muted"
           >
             ← Back to home
           </Link>
@@ -277,12 +277,12 @@ function MagicLoginInner() {
                   height={28}
                   className="rounded-lg"
                 />
-                <span className="text-sm font-semibold text-slate-300">{CONFIG.appName}</span>
+                <span className="text-sm font-semibold text-qm-secondary">{CONFIG.appName}</span>
               </div>
-              <h1 className="font-display text-3xl font-semibold tracking-tight text-white">
+              <h1 className="font-display text-3xl font-semibold tracking-tight text-qm-primary">
                 {isReturning ? "Welcome back." : "Your private journal."}
               </h1>
-              <p className="mt-1.5 text-sm leading-relaxed text-slate-400">
+              <p className="mt-1.5 text-sm leading-relaxed text-qm-muted">
                 {isReturning
                   ? "Your journal is waiting."
                   : "Write honestly. Quiet Mirror reflects back what it notices — gently, and only when you ask."}
@@ -291,10 +291,10 @@ function MagicLoginInner() {
 
             {/* Desktop card header */}
             <div className="mb-5 hidden lg:block">
-              <h2 className="font-display text-2xl font-semibold text-white">
+              <h2 className="font-display text-2xl font-semibold text-qm-primary">
                 {isReturning ? "Sign in to Quiet Mirror" : "Start your free journal"}
               </h2>
-              <p className="mt-1 text-sm text-slate-500">
+              <p className="mt-1 text-sm text-qm-faint">
                 {ios
                   ? "Use the code option — it works best on iPhone."
                   : isReturning
@@ -304,7 +304,7 @@ function MagicLoginInner() {
             </div>
 
             {standalone && (
-              <div className="mb-5 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.06] p-4 text-sm leading-relaxed text-emerald-200">
+              <div className="mb-5 rounded-2xl border border-qm-positive-border bg-qm-positive-strong/[0.06] p-4 text-sm leading-relaxed text-qm-positive">
                 You&apos;re using the Home Screen app.{" "}
                 <span className="font-semibold">Code sign-in</span> is usually the most reliable
                 choice here.
@@ -315,10 +315,10 @@ function MagicLoginInner() {
               <div
                 className={`mb-5 rounded-2xl border p-4 text-sm leading-relaxed ${
                   status === "success"
-                    ? "border-emerald-500/20 bg-emerald-500/[0.06] text-emerald-200"
+                    ? "border-qm-positive-border bg-qm-positive-strong/[0.06] text-qm-positive"
                     : status === "error"
-                    ? "border-red-500/20 bg-red-500/[0.06] text-red-200"
-                    : "border-white/10 bg-white/[0.03] text-slate-200"
+                    ? "border-qm-danger-border bg-qm-danger-strong/[0.06] text-qm-danger"
+                    : "border-white/10 bg-white/[0.03] text-qm-primary"
                 }`}
               >
                 {message}
@@ -334,12 +334,12 @@ function MagicLoginInner() {
                   onClick={() => setMode(m)}
                   className={`rounded-xl px-3 py-3 text-sm font-medium transition ${
                     mode === m
-                      ? "bg-white/10 text-white shadow-sm"
-                      : "text-slate-400 hover:text-slate-200"
+                      ? "bg-white/10 text-qm-primary shadow-sm"
+                      : "text-qm-muted hover:text-qm-primary"
                   }`}
                 >
                   {m === "code" ? "Code" : "Magic link"}
-                  <span className="mt-0.5 block text-[11px] font-normal text-slate-500">
+                  <span className="mt-0.5 block text-[11px] font-normal text-qm-faint">
                     {m === "code" ? "Best on iPhone" : "Best on desktop"}
                   </span>
                 </button>
@@ -348,7 +348,7 @@ function MagicLoginInner() {
 
             {/* Email input */}
             <div className="mt-5">
-              <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+              <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.18em] text-qm-faint">
                 Email address
               </label>
               <input
@@ -370,11 +370,11 @@ function MagicLoginInner() {
                   type="button"
                   onClick={onSendEmail}
                   disabled={status === "loading" || !email}
-                  className="inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-4 py-3.5 text-sm font-semibold text-white transition hover:bg-qm-accent-hover disabled:cursor-not-allowed disabled:opacity-60"
+                  className="inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-4 py-3.5 text-sm font-semibold text-qm-primary transition hover:bg-qm-accent-hover disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {status === "loading" ? "Sending…" : "Send magic link"}
                 </button>
-                <p className="mt-3 text-center text-xs leading-relaxed text-slate-600">
+                <p className="mt-3 text-center text-xs leading-relaxed text-qm-faint">
                   Open the email link in the same browser you started with.
                 </p>
               </div>
@@ -384,13 +384,13 @@ function MagicLoginInner() {
                   type="button"
                   onClick={onSendEmail}
                   disabled={status === "loading" || !email}
-                  className="inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-4 py-3.5 text-sm font-semibold text-white transition hover:bg-qm-accent-hover disabled:cursor-not-allowed disabled:opacity-60"
+                  className="inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-4 py-3.5 text-sm font-semibold text-qm-primary transition hover:bg-qm-accent-hover disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {status === "loading" ? "Sending…" : "Send sign-in email"}
                 </button>
 
                 <div className="mt-5 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                  <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                  <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.18em] text-qm-faint">
                     Code from email
                   </label>
                   <input
@@ -407,11 +407,11 @@ function MagicLoginInner() {
                     type="button"
                     onClick={onVerifyCode}
                     disabled={status === "loading" || !email || !tokenOk}
-                    className="mt-4 inline-flex w-full items-center justify-center rounded-full border border-white/10 bg-white/[0.04] px-4 py-3.5 text-sm font-semibold text-white transition hover:bg-white/[0.08] disabled:cursor-not-allowed disabled:opacity-60"
+                    className="mt-4 inline-flex w-full items-center justify-center rounded-full border border-white/10 bg-white/[0.04] px-4 py-3.5 text-sm font-semibold text-qm-primary transition hover:bg-white/[0.08] disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {status === "loading" ? "Verifying…" : "Verify and sign in"}
                   </button>
-                  <p className="mt-3 text-xs leading-relaxed text-slate-600">
+                  <p className="mt-3 text-xs leading-relaxed text-qm-faint">
                     Tip: if the email shows spaces between numbers, just paste it. Quiet Mirror removes
                     spaces automatically.
                   </p>
@@ -422,11 +422,11 @@ function MagicLoginInner() {
             <div className="mt-6 flex flex-col items-center gap-2 text-center lg:hidden">
               <Link
                 href="/"
-                className="text-sm font-medium text-emerald-400 transition-colors hover:text-emerald-300"
+                className="text-sm font-medium text-qm-positive transition-colors hover:text-qm-positive"
               >
                 ← Back to Home
               </Link>
-              <p className="text-xs text-slate-700">
+              <p className="text-xs text-qm-faint">
                 Desktop → magic link · iPhone Home Screen → code
               </p>
             </div>

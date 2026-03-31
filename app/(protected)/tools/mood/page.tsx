@@ -67,34 +67,34 @@ const MOODS: Mood[] = [
 
 const ACCENT_STYLES: Record<Mood["accent"], { idle: string; active: string; dot: string }> = {
   slate: {
-    idle: "border-slate-700/50 hover:border-slate-600 bg-slate-900/30 hover:bg-slate-900/50",
-    active: "border-slate-500 bg-slate-800/60",
-    dot: "bg-slate-400",
+    idle: "border-qm-border-subtle hover:border-qm-border-subtle bg-qm-elevated hover:bg-qm-elevated",
+    active: "border-qm-border-subtle bg-qm-card",
+    dot: "bg-qm-muted",
   },
   violet: {
-    idle: "border-violet-500/20 hover:border-violet-500/40 bg-violet-500/[0.03] hover:bg-violet-500/[0.06]",
-    active: "border-violet-500/60 bg-violet-500/[0.08]",
-    dot: "bg-violet-400",
+    idle: "border-qm-premium-border hover:border-qm-premium-border bg-qm-premium-strong/[0.03] hover:bg-qm-premium-strong/[0.06]",
+    active: "border-qm-premium-border bg-qm-premium-strong/[0.08]",
+    dot: "bg-qm-premium",
   },
   amber: {
-    idle: "border-amber-500/20 hover:border-amber-500/40 bg-amber-500/[0.03] hover:bg-amber-500/[0.06]",
-    active: "border-amber-500/60 bg-amber-500/[0.08]",
-    dot: "bg-amber-400",
+    idle: "border-qm-warning-border hover:border-qm-warning-border bg-qm-warning-strong/[0.03] hover:bg-qm-warning-strong/[0.06]",
+    active: "border-qm-warning-border bg-qm-warning-strong/[0.08]",
+    dot: "bg-qm-warning",
   },
   sky: {
-    idle: "border-violet-500/20 hover:border-violet-500/40 bg-violet-500/[0.03] hover:bg-violet-500/[0.06]",
-    active: "border-violet-500/60 bg-violet-500/[0.08]",
-    dot: "bg-violet-400",
+    idle: "border-qm-premium-border hover:border-qm-premium-border bg-qm-premium-strong/[0.03] hover:bg-qm-premium-strong/[0.06]",
+    active: "border-qm-premium-border bg-qm-premium-strong/[0.08]",
+    dot: "bg-qm-premium",
   },
   emerald: {
-    idle: "border-emerald-500/20 hover:border-emerald-500/40 bg-emerald-500/[0.03] hover:bg-emerald-500/[0.06]",
-    active: "border-emerald-500/60 bg-emerald-500/[0.08]",
-    dot: "bg-emerald-400",
+    idle: "border-qm-positive-border hover:border-qm-positive-border bg-qm-positive-strong/[0.03] hover:bg-qm-positive-strong/[0.06]",
+    active: "border-qm-positive-border bg-qm-positive-strong/[0.08]",
+    dot: "bg-qm-positive",
   },
   rose: {
-    idle: "border-rose-500/20 hover:border-rose-500/40 bg-rose-500/[0.03] hover:bg-rose-500/[0.06]",
-    active: "border-rose-500/60 bg-rose-500/[0.08]",
-    dot: "bg-rose-400",
+    idle: "border-qm-danger-border hover:border-qm-danger-border bg-qm-danger-strong/[0.03] hover:bg-qm-danger-strong/[0.06]",
+    active: "border-qm-danger-border bg-qm-danger-strong/[0.08]",
+    dot: "bg-qm-danger-strong",
   },
 };
 
@@ -107,13 +107,13 @@ export default function MoodToolPage() {
         <div className="mx-auto max-w-2xl space-y-8">
 
           <header className="space-y-3">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-400/80">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-qm-positive">
               Premium · A quiet moment
             </p>
             <h1 className="font-display text-3xl font-semibold tracking-tight">
               How are you, honestly?
             </h1>
-            <p className="max-w-lg text-sm leading-relaxed text-slate-400">
+            <p className="max-w-lg text-sm leading-relaxed text-qm-muted">
               A quiet check-in. No scores, no ratings — just a moment to pause and notice
               where you actually are. Pick what fits most right now.
             </p>
@@ -138,8 +138,8 @@ export default function MoodToolPage() {
                       }`}
                     />
                     <div>
-                      <p className="text-sm font-medium text-slate-100">{mood.label}</p>
-                      <p className="mt-0.5 text-xs leading-relaxed text-slate-500">{mood.description}</p>
+                      <p className="text-sm font-medium text-qm-primary">{mood.label}</p>
+                      <p className="mt-0.5 text-xs leading-relaxed text-qm-faint">{mood.description}</p>
                     </div>
                   </div>
                 </button>
@@ -148,23 +148,23 @@ export default function MoodToolPage() {
           </div>
 
           {selected && (
-            <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.03] px-6 py-6">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-emerald-500/60">
+            <div className="rounded-2xl border border-qm-positive-border bg-qm-positive-strong/[0.03] px-6 py-6">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-qm-positive">
                 A prompt for this moment
               </p>
-              <p className="mt-3 font-display text-[1.1rem] font-medium leading-relaxed text-white">
+              <p className="mt-3 font-display text-[1.1rem] font-medium leading-relaxed text-qm-primary">
                 {selected.prompt}
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 <Link
                   href={`/journal/new?prompt=${encodeURIComponent(selected.prompt)}`}
-                  className="inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-[color:var(--qm-accent-soft)] transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
+                  className="inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-2.5 text-sm font-semibold text-qm-primary shadow-md shadow-[color:var(--qm-accent-soft)] transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
                 >
                   Write about this →
                 </Link>
                 <button
                   onClick={() => setSelected(null)}
-                  className="text-sm text-slate-500 transition-colors hover:text-slate-300"
+                  className="text-sm text-qm-faint transition-colors hover:text-qm-secondary"
                 >
                   Choose a different mood
                 </button>
@@ -173,8 +173,8 @@ export default function MoodToolPage() {
           )}
 
           {!selected && (
-            <div className="rounded-2xl border border-slate-800 bg-slate-900/30 px-6 py-5">
-              <p className="text-sm leading-relaxed text-slate-500">
+            <div className="rounded-2xl border border-qm-border-subtle bg-qm-elevated px-6 py-5">
+              <p className="text-sm leading-relaxed text-qm-faint">
                 Pick the one that feels closest to true right now — even if it only partially fits.
                 You don't need to be certain.
               </p>
@@ -182,10 +182,10 @@ export default function MoodToolPage() {
           )}
 
           <footer className="flex items-center justify-between pt-2">
-            <Link href="/tools" className="text-sm text-emerald-400 transition-colors hover:text-emerald-300">
+            <Link href="/tools" className="text-sm text-qm-positive transition-colors hover:text-qm-positive">
               ← Back to Tools
             </Link>
-            <Link href="/journal" className="text-sm text-slate-400 transition-colors hover:text-white">
+            <Link href="/journal" className="text-sm text-qm-muted transition-colors hover:text-qm-primary">
               Go to journal
             </Link>
           </footer>

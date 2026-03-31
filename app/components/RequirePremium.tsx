@@ -61,17 +61,17 @@ export default function RequirePremium({ children }: RequirePremiumProps) {
                 {
                   label: "Pattern insights across time",
                   sub: "See what themes and emotions keep surfacing",
-                  dot: "bg-violet-400",
+                  dot: "bg-qm-premium",
                 },
                 {
                   label: "Weekly personal summary",
                   sub: "A concise mirror of what Quiet Mirror noticed this week",
-                  dot: "bg-amber-400",
+                  dot: "bg-qm-warning",
                 },
                 {
                   label: "Why-this-keeps-happening insights",
                   sub: "Understand the recurring loops underneath your entries",
-                  dot: "bg-violet-400",
+                  dot: "bg-qm-premium",
                 },
               ].map(({ label, sub, dot }) => (
                 <div key={label} className="flex items-start gap-3">

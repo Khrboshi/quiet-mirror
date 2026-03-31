@@ -22,8 +22,8 @@ export default async function NewJournalPage() {
       */}
       <Suspense fallback={
         <div className="flex min-h-[60vh] items-center justify-center">
-          <div className="flex items-center gap-3 rounded-full border border-slate-800 bg-slate-900/80 px-4 py-2 text-sm text-slate-300">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
+          <div className="flex items-center gap-3 rounded-full border border-qm-border-subtle bg-qm-elevated px-4 py-2 text-sm text-qm-secondary">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-qm-positive" />
             <span>Loading…</span>
           </div>
         </div>

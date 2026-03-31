@@ -25,7 +25,7 @@ export default async function Page({
     .maybeSingle();
 
   if (!entry) {
-    return <div className="p-10 text-white">Entry not found</div>;
+    return <div className="p-10 text-qm-primary">Entry not found</div>;
   }
 
   let initialReflection = null;

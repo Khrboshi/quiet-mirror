@@ -24,7 +24,7 @@ export default function NotFound() {
         <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
           <Link
             href="/dashboard"
-            className="rounded-full bg-qm-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-qm-accent-hover"
+            className="rounded-full bg-qm-accent px-5 py-2.5 text-sm font-semibold text-qm-primary transition-colors hover:bg-qm-accent-hover"
           >
             {t.nav.goToDashboard}
           </Link>

@@ -167,12 +167,12 @@ export default function JournalEntryClient({
   }
 
   return (
-    <div className="mx-auto max-w-2xl space-y-5 px-4 py-10 text-white">
+    <div className="mx-auto max-w-2xl space-y-5 px-4 py-10 text-qm-primary">
 
       {/* ── Header ─────────────────────────────────────────────────────── */}
       <header className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="font-display text-2xl font-semibold leading-snug tracking-tight text-white sm:text-3xl">
+          <h1 className="font-display text-2xl font-semibold leading-snug tracking-tight text-qm-primary sm:text-3xl">
             {entry.title || t.journal.untitled}
           </h1>
           <p className="mt-1 text-xs text-white/35" suppressHydrationWarning>
@@ -187,7 +187,7 @@ export default function JournalEntryClient({
         </div>
         <Link
           href="/journal"
-          className="mt-1 shrink-0 text-xs text-emerald-400/70 transition-colors hover:text-emerald-300"
+          className="mt-1 shrink-0 text-xs text-qm-positive transition-colors hover:text-qm-positive"
         >
           {t.nav.backToJournal}
         </Link>
@@ -202,9 +202,9 @@ export default function JournalEntryClient({
       <section className="overflow-hidden rounded-2xl border border-white/8 bg-white/[0.02]">
 
         {isFirstEntry && !reflection && (
-          <div className="flex items-start gap-2 border-b border-white/6 bg-emerald-500/5 px-6 py-3">
-            <span className="mt-0.5 text-sm text-emerald-400">&#10022;</span>
-            <p className="text-xs leading-relaxed text-slate-400">
+          <div className="flex items-start gap-2 border-b border-white/6 bg-qm-positive-bg px-6 py-3">
+            <span className="mt-0.5 text-sm text-qm-positive">&#10022;</span>
+            <p className="text-xs leading-relaxed text-qm-muted">
               {t.reflection.firstEntryBanner}
             </p>
           </div>
@@ -223,7 +223,7 @@ export default function JournalEntryClient({
                 {credits === 1 ? "reflection" : "reflections"} remaining
                 this month
                 {isLimitReached && (
-                  <span className="ml-1 text-amber-400/60">
+                  <span className="ml-1 text-qm-warning">
                     · resets next month
                   </span>
                 )}
@@ -237,13 +237,13 @@ export default function JournalEntryClient({
               disabled={busy}
               className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition-all disabled:opacity-50 ${
                 isLimitReached
-                  ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20"
-                  : "bg-qm-accent text-white hover:bg-qm-accent-hover"
+                  ? "border border-qm-positive-border bg-qm-positive-soft text-qm-positive hover:bg-qm-positive-soft"
+                  : "bg-qm-accent text-qm-primary hover:bg-qm-accent-hover"
               }`}
             >
               {busy ? (
                 <>
-                  <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-slate-950/30 border-t-slate-950" />
+                  <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-qm-border-card border-t-slate-950" />
                   {t.reflection.reflectingLabel}
                 </>
               ) : isLimitReached ? (
@@ -253,8 +253,8 @@ export default function JournalEntryClient({
               )}
             </button>
           ) : (
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/[0.06] px-3 py-1.5 text-xs font-medium text-emerald-400/80">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-qm-positive-border bg-qm-positive-strong/[0.06] px-3 py-1.5 text-xs font-medium text-qm-positive">
+              <span className="h-1.5 w-1.5 rounded-full bg-qm-positive" />
               {t.reflection.savedToHistory}
             </span>
           )}
@@ -262,11 +262,11 @@ export default function JournalEntryClient({
 
         {/* ── Limit reached inline nudge ───────────────────────────────── */}
         {isLimitReached && !reflection && !busy && (
-          <div className="border-b border-white/5 bg-emerald-500/[0.03] px-6 py-5">
+          <div className="border-b border-white/5 bg-qm-positive-strong/[0.03] px-6 py-5">
             <p className="text-sm font-medium text-white/80">
               You&apos;ve used your {PRICING.freeMonthlyCredits} free reflections this month.
             </p>
-            <p className="mt-1.5 text-xs leading-relaxed text-slate-500">
+            <p className="mt-1.5 text-xs leading-relaxed text-qm-faint">
               Premium unlocks unlimited reflections on every entry — plus
               pattern insights across time, a weekly summary, and the
               why-this-keeps-happening layer.
@@ -274,22 +274,22 @@ export default function JournalEntryClient({
             <div className="mt-4 flex flex-wrap items-center gap-3">
               <Link
                 href="/upgrade"
-                className="inline-flex items-center justify-center rounded-full bg-qm-accent px-4 py-2 text-xs font-semibold text-white shadow-sm transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
+                className="inline-flex items-center justify-center rounded-full bg-qm-accent px-4 py-2 text-xs font-semibold text-qm-primary shadow-sm transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
               >
                 {`Start ${PRICING.trialLabel} →`}
               </Link>
               <Link
                 href="/insights/preview"
-                className="text-xs font-medium text-slate-500 transition-colors hover:text-slate-300"
+                className="text-xs font-medium text-qm-faint transition-colors hover:text-qm-secondary"
               >
                 See what Premium shows
               </Link>
             </div>
-            <p className="mt-3 text-[11px] text-slate-700">
+            <p className="mt-3 text-[11px] text-qm-faint">
               {`🛡️ No charge for ${PRICING.trialDays} ${PRICING.trialDayWord} · Cancel anytime · `}{" "}
               <Link
                 href="/terms"
-                className="underline underline-offset-2 transition-colors hover:text-slate-500"
+                className="underline underline-offset-2 transition-colors hover:text-qm-faint"
               >
                 Terms
               </Link>
@@ -298,7 +298,7 @@ export default function JournalEntryClient({
         )}
 
         {error && (
-          <p className="mx-6 mt-4 rounded-lg border border-red-500/20 bg-red-500/8 px-4 py-3 text-xs text-red-300">
+          <p className="mx-6 mt-4 rounded-lg border border-qm-danger-border bg-qm-danger-bg px-4 py-3 text-xs text-qm-danger">
             {error}
           </p>
         )}
@@ -318,7 +318,7 @@ export default function JournalEntryClient({
               {[0, 1, 2].map(i => (
                 <span
                   key={i}
-                  className="inline-block h-1.5 w-1.5 animate-bounce rounded-full bg-emerald-400/60"
+                  className="inline-block h-1.5 w-1.5 animate-bounce rounded-full bg-qm-positive"
                   style={{ animationDelay: `${i * 0.15}s` }}
                 />
               ))}
@@ -329,8 +329,8 @@ export default function JournalEntryClient({
 
         {reflection && reflection.crisis ? (
           <div className="space-y-5 px-6 py-6">
-            <div className="space-y-3 rounded-xl border border-amber-500/20 bg-amber-500/5 px-5 py-4">
-              <p className="text-sm font-medium text-amber-300/90">
+            <div className="space-y-3 rounded-xl border border-qm-warning-border bg-qm-warning-bg px-5 py-4">
+              <p className="text-sm font-medium text-qm-warning">
                 What you wrote matters, and you matter.
               </p>
               <p className="text-xs leading-relaxed text-white/60">
@@ -347,7 +347,7 @@ export default function JournalEntryClient({
                   className="flex items-start justify-between gap-3 rounded-lg border border-white/6 bg-white/[0.03] px-4 py-2.5"
                 >
                   <span className="text-xs text-white/60">{r.label}</span>
-                  <span className="shrink-0 text-xs font-medium text-emerald-400/80">
+                  <span className="shrink-0 text-xs font-medium text-qm-positive">
                     {r.value}
                   </span>
                 </div>
@@ -365,7 +365,7 @@ export default function JournalEntryClient({
               <div className="space-y-4 px-6 py-5">
                 {parsedSummary.carrying && (
                   <div>
-                    <p className="mb-2 text-[10px] font-semibold uppercase tracking-widest text-emerald-400/60">
+                    <p className="mb-2 text-[10px] font-semibold uppercase tracking-widest text-qm-positive">
                       {t.reflection.whatYoureCarrying}
                     </p>
                     <p className="text-sm leading-relaxed text-white/90">
@@ -384,8 +384,8 @@ export default function JournalEntryClient({
                   </div>
                 )}
                 {parsedSummary.deeper && (
-                  <div className="rounded-xl border border-emerald-500/12 bg-emerald-500/5 px-4 py-3">
-                    <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-widest text-emerald-400/50">
+                  <div className="rounded-xl border border-qm-positive-border bg-qm-positive-bg px-4 py-3">
+                    <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-widest text-qm-positive">
                       {t.reflection.deeperDirection}
                     </p>
                     <p className="text-sm leading-relaxed text-white/70">
@@ -448,7 +448,7 @@ export default function JournalEntryClient({
                 <div className="grid gap-2 sm:grid-cols-2">
                   {parsedStep.optionA && (
                     <div className="rounded-xl border border-white/8 bg-white/[0.03] px-4 py-3">
-                      <p className="mb-1 text-[10px] font-semibold text-emerald-400/60">
+                      <p className="mb-1 text-[10px] font-semibold text-qm-positive">
                         {t.reflection.optionA}
                       </p>
                       <p className="text-xs leading-relaxed text-white/70">
@@ -468,8 +468,8 @@ export default function JournalEntryClient({
                   )}
                 </div>
                 {parsedStep.script && (
-                  <div className="rounded-xl border border-emerald-500/15 bg-emerald-500/5 px-4 py-3">
-                    <p className="mb-1 text-[10px] font-semibold text-emerald-400/50">
+                  <div className="rounded-xl border border-qm-positive-border bg-qm-positive-bg px-4 py-3">
+                    <p className="mb-1 text-[10px] font-semibold text-qm-positive">
                       {t.reflection.scriptLine}
                     </p>
                     <p className="text-sm italic text-white/75">
@@ -517,14 +517,14 @@ export default function JournalEntryClient({
                 <p className="text-sm font-medium text-white/80">
                   {t.reflection.patternHistoryNote}
                 </p>
-                <p className="mt-1 text-xs leading-relaxed text-slate-500">
+                <p className="mt-1 text-xs leading-relaxed text-qm-faint">
                   Quiet Mirror tracks what keeps showing up across all your entries.
                   Your insights view shows the thread that connects them.
                 </p>
               </div>
               <Link
                 href="/insights"
-                className="shrink-0 inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/[0.06] px-4 py-2.5 text-xs font-semibold text-emerald-400 transition hover:bg-emerald-500/[0.12] hover:text-emerald-300"
+                className="shrink-0 inline-flex items-center gap-2 rounded-full border border-qm-positive-border bg-qm-positive-strong/[0.06] px-4 py-2.5 text-xs font-semibold text-qm-positive transition hover:bg-qm-positive-strong/[0.12] hover:text-qm-positive"
               >
                 {t.reflection.seeFullPattern}
               </Link>
@@ -577,28 +577,28 @@ export default function JournalEntryClient({
             return (
               <div>
                 <p className="text-sm font-medium text-white/80">{copy.headline}</p>
-                <p className="mt-1.5 text-xs leading-relaxed text-slate-500">
+                <p className="mt-1.5 text-xs leading-relaxed text-qm-faint">
                   {copy.sub}
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   <Link
                     href="/upgrade"
-                    className="inline-flex items-center gap-2 rounded-full bg-qm-accent px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-qm-accent-hover"
+                    className="inline-flex items-center gap-2 rounded-full bg-qm-accent px-4 py-2.5 text-xs font-semibold text-qm-primary shadow-sm transition hover:bg-qm-accent-hover"
                   >
                     {`Start ${PRICING.trialLabel} →`}
                   </Link>
                   <Link
                     href="/insights/preview"
-                    className="inline-flex items-center gap-2 rounded-full border border-white/[0.08] px-4 py-2.5 text-xs font-medium text-slate-400 transition hover:border-white/[0.15] hover:text-slate-200"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/[0.08] px-4 py-2.5 text-xs font-medium text-qm-muted transition hover:border-white/[0.15] hover:text-qm-primary"
                   >
                     See an example
                   </Link>
                 </div>
-                <p className="mt-3 text-[11px] text-slate-700">
+                <p className="mt-3 text-[11px] text-qm-faint">
                   {`🛡️ No charge for ${PRICING.trialDays} ${PRICING.trialDayWord} · Cancel anytime ·`}{" "}
                   <Link
                     href="/terms"
-                    className="underline underline-offset-2 transition-colors hover:text-slate-500"
+                    className="underline underline-offset-2 transition-colors hover:text-qm-faint"
                   >
                     Terms
                   </Link>
@@ -624,13 +624,13 @@ export default function JournalEntryClient({
               {t.journal.deleteWarning}
             </p>
             {deleteError && (
-              <p className="text-xs text-red-400">{deleteError}</p>
+              <p className="text-xs text-qm-danger">{deleteError}</p>
             )}
             <div className="flex items-center gap-4">
               <button
                 onClick={handleDelete}
                 disabled={deleting}
-                className="text-xs font-medium text-red-400/80 transition-colors hover:text-red-400 disabled:opacity-50"
+                className="text-xs font-medium text-qm-danger transition-colors hover:text-qm-danger disabled:opacity-50"
               >
                 {deleting ? t.journal.deletingLabel : t.journal.deleteConfirmLabel}
               </button>

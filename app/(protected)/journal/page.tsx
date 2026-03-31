@@ -135,16 +135,16 @@ export default async function JournalPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-3xl font-semibold text-slate-100">Your Journal</h1>
+          <h1 className="font-display text-3xl font-semibold text-qm-primary">Your Journal</h1>
           {(entries?.length ?? 0) > 0 && (
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="mt-1 text-sm text-qm-faint">
               {entries!.length} {entries!.length === 1 ? "entry" : "entries"}
             </p>
           )}
         </div>
         <Link
           href="/journal/new"
-          className="rounded-full bg-emerald-500 px-4 py-2 text-sm font-medium text-slate-900 hover:bg-emerald-400 transition-colors"
+          className="rounded-full bg-qm-positive-strong px-4 py-2 text-sm font-medium text-qm-faint hover:bg-qm-positive transition-colors"
         >
           New Entry
         </Link>
@@ -153,29 +153,29 @@ export default async function JournalPage() {
       {/* Empty state */}
       {entries?.length === 0 && (
         <div className="space-y-6">
-          <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-8 text-center space-y-2">
+          <div className="rounded-xl border border-qm-border-subtle bg-qm-elevated p-8 text-center space-y-2">
             <p className="text-2xl">✦</p>
-            <p className="text-sm text-slate-300 font-medium">You haven&rsquo;t written any entries yet.</p>
-            <p className="text-xs text-slate-500">One sentence is always enough to start.</p>
+            <p className="text-sm text-qm-secondary font-medium">You haven&rsquo;t written any entries yet.</p>
+            <p className="text-xs text-qm-faint">One sentence is always enough to start.</p>
           </div>
           <div>
-            <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-600">
+            <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-faint">
               Start here
             </p>
             <div className="grid gap-3 sm:grid-cols-3">
               {[
-                { q: "What has been weighing on you lately?", sub: "You don't have to solve it — just name it.", color: "border-emerald-500/20 hover:border-emerald-500/40" },
-                { q: "Is there something you keep thinking about today?", sub: "A conversation, a feeling, a moment.", color: "border-violet-500/20 hover:border-violet-500/40" },
-                { q: "What felt heavy this week?", sub: "No need to explain why.", color: "border-amber-500/20 hover:border-amber-500/40" },
+                { q: "What has been weighing on you lately?", sub: "You don't have to solve it — just name it.", color: "border-qm-positive-border hover:border-qm-positive-border" },
+                { q: "Is there something you keep thinking about today?", sub: "A conversation, a feeling, a moment.", color: "border-qm-premium-border hover:border-qm-premium-border" },
+                { q: "What felt heavy this week?", sub: "No need to explain why.", color: "border-qm-warning-border hover:border-qm-warning-border" },
               ].map((p) => (
                 <Link
                   key={p.q}
                   href={`/journal/new?prompt=${encodeURIComponent(p.q)}`}
                   className={`group rounded-2xl border bg-white/[0.02] p-5 transition hover:bg-white/[0.05] ${p.color}`}
                 >
-                  <p className="text-sm font-medium leading-snug text-slate-100 transition group-hover:text-white">{p.q}</p>
-                  <p className="mt-1.5 text-xs leading-relaxed text-slate-500">{p.sub}</p>
-                  <p className="mt-3 text-xs font-medium text-emerald-400 group-hover:text-emerald-300 transition">Start →</p>
+                  <p className="text-sm font-medium leading-snug text-qm-primary transition group-hover:text-qm-primary">{p.q}</p>
+                  <p className="mt-1.5 text-xs leading-relaxed text-qm-faint">{p.sub}</p>
+                  <p className="mt-3 text-xs font-medium text-qm-positive group-hover:text-qm-positive transition">Start →</p>
                 </Link>
               ))}
             </div>
@@ -188,7 +188,7 @@ export default async function JournalPage() {
         <section key={month} className="space-y-3">
 
           {/* Month label */}
-          <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-600 px-0.5">
+          <h2 className="text-xs font-semibold uppercase tracking-widest text-qm-faint px-0.5">
             {month}
           </h2>
 
@@ -208,7 +208,7 @@ export default async function JournalPage() {
                 <Link
                   key={entry.id}
                   href={`/journal/${entry.id}`}
-                  className="group relative rounded-xl border border-slate-800 bg-slate-950/60 p-5 hover:border-slate-700 hover:bg-slate-900/80 transition-all"
+                  className="group relative rounded-xl border border-qm-border-subtle bg-qm-bg p-5 hover:border-qm-border-subtle hover:bg-qm-elevated transition-all"
                 >
                   {/* Top row: date + domain + reflected badge */}
                   <div className="flex items-center justify-between gap-2 mb-3">
@@ -219,34 +219,34 @@ export default async function JournalPage() {
                           {domainMeta.emoji}
                         </span>
                       )}
-                      <span className="text-xs text-slate-500 tabular-nums">
+                      <span className="text-xs text-qm-faint tabular-nums">
                         {formatDay(entry.created_at)}
-                        <span className="text-slate-700 mx-1">·</span>
+                        <span className="text-qm-faint mx-1">·</span>
                         {formatTime(entry.created_at)}
                       </span>
                     </div>
 
                     {hasReflection ? (
-                      <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-400">
-                        <span className="h-1 w-1 rounded-full bg-emerald-400" />
+                      <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-qm-positive-border bg-qm-positive-soft px-2 py-0.5 text-[10px] font-medium text-qm-positive">
+                        <span className="h-1 w-1 rounded-full bg-qm-positive" />
                         Reflected
                       </span>
                     ) : (
-                      <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-slate-700 bg-slate-900 px-2 py-0.5 text-[10px] text-slate-600">
+                      <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-qm-border-subtle bg-qm-elevated px-2 py-0.5 text-[10px] text-qm-faint">
                         Draft
                       </span>
                     )}
                   </div>
 
                   {/* Title */}
-                  <p className={`text-sm font-medium leading-snug transition group-hover:text-white ${
-                    isUntitled ? "text-slate-400 italic" : "text-slate-100"
+                  <p className={`text-sm font-medium leading-snug transition group-hover:text-qm-primary ${
+                    isUntitled ? "text-qm-muted italic" : "text-qm-primary"
                   }`}>
                     {title}
                   </p>
 
                   {/* Content preview */}
-                  <p className="mt-1.5 text-xs leading-relaxed text-slate-600 line-clamp-2">
+                  <p className="mt-1.5 text-xs leading-relaxed text-qm-faint line-clamp-2">
                     {entry.content}
                   </p>
 
@@ -266,7 +266,7 @@ export default async function JournalPage() {
                         </span>
                       )}
                     </div>
-                    <span className="text-emerald-400 text-xs group-hover:text-emerald-300 transition shrink-0">
+                    <span className="text-qm-positive text-xs group-hover:text-qm-positive transition shrink-0">
                       Open →
                     </span>
                   </div>

@@ -20,18 +20,18 @@ export default function AboutPage() {
       <section className="border-b border-qm-border-subtle pb-16 pt-12 sm:pb-20 sm:pt-16">
         <div className="mx-auto max-w-5xl px-6">
           <div className="max-w-4xl">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-400/80">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-qm-positive">
               About {CONFIG.appName}
             </p>
 
-            <h1 className="mt-4 font-display text-[2.2rem] font-semibold leading-[1.08] tracking-tight text-white sm:text-5xl">
+            <h1 className="mt-4 font-display text-[2.2rem] font-semibold leading-[1.08] tracking-tight text-qm-primary sm:text-5xl">
               A mirror for what you carry —{" "}
-              <span className="text-emerald-400">
+              <span className="text-qm-positive">
                 held quietly, without judgment.
               </span>
             </h1>
 
-            <p className="mt-5 max-w-3xl text-[15px] leading-relaxed text-slate-300 sm:text-[17px]">
+            <p className="mt-5 max-w-3xl text-[15px] leading-relaxed text-qm-secondary sm:text-[17px]">
               Not a productivity tool. Not a mood tracker. {CONFIG.appName} is a
               place to write honestly, receive a gentle reflection back, and —
               over time — see the patterns that have quietly been shaping your
@@ -41,19 +41,19 @@ export default function AboutPage() {
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
                 href="/magic-login"
-                className="inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
+                className="inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-3 text-sm font-semibold text-qm-primary shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
               >
                 Start journaling free
               </Link>
               <Link
                 href="/upgrade"
-                className="inline-flex items-center justify-center rounded-full border border-slate-700/60 px-5 py-3 text-sm font-medium text-slate-400 transition-colors hover:border-slate-500 hover:text-white"
+                className="inline-flex items-center justify-center rounded-full border border-qm-border-subtle px-5 py-3 text-sm font-medium text-qm-muted transition-colors hover:border-qm-border-subtle hover:text-qm-primary"
               >
                 See Pricing &rarr;
               </Link>
             </div>
 
-            <p className="mt-3 text-xs text-slate-600">
+            <p className="mt-3 text-xs text-qm-faint">
               No credit card required. Free is fully usable on its own.
             </p>
           </div>
@@ -65,11 +65,11 @@ export default function AboutPage() {
         <div className="mx-auto max-w-5xl space-y-14 px-6 sm:space-y-16">
           {/* Why the name */}
           <div className="max-w-4xl">
-            <h2 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
+            <h2 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-qm-faint">
               Why &#8220;{CONFIG.appName}&#8221;
             </h2>
 
-            <div className="mt-5 space-y-4 text-[15px] leading-relaxed text-slate-300/90">
+            <div className="mt-5 space-y-4 text-[15px] leading-relaxed text-qm-secondary">
               <p>
                 A mirror doesn&apos;t advise. It doesn&apos;t judge. It simply
                 reflects back what&apos;s already there — clearly, without
@@ -91,8 +91,8 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="mt-8 rounded-[1.6rem] border border-emerald-500/15 bg-emerald-500/[0.03] px-6 py-5">
-              <p className="font-display text-lg font-medium leading-relaxed text-white">
+            <div className="mt-8 rounded-[1.6rem] border border-qm-positive-border bg-qm-positive-strong/[0.03] px-6 py-5">
+              <p className="font-display text-lg font-medium leading-relaxed text-qm-primary">
                 &ldquo;Your inner life isn&apos;t content to be optimised. It&apos;s
                 yours to understand. {CONFIG.appName} is built around that.&rdquo;
               </p>
@@ -101,7 +101,7 @@ export default function AboutPage() {
 
           {/* Built independently */}
           <div className="max-w-4xl">
-            <h2 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
+            <h2 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-qm-faint">
               Built independently
             </h2>
 
@@ -111,23 +111,23 @@ export default function AboutPage() {
                   label: "No investors",
                   body: `${CONFIG.appName} is independently built and funded. No venture capital, no board, no pressure to grow at the expense of the product or your privacy.`,
                   accent:
-                    "border-emerald-500/20 bg-emerald-500/[0.03]",
-                  tag: "text-emerald-400/80",
+                    "border-qm-positive-border bg-qm-positive-strong/[0.03]",
+                  tag: "text-qm-positive",
                 },
                 {
                   label: "No ads, ever",
                   body:
                     "Revenue comes entirely from Premium subscriptions. Your data is never sold, shared, or used to train AI models. That is the complete business model.",
                   accent:
-                    "border-violet-500/20 bg-violet-500/[0.03]",
-                  tag: "text-violet-400/80",
+                    "border-qm-premium-border bg-qm-premium-strong/[0.03]",
+                  tag: "text-qm-premium",
                 },
                 {
                   label: "One person accountable",
                   body: `${CONFIG.appName} is built by a single independent developer. Every decision about privacy, product, and pricing has one person behind it — reachable directly at ${CONFIG.supportEmail}.`,
                   accent:
-                    "border-emerald-500/20 bg-emerald-500/[0.03]",
-                  tag: "text-emerald-400/80",
+                    "border-qm-positive-border bg-qm-positive-strong/[0.03]",
+                  tag: "text-qm-positive",
                 },
               ].map(({ label, body, accent, tag }) => (
                 <div
@@ -139,7 +139,7 @@ export default function AboutPage() {
                   >
                     {label}
                   </p>
-                  <p className="mt-3 text-sm leading-relaxed text-slate-400">
+                  <p className="mt-3 text-sm leading-relaxed text-qm-muted">
                     {body}
                   </p>
                 </div>
@@ -147,11 +147,11 @@ export default function AboutPage() {
             </div>
 
             <div className="mt-6 rounded-[1.5rem] border border-qm-border-card bg-qm-elevated px-6 py-5">
-              <p className="text-sm leading-relaxed text-slate-400">
+              <p className="text-sm leading-relaxed text-qm-muted">
                 If something feels wrong, unclear, or broken —{" "}
                 <a
                   href={`mailto:${CONFIG.supportEmail}`}
-                  className="font-medium text-emerald-400 transition-colors hover:text-emerald-300"
+                  className="font-medium text-qm-positive transition-colors hover:text-qm-positive"
                 >
                   email {CONFIG.supportEmail}
                 </a>
@@ -164,11 +164,11 @@ export default function AboutPage() {
           {/* What makes it different */}
           <div className="grid gap-8 lg:grid-cols-[1.02fr_0.98fr] lg:items-start">
             <div>
-              <h2 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
+              <h2 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-qm-faint">
                 What makes it different
               </h2>
 
-              <div className="mt-5 space-y-4 text-[15px] leading-relaxed text-slate-300/90">
+              <div className="mt-5 space-y-4 text-[15px] leading-relaxed text-qm-secondary">
                 <p>
                   Most journaling apps are passive storage. They hold what you
                   write, then wait. {CONFIG.appName} actively reads across your
@@ -185,11 +185,11 @@ export default function AboutPage() {
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-              <div className="rounded-[1.5rem] border border-emerald-500/20 bg-emerald-500/[0.03] p-5">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-400/80">
+              <div className="rounded-[1.5rem] border border-qm-positive-border bg-qm-positive-strong/[0.03] p-5">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-qm-positive">
                   {CONFIG.appName} is
                 </p>
-                <ul className="mt-4 space-y-2.5 text-sm leading-relaxed text-slate-300">
+                <ul className="mt-4 space-y-2.5 text-sm leading-relaxed text-qm-secondary">
                   {[
                     "A private place to write without judgment",
                     "A gentle mirror for what you've written",
@@ -200,7 +200,7 @@ export default function AboutPage() {
                       key={item}
                       className="flex items-start gap-2"
                     >
-                      <span className="mt-0.5 shrink-0 text-emerald-500">
+                      <span className="mt-0.5 shrink-0 text-qm-positive">
                         ✓
                       </span>
                       <span>{item}</span>
@@ -210,10 +210,10 @@ export default function AboutPage() {
               </div>
 
               <div className="rounded-[1.5rem] border border-qm-border-card bg-qm-elevated p-5">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-400/70">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-qm-warning">
                   {CONFIG.appName} is not
                 </p>
-                <ul className="mt-4 space-y-2.5 text-sm leading-relaxed text-slate-400">
+                <ul className="mt-4 space-y-2.5 text-sm leading-relaxed text-qm-muted">
                   {[
                     "Therapy or a substitute for clinical care",
                     "A productivity or self-optimisation tool",
@@ -224,7 +224,7 @@ export default function AboutPage() {
                       key={item}
                       className="flex items-start gap-2"
                     >
-                      <span className="mt-0.5 shrink-0 text-slate-600">
+                      <span className="mt-0.5 shrink-0 text-qm-faint">
                         &mdash;
                       </span>
                       <span>{item}</span>
@@ -238,11 +238,11 @@ export default function AboutPage() {
           {/* How the AI works */}
           <div className="grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-start">
             <div>
-              <h2 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
+              <h2 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-qm-faint">
                 How the AI actually works
               </h2>
 
-              <div className="mt-5 space-y-4 text-[15px] leading-relaxed text-slate-300/90">
+              <div className="mt-5 space-y-4 text-[15px] leading-relaxed text-qm-secondary">
                 <p>
                   When you write an entry and request a reflection, the AI reads
                   what you&apos;ve written and responds with a short, thoughtful
@@ -267,11 +267,11 @@ export default function AboutPage() {
             </div>
 
             <div className="rounded-[1.6rem] border border-qm-border-card bg-qm-elevated p-6">
-              <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
+              <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-qm-faint">
                 Privacy
               </h3>
 
-              <div className="mt-4 space-y-3 text-sm leading-relaxed text-slate-400">
+              <div className="mt-4 space-y-3 text-sm leading-relaxed text-qm-muted">
                 <p>
                   Your journal is private. Your entries are never used to train
                   AI models, never shared with third parties, and never shown to
@@ -285,7 +285,7 @@ export default function AboutPage() {
                 <p>
                   <Link
                     href="/privacy"
-                    className="font-medium text-emerald-400 transition-colors hover:text-emerald-300"
+                    className="font-medium text-qm-positive transition-colors hover:text-qm-positive"
                   >
                     Read the full Privacy Policy &rarr;
                   </Link>
@@ -296,7 +296,7 @@ export default function AboutPage() {
 
           {/* Bottom CTA */}
           <div className="flex flex-col gap-4 border-t border-qm-border-subtle pt-8 sm:flex-row sm:items-center sm:justify-between">
-            <p className="max-w-md text-sm leading-relaxed text-slate-500">
+            <p className="max-w-md text-sm leading-relaxed text-qm-faint">
               {CONFIG.appName} works best when you use it honestly, at your own
               pace. There is no streak. No pressure. Just the mirror.
             </p>
@@ -304,13 +304,13 @@ export default function AboutPage() {
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/magic-login"
-                className="inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
+                className="inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-3 text-sm font-semibold text-qm-primary shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
               >
                 Start free
               </Link>
               <Link
                 href="/blog"
-                className="inline-flex items-center justify-center rounded-full border border-slate-700/60 px-5 py-3 text-sm font-medium text-slate-400 transition-colors hover:border-slate-500 hover:text-white"
+                className="inline-flex items-center justify-center rounded-full border border-qm-border-subtle px-5 py-3 text-sm font-medium text-qm-muted transition-colors hover:border-qm-border-subtle hover:text-qm-primary"
               >
                 Read the blog &rarr;
               </Link>

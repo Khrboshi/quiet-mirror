@@ -179,19 +179,19 @@ function BarRow({
           <span
             className={`truncate transition-colors ${
               isTop
-                ? "font-medium text-slate-100"
-                : "text-slate-400 group-hover:text-slate-200"
+                ? "font-medium text-qm-primary"
+                : "text-qm-muted group-hover:text-qm-primary"
             }`}
             title={label}
           >
             {label}
           </span>
         </div>
-        <span className="shrink-0 tabular-nums text-xs text-slate-600">
+        <span className="shrink-0 tabular-nums text-xs text-qm-faint">
           {count}
         </span>
       </div>
-      <div className="h-[3px] w-full overflow-hidden rounded-full bg-slate-800/80">
+      <div className="h-[3px] w-full overflow-hidden rounded-full bg-qm-card">
         <div
           className="h-full rounded-full transition-all duration-700"
           style={{
@@ -218,8 +218,8 @@ function StatCard({
   accent?: string;
 }) {
   return (
-    <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4 space-y-1">
-      <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-600">
+    <div className="rounded-xl border border-qm-border-subtle bg-qm-bg p-4 space-y-1">
+      <p className="text-[10px] font-semibold uppercase tracking-widest text-qm-faint">
         {label}
       </p>
       <p
@@ -228,7 +228,7 @@ function StatCard({
       >
         {value}
       </p>
-      {sub && <p className="text-xs text-slate-600">{sub}</p>}
+      {sub && <p className="text-xs text-qm-faint">{sub}</p>}
     </div>
   );
 }
@@ -240,8 +240,8 @@ function TrendPill({ label, dir }: { label: string; dir: "up" | "down" }) {
     <span
       className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-medium ${
         dir === "up"
-          ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-300"
-          : "border-slate-700 bg-slate-800/60 text-slate-500"
+          ? "border-qm-positive-border bg-qm-positive-soft text-qm-positive"
+          : "border-qm-border-subtle bg-qm-card text-qm-faint"
       }`}
     >
       {dir === "up" ? "↑" : "↓"} {label}
@@ -298,23 +298,23 @@ function DomainSection({
   const hasClearLeader = topCount >= 2 && topCount >= secondCount * 2;
 
   return (
-    <section className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6">
+    <section className="rounded-2xl border border-qm-border-subtle bg-qm-bg p-6">
       <div className="mb-1">
-        <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500">
+        <h2 className="text-xs font-semibold uppercase tracking-widest text-qm-faint">
           What you write about most
         </h2>
-        <p className="mt-0.5 text-xs text-slate-600">
+        <p className="mt-0.5 text-xs text-qm-faint">
           Based on domain detection across all reflected entries.
         </p>
       </div>
 
-      <div className="my-4 flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-3">
+      <div className="my-4 flex items-center gap-3 rounded-xl border border-qm-border-subtle bg-qm-elevated px-4 py-3">
         <span className="text-2xl">{topMeta.emoji}</span>
         <div>
           <p className="text-sm font-semibold" style={{ color: topMeta.color }}>
             {topMeta.label}
           </p>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-qm-faint">
             {sorted[0][1]} of {total} {total === 1 ? "entry" : "entries"}
             {hasClearLeader ? " — your most written-about area" : " — patterns become clearer as you write more"}
           </p>
@@ -332,15 +332,15 @@ function DomainSection({
           return (
             <li key={domain} className="space-y-1">
               <div className="flex items-center justify-between text-xs">
-                <span className="flex items-center gap-1.5 text-slate-300">
+                <span className="flex items-center gap-1.5 text-qm-secondary">
                   <span>{meta.emoji}</span>
-                  <span className={i === 0 ? "font-medium" : "text-slate-400"}>
+                  <span className={i === 0 ? "font-medium" : "text-qm-muted"}>
                     {meta.label}
                   </span>
                 </span>
-                <span className="tabular-nums text-slate-600">{count}</span>
+                <span className="tabular-nums text-qm-faint">{count}</span>
               </div>
-              <div className="h-[3px] w-full overflow-hidden rounded-full bg-slate-800">
+              <div className="h-[3px] w-full overflow-hidden rounded-full bg-qm-card">
                 <div
                   className="h-full rounded-full transition-all duration-700"
                   style={{
@@ -366,35 +366,35 @@ function Skeleton() {
         {[0, 1, 2, 3].map((i) => (
           <div
             key={i}
-            className="rounded-xl border border-slate-800 bg-slate-950/60 p-4 space-y-2"
+            className="rounded-xl border border-qm-border-subtle bg-qm-bg p-4 space-y-2"
           >
-            <div className="h-2 w-16 rounded bg-slate-800" />
-            <div className="h-4 w-24 rounded bg-slate-800" />
+            <div className="h-2 w-16 rounded bg-qm-card" />
+            <div className="h-4 w-24 rounded bg-qm-card" />
           </div>
         ))}
       </div>
-      <div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6 space-y-3">
-        <div className="h-3 w-16 rounded bg-slate-800" />
-        <div className="h-5 w-2/3 rounded bg-slate-800" />
-        <div className="h-3 w-1/2 rounded bg-slate-800" />
+      <div className="rounded-2xl border border-qm-border-subtle bg-qm-bg p-6 space-y-3">
+        <div className="h-3 w-16 rounded bg-qm-card" />
+        <div className="h-5 w-2/3 rounded bg-qm-card" />
+        <div className="h-3 w-1/2 rounded bg-qm-card" />
       </div>
       <div className="grid gap-6 md:grid-cols-2">
         {[0, 1].map((i) => (
           <div
             key={i}
-            className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6 space-y-5"
+            className="rounded-2xl border border-qm-border-subtle bg-qm-bg p-6 space-y-5"
           >
-            <div className="h-3 w-24 rounded bg-slate-800" />
+            <div className="h-3 w-24 rounded bg-qm-card" />
             {[80, 60, 45, 35].map((w, j) => (
               <div key={j} className="space-y-1.5">
                 <div className="flex justify-between">
                   <div
-                    className="h-3 rounded bg-slate-800"
+                    className="h-3 rounded bg-qm-card"
                     style={{ width: `${w}%` }}
                   />
-                  <div className="h-3 w-4 rounded bg-slate-800" />
+                  <div className="h-3 w-4 rounded bg-qm-card" />
                 </div>
-                <div className="h-[3px] w-full rounded-full bg-slate-800" />
+                <div className="h-[3px] w-full rounded-full bg-qm-card" />
               </div>
             ))}
           </div>
@@ -410,17 +410,17 @@ function NotEnoughData({ entryCount }: { entryCount: number }) {
   const { t } = useTranslation();
   const needed = Math.max(0, 5 - entryCount);
   return (
-    <div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-10 text-center space-y-4">
-      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-slate-800 bg-slate-900 text-2xl">
+    <div className="rounded-2xl border border-qm-border-subtle bg-qm-bg p-10 text-center space-y-4">
+      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-qm-border-subtle bg-qm-elevated text-2xl">
         ✦
       </div>
       <div className="space-y-1">
-        <h3 className="text-sm font-semibold text-slate-200">
+        <h3 className="text-sm font-semibold text-qm-primary">
           {entryCount === 0
             ? t.ui.noReflectionsYet
             : t.ui.reflectionsSoFar(entryCount)}
         </h3>
-        <p className="mx-auto max-w-sm text-sm text-slate-500">
+        <p className="mx-auto max-w-sm text-sm text-qm-faint">
           {needed > 0
             ? t.ui.moreNeeded(needed)
             : t.ui.patternsGenerating}
@@ -428,7 +428,7 @@ function NotEnoughData({ entryCount }: { entryCount: number }) {
       </div>
       <Link
         href="/journal/new"
-        className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-5 py-2 text-sm text-slate-300 hover:bg-white/10 transition"
+        className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-5 py-2 text-sm text-qm-secondary hover:bg-white/10 transition"
       >
         {t.ui.writeAnEntry}
       </Link>
@@ -451,28 +451,28 @@ function WeeklyTrends({
   if (!themeKeys.length && !emotionKeys.length) return null;
 
   return (
-    <section className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6">
+    <section className="rounded-2xl border border-qm-border-subtle bg-qm-bg p-6">
       <div className="mb-5 flex items-center justify-between">
         <div>
-          <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500">
+          <h2 className="text-xs font-semibold uppercase tracking-widest text-qm-faint">
             Weekly trends
           </h2>
-          <p className="mt-0.5 text-xs text-slate-600">
+          <p className="mt-0.5 text-xs text-qm-faint">
             How your top patterns have moved week-to-week.
           </p>
         </div>
-        <span className="text-xs text-slate-700">Last {weeks.length} weeks</span>
+        <span className="text-xs text-qm-faint">Last {weeks.length} weeks</span>
       </div>
 
       <div className="grid gap-8 sm:grid-cols-2">
         {themeKeys.length > 0 && (
           <div className="space-y-3">
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-600">
+            <p className="text-[10px] font-semibold uppercase tracking-widest text-qm-faint">
               Themes
             </p>
             {themeKeys.map((k) => (
               <div key={k} className="flex items-center justify-between gap-3">
-                <span className="truncate text-sm text-slate-300 min-w-0">
+                <span className="truncate text-sm text-qm-secondary min-w-0">
                   {k}
                 </span>
                 <Sparkline
@@ -488,12 +488,12 @@ function WeeklyTrends({
 
         {emotionKeys.length > 0 && (
           <div className="space-y-3">
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-600">
+            <p className="text-[10px] font-semibold uppercase tracking-widest text-qm-faint">
               Emotions
             </p>
             {emotionKeys.map((k) => (
               <div key={k} className="flex items-center justify-between gap-3">
-                <span className="truncate text-sm text-slate-300 min-w-0">
+                <span className="truncate text-sm text-qm-secondary min-w-0">
                   {k}
                 </span>
                 <Sparkline
@@ -564,13 +564,13 @@ function WeeklySummarySection({ hasRealData }: { hasRealData: boolean }) {
   }, [state]);
 
   return (
-    <section className="rounded-2xl border border-slate-700/60 bg-gradient-to-br from-slate-900 to-slate-950 p-6 md:p-7">
+    <section className="rounded-2xl border border-qm-border-subtle bg-gradient-to-br from-slate-900 to-slate-950 p-6 md:p-7">
       <div className="mb-4 flex items-center justify-between gap-4">
         <div>
-          <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500">
+          <h2 className="text-xs font-semibold uppercase tracking-widest text-qm-faint">
             What Quiet Mirror has noticed
           </h2>
-          <p className="mt-0.5 text-xs text-slate-700">
+          <p className="mt-0.5 text-xs text-qm-faint">
             A personal summary generated from your reflection history.
           </p>
         </div>
@@ -579,21 +579,21 @@ function WeeklySummarySection({ hasRealData }: { hasRealData: boolean }) {
           <button
             type="button"
             onClick={() => fetchSummary(true)}
-            className="shrink-0 text-xs text-slate-600 hover:text-slate-400 transition"
+            className="shrink-0 text-xs text-qm-faint hover:text-qm-muted transition"
             title={t.insights.regenerateSummary}
           >
             ↻ Refresh
           </button>
         )}
         {state.status === "loading" && (
-          <span className="shrink-0 text-xs text-slate-600 animate-pulse">
+          <span className="shrink-0 text-xs text-qm-faint animate-pulse">
             Generating…
           </span>
         )}
       </div>
 
       {state.status === "idle" && !hasRealData && (
-        <p className="text-sm text-slate-600">
+        <p className="text-sm text-qm-faint">
           Generate a few more reflections and Quiet Mirror will write a personal
           summary of what it's noticed.
         </p>
@@ -601,21 +601,21 @@ function WeeklySummarySection({ hasRealData }: { hasRealData: boolean }) {
 
       {state.status === "loading" && (
         <div className="space-y-2.5 animate-pulse">
-          <div className="h-3.5 w-full rounded bg-slate-800" />
-          <div className="h-3.5 w-5/6 rounded bg-slate-800" />
-          <div className="h-3.5 w-4/5 rounded bg-slate-800" />
-          <div className="mt-2 h-3.5 w-full rounded bg-slate-800" />
-          <div className="h-3.5 w-3/4 rounded bg-slate-800" />
+          <div className="h-3.5 w-full rounded bg-qm-card" />
+          <div className="h-3.5 w-5/6 rounded bg-qm-card" />
+          <div className="h-3.5 w-4/5 rounded bg-qm-card" />
+          <div className="mt-2 h-3.5 w-full rounded bg-qm-card" />
+          <div className="h-3.5 w-3/4 rounded bg-qm-card" />
         </div>
       )}
 
       {state.status === "error" && (
         <div className="space-y-3">
-          <p className="text-sm text-slate-500">{state.message}</p>
+          <p className="text-sm text-qm-faint">{state.message}</p>
           <button
             type="button"
             onClick={() => fetchSummary()}
-            className="text-xs font-medium text-emerald-500 hover:text-emerald-400 transition"
+            className="text-xs font-medium text-qm-positive hover:text-qm-positive transition"
           >
             Try again →
           </button>
@@ -631,15 +631,15 @@ function WeeklySummarySection({ hasRealData }: { hasRealData: boolean }) {
               <p
                 key={i}
                 className={`leading-relaxed ${
-                  i === 0 ? "text-base text-slate-200" : "text-sm text-slate-400"
+                  i === 0 ? "text-base text-qm-primary" : "text-sm text-qm-muted"
                 }`}
               >
                 {para}
               </p>
             ))}
 
-          <div className="flex items-center gap-3 pt-1 border-t border-slate-800">
-            <span className="text-xs text-slate-700" suppressHydrationWarning>
+          <div className="flex items-center gap-3 pt-1 border-t border-qm-border-subtle">
+            <span className="text-xs text-qm-faint" suppressHydrationWarning>
               Last updated {generatedLabel}
             </span>
           </div>
@@ -734,23 +734,23 @@ export default function InsightsClient() {
     if (topEmotion && topTheme) {
       return (
         <>
-          <span className="text-slate-100 font-semibold">{topEmotion}</span>{" "}
+          <span className="text-qm-primary font-semibold">{topEmotion}</span>{" "}
           keeps showing up — often alongside{" "}
-          <span className="text-slate-100 font-semibold">{topTheme}</span>.
+          <span className="text-qm-primary font-semibold">{topTheme}</span>.
         </>
       );
     }
     if (topEmotion) {
       return (
         <>
-          <span className="text-slate-100 font-semibold">{topEmotion}</span> is
+          <span className="text-qm-primary font-semibold">{topEmotion}</span> is
           the emotion that appears most across your reflections.
         </>
       );
     }
     return (
       <>
-        <span className="text-slate-100 font-semibold">{topTheme}</span> is a
+        <span className="text-qm-primary font-semibold">{topTheme}</span> is a
         theme that keeps appearing across your entries.
       </>
     );
@@ -759,26 +759,26 @@ export default function InsightsClient() {
   return (
     <div className="mx-auto max-w-5xl space-y-8 px-4 pb-10 sm:px-6">
       <div>
-        <h1 className="font-display text-3xl font-semibold text-white sm:text-4xl">Insights</h1>
-        <p className="mt-1 text-sm text-slate-500">
+        <h1 className="font-display text-3xl font-semibold text-qm-primary sm:text-4xl">Insights</h1>
+        <p className="mt-1 text-sm text-qm-faint">
           What Quiet Mirror has noticed across your reflections
           {totalEntryCount > 0 && (
             <>
               {" "}
               —{" "}
-              <span className="text-slate-400">
+              <span className="text-qm-muted">
                 {totalEntryCount} {totalEntryCount === 1 ? "entry" : "entries"}
               </span>
             </>
           )}
           {entryCount > 0 && entryCount < totalEntryCount && (
-            <span className="text-slate-600"> · {entryCount} reflected</span>
+            <span className="text-qm-faint"> · {entryCount} reflected</span>
           )}
           {data?.firstEntryDate && data?.lastEntryDate && mounted && (() => {
             const first = friendlyDate(data.firstEntryDate!);
             const last = friendlyDate(data.lastEntryDate!);
             return (
-              <span className="text-slate-600" suppressHydrationWarning>
+              <span className="text-qm-faint" suppressHydrationWarning>
                 {" · "}
                 {first === last ? first : `${first} – ${last}`}
               </span>
@@ -788,7 +788,7 @@ export default function InsightsClient() {
       </div>
 
       {error && (
-        <div className="rounded-xl border border-red-500/20 bg-red-500/5 p-4 text-sm text-red-300">
+        <div className="rounded-xl border border-qm-danger-border bg-qm-danger-bg p-4 text-sm text-qm-danger">
           {error}
         </div>
       )}
@@ -849,13 +849,13 @@ export default function InsightsClient() {
             <DomainSection domains={data.domains!} entryCount={entryCount} />
           )}
 
-          <section className="rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-950 to-slate-900/40 p-7">
-            <p className="mb-2 text-[10px] font-semibold uppercase tracking-widest text-slate-600">
+          <section className="rounded-2xl border border-qm-border-subtle bg-gradient-to-br from-slate-950 to-slate-900/40 p-7">
+            <p className="mb-2 text-[10px] font-semibold uppercase tracking-widest text-qm-faint">
               The pattern underneath
             </p>
 
             <p
-              className="text-lg leading-relaxed text-slate-300"
+              className="text-lg leading-relaxed text-qm-secondary"
               suppressHydrationWarning
             >
               {renderHeadline()}
@@ -863,7 +863,7 @@ export default function InsightsClient() {
 
             {hasTrend && (
               <div className="mt-4 flex flex-wrap items-center gap-2">
-                <span className="text-xs text-slate-600 mr-0.5">Recently:</span>
+                <span className="text-xs text-qm-faint mr-0.5">Recently:</span>
                 {data.trend?.up?.map((e) => (
                   <TrendPill key={`u-${e}`} label={e} dir="up" />
                 ))}
@@ -873,32 +873,32 @@ export default function InsightsClient() {
               </div>
             )}
 
-            <p className="mt-4 text-xs text-slate-600">
+            <p className="mt-4 text-xs text-qm-faint">
               These are patterns, not diagnoses. They shift as you keep writing.
             </p>
           </section>
 
           {topCorepatterns.length > 0 && (
-            <section className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6">
-              <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500">
+            <section className="rounded-2xl border border-qm-border-subtle bg-qm-bg p-6">
+              <h2 className="text-xs font-semibold uppercase tracking-widest text-qm-faint">
                 What you keep coming back to
               </h2>
-              <p className="mt-0.5 mb-5 text-xs text-slate-600">
+              <p className="mt-0.5 mb-5 text-xs text-qm-faint">
                 The specific dynamic Quiet Mirror noticed most often beneath your
                 entries.
               </p>
 
-              <div className="mb-4 rounded-xl border border-emerald-500/15 bg-emerald-500/5 p-4">
+              <div className="mb-4 rounded-xl border border-qm-positive-border bg-qm-positive-bg p-4">
                 <div className="flex items-start justify-between gap-3">
-                  <p className="text-sm font-medium leading-relaxed text-slate-100">
-                    <span className="mr-2 inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 align-middle" />
+                  <p className="text-sm font-medium leading-relaxed text-qm-primary">
+                    <span className="mr-2 inline-block h-1.5 w-1.5 rounded-full bg-qm-positive align-middle" />
                     {toSentenceCase(topCorepatterns[0][0])}
                   </p>
-                  <span className="shrink-0 rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs tabular-nums text-emerald-400">
+                  <span className="shrink-0 rounded-full bg-qm-positive-soft px-2 py-0.5 text-xs tabular-nums text-qm-positive">
                     {topCorepatterns[0][1]}× across {entryCount} {entryCount === 1 ? "entry" : "entries"}
                   </span>
                 </div>
-                <p className="mt-2 text-xs text-slate-600 pl-4">
+                <p className="mt-2 text-xs text-qm-faint pl-4">
                   Your most recurring underlying pattern
                 </p>
               </div>
@@ -908,16 +908,16 @@ export default function InsightsClient() {
                   {topCorepatterns.slice(1).map(([pattern, count]) => (
                     <li key={pattern} className="group space-y-1.5">
                       <div className="flex items-start justify-between gap-3">
-                        <p className="text-xs leading-relaxed text-slate-400 group-hover:text-slate-300 transition-colors">
+                        <p className="text-xs leading-relaxed text-qm-muted group-hover:text-qm-secondary transition-colors">
                           {toSentenceCase(pattern)}
                         </p>
-                        <span className="shrink-0 tabular-nums text-xs text-slate-700 pt-0.5">
+                        <span className="shrink-0 tabular-nums text-xs text-qm-faint pt-0.5">
                           {count}×
                         </span>
                       </div>
-                      <div className="h-[2px] w-full overflow-hidden rounded-full bg-slate-800">
+                      <div className="h-[2px] w-full overflow-hidden rounded-full bg-qm-card">
                         <div
-                          className="h-full rounded-full bg-slate-700 transition-all duration-700"
+                          className="h-full rounded-full bg-qm-soft transition-all duration-700"
                           style={{
                             width: `${Math.round((count / maxPattern) * 100)}%`,
                           }}
@@ -933,13 +933,13 @@ export default function InsightsClient() {
           {hasWeeklyData && <WeeklyTrends data={data.weeklyTrend!} />}
 
           <div className="grid gap-6 md:grid-cols-2">
-            <section className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6">
+            <section className="rounded-2xl border border-qm-border-subtle bg-qm-bg p-6">
               <div className="mb-5 flex items-center justify-between">
                 <div>
-                  <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500">
+                  <h2 className="text-xs font-semibold uppercase tracking-widest text-qm-faint">
                     Recurring themes
                   </h2>
-                  <p className="mt-0.5 text-xs text-slate-600">
+                  <p className="mt-0.5 text-xs text-qm-faint">
                     {allThemes.length} distinct{" "}
                     {allThemes.length === 1 ? "theme" : "themes"} · cleaned +
                     merged
@@ -949,7 +949,7 @@ export default function InsightsClient() {
                   <button
                     type="button"
                     onClick={() => setShowAllThemes((v) => !v)}
-                    className="text-xs text-emerald-500/70 hover:text-emerald-400 transition font-medium"
+                    className="text-xs text-qm-positive hover:text-qm-positive transition font-medium"
                   >
                     {showAllThemes ? "Show less" : `+${allThemes.length - 6} more`}
                   </button>
@@ -957,7 +957,7 @@ export default function InsightsClient() {
               </div>
 
               {allThemes.length === 0 ? (
-                <p className="text-sm text-slate-600">
+                <p className="text-sm text-qm-faint">
                   Not enough personal theme data yet.
                 </p>
               ) : (
@@ -976,13 +976,13 @@ export default function InsightsClient() {
               )}
             </section>
 
-            <section className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6">
+            <section className="rounded-2xl border border-qm-border-subtle bg-qm-bg p-6">
               <div className="mb-5 flex items-center justify-between">
                 <div>
-                  <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500">
+                  <h2 className="text-xs font-semibold uppercase tracking-widest text-qm-faint">
                     What keeps surfacing
                   </h2>
-                  <p className="mt-0.5 text-xs text-slate-600">
+                  <p className="mt-0.5 text-xs text-qm-faint">
                     {allEmotions.length} distinct{" "}
                     {allEmotions.length === 1 ? "emotion" : "emotions"} ·
                     cleaned + merged
@@ -992,7 +992,7 @@ export default function InsightsClient() {
                   <button
                     type="button"
                     onClick={() => setShowAllEmotions((v) => !v)}
-                    className="text-xs text-emerald-500/70 hover:text-emerald-400 transition font-medium"
+                    className="text-xs text-qm-positive hover:text-qm-positive transition font-medium"
                   >
                     {showAllEmotions
                       ? "Show less"
@@ -1002,7 +1002,7 @@ export default function InsightsClient() {
               </div>
 
               {allEmotions.length === 0 ? (
-                <p className="text-sm text-slate-600">
+                <p className="text-sm text-qm-faint">
                   Not enough personal emotion data yet.
                 </p>
               ) : (
@@ -1023,22 +1023,22 @@ export default function InsightsClient() {
           </div>
 
           {topCorepatterns.length > 0 && (
-            <section className="rounded-2xl border border-slate-800/60 bg-emerald-950/20 p-6 text-center">
-              <p className="text-sm font-medium text-white">
+            <section className="rounded-2xl border border-qm-border-subtle bg-qm-positive-bg p-6 text-center">
+              <p className="text-sm font-medium text-qm-primary">
                 The pattern is clearer now.
               </p>
-              <p className="mt-1 text-xs leading-relaxed text-slate-400">
+              <p className="mt-1 text-xs leading-relaxed text-qm-muted">
                 The next entry is where you take it further.
               </p>
               <Link
                 href={`/journal/new?prompt=${encodeURIComponent(
                   `I keep noticing ${topCorepatterns[0][0].toLowerCase()}. What's underneath it today?`
                 )}`}
-                className="mt-4 inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-qm-accent-hover"
+                className="mt-4 inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-2.5 text-xs font-semibold text-qm-primary shadow-sm transition hover:bg-qm-accent-hover"
               >
                 Write about this →
               </Link>
-              <p className="mt-3 text-xs text-slate-700">
+              <p className="mt-3 text-xs text-qm-faint">
                 Insights deepen as your reflection history grows.
               </p>
             </section>

@@ -75,8 +75,8 @@ export default function UpgradeTriggerModal({
           <div className="space-y-2.5">
             {[
               { label: "Unlimited reflections", dot: "bg-qm-accent" },
-              { label: "Pattern insights across time", dot: "bg-violet-400" },
-              { label: "Weekly personal summary", dot: "bg-amber-400" },
+              { label: "Pattern insights across time", dot: "bg-qm-premium" },
+              { label: "Weekly personal summary", dot: "bg-qm-warning" },
             ].map(({ label, dot }) => (
               <div key={label} className="flex items-center gap-2.5">
                 <span className={`h-1.5 w-1.5 rounded-full ${dot}`} />

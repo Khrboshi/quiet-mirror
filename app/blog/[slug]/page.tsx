@@ -107,7 +107,7 @@ export default function BlogArticlePage({ params }: BlogArticlePageProps) {
           <div className="mt-4 flex flex-wrap gap-3 text-xs">
             <Link
               href="/upgrade"
-              className="rounded-full bg-qm-accent px-4 py-2 font-semibold text-white hover:bg-qm-accent-hover"
+              className="rounded-full bg-qm-accent px-4 py-2 font-semibold text-qm-primary hover:bg-qm-accent-hover"
             >
               See Premium benefits →
             </Link>

@@ -93,40 +93,40 @@ function getDailyPrompts<T extends { q: string; sub: string; accent: string }>(
 // Map accent name → Tailwind classes
 const ACCENT_CLASSES: Record<string, { border: string; label: string; dot: string; arrow: string }> = {
   emerald: {
-    border: "border-emerald-500/20 hover:border-emerald-500/40",
-    label: "text-emerald-400/60",
-    dot: "bg-emerald-500",
-    arrow: "text-emerald-400 group-hover:text-emerald-300",
+    border: "border-qm-positive-border hover:border-qm-positive-border",
+    label: "text-qm-positive",
+    dot: "bg-qm-positive-strong",
+    arrow: "text-qm-positive group-hover:text-qm-positive",
   },
   violet: {
-    border: "border-violet-500/20 hover:border-violet-500/40",
-    label: "text-violet-400/60",
-    dot: "bg-violet-500",
-    arrow: "text-violet-400 group-hover:text-violet-300",
+    border: "border-qm-premium-border hover:border-qm-premium-border",
+    label: "text-qm-premium",
+    dot: "bg-qm-premium-strong",
+    arrow: "text-qm-premium group-hover:text-qm-premium",
   },
   amber: {
-    border: "border-amber-500/20 hover:border-amber-500/40",
-    label: "text-amber-400/60",
-    dot: "bg-amber-500",
-    arrow: "text-amber-400 group-hover:text-amber-300",
+    border: "border-qm-warning-border hover:border-qm-warning-border",
+    label: "text-qm-warning",
+    dot: "bg-qm-warning-strong",
+    arrow: "text-qm-warning group-hover:text-qm-warning",
   },
   sky: {
-    border: "border-violet-500/20 hover:border-violet-500/40",
-    label: "text-violet-400/60",
-    dot: "bg-violet-500",
-    arrow: "text-violet-400 group-hover:text-violet-300",
+    border: "border-qm-premium-border hover:border-qm-premium-border",
+    label: "text-qm-premium",
+    dot: "bg-qm-premium-strong",
+    arrow: "text-qm-premium group-hover:text-qm-premium",
   },
   rose: {
-    border: "border-rose-500/20 hover:border-rose-500/40",
-    label: "text-rose-400/60",
-    dot: "bg-rose-500",
-    arrow: "text-rose-400 group-hover:text-rose-300",
+    border: "border-qm-danger-border hover:border-qm-danger-border",
+    label: "text-qm-danger",
+    dot: "bg-qm-danger-strong",
+    arrow: "text-qm-danger group-hover:text-qm-danger",
   },
   slate: {
-    border: "border-slate-700/60 hover:border-slate-600",
-    label: "text-slate-500",
-    dot: "bg-slate-500",
-    arrow: "text-slate-400 group-hover:text-slate-300",
+    border: "border-qm-border-subtle hover:border-qm-border-subtle",
+    label: "text-qm-faint",
+    dot: "bg-qm-muted",
+    arrow: "text-qm-muted group-hover:text-qm-secondary",
   },
 };
 
@@ -158,24 +158,24 @@ function PremiumInsightCard({
     : `${theme} is the theme appearing most in your entries.`;
 
   return (
-    <div className="rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/[0.06] to-transparent p-5 sm:p-6">
-      <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-500/70">
+    <div className="rounded-2xl border border-qm-positive-border bg-gradient-to-br from-qm-positive-strong/[0.06] to-transparent p-5 sm:p-6">
+      <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-positive">
         Your pattern right now
       </p>
 
-      <p className="font-display text-base font-medium leading-relaxed text-slate-100 sm:text-[17px]">
+      <p className="font-display text-base font-medium leading-relaxed text-qm-primary sm:text-[17px]">
         &ldquo;{bodyText}&rdquo;
       </p>
 
       {(emotion || theme) && (
         <div className="mt-3 flex flex-wrap gap-2">
           {emotion && (
-            <span className="rounded-full border border-violet-500/20 bg-violet-500/10 px-2.5 py-0.5 text-xs text-violet-300">
+            <span className="rounded-full border border-qm-premium-border bg-qm-premium-soft px-2.5 py-0.5 text-xs text-qm-premium">
               {emotion}
             </span>
           )}
           {theme && (
-            <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-0.5 text-xs text-emerald-300">
+            <span className="rounded-full border border-qm-positive-border bg-qm-positive-soft px-2.5 py-0.5 text-xs text-qm-positive">
               {theme}
             </span>
           )}
@@ -185,16 +185,16 @@ function PremiumInsightCard({
       <div className="mt-4 flex flex-wrap items-center gap-3">
         <Link
           href="/insights"
-          className="text-xs font-medium text-emerald-400 transition hover:text-emerald-300"
+          className="text-xs font-medium text-qm-positive transition hover:text-qm-positive"
         >
           See full insights →
         </Link>
         {!reflectedThisWeek && (
           <>
-            <span className="text-xs text-slate-700">·</span>
+            <span className="text-xs text-qm-faint">·</span>
             <Link
               href="/journal"
-              className="text-xs text-slate-500 transition hover:text-slate-400"
+              className="text-xs text-qm-faint transition hover:text-qm-muted"
             >
               Reflect on a recent entry
             </Link>
@@ -222,12 +222,12 @@ function FreeInsightTeaser({
   if (entryCount < 3) {
     return (
       <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-5 sm:p-6">
-        <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+        <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-faint">
           Your patterns
         </p>
-        <p className="text-sm leading-relaxed text-slate-400">
+        <p className="text-sm leading-relaxed text-qm-muted">
           Write{" "}
-          <span className="text-slate-200">
+          <span className="text-qm-primary">
             {t.dashboard.moreEntries(3 - entryCount)}
           </span>{" "}
           and Quiet Mirror will start noticing what quietly repeats across your writing.
@@ -238,20 +238,20 @@ function FreeInsightTeaser({
 
   return (
     <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-5 sm:p-6">
-      <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+      <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-faint">
         A pattern is forming
       </p>
 
       {hasHint ? (
-        <p className="text-sm leading-relaxed text-slate-300">
+        <p className="text-sm leading-relaxed text-qm-secondary">
           Across your entries, there may be a recurring thread around{" "}
-          <span className="select-none rounded bg-white/10 px-1 text-white blur-[5px]">
+          <span className="select-none rounded bg-white/10 px-1 text-qm-primary blur-[5px]">
             {emotion ?? theme}
           </span>
           . Premium helps you see it clearly.
         </p>
       ) : (
-        <p className="text-sm leading-relaxed text-slate-300">
+        <p className="text-sm leading-relaxed text-qm-secondary">
           Quiet Mirror has noticed a recurring thread in your entries. Premium helps
           you see what quietly repeats.
         </p>
@@ -259,7 +259,7 @@ function FreeInsightTeaser({
 
       <Link
         href="/upgrade"
-        className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-qm-accent px-4 py-2 text-xs font-semibold text-white transition hover:bg-qm-accent-hover"
+        className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-qm-accent px-4 py-2 text-xs font-semibold text-qm-primary transition hover:bg-qm-accent-hover"
       >
         Unlock insights →
       </Link>
@@ -311,17 +311,17 @@ function ThreadCard({
 
   return (
     <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-5">
-      <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+      <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-faint">
         {sectionLabel}
       </p>
-      <p className="mt-2 text-sm font-medium leading-snug text-slate-200">
+      <p className="mt-2 text-sm font-medium leading-snug text-qm-primary">
         {body}
       </p>
 
       <div className="mt-4 flex flex-wrap gap-2">
         <Link
           href={buildHref(threadPrompt)}
-          className="inline-flex rounded-full bg-qm-accent px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-qm-accent-hover"
+          className="inline-flex rounded-full bg-qm-accent px-4 py-2 text-sm font-semibold text-qm-primary shadow-sm transition hover:bg-qm-accent-hover"
         >
           {wroteToday ? t.dashboard.addToToday : t.dashboard.writeNow}
         </Link>
@@ -329,7 +329,7 @@ function ThreadCard({
         {lastEntryId && (
           <Link
             href={`/journal/${lastEntryId}`}
-            className="inline-flex rounded-full border border-white/[0.08] bg-white/[0.03] px-4 py-2 text-sm font-medium text-slate-300 transition hover:bg-white/[0.07]"
+            className="inline-flex rounded-full border border-white/[0.08] bg-white/[0.03] px-4 py-2 text-sm font-medium text-qm-secondary transition hover:bg-white/[0.07]"
           >
             Open last entry
           </Link>
@@ -344,25 +344,25 @@ function ThreadCard({
 function WelcomePanel() {
   const { t } = useTranslation();
   return (
-    <div className="mb-8 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.04] p-6">
-      <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-500/70">
+    <div className="mb-8 rounded-2xl border border-qm-positive-border bg-qm-positive-strong/[0.04] p-6">
+      <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-positive">
         Welcome to Quiet Mirror
       </p>
-      <h2 className="font-display text-lg font-semibold leading-snug text-white">
+      <h2 className="font-display text-lg font-semibold leading-snug text-qm-primary">
         This is your private space to think out loud.
       </h2>
-      <p className="mt-2 text-sm leading-relaxed text-slate-400">
+      <p className="mt-2 text-sm leading-relaxed text-qm-muted">
         Write what&apos;s actually going on — Quiet Mirror reads it, reflects it back
         gently, and starts noticing what quietly repeats across your entries over
         time. One sentence is always enough to start.
       </p>
       <Link
         href="/journal/new"
-        className="mt-5 inline-flex items-center gap-2 rounded-full bg-qm-accent px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-qm-accent-hover"
+        className="mt-5 inline-flex items-center gap-2 rounded-full bg-qm-accent px-5 py-2.5 text-sm font-semibold text-qm-primary shadow-sm transition hover:bg-qm-accent-hover"
       >
         Write your first entry →
       </Link>
-      <p className="mt-3 text-xs text-slate-600">
+      <p className="mt-3 text-xs text-qm-faint">
         Takes less than a minute · stays private · never trains AI
       </p>
     </div>
@@ -379,16 +379,16 @@ function PatternStartedCard({
   theme: string | null;
 }) {
   return (
-    <div className="mb-8 rounded-2xl border border-violet-500/20 bg-violet-500/[0.04] p-6">
-      <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-violet-400/70">
+    <div className="mb-8 rounded-2xl border border-qm-premium-border bg-qm-premium-strong/[0.04] p-6">
+      <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-premium">
         Your pattern history has started
       </p>
-      <p className="text-sm leading-relaxed text-slate-300">
+      <p className="text-sm leading-relaxed text-qm-secondary">
         Quiet Mirror has your first reflection.{" "}
         {emotion || theme ? (
           <>
             It noticed{" "}
-            <span className="text-slate-100">{emotion ?? theme}</span> in what
+            <span className="text-qm-primary">{emotion ?? theme}</span> in what
             you wrote.{" "}
           </>
         ) : null}
@@ -396,7 +396,7 @@ function PatternStartedCard({
       </p>
       <Link
         href="/journal/new"
-        className="mt-4 inline-flex items-center gap-2 text-xs font-medium text-violet-400 transition hover:text-violet-300"
+        className="mt-4 inline-flex items-center gap-2 text-xs font-medium text-qm-premium transition hover:text-qm-premium"
       >
         Write another entry →
       </Link>
@@ -412,23 +412,23 @@ function ProgressNudge({ entryCount }: { entryCount: number }) {
   if (remaining <= 0) return null;
 
   return (
-    <div className="mb-8 rounded-2xl border border-slate-800/60 bg-slate-900/30 p-5">
+    <div className="mb-8 rounded-2xl border border-qm-border-subtle bg-qm-elevated p-5">
       <div className="mb-2 flex items-center justify-between">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-faint">
           Your pattern is forming
         </p>
-        <p className="text-xs text-slate-600">
+        <p className="text-xs text-qm-faint">
           {entryCount} / 5 entries
         </p>
       </div>
-      <div className="mb-3 h-1 w-full rounded-full bg-slate-800">
+      <div className="mb-3 h-1 w-full rounded-full bg-qm-card">
         <div
-          className="h-1 rounded-full bg-emerald-500/60 transition-all"
+          className="h-1 rounded-full bg-qm-positive-muted transition-all"
           style={{ width: `${(entryCount / 5) * 100}%` }}
         />
       </div>
-      <p className="text-sm text-slate-400">
-        <span className="text-slate-200">
+      <p className="text-sm text-qm-muted">
+        <span className="text-qm-primary">
           {t.dashboard.moreEntries(remaining)}
         </span>{" "}
         and Quiet Mirror will start showing you what quietly repeats across your
@@ -483,44 +483,44 @@ export default function DashboardClient({
   }, [entryCount, wroteToday]);
 
   return (
-    <div className="mx-auto max-w-5xl px-5 pb-20 pt-10 text-slate-200 sm:px-6">
+    <div className="mx-auto max-w-5xl px-5 pb-20 pt-10 text-qm-primary sm:px-6">
 
       {/* ── Header ── */}
       <div className="mb-8">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="space-y-1">
             {/* ✅ Fraunces serif on the greeting — most personal line in the app */}
-            <h1 className="font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+            <h1 className="font-display text-3xl font-semibold tracking-tight text-qm-primary sm:text-4xl">
               {greeting}
             </h1>
-            <p className="text-sm text-slate-500">{subline}</p>
+            <p className="text-sm text-qm-faint">{subline}</p>
           </div>
         </div>
 
         {/* ✅ Replaced debug-style pill badges with a subtle single-line status row */}
-        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-600">
+        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-qm-faint">
           <span>
             Plan:{" "}
-            <span className={isPremium ? "text-emerald-400" : "text-slate-400"}>
+            <span className={isPremium ? "text-qm-positive" : "text-qm-muted"}>
               {readablePlan}
             </span>
           </span>
 
-          <span className="text-slate-800">·</span>
+          <span className="text-qm-faint">·</span>
 
           {isPremium ? (
             <span>
-              Reflections: <span className="text-emerald-400">unlimited</span>
+              Reflections: <span className="text-qm-positive">unlimited</span>
             </span>
           ) : reflectionsPaused ? (
             <span>
               Reflections paused —{" "}
-              <span className="text-slate-500">returns {resetLabel}</span>
+              <span className="text-qm-faint">returns {resetLabel}</span>
             </span>
           ) : (
             <span>
               Reflections remaining:{" "}
-              <span className="text-slate-400">
+              <span className="text-qm-muted">
                 {planLoading ? "…" : String(credits ?? 0)}
               </span>
             </span>
@@ -528,7 +528,7 @@ export default function DashboardClient({
 
           {entryCount > 0 && (
             <>
-              <span className="text-slate-800">·</span>
+              <span className="text-qm-faint">·</span>
               <span>
                 {entryCount} {entryCount === 1 ? t.dashboard.entry : t.dashboard.entries}
               </span>
@@ -537,7 +537,7 @@ export default function DashboardClient({
         </div>
 
         {reflectionsPaused && (
-          <p className="mt-1.5 text-xs text-slate-700">
+          <p className="mt-1.5 text-xs text-qm-faint">
             You can always write freely — reflections return {resetLabel}.
           </p>
         )}
@@ -547,11 +547,11 @@ export default function DashboardClient({
           <div className="mt-3 flex items-center gap-3">
             <Link
               href="/upgrade"
-              className="inline-flex items-center rounded-full bg-qm-accent px-4 py-1.5 text-xs font-semibold text-white hover:bg-qm-accent-hover transition-colors"
+              className="inline-flex items-center rounded-full bg-qm-accent px-4 py-1.5 text-xs font-semibold text-qm-primary hover:bg-qm-accent-hover transition-colors"
             >
               Unlock unlimited reflections →
             </Link>
-            <span className="text-xs text-slate-700">{PRICING.trialDays}-day full refund · Cancel anytime</span>
+            <span className="text-xs text-qm-faint">{PRICING.trialDays}-day full refund · Cancel anytime</span>
           </div>
         )}
       </div>
@@ -591,7 +591,7 @@ export default function DashboardClient({
 
       {/* ── Daily prompts ── */}
       <div className="mb-6">
-        <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-600">
+        <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-faint">
           Today&apos;s prompts
         </p>
 
@@ -606,11 +606,11 @@ export default function DashboardClient({
               >
                 {/* ✅ Colored dot per-prompt for visual differentiation */}
                 <span className={`mb-3 block h-1.5 w-1.5 rounded-full ${ac.dot}`} />
-                <p className="font-medium leading-snug text-slate-100 transition group-hover:text-white">
+                <p className="font-medium leading-snug text-qm-primary transition group-hover:text-qm-primary">
                   {c.q}
                 </p>
-                <p className="mt-1.5 text-xs leading-relaxed text-slate-500">{c.sub}</p>
-                <p className="mt-3 text-xs font-medium transition text-emerald-400 group-hover:text-emerald-300">
+                <p className="mt-1.5 text-xs leading-relaxed text-qm-faint">{c.sub}</p>
+                <p className="mt-3 text-xs font-medium transition text-qm-positive group-hover:text-qm-positive">
                   Start →
                 </p>
               </Link>
@@ -632,31 +632,31 @@ export default function DashboardClient({
 
         {/* ✅ History card — cleaner, less "settings panel" feel */}
         <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-5">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-faint">
             Your history
           </p>
 
           <div className="mt-4 space-y-2.5">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-slate-500">Total entries</span>
-              <span className="font-medium text-slate-200">{entryCount}</span>
+              <span className="text-qm-faint">Total entries</span>
+              <span className="font-medium text-qm-primary">{entryCount}</span>
             </div>
             <div className="flex items-center justify-between text-sm">
-              <span className="text-slate-500">Writing days</span>
-              <span className="font-medium text-slate-200">{writingDays}</span>
+              <span className="text-qm-faint">Writing days</span>
+              <span className="font-medium text-qm-primary">{writingDays}</span>
             </div>
             {lastEntryDate && (
               <div className="flex items-center justify-between text-sm">
-                <span className="text-slate-500">Last entry</span>
-                <span className="font-medium text-slate-200" suppressHydrationWarning>
+                <span className="text-qm-faint">Last entry</span>
+                <span className="font-medium text-qm-primary" suppressHydrationWarning>
                   {friendlyDate(lastEntryDate, mounted, t)}
                 </span>
               </div>
             )}
             {isPremium && (
               <div className="flex items-center justify-between text-sm">
-                <span className="text-slate-500">Reflections</span>
-                <span className="font-medium text-emerald-400">Unlimited</span>
+                <span className="text-qm-faint">Reflections</span>
+                <span className="font-medium text-qm-positive">Unlimited</span>
               </div>
             )}
           </div>
@@ -664,14 +664,14 @@ export default function DashboardClient({
           <div className="mt-5 flex flex-wrap gap-3 border-t border-white/[0.05] pt-4">
             <Link
               href="/journal"
-              className="text-xs text-slate-500 transition hover:text-slate-300"
+              className="text-xs text-qm-faint transition hover:text-qm-secondary"
             >
               All entries →
             </Link>
             {isPremium && (
               <Link
                 href="/insights"
-                className="text-xs text-emerald-500/70 transition hover:text-emerald-400"
+                className="text-xs text-qm-positive transition hover:text-qm-positive"
               >
                 View insights →
               </Link>

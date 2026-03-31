@@ -65,7 +65,7 @@ export default function CompleteClient() {
           {closeBlocked ? "You're signed in." : "Signing you in\u2026"}
         </h1>
         
-        <p className="mt-2 text-sm leading-relaxed text-slate-400">
+        <p className="mt-2 text-sm leading-relaxed text-qm-muted">
           {closeBlocked
             ? "Your original tab is ready. You can close this one."
             : ""}
@@ -74,7 +74,7 @@ export default function CompleteClient() {
         {closeBlocked && (
           <Link
             href={destination}
-            className="mt-6 inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-qm-accent-hover"
+            className="mt-6 inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-2.5 text-sm font-semibold text-qm-primary transition-colors hover:bg-qm-accent-hover"
           >
             {destination === "/upgrade" ? "Continue to Premium →" : "Go to dashboard →"}
           </Link>

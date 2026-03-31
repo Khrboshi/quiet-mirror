@@ -104,23 +104,23 @@ export default function TransactionsPage() {
   }, [invoices]);
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-14 text-slate-200">
+    <div className="mx-auto max-w-5xl px-6 py-14 text-qm-primary">
       <div className="flex flex-wrap items-start justify-between gap-4 mb-8">
         <div>
           <h1 className="font-display text-3xl font-semibold tracking-tight mb-2">Transactions</h1>
-          <p className="text-slate-400 text-sm">{email}</p>
+          <p className="text-qm-muted text-sm">{email}</p>
         </div>
 
         <div className="flex items-center gap-3">
           <Link
             href="/settings"
-            className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-slate-200 hover:bg-white/10"
+            className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-qm-primary hover:bg-white/10"
           >
             Back to Settings
           </Link>
           <Link
             href="/settings/billing"
-            className="rounded-full bg-emerald-500 px-3 py-2 text-sm font-medium text-black hover:bg-emerald-400"
+            className="rounded-full bg-qm-positive-strong px-3 py-2 text-sm font-medium text-black hover:bg-qm-positive"
           >
             Billing
           </Link>
@@ -133,14 +133,14 @@ export default function TransactionsPage() {
           <h2 className="text-lg font-semibold mb-2">Subscription</h2>
 
           {loading ? (
-            <p className="text-slate-400">Loading…</p>
+            <p className="text-qm-muted">Loading…</p>
           ) : (
-            <p className="text-slate-400">
-              Plan: <span className="text-slate-200">{readablePlan}</span>
+            <p className="text-qm-muted">
+              Plan: <span className="text-qm-primary">{readablePlan}</span>
               {planType !== "PREMIUM" ? (
                 <>
                   {" "}
-                  — credits: <span className="text-slate-200">{credits ?? 0}</span>
+                  — credits: <span className="text-qm-primary">{credits ?? 0}</span>
                 </>
               ) : null}
             </p>
@@ -150,7 +150,7 @@ export default function TransactionsPage() {
             <button
               type="button"
               onClick={goToPortal}
-              className="rounded-full bg-emerald-500 px-4 py-2 text-sm font-medium text-black hover:bg-emerald-400"
+              className="rounded-full bg-qm-positive-strong px-4 py-2 text-sm font-medium text-black hover:bg-qm-positive"
             >
               Manage subscription
             </button>
@@ -158,7 +158,7 @@ export default function TransactionsPage() {
             {showUpgrade ? (
               <Link
                 href="/upgrade"
-                className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-white/10"
+                className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-qm-primary hover:bg-white/10"
               >
                 Upgrade
               </Link>
@@ -166,39 +166,39 @@ export default function TransactionsPage() {
 
             <Link
               href="/dashboard"
-              className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-white/10"
+              className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-qm-primary hover:bg-white/10"
             >
               Dashboard
             </Link>
           </div>
 
-          <p className="mt-4 text-xs text-slate-500">{PAYMENT.billingManagedLine}</p>
+          <p className="mt-4 text-xs text-qm-faint">{PAYMENT.billingManagedLine}</p>
         </div>
 
         {/* Payment history */}
         <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
           <div className="flex items-center justify-between gap-4 mb-2">
             <h2 className="text-lg font-semibold">Payment history</h2>
-            <div className="text-xs text-slate-400">
+            <div className="text-xs text-qm-muted">
               Total paid:{" "}
-              <span className="text-slate-200">
+              <span className="text-qm-primary">
                 {formatMoney(totalPaid, invoices[0]?.currency || "usd")}
               </span>
             </div>
           </div>
 
           {invLoading ? (
-            <p className="text-slate-400">Loading invoices…</p>
+            <p className="text-qm-muted">Loading invoices…</p>
           ) : invError ? (
-            <div className="rounded-xl border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-200">
+            <div className="rounded-xl border border-qm-danger-border bg-qm-danger-soft p-4 text-sm text-qm-danger">
               {invError}
             </div>
           ) : invoices.length === 0 ? (
-            <p className="text-slate-400">No invoices yet.</p>
+            <p className="text-qm-muted">No invoices yet.</p>
           ) : (
             <div className="mt-4 overflow-x-auto rounded-xl border border-white/10">
               <table className="w-full min-w-[480px] text-sm">
-                <thead className="bg-white/5 text-slate-400">
+                <thead className="bg-white/5 text-qm-muted">
                   <tr>
                     <th className="text-left font-medium px-4 py-3">Date</th>
                     <th className="text-left font-medium px-4 py-3">Status</th>
@@ -216,13 +216,13 @@ export default function TransactionsPage() {
 
                     return (
                       <tr key={inv.id} className="border-t border-white/10">
-                        <td className="px-4 py-3 text-slate-200">
+                        <td className="px-4 py-3 text-qm-primary">
                           {formatDateFromUnixSeconds(inv.created)}
                         </td>
-                        <td className="px-4 py-3 text-slate-300 capitalize">
+                        <td className="px-4 py-3 text-qm-secondary capitalize">
                           {inv.status || "-"}
                         </td>
-                        <td className="px-4 py-3 text-right text-slate-200">
+                        <td className="px-4 py-3 text-right text-qm-primary">
                           {formatMoney(amount, inv.currency)}
                         </td>
                         <td className="px-4 py-3 text-right">
@@ -231,12 +231,12 @@ export default function TransactionsPage() {
                               href={url}
                               target="_blank"
                               rel="noreferrer"
-                              className="text-emerald-400 hover:text-emerald-300"
+                              className="text-qm-positive hover:text-qm-positive"
                             >
                               View
                             </a>
                           ) : (
-                            <span className="text-slate-500">—</span>
+                            <span className="text-qm-faint">—</span>
                           )}
                         </td>
                       </tr>
@@ -251,14 +251,14 @@ export default function TransactionsPage() {
             <button
               type="button"
               onClick={goToPortal}
-              className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-white/10"
+              className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-qm-primary hover:bg-white/10"
             >
               {PAYMENT.portalLabel}
             </button>
 
             <Link
               href="/settings/billing"
-              className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-white/10"
+              className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-qm-primary hover:bg-white/10"
             >
               Go to Billing page
             </Link>

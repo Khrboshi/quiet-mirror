@@ -13,20 +13,20 @@ type PlanType = "PREMIUM" | "TRIAL" | "FREE";
 function PlanBadge({ plan }: { plan: PlanType }) {
   if (plan === "PREMIUM") {
     return (
-      <span className="inline-flex items-center rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-xs font-semibold text-emerald-300">
+      <span className="inline-flex items-center rounded-full border border-qm-positive-border bg-qm-positive-soft px-2.5 py-1 text-xs font-semibold text-qm-positive">
         Premium
       </span>
     );
   }
   if (plan === "TRIAL") {
     return (
-      <span className="inline-flex items-center rounded-full border border-violet-500/30 bg-violet-500/10 px-2.5 py-1 text-xs font-semibold text-violet-300">
+      <span className="inline-flex items-center rounded-full border border-qm-premium-border bg-qm-premium-soft px-2.5 py-1 text-xs font-semibold text-qm-premium">
         Trial
       </span>
     );
   }
   return (
-    <span className="inline-flex items-center rounded-full border border-slate-700 bg-slate-900/40 px-2.5 py-1 text-xs font-semibold text-slate-300">
+    <span className="inline-flex items-center rounded-full border border-qm-border-subtle bg-qm-elevated px-2.5 py-1 text-xs font-semibold text-qm-secondary">
       Free
     </span>
   );
@@ -41,9 +41,9 @@ function SectionTitle({
 }) {
   return (
     <div className="mb-4">
-      <h2 className="text-sm font-semibold text-slate-100">{title}</h2>
+      <h2 className="text-sm font-semibold text-qm-primary">{title}</h2>
       {subtitle ? (
-        <p className="mt-1 text-sm text-slate-400">{subtitle}</p>
+        <p className="mt-1 text-sm text-qm-muted">{subtitle}</p>
       ) : null}
     </div>
   );
@@ -98,12 +98,12 @@ export default async function BillingPage() {
   }
 
   return (
-    <main className="mx-auto w-full max-w-5xl px-6 py-14 text-slate-200">
+    <main className="mx-auto w-full max-w-5xl px-6 py-14 text-qm-primary">
       <header className="mb-10">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="font-display text-2xl font-semibold text-white">Billing</h1>
-            <p className="mt-2 text-sm text-slate-400">
+            <h1 className="font-display text-2xl font-semibold text-qm-primary">Billing</h1>
+            <p className="mt-2 text-sm text-qm-muted">
               Manage your subscription and billing details.
             </p>
           </div>
@@ -113,14 +113,14 @@ export default async function BillingPage() {
             {isPaid ? (
               <a
                 href={PAYMENT.portalUrl("/settings/billing")}
-                className="inline-flex items-center justify-center rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/15"
+                className="inline-flex items-center justify-center rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-qm-primary hover:bg-white/15"
               >
                 Manage subscription
               </a>
             ) : (
               <a
                 href="/upgrade"
-                className="inline-flex items-center justify-center rounded-full bg-qm-accent px-4 py-2 text-sm font-semibold text-white hover:bg-qm-accent-hover"
+                className="inline-flex items-center justify-center rounded-full bg-qm-accent px-4 py-2 text-sm font-semibold text-qm-primary hover:bg-qm-accent-hover"
               >
                 Upgrade to Premium
               </a>
@@ -131,19 +131,19 @@ export default async function BillingPage() {
 
       {/* Refund window notice — only visible within the trial period */}
       {refundDaysLeft !== null && (
-        <div className="mb-6 flex items-start gap-3 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.06] px-5 py-4">
+        <div className="mb-6 flex items-start gap-3 rounded-2xl border border-qm-positive-border bg-qm-positive-strong/[0.06] px-5 py-4">
           <span className="mt-0.5 text-base">🛡️</span>
           <div>
-            <p className="text-sm font-semibold text-emerald-300">
+            <p className="text-sm font-semibold text-qm-positive">
               {refundDaysLeft === 1
                 ? `Last day of your ${PRICING.trialDays}-day refund window`
                 : `${refundDaysLeft} days left in your ${PRICING.trialDays}-day refund window`}
             </p>
-            <p className="mt-0.5 text-xs text-slate-400">
+            <p className="mt-0.5 text-xs text-qm-muted">
               Not what you expected? Email{" "}
               <a
                 href={`mailto:${CONFIG.supportEmail}`}
-                className="text-slate-200 underline underline-offset-2 hover:text-emerald-300"
+                className="text-qm-primary underline underline-offset-2 hover:text-qm-positive"
               >
                 {CONFIG.supportEmail}
               </a>{" "}
@@ -155,7 +155,7 @@ export default async function BillingPage() {
 
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Left: Plan card */}
-        <section className="lg:col-span-2 rounded-2xl border border-slate-800 bg-slate-950/60 p-6">
+        <section className="lg:col-span-2 rounded-2xl border border-qm-border-subtle bg-qm-bg p-6">
           <SectionTitle
             title="Plan"
             subtitle={
@@ -168,12 +168,12 @@ export default async function BillingPage() {
           />
 
           <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl border border-slate-800 bg-slate-950/40 p-5">
-              <h3 className="text-sm font-semibold text-white">
+            <div className="rounded-xl border border-qm-border-subtle bg-qm-bg p-5">
+              <h3 className="text-sm font-semibold text-qm-primary">
                 {isPaid ? "Premium includes" : "Free includes"}
               </h3>
 
-              <ul className="mt-3 space-y-2 text-sm text-slate-300">
+              <ul className="mt-3 space-y-2 text-sm text-qm-secondary">
                 {isPaid ? (
                   <>
                     <li>• Unlimited AI reflections</li>
@@ -192,54 +192,54 @@ export default async function BillingPage() {
               </ul>
 
               {isPaid && (
-                <div className="mt-4 space-y-2 border-t border-slate-800 pt-4">
+                <div className="mt-4 space-y-2 border-t border-qm-border-subtle pt-4">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-500">Price</span>
-                    <span className="font-medium text-slate-200">{PRICING.monthlyCadence}</span>
+                    <span className="text-qm-faint">Price</span>
+                    <span className="font-medium text-qm-primary">{PRICING.monthlyCadence}</span>
                   </div>
                   {nextBillingLabel && (
                     <div className="flex items-center justify-between text-xs">
-                      <span className="text-slate-500">Next charge</span>
-                      <span className="font-medium text-slate-200">{nextBillingLabel}</span>
+                      <span className="text-qm-faint">Next charge</span>
+                      <span className="font-medium text-qm-primary">{nextBillingLabel}</span>
                     </div>
                   )}
                 </div>
               )}
             </div>
 
-            <div className="rounded-xl border border-slate-800 bg-slate-950/40 p-5">
-              <h3 className="text-sm font-semibold text-white">
+            <div className="rounded-xl border border-qm-border-subtle bg-qm-bg p-5">
+              <h3 className="text-sm font-semibold text-qm-primary">
                 {isPaid ? "Cancellations" : "Upgrade"}
               </h3>
 
               {isPaid ? (
-                <p className="mt-2 text-sm text-slate-400">
+                <p className="mt-2 text-sm text-qm-muted">
                   Cancel anytime via{" "}
                   <a
                     href={PAYMENT.portalUrl("/settings/billing")}
-                    className="text-emerald-300 hover:text-emerald-200"
+                    className="text-qm-positive hover:text-qm-positive"
                   >
                     Manage subscription
                   </a>{" "}
                   in {PAYMENT.providerName}.
                 </p>
               ) : (
-                <p className="mt-2 text-sm text-slate-400">
+                <p className="mt-2 text-sm text-qm-muted">
                   Premium unlocks unlimited reflections and deeper insights.
                 </p>
               )}
 
               {/* Refund guarantee — PRICING.trialDays drives the number */}
               {isPaid && (
-                <div className="mt-4 rounded-lg border border-emerald-500/15 bg-emerald-500/5 px-3 py-2.5">
-                  <p className="text-xs font-medium text-emerald-300">
+                <div className="mt-4 rounded-lg border border-qm-positive-border bg-qm-positive-bg px-3 py-2.5">
+                  <p className="text-xs font-medium text-qm-positive">
                     🛡️ {PRICING.trialDays}-day full refund guarantee
                   </p>
-                  <p className="mt-0.5 text-xs text-slate-500">
+                  <p className="mt-0.5 text-xs text-qm-faint">
                     Email{" "}
                     <a
                       href={`mailto:${CONFIG.supportEmail}`}
-                      className="text-slate-300 underline underline-offset-2 hover:text-emerald-300"
+                      className="text-qm-secondary underline underline-offset-2 hover:text-qm-positive"
                     >
                       {CONFIG.supportEmail}
                     </a>{" "}
@@ -251,7 +251,7 @@ export default async function BillingPage() {
               {!isPaid ? (
                 <a
                   href="/upgrade"
-                  className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-4 py-2 text-sm font-semibold text-white hover:bg-qm-accent-hover"
+                  className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-4 py-2 text-sm font-semibold text-qm-primary hover:bg-qm-accent-hover"
                 >
                   Upgrade to Premium
                 </a>
@@ -259,7 +259,7 @@ export default async function BillingPage() {
             </div>
           </div>
 
-          <p className="mt-6 text-xs text-slate-500">
+          <p className="mt-6 text-xs text-qm-faint">
             {isPaid
               ? `Thank you for supporting ${CONFIG.appName}.`
               : "No pressure. Free remains fully usable."}
@@ -267,21 +267,21 @@ export default async function BillingPage() {
         </section>
 
         {/* Right: Account / Help */}
-        <aside className="rounded-2xl border border-slate-800 bg-slate-950/60 p-6">
+        <aside className="rounded-2xl border border-qm-border-subtle bg-qm-bg p-6">
           <SectionTitle title="Account" subtitle="Billing is tied to your login." />
 
-          <div className="rounded-xl border border-slate-800 bg-slate-950/40 p-5">
-            <div className="text-xs font-semibold text-slate-400">Email</div>
-            <div className="mt-1 text-sm text-slate-200">{user.email ?? "—"}</div>
+          <div className="rounded-xl border border-qm-border-subtle bg-qm-bg p-5">
+            <div className="text-xs font-semibold text-qm-muted">Email</div>
+            <div className="mt-1 text-sm text-qm-primary">{user.email ?? "—"}</div>
           </div>
 
-          <div className="mt-4 rounded-xl border border-slate-800 bg-slate-950/40 p-5">
-            <div className="text-xs font-semibold text-slate-400">Support</div>
-            <p className="mt-2 text-sm text-slate-400">
+          <div className="mt-4 rounded-xl border border-qm-border-subtle bg-qm-bg p-5">
+            <div className="text-xs font-semibold text-qm-muted">Support</div>
+            <p className="mt-2 text-sm text-qm-muted">
               Billing questions or cancellations:{" "}
               <a
                 href={`mailto:${CONFIG.supportEmail}`}
-                className="text-slate-200 underline underline-offset-2 hover:text-emerald-300"
+                className="text-qm-primary underline underline-offset-2 hover:text-qm-positive"
               >
                 {CONFIG.supportEmail}
               </a>
@@ -291,14 +291,14 @@ export default async function BillingPage() {
           {isPaid ? (
             <a
               href={PAYMENT.portalUrl("/settings/billing")}
-              className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/15"
+              className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-qm-primary hover:bg-white/15"
             >
               {PAYMENT.portalLabel}
             </a>
           ) : (
             <a
               href="/upgrade"
-              className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-4 py-2 text-sm font-semibold text-white hover:bg-qm-accent-hover"
+              className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-4 py-2 text-sm font-semibold text-qm-primary hover:bg-qm-accent-hover"
             >
               View Premium
             </a>

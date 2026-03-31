@@ -18,8 +18,8 @@ function PlanBadge({ plan }: { plan: "PREMIUM" | "TRIAL" | "FREE" }) {
       className={[
         "inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold",
         isPremium
-          ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
-          : "border-slate-700 bg-slate-900/40 text-slate-300",
+          ? "border-qm-positive-border bg-qm-positive-soft text-qm-positive"
+          : "border-qm-border-subtle bg-qm-elevated text-qm-secondary",
       ].join(" ")}
     >
       {plan === "TRIAL" ? "Trial" : plan === "PREMIUM" ? "Premium" : "Free"}
@@ -39,12 +39,12 @@ function Card({
   right?: React.ReactNode;
 }) {
   return (
-    <section className="rounded-2xl border border-slate-800 bg-slate-950/60 p-6">
+    <section className="rounded-2xl border border-qm-border-subtle bg-qm-bg p-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h2 className="text-sm font-semibold text-slate-100">{title}</h2>
+          <h2 className="text-sm font-semibold text-qm-primary">{title}</h2>
           {subtitle ? (
-            <p className="mt-1 text-sm text-slate-400">{subtitle}</p>
+            <p className="mt-1 text-sm text-qm-muted">{subtitle}</p>
           ) : null}
         </div>
         {right ? <div className="shrink-0">{right}</div> : null}
@@ -65,8 +65,8 @@ function ActionLink({
 }) {
   const cls =
     variant === "primary"
-      ? "rounded-full bg-qm-accent px-4 py-2 text-sm font-semibold text-white hover:bg-qm-accent-hover transition-colors"
-      : "rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/15 transition-colors";
+      ? "rounded-full bg-qm-accent px-4 py-2 text-sm font-semibold text-qm-primary hover:bg-qm-accent-hover transition-colors"
+      : "rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-qm-primary hover:bg-white/15 transition-colors";
 
   const isPortal = href.startsWith(PAYMENT.portalUrl("").split("?")[0]);
 
@@ -83,9 +83,9 @@ function ActionLink({
 
 function DataRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
-    <div className="flex items-center justify-between py-2.5 border-b border-slate-800/60 last:border-0">
-      <span className="text-xs text-slate-500">{label}</span>
-      <span className="text-sm text-slate-200">{value}</span>
+    <div className="flex items-center justify-between py-2.5 border-b border-qm-border-subtle last:border-0">
+      <span className="text-xs text-qm-faint">{label}</span>
+      <span className="text-sm text-qm-primary">{value}</span>
     </div>
   );
 }
@@ -155,14 +155,14 @@ export default async function SettingsPage() {
   const portalReturn = "/settings";
 
   return (
-    <main className="mx-auto w-full max-w-5xl px-6 py-14 text-slate-200">
+    <main className="mx-auto w-full max-w-5xl px-6 py-14 text-qm-primary">
 
       {/* ── Header ── */}
       <header className="mb-10">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="font-display text-2xl font-semibold text-white">Settings</h1>
-            <p className="mt-2 text-sm text-slate-400">
+            <h1 className="font-display text-2xl font-semibold text-qm-primary">Settings</h1>
+            <p className="mt-2 text-sm text-qm-muted">
               Account, plan, and privacy.
             </p>
           </div>
@@ -199,7 +199,7 @@ export default async function SettingsPage() {
               </ActionLink>
             }
           >
-            <div className="rounded-xl border border-slate-800 bg-slate-950/40 px-5 py-1">
+            <div className="rounded-xl border border-qm-border-subtle bg-qm-bg px-5 py-1">
               <DataRow label="Email" value={user.email ?? "—"} />
               {memberSince && (
                 <DataRow label="Member since" value={memberSince} />
@@ -207,13 +207,13 @@ export default async function SettingsPage() {
               <DataRow
                 label="Entries written"
                 value={
-                  <span className="font-medium text-slate-100">
+                  <span className="font-medium text-qm-primary">
                     {entryCount ?? 0}
                   </span>
                 }
               />
             </div>
-            <p className="mt-3 text-xs text-slate-600">
+            <p className="mt-3 text-xs text-qm-faint">
               Billing emails are sent to this address.
             </p>
           </Card>
@@ -240,22 +240,22 @@ export default async function SettingsPage() {
           >
             {isPremium ? (
               // Premium state
-              <div className="rounded-xl border border-emerald-500/15 bg-emerald-500/5 px-5 py-1">
+              <div className="rounded-xl border border-qm-positive-border bg-qm-positive-bg px-5 py-1">
                 <DataRow label="Plan" value={<PlanBadge plan={plan} />} />
-                <DataRow label="Reflections" value={<span className="text-emerald-400">Unlimited</span>} />
+                <DataRow label="Reflections" value={<span className="text-qm-positive">Unlimited</span>} />
                 <DataRow label="Insights" value="Full access" />
                 <DataRow label="Weekly summary" value="Included" />
               </div>
             ) : (
               // Free state — show credits used/remaining
               <div className="space-y-3">
-                <div className="rounded-xl border border-slate-800 bg-slate-950/40 px-5 py-1">
+                <div className="rounded-xl border border-qm-border-subtle bg-qm-bg px-5 py-1">
                   <DataRow label="Plan" value={<PlanBadge plan={plan} />} />
                   <DataRow
                     label="Reflections this month"
                     value={
                       <span>
-                        <span className={remainingCredits === 0 ? "text-slate-500" : "text-slate-100 font-medium"}>
+                        <span className={remainingCredits === 0 ? "text-qm-faint" : "text-qm-primary font-medium"}>
                           {remainingCredits === 0
                             ? "0 remaining"
                             : `${remainingCredits} of ${PRICING.freeMonthlyCredits} remaining`}
@@ -265,18 +265,18 @@ export default async function SettingsPage() {
                   />
                   <DataRow
                     label="Resets"
-                    value={<span className="text-slate-400">{resetLabel}</span>}
+                    value={<span className="text-qm-muted">{resetLabel}</span>}
                   />
                 </div>
 
                 {remainingCredits === 0 ? (
-                  <p className="text-xs text-slate-600">
+                  <p className="text-xs text-qm-faint">
                     Reflections resume {resetLabel}. Upgrade for unlimited access.
                   </p>
                 ) : (
-                  <p className="text-xs text-slate-600">
+                  <p className="text-xs text-qm-faint">
                     Free plan includes {PRICING.freeMonthlyCredits} AI reflections per month.{" "}
-                    <Link href="/upgrade" className="text-emerald-600 hover:text-emerald-500 transition-colors">
+                    <Link href="/upgrade" className="text-qm-positive-strong hover:text-qm-positive transition-colors">
                       Upgrade for unlimited →
                     </Link>
                   </p>
@@ -290,10 +290,10 @@ export default async function SettingsPage() {
             title="Data & Privacy"
             subtitle="Your entries belong to you — always."
           >
-            <div className="rounded-xl border border-slate-800 bg-slate-950/40 px-5 py-1">
+            <div className="rounded-xl border border-qm-border-subtle bg-qm-bg px-5 py-1">
               <DataRow
                 label="AI training"
-                value={<span className="text-emerald-400">Never used</span>}
+                value={<span className="text-qm-positive">Never used</span>}
               />
               <DataRow label="Data sharing" value="None" />
               <DataRow
@@ -301,16 +301,16 @@ export default async function SettingsPage() {
                 value={
                   <Link
                     href="/privacy"
-                    className="text-emerald-500/80 hover:text-emerald-400 text-xs transition-colors"
+                    className="text-qm-positive hover:text-qm-positive text-xs transition-colors"
                   >
                     Read →
                   </Link>
                 }
               />
             </div>
-            <p className="mt-3 text-xs text-slate-600">
+            <p className="mt-3 text-xs text-qm-faint">
               To request data export or account deletion, email{" "}
-              <span className="text-slate-400">{CONFIG.supportEmail}</span> from
+              <span className="text-qm-muted">{CONFIG.supportEmail}</span> from
               your account address.
             </p>
           </Card>
@@ -327,17 +327,17 @@ export default async function SettingsPage() {
             <Link
               href="/install"
               prefetch={false}
-              className="inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-4 py-2 text-sm font-semibold text-white hover:bg-qm-accent-hover transition-colors"
+              className="inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-4 py-2 text-sm font-semibold text-qm-primary hover:bg-qm-accent-hover transition-colors"
             >
               Install app
             </Link>
           </Card>
 
           <Card title="Support" subtitle="Help with billing or account issues.">
-            <div className="rounded-xl border border-slate-800 bg-slate-950/40 px-5 py-1">
+            <div className="rounded-xl border border-qm-border-subtle bg-qm-bg px-5 py-1">
               <DataRow label="Email" value={CONFIG.supportEmail} />
             </div>
-            <p className="mt-3 text-xs text-slate-600">
+            <p className="mt-3 text-xs text-qm-faint">
               Include your account email for faster help.
             </p>
           </Card>

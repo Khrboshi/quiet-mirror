@@ -22,13 +22,13 @@ export default function InstallPage() {
 
         {/* ── Left column ── */}
         <section className="hidden lg:block">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-400/80">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-qm-positive">
             Install {CONFIG.appName}
           </p>
-          <h1 className="font-display mt-4 max-w-xl text-5xl font-semibold leading-[1.05] tracking-tight text-white">
+          <h1 className="font-display mt-4 max-w-xl text-5xl font-semibold leading-[1.05] tracking-tight text-qm-primary">
             Keep {CONFIG.appName} one tap away.
           </h1>
-          <p className="mt-5 max-w-lg text-base leading-relaxed text-slate-400">
+          <p className="mt-5 max-w-lg text-base leading-relaxed text-qm-muted">
             Installing {CONFIG.appName} creates an app icon and makes returning to your
             journal faster, cleaner, and more reliable.
           </p>
@@ -43,14 +43,14 @@ export default function InstallPage() {
                 height={64}
                 className="rounded-[22%] shadow-xl shadow-black/40"
               />
-              <span className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-qm-accent text-[9px] font-bold text-white">
+              <span className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-qm-accent text-[9px] font-bold text-qm-primary">
                 ✓
               </span>
             </div>
             <div>
-              <p className="text-sm font-semibold text-white">{CONFIG.appName}</p>
-              <p className="text-xs text-slate-500">Write honestly. Reflect clearly.</p>
-              <p className="mt-1.5 text-xs text-slate-600">Lives on your Home Screen, opens instantly.</p>
+              <p className="text-sm font-semibold text-qm-primary">{CONFIG.appName}</p>
+              <p className="text-xs text-qm-faint">Write honestly. Reflect clearly.</p>
+              <p className="mt-1.5 text-xs text-qm-faint">Lives on your Home Screen, opens instantly.</p>
             </div>
           </div>
 
@@ -61,11 +61,11 @@ export default function InstallPage() {
               { label: "Smoother sign-in on iPhone", detail: "Code sign-in works more reliably from the Home Screen." },
             ].map(({ label, detail }) => (
               <div key={label} className="flex items-start gap-3">
-                <span className="mt-0.5 shrink-0 text-xs text-emerald-400">✓</span>
-                <p className="text-sm text-slate-300">
-                  <span className="font-medium text-white">{label}</span>
+                <span className="mt-0.5 shrink-0 text-xs text-qm-positive">✓</span>
+                <p className="text-sm text-qm-secondary">
+                  <span className="font-medium text-qm-primary">{label}</span>
                   {" — "}
-                  <span className="text-slate-500">{detail}</span>
+                  <span className="text-qm-faint">{detail}</span>
                 </p>
               </div>
             ))}
@@ -74,17 +74,17 @@ export default function InstallPage() {
 
         {/* ── Right column — card ── */}
         <section className="mx-auto w-full max-w-2xl">
-          <div className="rounded-[1.75rem] border border-white/10 bg-slate-900/60 p-6 shadow-2xl shadow-black/40 backdrop-blur sm:p-7">
+          <div className="rounded-[1.75rem] border border-white/10 bg-qm-elevated p-6 shadow-2xl shadow-black/40 backdrop-blur sm:p-7">
 
             {/* Mobile header */}
             <div className="lg:hidden">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-400/80">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-qm-positive">
                 Install {CONFIG.appName}
               </p>
-              <h1 className="font-display mt-3 text-3xl font-semibold tracking-tight text-white">
+              <h1 className="font-display mt-3 text-3xl font-semibold tracking-tight text-qm-primary">
                 Install {CONFIG.appName}
               </h1>
-              <p className="mt-3 text-sm leading-relaxed text-slate-400">
+              <p className="mt-3 text-sm leading-relaxed text-qm-muted">
                 Add {CONFIG.appName} to your device for faster access and a smoother return to your
                 journal.
               </p>
@@ -92,36 +92,36 @@ export default function InstallPage() {
 
             {/* Desktop card header */}
             <div className="hidden lg:block">
-              <h2 className="text-xl font-semibold text-white">Add to your device</h2>
-              <p className="mt-1 text-sm leading-relaxed text-slate-400">
+              <h2 className="text-xl font-semibold text-qm-primary">Add to your device</h2>
+              <p className="mt-1 text-sm leading-relaxed text-qm-muted">
                 Works on iPhone, Android, and desktop Chrome or Edge.
               </p>
             </div>
 
             {isStandalone ? (
-              <div className="mt-6 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.06] p-5">
-                <h3 className="text-lg font-semibold text-white">Already installed</h3>
-                <p className="mt-2 text-sm leading-relaxed text-emerald-100">
+              <div className="mt-6 rounded-2xl border border-qm-positive-border bg-qm-positive-strong/[0.06] p-5">
+                <h3 className="text-lg font-semibold text-qm-primary">Already installed</h3>
+                <p className="mt-2 text-sm leading-relaxed text-qm-positive">
                   This device already has {CONFIG.appName} installed. You can open it from your Home
                   Screen or app launcher.
                 </p>
               </div>
             ) : (
               <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-                <h3 className="text-lg font-semibold text-white">Add to this device</h3>
+                <h3 className="text-lg font-semibold text-qm-primary">Add to this device</h3>
 
                 {canPromptNative ? (
                   <>
-                    <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                    <p className="mt-2 text-sm leading-relaxed text-qm-muted">
                       Your browser supports one-click installation.
                     </p>
                     <button
                       onClick={handleInstallClick}
-                      className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-4 py-3.5 text-sm font-semibold text-white transition hover:bg-qm-accent-hover"
+                      className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-4 py-3.5 text-sm font-semibold text-qm-primary transition hover:bg-qm-accent-hover"
                     >
                       Install {CONFIG.appName}
                     </button>
-                    <p className="mt-3 text-center text-xs leading-relaxed text-slate-500">
+                    <p className="mt-3 text-center text-xs leading-relaxed text-qm-faint">
                       If installation does not appear in Incognito, open a normal browser window.
                     </p>
                   </>
@@ -129,7 +129,7 @@ export default function InstallPage() {
                   <>
                     {platformHint === "ios" && isSafariIOS ? (
                       <div className="mt-4">
-                        <p className="mb-4 text-sm text-slate-400">
+                        <p className="mb-4 text-sm text-qm-muted">
                           Follow these steps in Safari:
                         </p>
                         <ol className="space-y-3">
@@ -138,7 +138,7 @@ export default function InstallPage() {
                               step: "1",
                               text: (
                                 <>
-                                  Tap the <b className="text-white">Share</b> button — the box
+                                  Tap the <b className="text-qm-primary">Share</b> button — the box
                                   with an arrow pointing up, at the bottom of your screen.
                                 </>
                               ),
@@ -148,7 +148,7 @@ export default function InstallPage() {
                               text: (
                                 <>
                                   Scroll down and tap{" "}
-                                  <b className="text-white">Add to Home Screen</b>.
+                                  <b className="text-qm-primary">Add to Home Screen</b>.
                                 </>
                               ),
                             },
@@ -156,7 +156,7 @@ export default function InstallPage() {
                               step: "3",
                               text: (
                                 <>
-                                  Tap <b className="text-white">Add</b> in the top right corner.
+                                  Tap <b className="text-qm-primary">Add</b> in the top right corner.
                                 </>
                               ),
                             },
@@ -170,33 +170,33 @@ export default function InstallPage() {
                             },
                           ].map(({ step, text }) => (
                             <li key={step} className="flex items-start gap-3">
-                              <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/20 text-xs font-bold text-emerald-400">
+                              <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-qm-positive-border bg-qm-positive-soft text-xs font-bold text-qm-positive">
                                 {step}
                               </span>
-                              <span className="text-sm leading-relaxed text-slate-300">
+                              <span className="text-sm leading-relaxed text-qm-secondary">
                                 {text}
                               </span>
                             </li>
                           ))}
                         </ol>
-                        <p className="mt-4 text-xs leading-relaxed text-slate-500">
+                        <p className="mt-4 text-xs leading-relaxed text-qm-faint">
                           Not seeing the Share button? Make sure you are using Safari, not
                           Chrome or another browser.
                         </p>
                       </div>
                     ) : (
                       <div className="mt-4">
-                        <p className="text-sm font-medium text-white">
+                        <p className="text-sm font-medium text-qm-primary">
                           Desktop or Android (Chrome / Edge)
                         </p>
-                        <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm leading-relaxed text-slate-300">
+                        <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm leading-relaxed text-qm-secondary">
                           <li>Open this site in a normal, non-Incognito window.</li>
                           <li>
                             Click the install icon in the address bar, if shown, or open the
                             browser menu.
                           </li>
                           <li>
-                            Select <b className="text-white">Install {CONFIG.appName}</b>.
+                            Select <b className="text-qm-primary">Install {CONFIG.appName}</b>.
                           </li>
                         </ol>
                       </div>
@@ -206,9 +206,9 @@ export default function InstallPage() {
               </div>
             )}
 
-            <div className="mt-4 rounded-2xl border border-white/10 bg-slate-950/50 p-4">
-              <p className="text-sm font-medium text-white">Helpful note</p>
-              <p className="mt-1 text-sm leading-relaxed text-slate-400">
+            <div className="mt-4 rounded-2xl border border-white/10 bg-qm-bg p-4">
+              <p className="text-sm font-medium text-qm-primary">Helpful note</p>
+              <p className="mt-1 text-sm leading-relaxed text-qm-muted">
                 Installation improves convenience, but you can still use {CONFIG.appName} in your
                 browser whenever you prefer.
               </p>
@@ -217,11 +217,11 @@ export default function InstallPage() {
             <div className="mt-6 flex flex-col items-center gap-3 text-center">
               <Link
                 href="/"
-                className="text-sm font-medium text-emerald-400 transition-colors hover:text-emerald-300"
+                className="text-sm font-medium text-qm-positive transition-colors hover:text-qm-positive"
               >
                 ← Back to Home
               </Link>
-              <p className="max-w-md text-xs leading-relaxed text-slate-600">
+              <p className="max-w-md text-xs leading-relaxed text-qm-faint">
                 {CONFIG.appName} works in the browser too. Installing it simply makes returning feel
                 quicker and more app-like.
               </p>
