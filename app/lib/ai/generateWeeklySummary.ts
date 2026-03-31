@@ -8,6 +8,7 @@ import {
   bucketCorepattern,
   normalizeAIResponseSignals,
 } from "@/lib/ai/normalizeInsightSignals";
+import { type GroqChatResponse, parseAIResponse } from "@/lib/planUtils";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -49,7 +50,7 @@ async function callGroq(system: string, user: string): Promise<string> {
       throw new Error(`Groq ${res.status}: ${text}`);
     }
 
-    const data: any = await res.json();
+    const data: GroqChatResponse = await res.json();
     return String(data?.choices?.[0]?.message?.content ?? "").trim();
   } finally {
     clearTimeout(timer);
@@ -210,9 +211,9 @@ export async function generateWeeklySummaryForUser(
   let entryCount = 0;
 
   for (const row of rows) {
-    let parsed: any;
-    try { parsed = typeof row.ai_response === "string" ? JSON.parse(row.ai_response) : row.ai_response; }
-    catch { continue; }
+    const parsed = parseAIResponse(
+      row.ai_response as string | Record<string, unknown> | null
+    );
     if (!parsed) continue;
 
     const normalized = normalizeAIResponseSignals(parsed);

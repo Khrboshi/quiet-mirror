@@ -5,6 +5,7 @@ import Link from "next/link";
 import { getTranslations } from "@/app/lib/i18n";
 import { cookies } from "next/headers";
 import { getLocaleFromCookieString } from "@/app/lib/i18n";
+import { parseAIResponse } from "@/lib/planUtils";
 
 export const dynamic = "force-dynamic";
 
@@ -88,12 +89,8 @@ function entryTitle(title: string | null, content: string | null, fallback: stri
   return fallback;
 }
 
-function parseAI(raw: any): any {
-  try {
-    return typeof raw === "string" ? JSON.parse(raw) : raw;
-  } catch {
-    return null;
-  }
+function parseAI(raw: string | Record<string, unknown> | null): Record<string, unknown> | null {
+  return parseAIResponse(raw);
 }
 
 // ── Page ──────────────────────────────────────────────────────────────────────
@@ -106,14 +103,22 @@ export default async function JournalPage() {
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) redirect("/magic-login");
 
-  const { data: entries } = await supabase
+  const { data: rawEntries } = await supabase
     .from("journal_entries")
     .select("id, created_at, title, content, ai_response")
     .eq("user_id", session.user.id)
     .order("created_at", { ascending: false });
 
-  // Group by month
-  const groups: { month: string; entries: typeof entries }[] = [];
+  const entries = (rawEntries ?? []) as Array<{
+    id: string;
+    created_at: string;
+    title: string | null;
+    content: string | null;
+    ai_response: string | Record<string, unknown> | null;
+  }>;
+
+  type JournalEntry = (typeof entries)[number];
+  const groups: { month: string; entries: JournalEntry[] }[] = [];
   for (const entry of entries ?? []) {
     const month = monthKey(entry.created_at);
     const last = groups[groups.length - 1];
@@ -190,11 +195,11 @@ export default async function JournalPage() {
           {/* Entry grid */}
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
             {groupEntries!.map((entry) => {
-              const ai = parseAI((entry as any).ai_response);
+              const ai = parseAI(entry.ai_response);
               const hasReflection = Boolean(ai);
-              const domain = (ai?.domain ?? "GENERAL").toUpperCase();
+              const domain = (String(ai?.domain ?? "GENERAL")).toUpperCase();
               const domainMeta = DOMAIN_META[domain] ?? DOMAIN_META.GENERAL;
-              const topEmotion: string = ai?.emotions?.[0] ?? "";
+              const topEmotion: string = String(ai?.emotions instanceof Array ? (ai.emotions[0] ?? "") : "");
               const eColor = topEmotion ? emotionColor(topEmotion) : null;
               const title = entryTitle(entry.title, entry.content, t.journal.untitledEntry);
               const isUntitled = !entry.title?.trim();

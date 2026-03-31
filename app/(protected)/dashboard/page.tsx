@@ -1,6 +1,7 @@
 // app/(protected)/dashboard/page.tsx
 import { redirect } from "next/navigation";
 import { createServerSupabase } from "@/lib/supabase/server";
+import { parseAIResponse } from "@/lib/planUtils";
 import DashboardClient from "./DashboardClient";
 
 export const dynamic = "force-dynamic";
@@ -35,10 +36,8 @@ function isFallbackCorepattern(k: string): boolean {
   return FALLBACK_CP_PREFIXES.some((p) => lower.startsWith(p));
 }
 
-function parseAiResponse(raw: any) {
-  try {
-    return typeof raw === "string" ? JSON.parse(raw) : raw;
-  } catch { return null; }
+function parseAiResponse(raw: string | Record<string, unknown> | null) {
+  return parseAIResponse(raw);
 }
 
 export type DashboardData = {
@@ -80,7 +79,7 @@ export default async function DashboardPage() {
     id: string;
     title: string | null;
     created_at: string;
-    ai_response: any;
+    ai_response: string | Record<string, unknown> | null;
   }>;
 
   // ── Count total entries ───────────────────────────────────────────────────
