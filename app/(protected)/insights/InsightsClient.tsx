@@ -224,7 +224,7 @@ function StatCard({
       </p>
       <p
         className="text-base font-semibold leading-tight"
-        style={{ color: accent ?? "var(--hvn-text-primary)" }}
+        style={{ color: accent ?? "var(--qm-text-primary)" }}
       >
         {value}
       </p>
@@ -1034,7 +1034,7 @@ export default function InsightsClient() {
                 href={`/journal/new?prompt=${encodeURIComponent(
                   `I keep noticing ${topCorepatterns[0][0].toLowerCase()}. What's underneath it today?`
                 )}`}
-                className="mt-4 inline-flex items-center justify-center rounded-full bg-[color:var(--hvn-accent-mint)] px-5 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-[color:var(--hvn-accent-mint-hover)]"
+                className="mt-4 inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-qm-accent-hover"
               >
                 Write about this →
               </Link>

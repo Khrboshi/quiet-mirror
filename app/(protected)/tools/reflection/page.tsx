@@ -94,7 +94,7 @@ export default function ReflectionToolPage() {
                   <div className="flex flex-wrap items-center gap-3 pt-1">
                     <Link
                       href={`/journal/new?prompt=${encodeURIComponent(state.question)}`}
-                      className="inline-flex items-center justify-center rounded-full bg-[color:var(--hvn-accent-mint)] px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-[color:var(--hvn-accent-mint-soft)] transition-all hover:bg-[color:var(--hvn-accent-mint-hover)] hover:-translate-y-px"
+                      className="inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-[color:var(--qm-accent-soft)] transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
                     >
                       Write about this →
                     </Link>

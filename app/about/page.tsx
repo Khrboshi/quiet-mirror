@@ -15,9 +15,9 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-[color:var(--hvn-bg)] text-[color:var(--hvn-text-primary)]">
+    <main className="min-h-screen bg-qm-bg text-qm-primary">
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <section className="border-b border-[color:var(--hvn-border-subtle)] pb-16 pt-12 sm:pb-20 sm:pt-16">
+      <section className="border-b border-qm-border-subtle pb-16 pt-12 sm:pb-20 sm:pt-16">
         <div className="mx-auto max-w-5xl px-6">
           <div className="max-w-4xl">
             <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-400/80">
@@ -41,7 +41,7 @@ export default function AboutPage() {
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
                 href="/magic-login"
-                className="inline-flex items-center justify-center rounded-full bg-[color:var(--hvn-accent-mint)] px-5 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-[color:var(--hvn-accent-mint-hover)] hover:-translate-y-px"
+                className="inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
               >
                 Start journaling free
               </Link>
@@ -146,7 +146,7 @@ export default function AboutPage() {
               ))}
             </div>
 
-            <div className="mt-6 rounded-[1.5rem] border border-[color:var(--hvn-card-border)] bg-[color:var(--hvn-bg-elevated)] px-6 py-5">
+            <div className="mt-6 rounded-[1.5rem] border border-qm-border-card bg-qm-elevated px-6 py-5">
               <p className="text-sm leading-relaxed text-slate-400">
                 If something feels wrong, unclear, or broken —{" "}
                 <a
@@ -209,7 +209,7 @@ export default function AboutPage() {
                 </ul>
               </div>
 
-              <div className="rounded-[1.5rem] border border-[color:var(--hvn-card-border)] bg-[color:var(--hvn-bg-elevated)] p-5">
+              <div className="rounded-[1.5rem] border border-qm-border-card bg-qm-elevated p-5">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-400/70">
                   {CONFIG.appName} is not
                 </p>
@@ -266,7 +266,7 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div className="rounded-[1.6rem] border border-[color:var(--hvn-card-border)] bg-[color:var(--hvn-bg-elevated)] p-6">
+            <div className="rounded-[1.6rem] border border-qm-border-card bg-qm-elevated p-6">
               <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
                 Privacy
               </h3>
@@ -295,7 +295,7 @@ export default function AboutPage() {
           </div>
 
           {/* Bottom CTA */}
-          <div className="flex flex-col gap-4 border-t border-[color:var(--hvn-border-subtle)] pt-8 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-4 border-t border-qm-border-subtle pt-8 sm:flex-row sm:items-center sm:justify-between">
             <p className="max-w-md text-sm leading-relaxed text-slate-500">
               {CONFIG.appName} works best when you use it honestly, at your own
               pace. There is no streak. No pressure. Just the mirror.
@@ -304,7 +304,7 @@ export default function AboutPage() {
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/magic-login"
-                className="inline-flex items-center justify-center rounded-full bg-[color:var(--hvn-accent-mint)] px-5 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-[color:var(--hvn-accent-mint-hover)] hover:-translate-y-px"
+                className="inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
               >
                 Start free
               </Link>

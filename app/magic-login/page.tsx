@@ -326,7 +326,7 @@ function MagicLoginInner() {
             )}
 
             {/* Mode toggle */}
-            <div className="grid grid-cols-2 gap-2 rounded-2xl border border-[color:var(--hvn-card-border)] bg-qm-card p-1.5">
+            <div className="grid grid-cols-2 gap-2 rounded-2xl border border-qm-border-card bg-qm-card p-1.5">
               {(["code", "link"] as Mode[]).map((m) => (
                 <button
                   key={m}
@@ -360,7 +360,7 @@ function MagicLoginInner() {
                   if (e.key === "Enter" && email && mode === "link") onSendEmail();
                 }}
                 placeholder="you@example.com"
-                className="w-full rounded-2xl border border-[color:var(--hvn-card-border)] bg-qm-elevated px-4 py-3 text-sm text-qm-primary outline-none transition placeholder:text-[color:var(--hvn-text-muted)] focus:border-[color:var(--hvn-accent-mint)]"
+                className="w-full rounded-2xl border border-qm-border-card bg-qm-elevated px-4 py-3 text-sm text-qm-primary outline-none transition placeholder:text-qm-muted focus:border-[color:var(--qm-accent)]"
               />
             </div>
 
@@ -370,7 +370,7 @@ function MagicLoginInner() {
                   type="button"
                   onClick={onSendEmail}
                   disabled={status === "loading" || !email}
-                  className="inline-flex w-full items-center justify-center rounded-full bg-[color:var(--hvn-accent-mint)] px-4 py-3.5 text-sm font-semibold text-white transition hover:bg-[color:var(--hvn-accent-mint-hover)] disabled:cursor-not-allowed disabled:opacity-60"
+                  className="inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-4 py-3.5 text-sm font-semibold text-white transition hover:bg-qm-accent-hover disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {status === "loading" ? "Sending…" : "Send magic link"}
                 </button>
@@ -384,7 +384,7 @@ function MagicLoginInner() {
                   type="button"
                   onClick={onSendEmail}
                   disabled={status === "loading" || !email}
-                  className="inline-flex w-full items-center justify-center rounded-full bg-[color:var(--hvn-accent-mint)] px-4 py-3.5 text-sm font-semibold text-white transition hover:bg-[color:var(--hvn-accent-mint-hover)] disabled:cursor-not-allowed disabled:opacity-60"
+                  className="inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-4 py-3.5 text-sm font-semibold text-white transition hover:bg-qm-accent-hover disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {status === "loading" ? "Sending…" : "Send sign-in email"}
                 </button>
@@ -401,7 +401,7 @@ function MagicLoginInner() {
                     }}
                     inputMode="numeric"
                     placeholder="Enter 6–8 digit code"
-                    className="w-full rounded-2xl border border-[color:var(--hvn-card-border)] bg-qm-elevated px-4 py-3 text-sm text-qm-primary outline-none transition placeholder:text-[color:var(--hvn-text-muted)] focus:border-[color:var(--hvn-accent-mint)]"
+                    className="w-full rounded-2xl border border-qm-border-card bg-qm-elevated px-4 py-3 text-sm text-qm-primary outline-none transition placeholder:text-qm-muted focus:border-[color:var(--qm-accent)]"
                   />
                   <button
                     type="button"

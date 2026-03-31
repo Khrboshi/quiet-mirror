@@ -132,7 +132,7 @@ export default async function InsightsPreviewPage() {
           </p>
           <Link
             href="/upgrade?from=insights-preview"
-            className="shrink-0 rounded-full bg-[color:var(--hvn-accent-mint)] px-4 py-1.5 text-xs font-semibold text-white transition hover:bg-[color:var(--hvn-accent-mint-hover)]"
+            className="shrink-0 rounded-full bg-qm-accent px-4 py-1.5 text-xs font-semibold text-white transition hover:bg-qm-accent-hover"
           >
             Unlock →
           </Link>
@@ -209,7 +209,7 @@ export default async function InsightsPreviewPage() {
               Quiet Mirror reads all your entries and writes this in plain language — what it noticed, what&apos;s shifting, what keeps returning.
             </p>
             <Link href="/upgrade?from=insights-preview"
-              className="mt-1 rounded-full bg-[color:var(--hvn-accent-mint)] px-5 py-2 text-xs font-semibold text-white transition hover:bg-[color:var(--hvn-accent-mint-hover)]">
+              className="mt-1 rounded-full bg-qm-accent px-5 py-2 text-xs font-semibold text-white transition hover:bg-qm-accent-hover">
               Unlock your summary →
             </Link>
           </div>
@@ -485,7 +485,7 @@ export default async function InsightsPreviewPage() {
           <div className="flex flex-wrap gap-3">
             <Link
               href="/upgrade?from=insights-preview"
-              className="inline-flex items-center gap-2 rounded-full bg-[color:var(--hvn-accent-mint)] px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[color:var(--hvn-accent-mint-hover)]"
+              className="inline-flex items-center gap-2 rounded-full bg-qm-accent px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-qm-accent-hover"
             >
               Unlock full insights — {PRICING.monthlyCadence} →
             </Link>

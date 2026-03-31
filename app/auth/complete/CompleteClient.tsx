@@ -61,7 +61,7 @@ export default function CompleteClient() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-qm-bg px-6">
       <div className="max-w-sm text-center">
-        <h1 className="font-display text-lg font-semibold text-[color:var(--hvn-text-primary)]">
+        <h1 className="font-display text-lg font-semibold text-qm-primary">
           {closeBlocked ? "You're signed in." : "Signing you in\u2026"}
         </h1>
         
@@ -74,7 +74,7 @@ export default function CompleteClient() {
         {closeBlocked && (
           <Link
             href={destination}
-            className="mt-6 inline-flex items-center justify-center rounded-full bg-[color:var(--hvn-accent-mint)] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[color:var(--hvn-accent-mint-hover)]"
+            className="mt-6 inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-qm-accent-hover"
           >
             {destination === "/upgrade" ? "Continue to Premium →" : "Go to dashboard →"}
           </Link>
