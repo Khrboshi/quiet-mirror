@@ -96,7 +96,7 @@ const ACCENT_CLASSES: Record<string, { border: string; label: string; dot: strin
     border: "border-qm-positive-border hover:border-qm-positive",
     label: "text-qm-positive",
     dot: "bg-qm-positive-strong",
-    arrow: "text-qm-positive group-hover:text-qm-positive-hover-hover-hover",
+    arrow: "text-qm-positive group-hover:text-qm-positive-hover",
   },
   violet: {
     border: "border-qm-premium-border hover:border-qm-premium",
@@ -259,7 +259,7 @@ function FreeInsightTeaser({
 
       <Link
         href="/upgrade"
-        className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-qm-accent px-4 py-2 text-xs font-semibold text-qm-primary transition hover:bg-qm-accent-hover"
+        className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-qm-accent px-4 py-2 text-xs font-semibold text-white transition hover:bg-qm-accent-hover"
       >
         Unlock insights →
       </Link>
@@ -321,7 +321,7 @@ function ThreadCard({
       <div className="mt-4 flex flex-wrap gap-2">
         <Link
           href={buildHref(threadPrompt)}
-          className="inline-flex rounded-full bg-qm-accent px-4 py-2 text-sm font-semibold text-qm-primary shadow-sm transition hover:bg-qm-accent-hover"
+          className="inline-flex rounded-full bg-qm-accent px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-qm-accent-hover"
         >
           {wroteToday ? t.dashboard.addToToday : t.dashboard.writeNow}
         </Link>
@@ -358,7 +358,7 @@ function WelcomePanel() {
       </p>
       <Link
         href="/journal/new"
-        className="mt-5 inline-flex items-center gap-2 rounded-full bg-qm-accent px-5 py-2.5 text-sm font-semibold text-qm-primary shadow-sm transition hover:bg-qm-accent-hover"
+        className="mt-5 inline-flex items-center gap-2 rounded-full bg-qm-accent px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-qm-accent-hover"
       >
         Write your first entry →
       </Link>
@@ -547,7 +547,7 @@ export default function DashboardClient({
           <div className="mt-3 flex items-center gap-3">
             <Link
               href="/upgrade"
-              className="inline-flex items-center rounded-full bg-qm-accent px-4 py-1.5 text-xs font-semibold text-qm-primary hover:bg-qm-accent-hover transition-colors"
+              className="inline-flex items-center rounded-full bg-qm-accent px-4 py-1.5 text-xs font-semibold text-white hover:bg-qm-accent-hover transition-colors"
             >
               Unlock unlimited reflections →
             </Link>
@@ -610,7 +610,7 @@ export default function DashboardClient({
                   {c.q}
                 </p>
                 <p className="mt-1.5 text-xs leading-relaxed text-qm-faint">{c.sub}</p>
-                <p className="mt-3 text-xs font-medium transition text-qm-positive group-hover:text-qm-positive-hover-hover">
+                <p className="mt-3 text-xs font-medium transition text-qm-positive group-hover:text-qm-positive-hover">
                   Start →
                 </p>
               </Link>

@@ -26,7 +26,7 @@ export default function ToolsPage() {
           <p className="text-sm text-qm-muted">
             Pause and notice where you actually are — no scores, no ratings, just honesty.
           </p>
-          <p className="mt-4 text-xs font-medium text-qm-positive transition group-hover:text-qm-positive-hover-hover-hover">
+          <p className="mt-4 text-xs font-medium text-qm-positive transition group-hover:text-qm-positive-hover">
             Open →
           </p>
         </Link>
@@ -39,7 +39,7 @@ export default function ToolsPage() {
           <p className="text-sm text-qm-muted">
             A prompt shaped around what has been showing up in your entries lately.
           </p>
-          <p className="mt-4 text-xs font-medium text-qm-positive transition group-hover:text-qm-positive-hover-hover-hover">
+          <p className="mt-4 text-xs font-medium text-qm-positive transition group-hover:text-qm-positive-hover">
             Open →
           </p>
         </Link>
@@ -52,7 +52,7 @@ export default function ToolsPage() {
           <p className="text-sm text-qm-muted">
             One or two gentle ideas, based on your patterns — not instructions, just invitations.
           </p>
-          <p className="mt-4 text-xs font-medium text-qm-positive transition group-hover:text-qm-positive-hover-hover-hover">
+          <p className="mt-4 text-xs font-medium text-qm-positive transition group-hover:text-qm-positive-hover">
             Open →
           </p>
         </Link>

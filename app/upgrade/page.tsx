@@ -240,7 +240,7 @@ export default function UpgradePage() {
                 </p>
 
                 <div className="flex flex-col gap-2 sm:max-w-sm">
-                  <UpgradeButton className="inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-6 py-4 text-base font-semibold text-qm-primary shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px disabled:opacity-60 sm:py-3.5 sm:text-sm" />
+                  <UpgradeButton className="inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-6 py-4 text-base font-semibold text-white shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px disabled:opacity-60 sm:py-3.5 sm:text-sm" />
 
                   {/* Trust badge — all copy derives from PRICING */}
                   <div className="rounded-xl border border-qm-positive-border bg-qm-positive-strong/[0.04] px-4 py-2.5 text-center">
@@ -268,14 +268,14 @@ export default function UpgradePage() {
                   By subscribing you agree to the{" "}
                   <Link
                     href="/terms"
-                    className="text-qm-positive underline underline-offset-2 transition-colors hover:text-qm-positive-hover-hover"
+                    className="text-qm-positive underline underline-offset-2 transition-colors hover:text-qm-positive-hover"
                   >
                     Terms of Service
                   </Link>{" "}
                   and{" "}
                   <Link
                     href="/privacy"
-                    className="text-qm-positive underline underline-offset-2 transition-colors hover:text-qm-positive-hover-hover"
+                    className="text-qm-positive underline underline-offset-2 transition-colors hover:text-qm-positive-hover"
                   >
                     Privacy Policy
                   </Link>
@@ -603,7 +603,7 @@ export default function UpgradePage() {
           <div className="mt-8">
             <Link
               href="/insights/preview"
-              className="inline-flex items-center gap-2 text-sm font-medium text-qm-positive transition-colors hover:text-qm-positive-hover-hover"
+              className="inline-flex items-center gap-2 text-sm font-medium text-qm-positive transition-colors hover:text-qm-positive-hover"
             >
               See a full example of Premium insights →
             </Link>
@@ -622,7 +622,7 @@ export default function UpgradePage() {
             </span>
           </p>
           <div className="flex flex-col items-center gap-2">
-            <UpgradeButton className="inline-flex items-center justify-center rounded-full bg-qm-accent px-7 py-3.5 text-sm font-semibold text-qm-primary shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px disabled:opacity-60" />
+            <UpgradeButton className="inline-flex items-center justify-center rounded-full bg-qm-accent px-7 py-3.5 text-sm font-semibold text-white shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px disabled:opacity-60" />
             <p className="text-xs text-qm-faint">
               {PRICING.trialFreeFor} · then {PRICING.monthlyCadence} · Cancel
               anytime
@@ -652,13 +652,13 @@ export default function UpgradePage() {
           <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-qm-faint">
             <Link
               href="/terms"
-              className="text-qm-positive-strong transition-colors hover:text-qm-positive-hover-hover"
+              className="text-qm-positive-strong transition-colors hover:text-qm-positive-hover"
             >
               Terms of Service →
             </Link>
             <Link
               href="/privacy"
-              className="text-qm-positive-strong transition-colors hover:text-qm-positive-hover-hover"
+              className="text-qm-positive-strong transition-colors hover:text-qm-positive-hover"
             >
               Privacy Policy →
             </Link>
@@ -683,7 +683,7 @@ export default function UpgradePage() {
           </p>
           <div className="mt-7 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <UpgradeButton
-              className="inline-flex items-center justify-center rounded-full bg-qm-accent px-7 py-4 text-base font-semibold text-qm-primary shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px disabled:opacity-60 sm:py-3.5 sm:text-sm"
+              className="inline-flex items-center justify-center rounded-full bg-qm-accent px-7 py-4 text-base font-semibold text-white shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px disabled:opacity-60 sm:py-3.5 sm:text-sm"
               label={`Start ${PRICING.trialLabel} →`}
             />
             <Link

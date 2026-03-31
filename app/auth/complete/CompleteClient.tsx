@@ -74,7 +74,7 @@ export default function CompleteClient() {
         {closeBlocked && (
           <Link
             href={destination}
-            className="mt-6 inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-2.5 text-sm font-semibold text-qm-primary transition-colors hover:bg-qm-accent-hover"
+            className="mt-6 inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-qm-accent-hover"
           >
             {destination === "/upgrade" ? "Continue to Premium →" : "Go to dashboard →"}
           </Link>

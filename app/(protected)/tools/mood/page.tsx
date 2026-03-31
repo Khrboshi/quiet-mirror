@@ -107,7 +107,7 @@ export default function MoodToolPage() {
         <div className="mx-auto max-w-2xl space-y-8">
 
           <header className="space-y-3">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-qm-positive">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-qm-positive-muted">
               Premium · A quiet moment
             </p>
             <h1 className="font-display text-3xl font-semibold tracking-tight">
@@ -158,7 +158,7 @@ export default function MoodToolPage() {
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 <Link
                   href={`/journal/new?prompt=${encodeURIComponent(selected.prompt)}`}
-                  className="inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-2.5 text-sm font-semibold text-qm-primary shadow-md shadow-[color:var(--qm-accent-soft)] transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
+                  className="inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-[color:var(--qm-accent-soft)] transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
                 >
                   Write about this →
                 </Link>

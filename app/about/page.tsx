@@ -41,7 +41,7 @@ export default function AboutPage() {
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
                 href="/magic-login"
-                className="inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-3 text-sm font-semibold text-qm-primary shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
+                className="inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
               >
                 Start journaling free
               </Link>
@@ -151,7 +151,7 @@ export default function AboutPage() {
                 If something feels wrong, unclear, or broken —{" "}
                 <a
                   href={`mailto:${CONFIG.supportEmail}`}
-                  className="font-medium text-qm-positive transition-colors hover:text-qm-positive-hover-hover"
+                  className="font-medium text-qm-positive transition-colors hover:text-qm-positive-hover"
                 >
                   email {CONFIG.supportEmail}
                 </a>
@@ -285,7 +285,7 @@ export default function AboutPage() {
                 <p>
                   <Link
                     href="/privacy"
-                    className="font-medium text-qm-positive transition-colors hover:text-qm-positive-hover-hover"
+                    className="font-medium text-qm-positive transition-colors hover:text-qm-positive-hover"
                   >
                     Read the full Privacy Policy &rarr;
                   </Link>
@@ -304,7 +304,7 @@ export default function AboutPage() {
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/magic-login"
-                className="inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-3 text-sm font-semibold text-qm-primary shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
+                className="inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
               >
                 Start free
               </Link>

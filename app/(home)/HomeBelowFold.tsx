@@ -166,7 +166,7 @@ export default function HomeBelowFold() {
               entries.{" "}
               <Link
                 href="/insights/preview"
-                className="text-qm-positive transition-colors hover:text-qm-positive-hover-hover"
+                className="text-qm-positive transition-colors hover:text-qm-positive-hover"
               >
                 See a full example →
               </Link>
@@ -338,7 +338,7 @@ export default function HomeBelowFold() {
           <div className="mt-8 text-center">
             <Link
               href="/magic-login"
-              className="inline-flex items-center justify-center rounded-full bg-qm-accent px-6 py-3.5 text-sm font-semibold text-qm-primary shadow transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
+              className="inline-flex items-center justify-center rounded-full bg-qm-accent px-6 py-3.5 text-sm font-semibold text-white shadow transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
             >
               Write your first entry free →
             </Link>
@@ -547,7 +547,7 @@ export default function HomeBelowFold() {
           <ScrollReveal className="mt-8 text-center">
             <Link
               href="/insights/preview"
-              className="inline-flex items-center justify-center gap-2 text-sm font-medium text-qm-positive transition-colors hover:text-qm-positive-hover-hover"
+              className="inline-flex items-center justify-center gap-2 text-sm font-medium text-qm-positive transition-colors hover:text-qm-positive-hover"
             >
               See a fuller example of Premium insights →
             </Link>
@@ -696,7 +696,7 @@ export default function HomeBelowFold() {
           <ScrollReveal className="mt-8 text-center">
             <Link
               href="/magic-login"
-              className="inline-flex items-center justify-center rounded-full bg-qm-accent px-6 py-3 text-sm font-semibold text-qm-primary shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
+              className="inline-flex items-center justify-center rounded-full bg-qm-accent px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
             >
               Write your first entry free →
             </Link>
@@ -931,7 +931,7 @@ export default function HomeBelowFold() {
               <div className="mt-auto flex flex-col gap-2 pt-6">
                 <Link
                   href="/upgrade"
-                  className="inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-5 py-3 text-sm font-semibold text-qm-primary shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
+                  className="inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-5 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
                 >
                   Start seeing the pattern →
                 </Link>
@@ -1016,7 +1016,7 @@ export default function HomeBelowFold() {
           <div className="mt-8 text-xs text-qm-faint">
             <Link
               href="/privacy"
-              className="text-qm-positive-strong transition-colors hover:text-qm-positive-hover-hover"
+              className="text-qm-positive-strong transition-colors hover:text-qm-positive-hover"
             >
               Read the Privacy Policy &rarr;
             </Link>
@@ -1046,7 +1046,7 @@ export default function HomeBelowFold() {
             <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
               <Link
                 href="/magic-login"
-                className="inline-flex items-center justify-center rounded-full bg-qm-accent px-8 py-4 text-base font-semibold text-qm-primary shadow-xl transition-all hover:bg-qm-accent-hover hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center rounded-full bg-qm-accent px-8 py-4 text-base font-semibold text-white shadow-xl transition-all hover:bg-qm-accent-hover hover:-translate-y-0.5"
               >
                 Write your first entry free →
               </Link>

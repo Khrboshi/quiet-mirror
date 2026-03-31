@@ -175,7 +175,7 @@ export default async function JournalPage() {
                 >
                   <p className="text-sm font-medium leading-snug text-qm-primary transition group-hover:text-qm-primary">{p.q}</p>
                   <p className="mt-1.5 text-xs leading-relaxed text-qm-faint">{p.sub}</p>
-                  <p className="mt-3 text-xs font-medium text-qm-positive group-hover:text-qm-positive-hover-hover transition">Start →</p>
+                  <p className="mt-3 text-xs font-medium text-qm-positive group-hover:text-qm-positive-hover transition">Start →</p>
                 </Link>
               ))}
             </div>
@@ -266,7 +266,7 @@ export default async function JournalPage() {
                         </span>
                       )}
                     </div>
-                    <span className="text-qm-positive text-xs group-hover:text-qm-positive-hover-hover transition shrink-0">
+                    <span className="text-qm-positive text-xs group-hover:text-qm-positive-hover transition shrink-0">
                       Open →
                     </span>
                   </div>

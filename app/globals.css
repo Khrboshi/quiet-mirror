@@ -145,7 +145,7 @@
     /* Positive */
     --qm-positive:          #059669;   /* emerald-600  */
     --qm-positive-strong:   #047857;   /* emerald-700  */
-    --qm-positive-hover:    #047857;   /* emerald-700  — darker, for hover on light bg */
+    --qm-positive-hover:    #065f46;   /* emerald-800  — darker, for hover on light bg */
     --qm-positive-soft:     rgba(5, 150, 105, 0.10);
     --qm-positive-border:   rgba(5, 150, 105, 0.22);
     --qm-positive-muted:    rgba(5, 150, 105, 0.60);

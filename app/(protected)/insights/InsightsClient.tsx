@@ -615,7 +615,7 @@ function WeeklySummarySection({ hasRealData }: { hasRealData: boolean }) {
           <button
             type="button"
             onClick={() => fetchSummary()}
-            className="text-xs font-medium text-qm-positive hover:text-qm-positive-hover-hover transition"
+            className="text-xs font-medium text-qm-positive hover:text-qm-positive-hover transition"
           >
             Try again →
           </button>
@@ -949,7 +949,7 @@ export default function InsightsClient() {
                   <button
                     type="button"
                     onClick={() => setShowAllThemes((v) => !v)}
-                    className="text-xs text-qm-positive hover:text-qm-positive-hover-hover transition font-medium"
+                    className="text-xs text-qm-positive hover:text-qm-positive-hover transition font-medium"
                   >
                     {showAllThemes ? "Show less" : `+${allThemes.length - 6} more`}
                   </button>
@@ -992,7 +992,7 @@ export default function InsightsClient() {
                   <button
                     type="button"
                     onClick={() => setShowAllEmotions((v) => !v)}
-                    className="text-xs text-qm-positive hover:text-qm-positive-hover-hover transition font-medium"
+                    className="text-xs text-qm-positive hover:text-qm-positive-hover transition font-medium"
                   >
                     {showAllEmotions
                       ? "Show less"
@@ -1034,7 +1034,7 @@ export default function InsightsClient() {
                 href={`/journal/new?prompt=${encodeURIComponent(
                   `I keep noticing ${topCorepatterns[0][0].toLowerCase()}. What's underneath it today?`
                 )}`}
-                className="mt-4 inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-2.5 text-xs font-semibold text-qm-primary shadow-sm transition hover:bg-qm-accent-hover"
+                className="mt-4 inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-qm-accent-hover"
               >
                 Write about this →
               </Link>

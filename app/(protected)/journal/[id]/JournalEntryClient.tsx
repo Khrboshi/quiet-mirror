@@ -238,7 +238,7 @@ export default function JournalEntryClient({
               className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition-all disabled:opacity-50 ${
                 isLimitReached
                   ? "border border-qm-positive-border bg-qm-positive-soft text-qm-positive hover:bg-qm-positive-soft"
-                  : "bg-qm-accent text-qm-primary hover:bg-qm-accent-hover"
+                  : "bg-qm-accent text-white hover:bg-qm-accent-hover"
               }`}
             >
               {busy ? (
@@ -274,7 +274,7 @@ export default function JournalEntryClient({
             <div className="mt-4 flex flex-wrap items-center gap-3">
               <Link
                 href="/upgrade"
-                className="inline-flex items-center justify-center rounded-full bg-qm-accent px-4 py-2 text-xs font-semibold text-qm-primary shadow-sm transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
+                className="inline-flex items-center justify-center rounded-full bg-qm-accent px-4 py-2 text-xs font-semibold text-white shadow-sm transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
               >
                 {`Start ${PRICING.trialLabel} →`}
               </Link>
@@ -583,7 +583,7 @@ export default function JournalEntryClient({
                 <div className="mt-4 flex flex-wrap gap-2">
                   <Link
                     href="/upgrade"
-                    className="inline-flex items-center gap-2 rounded-full bg-qm-accent px-4 py-2.5 text-xs font-semibold text-qm-primary shadow-sm transition hover:bg-qm-accent-hover"
+                    className="inline-flex items-center gap-2 rounded-full bg-qm-accent px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-qm-accent-hover"
                   >
                     {`Start ${PRICING.trialLabel} →`}
                   </Link>

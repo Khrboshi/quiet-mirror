@@ -120,7 +120,7 @@ export default async function BillingPage() {
             ) : (
               <a
                 href="/upgrade"
-                className="inline-flex items-center justify-center rounded-full bg-qm-accent px-4 py-2 text-sm font-semibold text-qm-primary hover:bg-qm-accent-hover"
+                className="inline-flex items-center justify-center rounded-full bg-qm-accent px-4 py-2 text-sm font-semibold text-white hover:bg-qm-accent-hover"
               >
                 Upgrade to Premium
               </a>
@@ -251,7 +251,7 @@ export default async function BillingPage() {
               {!isPaid ? (
                 <a
                   href="/upgrade"
-                  className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-4 py-2 text-sm font-semibold text-qm-primary hover:bg-qm-accent-hover"
+                  className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-4 py-2 text-sm font-semibold text-white hover:bg-qm-accent-hover"
                 >
                   Upgrade to Premium
                 </a>
@@ -298,7 +298,7 @@ export default async function BillingPage() {
           ) : (
             <a
               href="/upgrade"
-              className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-4 py-2 text-sm font-semibold text-qm-primary hover:bg-qm-accent-hover"
+              className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-4 py-2 text-sm font-semibold text-white hover:bg-qm-accent-hover"
             >
               View Premium
             </a>

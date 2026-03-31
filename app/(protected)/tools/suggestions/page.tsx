@@ -118,7 +118,7 @@ export default function SuggestionsToolPage() {
                     </p>
                     <Link
                       href={`/journal/new?prompt=${encodeURIComponent(suggestion.prompt)}`}
-                      className="mt-5 inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-2.5 text-sm font-semibold text-qm-primary shadow-md shadow-[color:var(--qm-accent-soft)] transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
+                      className="mt-5 inline-flex items-center justify-center rounded-full bg-qm-accent px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-[color:var(--qm-accent-soft)] transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
                     >
                       Write about this →
                     </Link>

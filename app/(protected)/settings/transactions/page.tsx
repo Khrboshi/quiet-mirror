@@ -231,7 +231,7 @@ export default function TransactionsPage() {
                               href={url}
                               target="_blank"
                               rel="noreferrer"
-                              className="text-qm-positive hover:text-qm-positive-hover-hover"
+                              className="text-qm-positive hover:text-qm-positive-hover"
                             >
                               View
                             </a>

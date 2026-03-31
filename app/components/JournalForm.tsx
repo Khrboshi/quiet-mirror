@@ -138,7 +138,7 @@ export default function JournalForm(_props: Props) {
                 key={prompt}
                 type="button"
                 onClick={() => handleStarterPrompt(prompt)}
-                className="rounded-full border border-qm-card bg-qm-card px-3.5 py-2 text-xs text-qm-secondary transition hover:border-qm-accent hover:bg-qm-accent-soft hover:text-qm-primary"
+                className="rounded-full border border-qm-card bg-qm-card px-3.5 py-2 text-xs text-qm-secondary transition hover:border-qm-accent hover:bg-qm-accent-soft hover:text-white"
               >
                 {prompt}
               </button>

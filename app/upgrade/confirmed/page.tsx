@@ -69,7 +69,7 @@ export default function UpgradeConfirmedPage() {
         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
           <Link
             href="/journal/new"
-            className="inline-flex items-center justify-center rounded-full bg-qm-accent px-7 py-4 text-base font-semibold text-qm-primary shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px sm:py-3.5 sm:text-sm"
+            className="inline-flex items-center justify-center rounded-full bg-qm-accent px-7 py-4 text-base font-semibold text-white shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px sm:py-3.5 sm:text-sm"
           >
             Write your next entry →
           </Link>

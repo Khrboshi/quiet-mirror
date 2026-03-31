@@ -156,7 +156,7 @@ export default function Navbar() {
             ) : (
               <button
                 onClick={handleLogout}
-                className="ml-2 inline-flex items-center justify-center rounded-full px-3 py-2 text-sm font-medium text-qm-danger transition-colors hover:bg-qm-danger-soft hover:text-qm-danger"
+                className="ml-2 inline-flex items-center justify-center rounded-full px-3 py-2 text-sm font-medium text-qm-danger transition-colors hover:bg-qm-danger-soft hover:text-qm-danger-hover"
               >
                 {t.navbar.logout}
               </button>
