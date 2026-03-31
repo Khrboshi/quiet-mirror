@@ -189,4 +189,164 @@ export interface Translations {
       accent: string;
     }[];
   };
+
+  // ── Footer ──────────────────────────────────────────────────────────────────
+  footer: {
+    // Column headers
+    product:          string;
+    account:          string;
+    legal:            string;
+    serviceGuarantees:string;
+    // Product links
+    about:            string;
+    pricing:          string;
+    blog:             string;
+    installApp:       string;
+    // Account links (signed in)
+    dashboard:        string;
+    tools:            string;
+    settings:         string;
+    billing:          string;
+    // Account links (signed out)
+    signIn:           string;
+    startFree:        string;
+    goPremium:        string;
+    // Legal links
+    termsOfService:   string;
+    privacyPolicy:    string;
+    contact:          string;
+    // Trust badges
+    noAds:            string;
+    noDataSales:      string;
+    // Privacy assurance
+    privacyAssurance: string;
+    // Copyright
+    allRightsReserved:(appName: string, year: number) => string;
+  };
+
+  // ── Settings & Billing ───────────────────────────────────────────────────────
+  settingsPage: {
+    // Page header
+    title:            string;
+    subtitle:         string;
+    upgradeLabel:     string;
+    // Plan badges
+    planPremium:      string;
+    planTrial:        string;
+    planFree:         string;
+    // Card titles & subtitles
+    accountTitle:     string;
+    accountSubtitle:  string;
+    transactionsLabel:string;
+    planTitle:        string;
+    planActivePremium:string;
+    planActiveFree:   string;
+    dataPrivacyTitle: string;
+    dataPrivacySubtitle:string;
+    installTitle:     string;
+    installSubtitle:  string;
+    installAppLabel:  string;
+    supportTitle:     string;
+    supportSubtitle:  string;
+    // Data row labels
+    emailLabel:       string;
+    memberSinceLabel: string;
+    entriesWrittenLabel:string;
+    billingEmailNote: string;
+    planLabel:        string;
+    reflectionsLabel: string;
+    resetsLabel:      string;
+    aiTrainingLabel:  string;
+    aiTrainingValue:  string;
+    dataSharingLabel: string;
+    dataSharingValue: string;
+    privacyPolicyLabel:string;
+    privacyReadLabel: string;
+    dataRequestNote:  (email: string) => string;
+    // Plan values
+    reflectionsUnlimited:string;
+    insightsFull:     string;
+    weeklySummaryIncluded:string;
+    reflectionsNone:  string;
+    reflectionsRemaining: (n: number, total: number) => string;
+    reflectionsResume:(date: string) => string;
+    reflectionsFreeNote:(n: number) => string;
+    upgradeUnlimited: string;
+    // Billing page
+    billingTitle:     string;
+    billingSubtitle:  string;
+    manageSubscription:string;
+    upgradeToPremium: string;
+    planSectionTitle: string;
+    planStatusPremium:string;
+    planStatusTrial:  string;
+    planStatusFree:   string;
+    premiumIncludes:  string;
+    freeIncludes:     string;
+    premiumItem1:     string;
+    premiumItem2:     string;
+    premiumItem3:     string;
+    premiumItem4:     string;
+    freeItem1:        string;
+    freeItem2:        string;
+    freeItem3:        (n: number) => string;
+    freeItem4:        string;
+    priceLabel:       string;
+    nextBillingLabel: string;
+    cancellationsLabel:string;
+    noPresure:        string;
+    refundWindowLast: (days: number) => string;
+    refundWindowDays: (days: number) => string;
+    refundContact:    string;
+    accountSectionTitle:string;
+    accountBillingSubtitle:string;
+  };
+
+  // ── Tools page ───────────────────────────────────────────────────────────────
+  toolsPage: {
+    pageLabel:        string;
+    pageTitle:        string;
+    pageSubtitle:     string;
+    moodTitle:        string;
+    moodSubtitle:     string;
+    reflectionTitle:  string;
+    reflectionSubtitle:string;
+    suggestionsTitle: string;
+    suggestionsSubtitle:string;
+    openLabel:        string;
+  };
+
+  // ── Magic login ──────────────────────────────────────────────────────────────
+  magicLogin: {
+    quote1:           string;
+    quote2:           string;
+    quote3:           string;
+    quote4:           string;
+    quote5:           string;
+    callbackError:    string;
+    emailSentCode:    string;
+    emailSentLink:    string;
+    sendFailed:       string;
+    invalidCode:      string;
+  };
+
+  // ── Upgrade confirmed ────────────────────────────────────────────────────────
+  upgradeConfirmed: {
+    headline1:        string;
+    headline2:        string;
+    whatUnlocked:     string;
+    feature1Label:    string;
+    feature1Sub:      string;
+    feature2Label:    string;
+    feature2Sub:      string;
+    feature3Label:    string;
+    feature3Sub:      string;
+    feature4Label:    string;
+    feature4Sub:      string;
+    ctaWrite:         string;
+    ctaInsights:      string;
+    refreshOnce:      string;
+    manageBilling:    string;
+    billingSettings:  string;
+  };
 }

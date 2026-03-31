@@ -1,8 +1,4 @@
 // app/components/Footer.tsx
-//
-// "use client" is required here because FooterLinks reads live session state
-// via useSupabase(). If you later want to move session-reading to a server
-// component, pass `isSignedIn` as a prop and remove this directive.
 "use client";
 
 import Link from "next/link";
@@ -11,8 +7,7 @@ import { usePathname } from "next/navigation";
 import { CONFIG } from "@/app/lib/config";
 import { PRICING } from "@/app/lib/pricing";
 import { useSupabase } from "@/app/components/SupabaseSessionProvider";
-
-// ─── Helper component for footer links with accessibility ───────────────────
+import { useTranslation } from "@/app/components/I18nProvider";
 
 interface FooterLinkProps {
   href: string;
@@ -52,8 +47,6 @@ function FooterLink({ href, children, isExternal = false }: FooterLinkProps) {
   );
 }
 
-// ─── Section Header Component for consistency ────────────────────────────────
-
 function FooterSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="space-y-2.5">
@@ -67,45 +60,40 @@ function FooterSection({ title, children }: { title: string; children: React.Rea
   );
 }
 
-// ─── Footer Links Grid ───────────────────────────────────────────────────────
-
 function FooterLinks({ isSignedIn }: { isSignedIn: boolean }) {
+  const { t } = useTranslation();
   return (
-    <nav aria-label="Footer navigation" className="w-full sm:w-auto">
+    <nav aria-label={t.footer.serviceGuarantees} className="w-full sm:w-auto">
       <div className="grid grid-cols-2 gap-x-8 gap-y-8 sm:flex sm:flex-wrap sm:gap-x-12">
-        
-        {/* Product Section */}
-        <FooterSection title="Product">
-          <FooterLink href="/about">About</FooterLink>
-          <FooterLink href="/upgrade">Pricing</FooterLink>
-          <FooterLink href="/blog">Blog</FooterLink>
-          <FooterLink href="/install">Install app</FooterLink>
+        <FooterSection title={t.footer.product}>
+          <FooterLink href="/about">{t.footer.about}</FooterLink>
+          <FooterLink href="/upgrade">{t.footer.pricing}</FooterLink>
+          <FooterLink href="/blog">{t.footer.blog}</FooterLink>
+          <FooterLink href="/install">{t.footer.installApp}</FooterLink>
         </FooterSection>
 
-        {/* Account Section — context-aware */}
-        <FooterSection title="Account">
+        <FooterSection title={t.footer.account}>
           {isSignedIn ? (
             <>
-              <FooterLink href="/dashboard">Dashboard</FooterLink>
-              <FooterLink href="/tools">Tools</FooterLink>
-              <FooterLink href="/settings">Settings</FooterLink>
-              <FooterLink href="/settings/billing">Billing</FooterLink>
+              <FooterLink href="/dashboard">{t.footer.dashboard}</FooterLink>
+              <FooterLink href="/tools">{t.footer.tools}</FooterLink>
+              <FooterLink href="/settings">{t.footer.settings}</FooterLink>
+              <FooterLink href="/settings/billing">{t.footer.billing}</FooterLink>
             </>
           ) : (
             <>
-              <FooterLink href="/magic-login">Sign in</FooterLink>
-              <FooterLink href="/upgrade">Start free</FooterLink>
-              <FooterLink href="/upgrade">Go Premium</FooterLink>
+              <FooterLink href="/magic-login">{t.footer.signIn}</FooterLink>
+              <FooterLink href="/upgrade">{t.footer.startFree}</FooterLink>
+              <FooterLink href="/upgrade">{t.footer.goPremium}</FooterLink>
             </>
           )}
         </FooterSection>
 
-        {/* Legal Section */}
-        <FooterSection title="Legal">
-          <FooterLink href="/terms">Terms of Service</FooterLink>
-          <FooterLink href="/privacy">Privacy Policy</FooterLink>
+        <FooterSection title={t.footer.legal}>
+          <FooterLink href="/terms">{t.footer.termsOfService}</FooterLink>
+          <FooterLink href="/privacy">{t.footer.privacyPolicy}</FooterLink>
           <FooterLink href={`mailto:${CONFIG.supportEmail}`} isExternal>
-            Contact
+            {t.footer.contact}
           </FooterLink>
         </FooterSection>
       </div>
@@ -113,21 +101,16 @@ function FooterLinks({ isSignedIn }: { isSignedIn: boolean }) {
   );
 }
 
-// ─── Main Component ──────────────────────────────────────────────────────────
-
 export default function Footer() {
   const year = new Date().getFullYear();
   const { session } = useSupabase();
+  const { t } = useTranslation();
   const isSignedIn = !!session;
 
   return (
     <footer className="mt-16 border-t border-qm-border-subtle bg-qm-bg" role="contentinfo">
       <div className="mx-auto max-w-6xl px-6 py-10">
-        
-        {/* Top row: Brand + Links */}
         <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
-
-          {/* Brand Section */}
           <div className="max-w-xs space-y-3">
             <Link
               href="/"
@@ -151,28 +134,24 @@ export default function Footer() {
               {CONFIG.tagline}
             </p>
 
-            {/* Privacy reassurance — important for trust */}
             <p className="text-[11px] leading-relaxed text-qm-muted">
-              Your entries stay private and are never used to train AI models.
+              {t.footer.privacyAssurance}
             </p>
           </div>
 
           <FooterLinks isSignedIn={isSignedIn} />
         </div>
 
-        {/* Bottom bar */}
         <div className="mt-8 flex flex-col items-start justify-between gap-3 border-t border-qm-border-card pt-6 text-xs text-qm-muted sm:flex-row sm:items-center">
-          <p>© {year} {CONFIG.appName}. All rights reserved.</p>
-          
-          {/* Trust badges with screen reader support */}
-          <div className="flex flex-wrap gap-3" aria-label="Service guarantees">
+          <p>{t.footer.allRightsReserved(CONFIG.appName, year)}</p>
+          <div className="flex flex-wrap gap-3" aria-label={t.footer.serviceGuarantees}>
             <span className="inline-flex items-center gap-1">
               <span aria-hidden="true">✓</span>
-              <span>No ads</span>
+              <span>{t.footer.noAds}</span>
             </span>
             <span className="inline-flex items-center gap-1">
               <span aria-hidden="true">✓</span>
-              <span>No data sales</span>
+              <span>{t.footer.noDataSales}</span>
             </span>
             <span className="inline-flex items-center gap-1 text-qm-accent">
               <span aria-hidden="true">✨</span>

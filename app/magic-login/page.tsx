@@ -10,6 +10,8 @@ import { useSupabase } from "@/app/components/SupabaseSessionProvider";
 import { sendMagicLink } from "./sendMagicLink";
 import { CONFIG } from "@/app/lib/config";
 import { verifyOtp } from "./verifyOtp";
+import { getTranslations } from "@/app/lib/i18n";
+import { useTranslation } from "@/app/components/I18nProvider";
 
 type Status = "idle" | "loading" | "success" | "error";
 type Mode = "link" | "code";
@@ -35,17 +37,23 @@ function safeNext(raw: string | null | undefined): string {
   return v;
 }
 
-const SIDE_QUOTES = [
-  { text: "You don't have to have it figured out to write it down." },
-  { text: "Something is trying to become clear. Writing helps." },
-  { text: "Your journal isn't judging you. It's just listening." },
-  { text: "The patterns you can't see yet are already in what you've written." },
-  { text: "Coming back is the whole practice." },
-];
+// Quotes come from i18n — edit in app/lib/i18n/en.ts and uk.ts
+function getSideQuotes(ml: ReturnType<typeof getTranslations>["magicLogin"]) {
+  return [
+    { text: ml.quote1 },
+    { text: ml.quote2 },
+    { text: ml.quote3 },
+    { text: ml.quote4 },
+    { text: ml.quote5 },
+  ];
+}
 
 function MagicLoginInner() {
   const router = useRouter();
   const { session } = useSupabase();
+  const { t } = useTranslation();
+  const ml = t.magicLogin;
+  const SIDE_QUOTES = getSideQuotes(ml);
 
   const [paramsReady, setParamsReady] = useState(false);
   const [next, setNext] = useState("/dashboard");
@@ -103,7 +111,7 @@ function MagicLoginInner() {
     setMode("code");
     setStatus("error");
     setMessage(
-      "Sign-in did not complete in this browser context. On iPhone, Safari and the Home Screen app may not share login. Use code sign-in below in the same place you are using Quiet Mirror."
+      ml.callbackError
     );
   }, [callbackError]);
 
@@ -164,15 +172,15 @@ function MagicLoginInner() {
 
     if (!res.success) {
       setStatus("error");
-      setMessage(res.message || "Failed to send email.");
+      setMessage(res.message || ml.sendFailed);
       return;
     }
 
     setStatus("success");
     setMessage(
       mode === "code"
-        ? "Email sent. If your email includes a code, enter it below. If it shows a button or link instead, you can still open it to sign in."
-        : "Email sent. Open the button or link in the same browser you started with. If you installed Quiet Mirror on iPhone, code sign-in is usually the safer option."
+        ? ml.emailSentCode
+        : ml.emailSentLink
     );
   }
 
@@ -188,7 +196,7 @@ function MagicLoginInner() {
 
     if (!res.success) {
       setStatus("error");
-      setMessage(res.message || "Invalid code.");
+      setMessage(res.message || ml.invalidCode);
       return;
     }
 

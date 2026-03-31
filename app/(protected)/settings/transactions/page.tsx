@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ERRORS, NAV } from "@/app/lib/copy";
+import { useTranslation } from "@/app/components/I18nProvider";
 import { useEffect, useMemo, useState } from "react";
 import { useSupabase } from "@/app/components/SupabaseSessionProvider";
 import { useUserPlan } from "@/app/components/useUserPlan";
@@ -47,6 +47,7 @@ function formatDateFromUnixSeconds(sec: number) {
 export default function TransactionsPage() {
   const { session } = useSupabase();
   const { planType, credits, loading } = useUserPlan();
+  const { t } = useTranslation();
 
   const email = session?.user?.email ?? "Unknown user";
 
@@ -85,7 +86,7 @@ export default function TransactionsPage() {
         const items = Array.isArray(data?.items) ? (data.items as InvoiceItem[]) : [];
         if (alive) setInvoices(items);
       } catch (e: any) {
-        if (alive) setInvError(e?.message || ERRORS.invoicesFailed);
+        if (alive) setInvError(e?.message || t.errors.invoicesFailed);
       } finally {
         if (alive) setInvLoading(false);
       }

@@ -1,17 +1,19 @@
 // app/(protected)/settings/page.tsx
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { ensureCreditsFresh } from "@/lib/creditRules";
 import { PAYMENT } from "@/app/lib/payment";
 import { PRICING } from "@/app/lib/pricing";
 import { CONFIG } from "@/app/lib/config";
+import { getTranslations, getLocaleFromCookieString } from "@/app/lib/i18n";
 
 export const dynamic = "force-dynamic";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-function PlanBadge({ plan }: { plan: "PREMIUM" | "TRIAL" | "FREE" }) {
+function PlanBadge({ plan, labels }: { plan: "PREMIUM" | "TRIAL" | "FREE"; labels: { planPremium: string; planTrial: string; planFree: string } }) {
   const isPremium = plan === "PREMIUM" || plan === "TRIAL";
   return (
     <span
@@ -22,7 +24,7 @@ function PlanBadge({ plan }: { plan: "PREMIUM" | "TRIAL" | "FREE" }) {
           : "border-qm-border-subtle bg-qm-elevated text-qm-secondary",
       ].join(" ")}
     >
-      {plan === "TRIAL" ? "Trial" : plan === "PREMIUM" ? "Premium" : "Free"}
+      {plan === "TRIAL" ? labels.planTrial : plan === "PREMIUM" ? labels.planPremium : labels.planFree}
     </span>
   );
 }
@@ -94,6 +96,8 @@ function DataRow({ label, value }: { label: string; value: React.ReactNode }) {
 
 export default async function SettingsPage() {
   const supabase = createServerSupabase();
+  const t = getTranslations(getLocaleFromCookieString(cookies().toString()));
+  const s = t.settingsPage;
 
   const {
     data: { user },
@@ -161,13 +165,13 @@ export default async function SettingsPage() {
       <header className="mb-10">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="font-display text-2xl font-semibold text-qm-primary">Settings</h1>
+            <h1 className="font-display text-2xl font-semibold text-qm-primary">{s.title}</h1>
             <p className="mt-2 text-sm text-qm-muted">
-              Account, plan, and privacy.
+              {s.subtitle}
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <PlanBadge plan={plan} />
+            <PlanBadge plan={plan} labels={s} />
             {isPremium ? (
               <ActionLink
                 href={PAYMENT.portalUrl(portalReturn)}
@@ -177,7 +181,7 @@ export default async function SettingsPage() {
               </ActionLink>
             ) : (
               <ActionLink href="/upgrade" variant="primary">
-                Upgrade
+                {s.upgradeLabel}
               </ActionLink>
             )}
           </div>
@@ -191,8 +195,8 @@ export default async function SettingsPage() {
 
           {/* Account card — enriched with stats */}
           <Card
-            title="Account"
-            subtitle="Your login and account details."
+            title={s.accountTitle}
+            subtitle={s.accountSubtitle}
             right={
               <ActionLink href="/settings/transactions" variant="secondary">
                 Transactions
@@ -200,12 +204,12 @@ export default async function SettingsPage() {
             }
           >
             <div className="rounded-xl border border-qm-border-subtle bg-qm-bg px-5 py-1">
-              <DataRow label="Email" value={user.email ?? "—"} />
+              <DataRow label={s.emailLabel} value={user.email ?? "—"} />
               {memberSince && (
-                <DataRow label="Member since" value={memberSince} />
+                <DataRow label={s.memberSinceLabel} value={memberSince} />
               )}
               <DataRow
-                label="Entries written"
+                label={s.entriesWrittenLabel}
                 value={
                   <span className="font-medium text-qm-primary">
                     {entryCount ?? 0}
@@ -220,11 +224,11 @@ export default async function SettingsPage() {
 
           {/* Plan card — personalised for free users */}
           <Card
-            title="Plan"
+            title={s.planTitle}
             subtitle={
               isPremium
-                ? "Premium is active."
-                : "You're on Free."
+                ? s.planActivePremium
+                : s.planActiveFree
             }
             right={
               isPremium ? (
@@ -241,30 +245,30 @@ export default async function SettingsPage() {
             {isPremium ? (
               // Premium state
               <div className="rounded-xl border border-qm-positive-border bg-qm-positive-bg px-5 py-1">
-                <DataRow label="Plan" value={<PlanBadge plan={plan} />} />
-                <DataRow label="Reflections" value={<span className="text-qm-positive">Unlimited</span>} />
-                <DataRow label="Insights" value="Full access" />
-                <DataRow label="Weekly summary" value="Included" />
+                <DataRow label={s.planLabel} value={<PlanBadge plan={plan} labels={s} />} />
+                <DataRow label={s.reflectionsLabel} value={<span className="text-qm-positive">Unlimited</span>} />
+                <DataRow label="Insights" value={s.insightsFull} />
+                <DataRow label="Weekly summary" value={s.weeklySummaryIncluded} />
               </div>
             ) : (
               // Free state — show credits used/remaining
               <div className="space-y-3">
                 <div className="rounded-xl border border-qm-border-subtle bg-qm-bg px-5 py-1">
-                  <DataRow label="Plan" value={<PlanBadge plan={plan} />} />
+                  <DataRow label={s.planLabel} value={<PlanBadge plan={plan} labels={s} />} />
                   <DataRow
-                    label="Reflections this month"
+                    label={s.reflectionsLabel}
                     value={
                       <span>
                         <span className={remainingCredits === 0 ? "text-qm-faint" : "text-qm-primary font-medium"}>
                           {remainingCredits === 0
-                            ? "0 remaining"
-                            : `${remainingCredits} of ${PRICING.freeMonthlyCredits} remaining`}
+                            ? s.reflectionsNone
+                            : s.reflectionsRemaining(remainingCredits, PRICING.freeMonthlyCredits)}
                         </span>
                       </span>
                     }
                   />
                   <DataRow
-                    label="Resets"
+                    label={s.resetsLabel}
                     value={<span className="text-qm-muted">{resetLabel}</span>}
                   />
                 </div>
@@ -287,17 +291,17 @@ export default async function SettingsPage() {
 
           {/* Data & Privacy — trust section */}
           <Card
-            title="Data & Privacy"
-            subtitle="Your entries belong to you — always."
+            title={s.dataPrivacyTitle}
+            subtitle={s.dataPrivacySubtitle}
           >
             <div className="rounded-xl border border-qm-border-subtle bg-qm-bg px-5 py-1">
               <DataRow
-                label="AI training"
+                label={s.aiTrainingLabel}
                 value={<span className="text-qm-positive">Never used</span>}
               />
-              <DataRow label="Data sharing" value="None" />
+              <DataRow label={s.dataSharingLabel} value={s.dataSharingValue} />
               <DataRow
-                label="Privacy policy"
+                label={s.privacyPolicyLabel}
                 value={
                   <Link
                     href="/privacy"
@@ -321,8 +325,8 @@ export default async function SettingsPage() {
         <div className="grid gap-6 content-start">
 
           <Card
-            title="Install"
-            subtitle="Add to your home screen for a faster, app-like experience — works offline too."
+            title={s.installTitle}
+            subtitle={s.installSubtitle}
           >
             <Link
               href="/install"
@@ -333,9 +337,9 @@ export default async function SettingsPage() {
             </Link>
           </Card>
 
-          <Card title="Support" subtitle="Help with billing or account issues.">
+          <Card title={s.supportTitle} subtitle={s.supportSubtitle}>
             <div className="rounded-xl border border-qm-border-subtle bg-qm-bg px-5 py-1">
-              <DataRow label="Email" value={CONFIG.supportEmail} />
+              <DataRow label={s.emailLabel} value={CONFIG.supportEmail} />
             </div>
             <p className="mt-3 text-xs text-qm-faint">
               Include your account email for faster help.

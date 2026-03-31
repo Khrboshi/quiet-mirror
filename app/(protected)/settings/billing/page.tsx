@@ -1,33 +1,35 @@
 // app/settings/billing/page.tsx
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { ensureCreditsFresh } from "@/lib/creditRules";
 import { PRICING } from "@/app/lib/pricing";
 import { PAYMENT } from "@/app/lib/payment";
 import { CONFIG } from "@/app/lib/config";
+import { getTranslations, getLocaleFromCookieString } from "@/app/lib/i18n";
 
 export const dynamic = "force-dynamic";
 
 type PlanType = "PREMIUM" | "TRIAL" | "FREE";
 
-function PlanBadge({ plan }: { plan: PlanType }) {
+function PlanBadge({ plan, labels }: { plan: PlanType; labels: { planPremium: string; planTrial: string; planFree: string } }) {
   if (plan === "PREMIUM") {
     return (
       <span className="inline-flex items-center rounded-full border border-qm-positive-border bg-qm-positive-soft px-2.5 py-1 text-xs font-semibold text-qm-positive">
-        Premium
+        {labels.planPremium}
       </span>
     );
   }
   if (plan === "TRIAL") {
     return (
       <span className="inline-flex items-center rounded-full border border-qm-premium-border bg-qm-premium-soft px-2.5 py-1 text-xs font-semibold text-qm-premium">
-        Trial
+        {labels.planTrial}
       </span>
     );
   }
   return (
     <span className="inline-flex items-center rounded-full border border-qm-border-subtle bg-qm-elevated px-2.5 py-1 text-xs font-semibold text-qm-secondary">
-      Free
+      {labels.planFree}
     </span>
   );
 }
@@ -51,6 +53,7 @@ function SectionTitle({
 
 export default async function BillingPage() {
   const supabase = createServerSupabase();
+  const s = getTranslations(getLocaleFromCookieString(cookies().toString())).settingsPage;
 
   const {
     data: { user },
@@ -109,7 +112,7 @@ export default async function BillingPage() {
           </div>
 
           <div className="flex items-center gap-3">
-            <PlanBadge plan={plan} />
+            <PlanBadge plan={plan} labels={s} />
             {isPaid ? (
               <a
                 href={PAYMENT.portalUrl("/settings/billing")}
@@ -136,8 +139,8 @@ export default async function BillingPage() {
           <div>
             <p className="text-sm font-semibold text-qm-positive">
               {refundDaysLeft === 1
-                ? `Last day of your ${PRICING.trialDays}-day refund window`
-                : `${refundDaysLeft} days left in your ${PRICING.trialDays}-day refund window`}
+                ? s.refundWindowLast(PRICING.trialDays)
+                : s.refundWindowDays(refundDaysLeft!)}
             </p>
             <p className="mt-0.5 text-xs text-qm-muted">
               Not what you expected? Email{" "}
@@ -160,33 +163,33 @@ export default async function BillingPage() {
             title="Plan"
             subtitle={
               plan === "PREMIUM"
-                ? "Your Premium plan is active."
+                ? s.planStatusPremium
                 : plan === "TRIAL"
-                ? "You are on a free trial — full Premium access."
-                : "You're on Free. Upgrade any time."
+                ? s.planStatusTrial
+                : s.planStatusFree
             }
           />
 
           <div className="grid gap-4 md:grid-cols-2">
             <div className="rounded-xl border border-qm-border-subtle bg-qm-bg p-5">
               <h3 className="text-sm font-semibold text-qm-primary">
-                {isPaid ? "Premium includes" : "Free includes"}
+                {isPaid ? s.premiumIncludes : s.freeIncludes}
               </h3>
 
               <ul className="mt-3 space-y-2 text-sm text-qm-secondary">
                 {isPaid ? (
                   <>
-                    <li>• Unlimited AI reflections</li>
-                    <li>• Pattern clarity across time</li>
-                    <li>• Weekly personal summary</li>
-                    <li>• Deeper insights without writing more</li>
+                    <li>• {s.premiumItem1}</li>
+                    <li>• {s.premiumItem2}</li>
+                    <li>• {s.premiumItem3}</li>
+                    <li>• {s.premiumItem4}</li>
                   </>
                 ) : (
                   <>
-                    <li>• Unlimited journaling</li>
-                    <li>• Gentle prompts to begin</li>
-                    <li>• {PRICING.freeMonthlyCredits} AI reflections per month</li>
-                    <li>• Private by default</li>
+                    <li>• {s.freeItem1}</li>
+                    <li>• {s.freeItem2}</li>
+                    <li>• {s.freeItem3(PRICING.freeMonthlyCredits)}</li>
+                    <li>• {s.freeItem4}</li>
                   </>
                 )}
               </ul>
@@ -209,7 +212,7 @@ export default async function BillingPage() {
 
             <div className="rounded-xl border border-qm-border-subtle bg-qm-bg p-5">
               <h3 className="text-sm font-semibold text-qm-primary">
-                {isPaid ? "Cancellations" : "Upgrade"}
+                {isPaid ? s.cancellationsLabel : s.upgradeLabel}
               </h3>
 
               {isPaid ? (
@@ -262,13 +265,13 @@ export default async function BillingPage() {
           <p className="mt-6 text-xs text-qm-faint">
             {isPaid
               ? `Thank you for supporting ${CONFIG.appName}.`
-              : "No pressure. Free remains fully usable."}
+              : s.noPresure}
           </p>
         </section>
 
         {/* Right: Account / Help */}
         <aside className="rounded-2xl border border-qm-border-subtle bg-qm-bg p-6">
-          <SectionTitle title="Account" subtitle="Billing is tied to your login." />
+          <SectionTitle title={s.accountSectionTitle} subtitle={s.accountBillingSubtitle} />
 
           <div className="rounded-xl border border-qm-border-subtle bg-qm-bg p-5">
             <div className="text-xs font-semibold text-qm-muted">Email</div>
