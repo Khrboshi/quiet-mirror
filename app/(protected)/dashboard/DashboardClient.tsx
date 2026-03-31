@@ -48,8 +48,8 @@ function friendlyDate(iso: string, isMounted = false, t?: { dashboard: { today: 
   const yesterday = new Date(today);
   yesterday.setDate(today.getDate() - 1);
   const isoDate = (x: Date) => x.toISOString().slice(0, 10);
-  if (isoDate(d) === isoDate(today)) return t.dashboard.today;
-  if (isoDate(d) === isoDate(yesterday)) return t.dashboard.yesterday;
+  if (isoDate(d) === isoDate(today)) return t?.dashboard.today ?? "today";
+  if (isoDate(d) === isoDate(yesterday)) return t?.dashboard.yesterday ?? "yesterday";
   return isMounted ? d.toLocaleDateString(undefined, { month: "short", day: "numeric" }) : iso.slice(0, 10);
 }
 
