@@ -202,7 +202,7 @@ export default function Navbar() {
                 <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.2em] text-qm-accent" style={{ opacity: 0.7 }}>
                   {isLoggedIn
                     ? t.navbar.yourSpace
-                    : t.navbar.privateJournalingTagline}
+                    : "Private journaling that reflects back"}
                 </p>
 
                 <nav className="flex flex-col gap-2">

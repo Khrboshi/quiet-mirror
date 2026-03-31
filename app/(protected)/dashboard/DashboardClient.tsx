@@ -285,7 +285,7 @@ function ThreadCard({
   const { t } = useTranslation();
   const [mounted, setMounted] = useState(false);
   useEffect(() => { setMounted(true); }, []);
-  const when = lastEntryDate ? friendlyDate(lastEntryDate, mounted, t) : null;
+  const when = lastEntryDate ? friendlyDate(lastEntryDate, mounted) : null;
   const title = titleOrUntitled(lastEntryTitle, t.journal.untitledEntry);
 
   const sectionLabel = wroteToday
@@ -478,8 +478,8 @@ export default function DashboardClient({
 
   const subline = useMemo(() => {
     if (entryCount === 0) return t.journal.emptyStateNudge;
-    if (wroteToday) return t.dashboard.writtenToday;
-    return t.dashboard.choosePrompt;
+    if (wroteToday) return "You've written today.";
+    return "Choose a prompt to begin.";
   }, [entryCount, wroteToday]);
 
   return (
