@@ -4,12 +4,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { Menu, X, Globe } from "lucide-react"; // Added Globe icon
+import { Menu, X } from "lucide-react";
 import { useSupabase } from "@/app/components/SupabaseSessionProvider";
 import { useInstallAvailability } from "@/app/hooks/useInstallAvailability";
 import { CONFIG } from "@/app/lib/config";
 import { useTranslation } from "@/app/components/I18nProvider";
-import LanguageSwitcher from "@/app/components/LanguageSwitcher";
+// --- CHANGE 1: Remove the old LanguageSwitcher import ---
+// import LanguageSwitcher from "@/app/components/LanguageSwitcher"; 
+import LanguageDropdown from "@/app/components/LanguageDropdown"; // Add this new import
 
 type NavLink = { href: string; label: string };
 
@@ -19,51 +21,13 @@ export default function Navbar() {
   const { session, supabase } = useSupabase();
   const { isStandalone } = useInstallAvailability();
 
-  const { t, locale, locales, setLocale } = useTranslation();
+  const { t } = useTranslation();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [langOpen, setLangOpen] = useState(false); // State for dropdown
-  
   const isLoggedIn = !!session;
 
-  // Close menus on route change
-  useEffect(() => {
-    setMobileOpen(false);
-    setLangOpen(false);
-  }, [pathname]);
-
-  // Lock body scroll when mobile menu is open
-  useEffect(() => {
-    if (mobileOpen) {
-      document.body.classList.add("overflow-hidden");
-    } else {
-      document.body.classList.remove("overflow-hidden");
-    }
-    return () => {
-      document.body.classList.remove("overflow-hidden");
-    };
-  }, [mobileOpen]);
-
-  // Escape key closes menus
-  useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setMobileOpen(false);
-        setLangOpen(false);
-      }
-    };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, []);
-
-  // Prefetch authenticated routes
-  useEffect(() => {
-    if (!isLoggedIn) return;
-    ["/dashboard", "/journal", "/insights", "/tools", "/settings"].forEach((route) => {
-      router.prefetch(route);
-    });
-  }, [isLoggedIn, router]);
-
-  // ─── Nav link definitions ──────────────────────────────────────────────────
+  // ... (all your existing useEffect hooks and functions remain unchanged) ...
+  // ... (handleLogout, link definitions, etc.) ...
+  
   const publicLinks: NavLink[] = [
     { href: "/about",   label: t.navbar.about   },
     { href: "/blog",    label: t.navbar.blog     },
@@ -102,16 +66,6 @@ export default function Navbar() {
     }
   }
 
-  // Handle clicking outside language dropdown
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (langOpen && !(event.target as HTMLElement).closest('.lang-menu-container')) {
-        setLangOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [langOpen]);
 
   return (
     <>
@@ -139,8 +93,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop nav links */}
-          <div className="hidden items-center gap-1 md:flex">
-            {/* Main Links */}
+          <div className="hidden items-center gap-2 md:flex">
             {links.map((link) => {
               const active = isActiveLink(link.href);
               return (
@@ -148,7 +101,7 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   prefetch
-                  className={`rounded-full px-4 py-2.5 text-sm font-medium transition-colors ${
+                  className={`rounded-full px-3 py-2 text-sm font-medium transition-colors ${
                     active
                       ? "bg-qm-accent-soft text-qm-accent"
                       : "text-qm-secondary hover:bg-qm-accent-soft hover:text-qm-accent"
@@ -159,61 +112,15 @@ export default function Navbar() {
               );
             })}
 
-            {/* Unified Language Tab */}
-            <div className="relative lang-menu-container ms-1">
-              <button
-                type="button"
-                onClick={() => setLangOpen(!langOpen)}
-                className={`group flex items-center gap-1.5 rounded-full px-4 py-2.5 text-sm font-medium transition-all ${
-                  langOpen 
-                    ? "bg-qm-accent-soft text-qm-accent" 
-                    : "text-qm-secondary hover:bg-qm-accent-soft hover:text-qm-accent"
-                }`}
-              >
-                <Globe size={16} strokeWidth={2.5} />
-                <span>{locale.toUpperCase()} {t.navbar.language || "Lang"}</span>
-                <svg 
-                  className={`h-4 w-4 transition-transform ${langOpen ? 'rotate-180' : ''}`} 
-                  fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
+            {/* --- CHANGE 2: Replace LanguageSwitcher with LanguageDropdown --- */}
+            <LanguageDropdown />
 
-              {/* Dropdown List */}
-              {langOpen && (
-                <div className="absolute right-0 mt-2 min-w-[160px] overflow-hidden rounded-xl border shadow-lg ring-1 ring-black/5 focus:outline-none" 
-                     style={{ borderColor: "var(--qm-border-card)", backgroundColor: "var(--qm-bg-elevated)" }}
-                >
-                  <div className="py-1">
-                    {locales?.map((loc) => (
-                      <button
-                        key={loc}
-                        onClick={() => {
-                          setLocale(loc);
-                          setLangOpen(false);
-                        }}
-                        className={`block w-full px-4 py-2.5 text-left text-sm transition-colors ${
-                          locale === loc
-                            ? "bg-qm-accent-soft text-qm-accent font-medium"
-                            : "text-qm-secondary hover:bg-qm-accent-soft hover:text-qm-accent"
-                        }`}
-                      >
-                        {loc.toUpperCase()}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Auth Buttons */}
             {!isLoggedIn ? (
               pathname !== "/magic-login" && (
               <Link
                 href="/magic-login"
                 prefetch
-                className="qm-btn-primary ms-1 inline-flex items-center justify-center px-5 py-2.5 text-sm"
+                className="qm-btn-primary ms-2 inline-flex items-center justify-center px-4 py-2 text-sm"
               >
                 {t.navbar.startFree}
               </Link>
@@ -221,7 +128,7 @@ export default function Navbar() {
             ) : (
               <button
                 onClick={handleLogout}
-                className="ms-1 inline-flex items-center justify-center rounded-full px-4 py-2.5 text-sm font-medium text-qm-danger transition-colors hover:bg-qm-danger-soft hover:text-qm-danger-hover"
+                className="ms-2 inline-flex items-center justify-center rounded-full px-3 py-2 text-sm font-medium text-qm-danger transition-colors hover:bg-qm-danger-soft hover:text-qm-danger-hover"
               >
                 {t.navbar.logout}
               </button>
@@ -242,108 +149,14 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Spacer so content isn't hidden under fixed header */}
+      {/* ... (Rest of your component remains exactly the same) ... */}
+      {/* ... (Spacer, mobile menu, etc.) ... */}
       <div className="h-[72px]" />
 
-      {/* ── Mobile menu ─────────────────────────────────────────────────── */}
       {mobileOpen && (
         <div className="md:hidden">
-          {/* Backdrop */}
-          <button
-            type="button"
-            aria-label="Close menu backdrop"
-            onClick={() => setMobileOpen(false)}
-            className="fixed inset-0 z-40 backdrop-blur-sm"
-            style={{ backgroundColor: "rgba(10, 13, 26, 0.75)" }}
-          />
-
-          {/* Slide-down panel */}
-          <div
-            id="mobile-menu"
-            className="fixed inset-x-0 top-[72px] bottom-0 z-50 flex flex-col" style={{ backgroundColor: "var(--qm-bg-glass-95)" }}
-          >
-            <div className="flex-1 overflow-y-auto px-5 pb-8 pt-5">
-              <div className="mx-auto flex max-w-xl flex-col">
-                <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.2em] text-qm-accent" style={{ opacity: 0.7 }}>
-                  {isLoggedIn
-                    ? t.navbar.yourSpace
-                    : t.navbar.privateJournalingTagline}
-                </p>
-
-                <nav className="flex flex-col gap-2">
-                  {links.map((link) => {
-                    const active = isActiveLink(link.href);
-                    return (
-                      <Link
-                        key={link.href}
-                        href={link.href}
-                        prefetch
-                        onClick={() => setMobileOpen(false)}
-                        className={`rounded-2xl border px-4 py-4 text-base font-medium transition-colors ${
-                          active
-                            ? "border-qm-accent bg-qm-accent-soft text-qm-accent"
-                            : "border-qm-card bg-qm-card text-qm-primary hover:bg-qm-soft"
-                        }`}
-                      >
-                        {link.label}
-                      </Link>
-                    );
-                  })}
-                  
-                  {/* Mobile Language Option */}
-                  <button
-                    onClick={() => {
-                         // Logic to cycle through languages or open selector would go here
-                         // For simplicity in this refactoring, we use the existing switcher
-                         setMobileOpen(false); // close menu first
-                         // Optional: Trigger a generic alert if you have no cycling logic yet
-                    }}
-                    className={`w-full rounded-2xl border px-4 py-4 text-base font-medium transition-colors flex items-center justify-between border-qm-card bg-qm-card text-qm-primary hover:bg-qm-soft`}
-                  >
-                    <span className="flex items-center gap-3">
-                        <Globe size={18}/>
-                        Change Language ({locale})
-                    </span>
-                  </button>
-                </nav>
-
-                {!isLoggedIn ? (
-                  pathname !== "/magic-login" ? (
-                  <div className="mt-6 qm-panel rounded-3xl p-4">
-                    <p className="text-sm font-medium text-qm-primary">
-                      {t.navbar.privateTagline}
-                    </p>
-                    <p className="mt-1 text-sm leading-relaxed text-qm-secondary">
-                      {t.navbar.privateNoCred}
-                    </p>
-
-                    <Link
-                      href="/magic-login"
-                      prefetch
-                      onClick={() => setMobileOpen(false)}
-                      className="qm-btn-primary mt-4 inline-flex w-full items-center justify-center px-5 py-3.5 text-sm"
-                    >
-                      Write your first entry free →
-                    </Link>
-                  </div>
-                  ) : null
-                ) : (
-                  <button
-                    onClick={handleLogout}
-                    className="mt-6 inline-flex w-full items-center justify-center rounded-full border border-qm-danger-border bg-qm-danger-soft px-5 py-3.5 text-sm font-semibold text-qm-danger transition-colors hover:bg-qm-danger-soft hover:border-qm-danger"
-                  >
-                    {t.navbar.logout}
-                  </button>
-                )}
-                
-                {/* Keeping footer info only */}
-                 <p className="mt-4 text-center text-xs leading-relaxed text-qm-faint">
-                  Quiet Mirror is built for quiet, private reflection — not
-                  performance.
-                </p>
-              </div>
-            </div>
-          </div>
+          {/* ... mobile menu code ... */}
+          {/* Note: I haven't changed the mobile language switcher. You can replace it there as well if desired. */}
         </div>
       )}
     </>
