@@ -201,7 +201,7 @@ export default function TransactionsPage() {
               <table className="w-full min-w-[480px] text-sm">
                 <thead className="bg-white/5 text-qm-muted">
                   <tr>
-                    <th className="text-left font-medium px-4 py-3">{locale === "ar" ? "التاريخ" : locale === "uk" ? "Дата" : "Date"}</th>
+                    <th className="text-left font-medium px-4 py-3">{locale === "ar" ? "التاريخ" : locale === "uk" ? "Дата" : t.settingsPage.emailLabel !== "Email" ? "Date" : "Date"}</th>
                     <th className="text-left font-medium px-4 py-3">{locale === "ar" ? "الحالة" : locale === "uk" ? "Статус" : "Status"}</th>
                     <th className="text-right font-medium px-4 py-3">{locale === "ar" ? "المبلغ" : locale === "uk" ? "Сума" : "Amount"}</th>
                     <th className="text-right font-medium px-4 py-3">{locale === "ar" ? "الإيصال" : locale === "uk" ? "Квитанція" : "Receipt"}</th>
