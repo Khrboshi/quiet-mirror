@@ -32,7 +32,7 @@ export default function MoodPage() {
   const [selected, setSelected] = useState<number|null>(null);
   const mood = selected !== null ? MOODS[selected] : null;
   return (
-    <RequirePremium feature="mood">
+    <RequirePremium>
       <div className="mx-auto max-w-2xl px-5 py-10">
         {!mood ? (
           <>
