@@ -51,7 +51,7 @@ function getSideQuotes(ml: ReturnType<typeof getTranslations>["magicLogin"]) {
 function MagicLoginInner() {
   const router = useRouter();
   const { session } = useSupabase();
-  const { t } = useTranslation(); const ml = t.magicLoginPage = useTranslation();
+  const { t } = useTranslation();
   const ml = t.magicLogin;
   const mlp = t.magicLoginPage;
   const SIDE_QUOTES = getSideQuotes(ml);
