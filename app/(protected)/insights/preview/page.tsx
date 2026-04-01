@@ -323,7 +323,7 @@ export default async function InsightsPreviewPage() {
           <div className="mb-4 rounded-xl border border-qm-positive-border bg-qm-positive-bg p-4">
             <div className="flex items-start justify-between gap-3">
               <p className="text-sm font-medium leading-relaxed text-qm-primary">
-                <span className="mr-2 inline-block h-1.5 w-1.5 rounded-full bg-qm-positive align-middle" />
+                <span className="me-2 inline-block h-1.5 w-1.5 rounded-full bg-qm-positive align-middle" />
                 {hasData && topTheme
                   ? `${sc(topTheme)} keeps appearing alongside a sense of feeling unseen or behind.`
                   : "Work stress is being sharpened by feeling unseen, undervalued, or behind."}
@@ -332,7 +332,7 @@ export default async function InsightsPreviewPage() {
                 {hasData ? `${sortedThemes[0]?.[1] ?? 1}×` : "·"}
               </span>
             </div>
-            <p className="mt-2 pl-4 text-xs text-qm-faint">
+            <p className="mt-2 ps-4 text-xs text-qm-faint">
               {hasData ? "Your most recurring underlying pattern" : "Example — yours will be built from your own entries"}
             </p>
           </div>
@@ -388,7 +388,7 @@ export default async function InsightsPreviewPage() {
                     <li key={label} className="space-y-1.5">
                       <div className="flex items-center justify-between gap-3 text-sm">
                         <div className="flex items-center gap-2.5 min-w-0">
-                          <span className="w-4 shrink-0 text-right tabular-nums text-[10px]" style={{ color: isTop ? "var(--qm-dv-positive)" : "var(--qm-text-muted)" }}>{i + 1}</span>
+                          <span className="w-4 shrink-0 text-end tabular-nums text-[10px]" style={{ color: isTop ? "var(--qm-dv-positive)" : "var(--qm-text-muted)" }}>{i + 1}</span>
                           <span className={`truncate ${isTop ? "font-medium text-qm-primary" : "text-qm-muted"}`}>{sc(label)}</span>
                         </div>
                         <span className="shrink-0 tabular-nums text-xs text-qm-faint">{count}</span>
@@ -438,7 +438,7 @@ export default async function InsightsPreviewPage() {
                     <li key={label} className="space-y-1.5">
                       <div className="flex items-center justify-between gap-3 text-sm">
                         <div className="flex items-center gap-2.5 min-w-0">
-                          <span className="w-4 shrink-0 text-right tabular-nums text-[10px]" style={{ color: isTop ? "var(--qm-dv-grief)" : "var(--qm-text-muted)" }}>{i + 1}</span>
+                          <span className="w-4 shrink-0 text-end tabular-nums text-[10px]" style={{ color: isTop ? "var(--qm-dv-grief)" : "var(--qm-text-muted)" }}>{i + 1}</span>
                           <span className={`truncate ${isTop ? "font-medium text-qm-primary" : "text-qm-muted"}`}>{sc(label)}</span>
                         </div>
                         <span className="shrink-0 tabular-nums text-xs text-qm-faint">{count}</span>

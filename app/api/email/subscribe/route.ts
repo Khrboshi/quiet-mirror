@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { Resend } from "resend";
 import { CONFIG } from "@/app/lib/config";
+import { getLocaleFromCookieString, getDir } from "@/app/lib/i18n";
 
 export const runtime = "nodejs";
 
@@ -48,10 +49,10 @@ async function recordAttempt(ip: string): Promise<void> {
   }
 }
 
-function confirmationEmailHtml(): string {
+function confirmationEmailHtml(locale: string, dir: "ltr" | "rtl"): string {
   return `
 <!DOCTYPE html>
-<html lang="en">
+<html lang="${locale}" dir="${dir}">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -122,6 +123,8 @@ function confirmationEmailHtml(): string {
 }
 
 export async function POST(req: Request) {
+  const locale = getLocaleFromCookieString(req.headers.get("cookie") ?? "");
+  const dir    = getDir(locale);
   try {
     let body: any = {};
     try { body = await req.json(); } catch { body = {}; }
@@ -167,7 +170,7 @@ export async function POST(req: Request) {
           from: FROM_ADDRESS,
           to: email,
           subject: CONFIG.emailConfirmSubject,
-          html: confirmationEmailHtml(),
+          html: confirmationEmailHtml(locale, dir),
         });
         if (emailError) {
           console.error("[email/subscribe] resend error", emailError);

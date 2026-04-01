@@ -116,9 +116,9 @@ export default function EmailCapture({ source = "blog", variant = "blog-index" }
               </button>
             </div>
             {status === "error" && (
-              <p className="mt-1 pl-2 text-xs text-qm-danger">Something went wrong. Try again.</p>
+              <p className="mt-1 ps-2 text-xs text-qm-danger">Something went wrong. Try again.</p>
             )}
-            <p className="pl-2 text-[11px] text-qm-faint">
+            <p className="ps-2 text-[11px] text-qm-faint">
               No spam. No selling. One click to leave.
             </p>
           </div>

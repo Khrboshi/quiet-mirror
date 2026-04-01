@@ -171,7 +171,7 @@ function BarRow({
       <div className="flex items-center justify-between gap-3 text-sm">
         <div className="flex items-center gap-2.5 min-w-0">
           <span
-            className="shrink-0 tabular-nums text-[10px] w-4 text-right"
+            className="shrink-0 tabular-nums text-[10px] w-4 text-end"
             style={{ color: isTop ? accent : "var(--qm-text-muted)" }}
           >
             {rank + 1}
@@ -863,7 +863,7 @@ export default function InsightsClient() {
 
             {hasTrend && (
               <div className="mt-4 flex flex-wrap items-center gap-2">
-                <span className="text-xs text-qm-faint mr-0.5">Recently:</span>
+                <span className="text-xs text-qm-faint me-0.5">Recently:</span>
                 {data.trend?.up?.map((e) => (
                   <TrendPill key={`u-${e}`} label={e} dir="up" />
                 ))}
@@ -891,14 +891,14 @@ export default function InsightsClient() {
               <div className="mb-4 rounded-xl border border-qm-positive-border bg-qm-positive-bg p-4">
                 <div className="flex items-start justify-between gap-3">
                   <p className="text-sm font-medium leading-relaxed text-qm-primary">
-                    <span className="mr-2 inline-block h-1.5 w-1.5 rounded-full bg-qm-positive align-middle" />
+                    <span className="me-2 inline-block h-1.5 w-1.5 rounded-full bg-qm-positive align-middle" />
                     {toSentenceCase(topCorepatterns[0][0])}
                   </p>
                   <span className="shrink-0 rounded-full bg-qm-positive-soft px-2 py-0.5 text-xs tabular-nums text-qm-positive">
                     {topCorepatterns[0][1]}× across {entryCount} {entryCount === 1 ? "entry" : "entries"}
                   </span>
                 </div>
-                <p className="mt-2 text-xs text-qm-faint pl-4">
+                <p className="mt-2 text-xs text-qm-faint ps-4">
                   Your most recurring underlying pattern
                 </p>
               </div>
