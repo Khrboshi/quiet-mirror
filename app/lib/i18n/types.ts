@@ -541,4 +541,77 @@ export interface Translations {
     privacyPolicy:     string;
   };
 
+  // ── Insights preview page ────────────────────────────────────────────────────
+  insightPreview: {
+    // Banner
+    bannerLabel:          string;
+    bannerText:           string;
+    bannerCta:            string;
+    // Header
+    heading:              string;
+    subHasData:           (count: number) => string;
+    subNoData:            string;
+    // Stat cards
+    statBuilds:           string;
+    statMomentumRecent:   string;
+    // Weekly summary lock
+    weeklySectionLabel:   string;
+    weeklySectionSub:     string;
+    weeklyLockTitle:      string;
+    weeklyLockBody:       string;
+    weeklyLockCta:        string;
+    // Domain section
+    domainSectionLabel:   string;
+    domainSubHasData:     string;
+    domainSubNoData:      string;
+    domainTopArea:        string;
+    domainEmptyBody:      string;
+    // Domain labels (keys match DOMAIN_LABELS record keys)
+    domainMoney:          string;
+    domainWork:           string;
+    domainRelationship:   string;
+    domainHealth:         string;
+    domainGrief:          string;
+    domainParenting:      string;
+    domainCreative:       string;
+    domainIdentity:       string;
+    domainFitness:        string;
+    // Pattern underneath
+    patternSectionLabel:  string;
+    patternHasData:       (emotion: string, theme: string) => string;
+    patternRecentlyLabel: string;
+    patternNote:          string;
+    patternNoDataBody:    string;
+    patternNoDataAfter:   string;
+    // What you keep coming back to
+    corepatternLabel:     string;
+    corepatternSub:       string;
+    corepatternHasData:   (theme: string) => string;
+    corepatternNoData:    string;
+    corepatternSubHasData:string;
+    corepatternSubNoData: string;
+    corepatternBlur1:     string;
+    corepatternBlur2:     string;
+    corepatternBlur3:     string;
+    corepatternLockCta:   string;
+    // Themes + Emotions sections (shared strings)
+    themesSectionLabel:   string;
+    themesSubHasData:     (count: number) => string;
+    emotionsSectionLabel: string;
+    emotionsSubHasData:   (count: number) => string;
+    detectedFromReflections: string;
+    appearsAfterEntries:  string;
+    // Upgrade CTA
+    upgradePremiumLabel:  string;
+    upgradeHeadingHasData:string;
+    upgradeHeadingNoData: string;
+    upgradeBodyHasData:   (count: number) => string;
+    upgradeBodyNoData:    string;
+    upgradeCta:           (price: string) => string;
+    upgradeBack:          string;
+    upgradeRefund:        (days: number) => string;
+    // Footer
+    footerNote:           string;
+  };
+
 }
