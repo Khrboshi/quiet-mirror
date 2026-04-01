@@ -88,7 +88,7 @@ export default function JournalEntryClient({
 }) {
   const router = useRouter();
   const { planType, credits, loading, refresh } = useUserPlan();
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => { setMounted(true); }, []);
@@ -130,7 +130,7 @@ export default function JournalEntryClient({
       const res = await fetch("/api/ai/reflection", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ entryId: entry.id }),
+        body: JSON.stringify({ entryId: entry.id, locale }),
       });
       if (res.status === 402) { setShowUpgrade(true); return; }
       if (!res.ok) {
@@ -282,16 +282,16 @@ export default function JournalEntryClient({
                 href="/insights/preview"
                 className="text-xs font-medium text-qm-faint transition-colors hover:text-qm-secondary"
               >
-                See what Premium shows
+                {t.upgradeTrigger.seeWhatPremium}
               </Link>
             </div>
             <p className="mt-3 text-[11px] text-qm-faint">
-              {`🛡️ No charge for ${PRICING.trialDays} ${PRICING.trialDayWord} · Cancel anytime · `}{" "}
+              {t.upgradeTrigger.noCharge(PRICING.trialDays, PRICING.trialDayWord)}
               <Link
                 href="/terms"
                 className="underline underline-offset-2 transition-colors hover:text-qm-faint"
               >
-                Terms
+                {t.upgradeTrigger.terms}
               </Link>
             </p>
           </div>
@@ -305,10 +305,7 @@ export default function JournalEntryClient({
 
         {!reflection && !busy && !isLimitReached && (
           <p className="px-6 py-5 text-xs leading-relaxed text-white/35">
-            When you&apos;re ready, Quiet Mirror will reflect back what it noticed
-            &mdash; themes, emotions, and a gentle next step. Each entry gets
-            one reflection, saved permanently so your patterns stay accurate
-            over time.
+            {t.upgradeTrigger.reflectionIntro}
           </p>
         )}
 
@@ -532,46 +529,16 @@ export default function JournalEntryClient({
           ) : (() => {
             const domain = reflection.domain ?? "GENERAL";
             const ctaCopy: Record<string, { headline: string; sub: string }> = {
-              WORK: {
-                headline: "You wrote about work pressing in.",
-                sub: "Premium shows you when this pattern repeats — and what it has in common across weeks. Most people are surprised by what they find.",
-              },
-              RELATIONSHIP: {
-                headline: "You wrote about a relationship that's sitting with you.",
-                sub: "Premium shows you when this kind of thing keeps coming back — the emotional thread across your entries that's hard to see from inside it.",
-              },
-              HEALTH: {
-                headline: "You wrote about running on empty.",
-                sub: "Premium tracks when exhaustion keeps surfacing and what it tends to show up alongside. The pattern usually starts earlier than people realise.",
-              },
-              IDENTITY: {
-                headline: "You wrote about not feeling like yourself.",
-                sub: "Premium shows you the version of yourself that keeps recurring in your entries — and what tends to pull you away from it.",
-              },
-              GRIEF: {
-                headline: "You wrote about loss.",
-                sub: "Premium shows how grief surfaces and shifts across your entries over time. Sometimes the pattern reveals what still needs to be said.",
-              },
-              MONEY: {
-                headline: "You wrote about financial pressure.",
-                sub: "Premium shows when money stress keeps returning and what it tends to trigger alongside it. The pattern is rarely just about the numbers.",
-              },
-              PARENTING: {
-                headline: "You wrote about being a parent.",
-                sub: "Premium shows the emotional patterns in how you show up — the recurring moments, what triggers them, and what shifts over time.",
-              },
-              CREATIVE: {
-                headline: "You wrote about a creative block.",
-                sub: "Premium shows when this surfaces, what it follows, and whether it's getting better or worse. The pattern is usually not what you think.",
-              },
-              FITNESS: {
-                headline: "You wrote about your body.",
-                sub: "Premium tracks the emotional patterns around how you feel about your physical self — what shifts, what stays, and what it connects to.",
-              },
-              GENERAL: {
-                headline: "This reflection is now part of your pattern history.",
-                sub: "Premium shows you what keeps repeating across your entries — the emotional thread you can't always see from inside it.",
-              },
+              WORK:         { headline: t.upgradeTrigger.workHeadline,         sub: t.upgradeTrigger.workSub },
+              RELATIONSHIP: { headline: t.upgradeTrigger.relationshipHeadline, sub: t.upgradeTrigger.relationshipSub },
+              HEALTH:       { headline: t.upgradeTrigger.healthHeadline,       sub: t.upgradeTrigger.healthSub },
+              IDENTITY:     { headline: t.upgradeTrigger.identityHeadline,     sub: t.upgradeTrigger.identitySub },
+              GRIEF:        { headline: t.upgradeTrigger.griefHeadline,        sub: t.upgradeTrigger.griefSub },
+              MONEY:        { headline: t.upgradeTrigger.moneyHeadline,        sub: t.upgradeTrigger.moneySub },
+              PARENTING:    { headline: t.upgradeTrigger.parentingHeadline,    sub: t.upgradeTrigger.parentingSub },
+              CREATIVE:     { headline: t.upgradeTrigger.creativeHeadline,     sub: t.upgradeTrigger.creativeSub },
+              FITNESS:      { headline: t.upgradeTrigger.fitnessHeadline,      sub: t.upgradeTrigger.fitnessSub },
+              GENERAL:      { headline: t.upgradeTrigger.generalHeadline,      sub: t.upgradeTrigger.generalSub },
             };
             const copy = ctaCopy[domain] ?? ctaCopy.GENERAL;
             return (
@@ -591,16 +558,16 @@ export default function JournalEntryClient({
                     href="/insights/preview"
                     className="inline-flex items-center gap-2 rounded-full border border-white/[0.08] px-4 py-2.5 text-xs font-medium text-qm-muted transition hover:border-white/[0.15] hover:text-qm-primary"
                   >
-                    See an example
+                    {t.upgradeTrigger.seeExample}
                   </Link>
                 </div>
                 <p className="mt-3 text-[11px] text-qm-faint">
-                  {`🛡️ No charge for ${PRICING.trialDays} ${PRICING.trialDayWord} · Cancel anytime ·`}{" "}
+                  {t.upgradeTrigger.noCharge(PRICING.trialDays, PRICING.trialDayWord)}
                   <Link
                     href="/terms"
                     className="underline underline-offset-2 transition-colors hover:text-qm-secondary"
                   >
-                    Terms
+                    {t.upgradeTrigger.terms}
                   </Link>
                 </p>
               </div>

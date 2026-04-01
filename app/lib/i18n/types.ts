@@ -330,6 +330,56 @@ export interface Translations {
     invalidCode:      string;
   };
 
+  // ── Journal list page ────────────────────────────────────────────────────────
+  journalPage: {
+    heading:          string;
+    newEntry:         string;
+    entryCount:       (n: number) => string;
+    emptyHeading:     string;
+    emptyBody:        string;
+    startHere:        string;
+    reflected:        string;
+    draft:            string;
+    open:             string;
+    start:            string;
+    prompt1:          string;
+    prompt1Sub:       string;
+    prompt2:          string;
+    prompt2Sub:       string;
+    prompt3:          string;
+    prompt3Sub:       string;
+  };
+
+  // ── Upgrade trigger nudges ───────────────────────────────────────────────────
+  upgradeTrigger: {
+    seeWhatPremium:       string;
+    noCharge:             (days: number, word: string) => string;
+    cancelAnytime:        string;
+    terms:                string;
+    reflectionIntro:      string;
+    seeExample:           string;
+    workHeadline:         string;
+    workSub:              string;
+    relationshipHeadline: string;
+    relationshipSub:      string;
+    healthHeadline:       string;
+    healthSub:            string;
+    identityHeadline:     string;
+    identitySub:          string;
+    griefHeadline:        string;
+    griefSub:             string;
+    moneyHeadline:        string;
+    moneySub:             string;
+    parentingHeadline:    string;
+    parentingSub:         string;
+    creativeHeadline:     string;
+    creativeSub:          string;
+    fitnessHeadline:      string;
+    fitnessSub:           string;
+    generalHeadline:      string;
+    generalSub:           string;
+  };
+
   // ── Upgrade confirmed ────────────────────────────────────────────────────────
   upgradeConfirmed: {
     headline1:        string;

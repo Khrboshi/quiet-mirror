@@ -5,6 +5,7 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { ensureCreditsFresh } from "@/lib/creditRules";
 import { normalizeAIResponseSignals } from "@/lib/ai/normalizeInsightSignals";
 import { normalizePlan, type UserCreditsRow, type JournalAIRow, type GroqChatResponse, parseAIResponse } from "@/lib/planUtils";
+import { getLocaleFromCookieString } from "@/app/lib/i18n";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
@@ -83,7 +84,13 @@ const FALLBACK_SUGGESTIONS = [
   },
 ];
 
-export async function GET() {
+export async function GET(req: Request) {
+  const locale = getLocaleFromCookieString(req.headers.get("cookie") ?? "");
+  const LANGUAGE_NAMES: Record<string, string> = { uk: "Ukrainian", fr: "French", de: "German", es: "Spanish" };
+  const targetLanguage = LANGUAGE_NAMES[locale] ?? null;
+  const languageInstruction = targetLanguage
+    ? `\nLANGUAGE RULE: Respond entirely in ${targetLanguage}. Both suggestions and both journal prompts must be in ${targetLanguage} only.\n`
+    : "";
   const supabase = createServerSupabase();
 
   const {
@@ -165,7 +172,7 @@ export async function GET() {
 
   const system = `You are ${CONFIG.aiPersonaName}, a calm AI journaling companion.
 Your job is to suggest two small, gentle things this person could do or think about — drawn from what keeps showing up in their journal.
-
+${languageInstruction}
 Rules:
 - Write EXACTLY two suggestions. No more, no less.
 - Each suggestion must be on its own numbered line, in this exact format:

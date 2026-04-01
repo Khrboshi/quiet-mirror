@@ -5,6 +5,7 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { ensureCreditsFresh } from "@/lib/creditRules";
 import { normalizeAIResponseSignals } from "@/lib/ai/normalizeInsightSignals";
 import { normalizePlan, type UserCreditsRow, type JournalAIRow, type GroqChatResponse, parseAIResponse } from "@/lib/planUtils";
+import { getLocaleFromCookieString } from "@/app/lib/i18n";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
@@ -54,7 +55,13 @@ const FALLBACK_QUESTIONS = [
   "What keeps coming back, even when you're not thinking about it?",
 ];
 
-export async function GET() {
+export async function GET(req: Request) {
+  const locale = getLocaleFromCookieString(req.headers.get("cookie") ?? "");
+  const LANGUAGE_NAMES: Record<string, string> = { uk: "Ukrainian", fr: "French", de: "German", es: "Spanish" };
+  const targetLanguage = LANGUAGE_NAMES[locale] ?? null;
+  const languageInstruction = targetLanguage
+    ? `\nLANGUAGE RULE: Respond entirely in ${targetLanguage}. The question must be in ${targetLanguage} only.\n`
+    : "";
   const supabase = createServerSupabase();
 
   const {
@@ -136,7 +143,7 @@ export async function GET() {
 
   const system = `You are ${CONFIG.aiPersonaName}, a calm and perceptive AI journaling companion.
 Your job is to write ONE reflection question for this person, shaped around what keeps showing up in their journal.
-
+${languageInstruction}
 Rules:
 - Write exactly ONE question. No preamble, no explanation, nothing else.
 - Make it feel personal and specific to what this person carries — not generic.

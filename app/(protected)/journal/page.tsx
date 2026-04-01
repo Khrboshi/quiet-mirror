@@ -57,10 +57,9 @@ function emotionColor(e: string): string {
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
-function formatDay(iso: string): string {
-  // Server-safe: use UTC to avoid hydration mismatch
+function formatDay(iso: string, locale: string): string {
   const d = new Date(iso);
-  return d.toLocaleDateString("en-GB", {
+  return d.toLocaleDateString(locale === "uk" ? "uk-UA" : "en-GB", {
     day: "numeric",
     month: "short",
     timeZone: "UTC",
@@ -76,9 +75,9 @@ function formatTime(iso: string): string {
   });
 }
 
-function monthKey(iso: string): string {
+function monthKey(iso: string, locale: string): string {
   const d = new Date(iso);
-  return d.toLocaleDateString("en-GB", { month: "long", year: "numeric", timeZone: "UTC" });
+  return d.toLocaleDateString(locale === "uk" ? "uk-UA" : "en-GB", { month: "long", year: "numeric", timeZone: "UTC" });
 }
 
 function entryTitle(title: string | null, content: string | null, fallback: string): string {
@@ -97,7 +96,8 @@ function parseAI(raw: string | Record<string, unknown> | null): Record<string, u
 
 export default async function JournalPage() {
   const cookieHeader = cookies().toString();
-  const t = getTranslations(getLocaleFromCookieString(cookieHeader));
+  const locale = getLocaleFromCookieString(cookieHeader);
+  const t = getTranslations(locale);
   const supabase = createServerSupabase();
 
   const { data: { session } } = await supabase.auth.getSession();
@@ -120,7 +120,7 @@ export default async function JournalPage() {
   type JournalEntry = (typeof entries)[number];
   const groups: { month: string; entries: JournalEntry[] }[] = [];
   for (const entry of entries ?? []) {
-    const month = monthKey(entry.created_at);
+    const month = monthKey(entry.created_at, locale);
     const last = groups[groups.length - 1];
     if (last?.month === month) {
       last.entries!.push(entry);
@@ -135,10 +135,10 @@ export default async function JournalPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-3xl font-semibold text-qm-primary">Your Journal</h1>
+          <h1 className="font-display text-3xl font-semibold text-qm-primary">{t.journalPage.heading}</h1>
           {(entries?.length ?? 0) > 0 && (
             <p className="mt-1 text-sm text-qm-faint">
-              {entries!.length} {entries!.length === 1 ? "entry" : "entries"}
+              {t.journalPage.entryCount(entries!.length)}
             </p>
           )}
         </div>
@@ -146,7 +146,7 @@ export default async function JournalPage() {
           href="/journal/new"
           className="rounded-full bg-qm-positive-strong px-4 py-2 text-sm font-medium text-qm-faint hover:bg-qm-positive transition-colors"
         >
-          New Entry
+          {t.journalPage.newEntry}
         </Link>
       </div>
 
@@ -155,18 +155,18 @@ export default async function JournalPage() {
         <div className="space-y-6">
           <div className="rounded-xl border border-qm-border-subtle bg-qm-elevated p-8 text-center space-y-2">
             <p className="text-2xl">✦</p>
-            <p className="text-sm text-qm-secondary font-medium">You haven&rsquo;t written any entries yet.</p>
-            <p className="text-xs text-qm-faint">One sentence is always enough to start.</p>
+            <p className="text-sm text-qm-secondary font-medium">{t.journalPage.emptyHeading}</p>
+            <p className="text-xs text-qm-faint">{t.journalPage.emptyBody}</p>
           </div>
           <div>
             <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-faint">
-              Start here
+              {t.journalPage.startHere}
             </p>
             <div className="grid gap-3 sm:grid-cols-3">
               {[
-                { q: "What has been weighing on you lately?", sub: "You don't have to solve it — just name it.", color: "border-qm-positive-border hover:border-qm-positive" },
-                { q: "Is there something you keep thinking about today?", sub: "A conversation, a feeling, a moment.", color: "border-qm-premium-border hover:border-qm-premium" },
-                { q: "What felt heavy this week?", sub: "No need to explain why.", color: "border-qm-warning-border hover:border-qm-warning" },
+                { q: t.journalPage.prompt1, sub: t.journalPage.prompt1Sub, color: "border-qm-positive-border hover:border-qm-positive" },
+                { q: t.journalPage.prompt2, sub: t.journalPage.prompt2Sub, color: "border-qm-premium-border hover:border-qm-premium" },
+                { q: t.journalPage.prompt3, sub: t.journalPage.prompt3Sub, color: "border-qm-warning-border hover:border-qm-warning" },
               ].map((p) => (
                 <Link
                   key={p.q}
@@ -175,7 +175,7 @@ export default async function JournalPage() {
                 >
                   <p className="text-sm font-medium leading-snug text-qm-primary transition group-hover:text-white">{p.q}</p>
                   <p className="mt-1.5 text-xs leading-relaxed text-qm-faint">{p.sub}</p>
-                  <p className="mt-3 text-xs font-medium text-qm-positive group-hover:text-qm-positive-hover transition">Start →</p>
+                  <p className="mt-3 text-xs font-medium text-qm-positive group-hover:text-qm-positive-hover transition">{t.journalPage.start}</p>
                 </Link>
               ))}
             </div>
@@ -220,7 +220,7 @@ export default async function JournalPage() {
                         </span>
                       )}
                       <span className="text-xs text-qm-faint tabular-nums">
-                        {formatDay(entry.created_at)}
+                        {formatDay(entry.created_at, locale)}
                         <span className="text-qm-faint mx-1">·</span>
                         {formatTime(entry.created_at)}
                       </span>
@@ -229,11 +229,11 @@ export default async function JournalPage() {
                     {hasReflection ? (
                       <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-qm-positive-border bg-qm-positive-soft px-2 py-0.5 text-[10px] font-medium text-qm-positive">
                         <span className="h-1 w-1 rounded-full bg-qm-positive" />
-                        Reflected
+                        {t.journalPage.reflected}
                       </span>
                     ) : (
                       <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-qm-border-subtle bg-qm-elevated px-2 py-0.5 text-[10px] text-qm-faint">
-                        Draft
+                        {t.journalPage.draft}
                       </span>
                     )}
                   </div>
@@ -267,7 +267,7 @@ export default async function JournalPage() {
                       )}
                     </div>
                     <span className="text-qm-positive text-xs group-hover:text-qm-positive-hover transition shrink-0">
-                      Open →
+                      {t.journalPage.open}
                     </span>
                   </div>
                 </Link>

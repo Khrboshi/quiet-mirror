@@ -29,6 +29,7 @@ type Input = {
   content: string;
   plan: "FREE" | "PREMIUM" | string;
   recentThemes?: string[];
+  locale?: string;
 };
 
 type Domain =
@@ -1322,10 +1323,25 @@ function buildSystemPrompt(
   domain: Domain,
   secondaryDomains: Domain[],
   short: boolean,
-  positive: boolean = false
+  positive: boolean = false,
+  locale: string = "en"
 ): string {
   const isPremium = plan === "PREMIUM";
   const mixed = secondaryDomains.length > 0;
+
+  // Language instruction — injected when user has selected a non-English locale
+  const LANGUAGE_NAMES: Record<string, string> = {
+    uk: "Ukrainian",
+    fr: "French",
+    de: "German",
+    es: "Spanish",
+    pt: "Portuguese",
+    pl: "Polish",
+  };
+  const targetLanguage = LANGUAGE_NAMES[locale] ?? null;
+  const languageInstruction = targetLanguage
+    ? `\nLANGUAGE RULE: You MUST respond entirely in ${targetLanguage}. Every field — summary, corepattern, themes, emotions, gentlenextstep, questions — must be written in ${targetLanguage}. Do not use English anywhere in your response.\n`
+    : "";
 
   const summaryStructure =
     isPremium && !short
@@ -1374,7 +1390,7 @@ BANNED question patterns: "what could be causing your symptoms" (self-diagnosis)
 
   return `You are ${CONFIG.aiPersonaName} — a private journaling thinking partner.
 Make the person feel genuinely seen, with precision, leaving them clearer than before.
-
+${languageInstruction}
 CORE RULES:
 - Write to "you" — never "the user", "this person", or "the person"
 - corepattern MUST start with "You" — never "The person's mind" or "This person"
@@ -1484,6 +1500,7 @@ export async function generateReflectionFromEntry(input: Input): Promise<Reflect
   // FIX: updated default model to llama-4-scout-17b-16e-instruct
   const model = process.env.GROQMODEL || "llama-4-scout-17b-16e-instruct";
   const plan = normalizePlan(input.plan);
+  const locale = (input.locale ?? "en").trim() || "en";
 
   const entryBody = (input.content || "").trim();
   const titleLine = input.title?.trim() ? `Title: ${input.title.trim()}\n` : "";
@@ -1612,7 +1629,7 @@ Stay in PRIMARY DOMAIN: ${domain}.
 ${entryText}`.trim();
 
   const maxTokens = plan === "PREMIUM" ? 1200 : 780;
-  const systemPrompt = buildSystemPrompt(plan, domain, secondaryDomains, short, positive);
+  const systemPrompt = buildSystemPrompt(plan, domain, secondaryDomains, short, positive, locale);
 
   const ATTEMPTS = [
     { temperature: plan === "PREMIUM" ? 0.55 : 0.45, note: undefined as string | undefined },
