@@ -131,7 +131,7 @@ Rules:
 - Do NOT use therapy-speak, jargon, or prescriptive advice ("you should", "try to", "consider").
 - Do NOT write bullet points or headers.
 - Keep the whole summary under 180 words.
-- BANNED phrases: "I notice", "I sense", "I can see", "I've noticed", "I've seen", "I'm curious", "Looking at your entries", "Based on your entries", "As I read", "It seems like", "I think", "I wonder", "emotions that surface include", "themes that appear", "recurring themes include"`;
+- BANNED: any first-person narration from your perspective — this means constructions equivalent to "I notice", "I sense", "I can see", "I've noticed", "I've seen", "I'm curious", "I think", "I wonder", "Looking at your entries", "Based on your entries", "As I read", "It seems like", "emotions that surface include", "themes that appear", "recurring themes include" — banned in English AND in any other language you are responding in. The equivalent construction in Ukrainian, Arabic, or any other language is equally forbidden.`;
 
   const parts: string[] = [`You have written ${entryCount} journal entries since ${since}.`];
 
@@ -395,39 +395,45 @@ export async function GET(req: Request) {
     );
   }
 
-  // Strip first-person "I" constructions regardless of what the model produced
-  summary = summary
-    .replace(/As I read through your entries,?\s*/gi, "Across your entries, ")
-    .replace(/As I'?ve been reading your entries,?\s*/gi, "Across your entries, ")
-    .replace(/As I'?ve been looking at your entries,?\s*/gi, "Across your entries, ")
-    .replace(/As I'?ve gone through your entries,?\s*/gi, "Across your entries, ")
-    .replace(/As I'?ve reviewed your entries,?\s*/gi, "Across your entries, ")
-    .replace(/As I'?ve read your entries,?\s*/gi, "Across your entries, ")
-    .replace(/I'?ve noticed that\s+/gi, "There's a pattern here: ")
-    .replace(/I'?ve noticed\s+/gi, "")
-    .replace(/I'?ve seen that\s+/gi, "")
-    .replace(/I'?ve seen\s+/gi, "")
-    .replace(/I notice that\s+/gi, "")
-    .replace(/I notice\s+/gi, "")
-    .replace(/I'?m curious\s*[—–-]\s*/gi, "")
-    .replace(/I'?m curious\s+/gi, "")
-    .replace(/I sense a\s+/gi, "There's a ")
-    .replace(/I sense\s+/gi, "There's a sense of ")
-    .replace(/I can see that\s+/gi, "")
-    .replace(/I can see\s+/gi, "")
-    .replace(/I see that\s+/gi, "")
-    .replace(/I see a\s+/gi, "There's a ")
-    .replace(/I'?d also note\s+/gi, "Worth noting: ")
-    .replace(/I'?d note\s+/gi, "Worth noting: ")
-    .replace(/I wonder\s*[—–-]\s*/gi, "")
-    .replace(/I wonder\s+/gi, "")
-    .replace(/I think that\s+/gi, "")
-    .replace(/I think\s+/gi, "")
-    .replace(/I'?m also noticing\s+/gi, "")
-    .replace(/I'?m noticing\s+/gi, "")
-    .replace(/(here:|noted:|pattern:|noting:)\s+([a-z])/g, (_, label, ch) => `${label} ${ch.toUpperCase()}`)
-    .replace(/\s{2,}/g, " ")
-    .trim();
+  // Strip first-person "I" constructions for English responses only.
+  // For non-English locales the AI responds in the target language — these
+  // English regex patterns would never match and applying them is misleading.
+  if (!aiLang) {
+    summary = summary
+      .replace(/As I read through your entries,?\s*/gi, "Across your entries, ")
+      .replace(/As I'?ve been reading your entries,?\s*/gi, "Across your entries, ")
+      .replace(/As I'?ve been looking at your entries,?\s*/gi, "Across your entries, ")
+      .replace(/As I'?ve gone through your entries,?\s*/gi, "Across your entries, ")
+      .replace(/As I'?ve reviewed your entries,?\s*/gi, "Across your entries, ")
+      .replace(/As I'?ve read your entries,?\s*/gi, "Across your entries, ")
+      .replace(/I'?ve noticed that\s+/gi, "There's a pattern here: ")
+      .replace(/I'?ve noticed\s+/gi, "")
+      .replace(/I'?ve seen that\s+/gi, "")
+      .replace(/I'?ve seen\s+/gi, "")
+      .replace(/I notice that\s+/gi, "")
+      .replace(/I notice\s+/gi, "")
+      .replace(/I'?m curious\s*[—–-]\s*/gi, "")
+      .replace(/I'?m curious\s+/gi, "")
+      .replace(/I sense a\s+/gi, "There's a ")
+      .replace(/I sense\s+/gi, "There's a sense of ")
+      .replace(/I can see that\s+/gi, "")
+      .replace(/I can see\s+/gi, "")
+      .replace(/I see that\s+/gi, "")
+      .replace(/I see a\s+/gi, "There's a ")
+      .replace(/I'?d also note\s+/gi, "Worth noting: ")
+      .replace(/I'?d note\s+/gi, "Worth noting: ")
+      .replace(/I wonder\s*[—–-]\s*/gi, "")
+      .replace(/I wonder\s+/gi, "")
+      .replace(/I think that\s+/gi, "")
+      .replace(/I think\s+/gi, "")
+      .replace(/I'?m also noticing\s+/gi, "")
+      .replace(/I'?m noticing\s+/gi, "")
+      .replace(/(here:|noted:|pattern:|noting:)\s+([a-z])/g, (_, label, ch) => `${label} ${ch.toUpperCase()}`)
+      .replace(/\s{2,}/g, " ")
+      .trim();
+  } else {
+    summary = summary.replace(/\s{2,}/g, " ").trim();
+  }
 
   // Enforce paragraph breaks — if model collapsed to one block, try to split
   // at natural sentence boundaries to restore 3-paragraph structure
