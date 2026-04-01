@@ -582,8 +582,17 @@ export const en: Translations = {
     redirecting:"Redirecting…",
   },
 
-
-
-
+  // ── Subscription confirmation email ──────────────────────────────────────────
+  email: {
+    confirmTitle:      (newsletterName: string) => `You're in — ${newsletterName}`,
+    confirmHeading:    "You're in.",
+    confirmBody:       "One quiet article a week — about emotional load, rest, self-awareness, and what it's actually like to carry a lot. No noise. No streak guilt. Just something worth reading when it's ready.",
+    whatToExpectLabel: "What to expect",
+    whatToExpectBody:  "Articles arrive when they're ready — usually once a week. Unsubscribe any time with one click.",
+    readLatestCta:     "Read the latest article →",
+    footerLine1:       (appName: string) => `You're receiving this because you signed up at ${appName}.`,
+    footerLine2:       "Your email address is never sold or shared.",
+    privacyPolicy:     "Privacy Policy",
+  },
 
 };

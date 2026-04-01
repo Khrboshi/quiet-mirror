@@ -148,7 +148,7 @@ export default function Navbar() {
               <Link
                 href="/magic-login"
                 prefetch
-                className="qm-btn-primary ml-2 inline-flex items-center justify-center px-4 py-2 text-sm"
+                className="qm-btn-primary ms-2 inline-flex items-center justify-center px-4 py-2 text-sm"
               >
                 {t.navbar.startFree}
               </Link>
@@ -156,7 +156,7 @@ export default function Navbar() {
             ) : (
               <button
                 onClick={handleLogout}
-                className="ml-2 inline-flex items-center justify-center rounded-full px-3 py-2 text-sm font-medium text-qm-danger transition-colors hover:bg-qm-danger-soft hover:text-qm-danger-hover"
+                className="ms-2 inline-flex items-center justify-center rounded-full px-3 py-2 text-sm font-medium text-qm-danger transition-colors hover:bg-qm-danger-soft hover:text-qm-danger-hover"
               >
                 {t.navbar.logout}
               </button>

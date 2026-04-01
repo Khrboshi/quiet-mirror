@@ -223,7 +223,7 @@ export default function JournalEntryClient({
                 {credits === 1 ? "reflection" : "reflections"} remaining
                 this month
                 {isLimitReached && (
-                  <span className="ml-1 text-qm-warning">
+                  <span className="ms-1 text-qm-warning">
                     · resets next month
                   </span>
                 )}

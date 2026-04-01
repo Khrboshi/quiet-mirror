@@ -528,8 +528,17 @@ export interface Translations {
     redirecting: string;
   };
 
-
-
-
+  // ── Subscription confirmation email ──────────────────────────────────────────
+  email: {
+    confirmTitle:      (newsletterName: string) => string;
+    confirmHeading:    string;
+    confirmBody:       string;
+    whatToExpectLabel: string;
+    whatToExpectBody:  string;
+    readLatestCta:     string;
+    footerLine1:       (appName: string) => string;
+    footerLine2:       string;
+    privacyPolicy:     string;
+  };
 
 }

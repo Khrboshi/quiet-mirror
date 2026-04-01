@@ -579,8 +579,17 @@ export const ar: Translations = {
     redirecting:"جارٍ إعادة التوجيه…",
   },
 
-
-
-
+  // ── Subscription confirmation email ──────────────────────────────────────────
+  email: {
+    confirmTitle:      (newsletterName: string) => `أنت الآن مشترك — ${newsletterName}`,
+    confirmHeading:    "أنت الآن مشترك.",
+    confirmBody:       "مقالة هادئة واحدة كل أسبوع — عن العبء العاطفي، والراحة، والوعي الذاتي، وكيف يبدو حمل الكثير. بلا ضجيج. بلا شعور بالذنب. فقط شيء يستحق القراءة حين يكون جاهزاً.",
+    whatToExpectLabel: "ما تتوقعه",
+    whatToExpectBody:  "تصل المقالات حين تكون جاهزة — عادةً مرة في الأسبوع. إلغاء الاشتراك في أي وقت بنقرة واحدة.",
+    readLatestCta:     "اقرأ أحدث مقالة ←",
+    footerLine1:       (appName: string) => `تلقّيت هذا لأنك اشتركت في ${appName}.`,
+    footerLine2:       "عنوان بريدك الإلكتروني لن يُباع أو يُشارك أبداً.",
+    privacyPolicy:     "سياسة الخصوصية",
+  },
 
 };
