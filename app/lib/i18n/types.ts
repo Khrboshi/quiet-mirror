@@ -103,6 +103,9 @@ export interface Translations {
     patternsGenerating: string;
     writeAnEntry:     string;
     summaryFailed:    string;
+    // Language switcher aria-labels
+    switchToLanguage: (label: string) => string;
+    currentLanguage:  (label: string) => string;
   };
 
   navbar: {
@@ -280,6 +283,13 @@ export interface Translations {
     refundContact:    string;
     accountSectionTitle:string;
     accountBillingSubtitle:string;
+    // Transactions table columns
+    colDate:          string;
+    colStatus:        string;
+    colAmount:        string;
+    colReceipt:       string;
+    noInvoicesYet:    string;
+    viewLabel:        string;
   };
 
   // ── Tools page ───────────────────────────────────────────────────────────────

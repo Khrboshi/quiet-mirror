@@ -17,6 +17,12 @@ import {
   type GroqChatResponse,
   parseAIResponse,
 } from "@/lib/planUtils";
+import {
+  getLocaleFromCookieString,
+  getAiLanguageName,
+  SUPPORTED_LOCALES,
+  DEFAULT_LOCALE,
+} from "@/app/lib/i18n";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
@@ -73,6 +79,7 @@ function buildSummaryPrompt(opts: {
   trendUp: string[];
   trendDown: string[];
   firstEntryDate: string | null;
+  languageInstruction: string;
 }): { system: string; user: string } {
   const {
     entryCount,
@@ -84,6 +91,7 @@ function buildSummaryPrompt(opts: {
     trendUp,
     trendDown,
     firstEntryDate,
+    languageInstruction,
   } = opts;
 
   const since = firstEntryDate
@@ -112,7 +120,7 @@ function buildSummaryPrompt(opts: {
 
   const system = `You are ${CONFIG.aiPersonaName} — a private journaling companion that reflects back what it notices.
 Write a short, personal summary of what has been showing up across this person's journal entries.
-
+${languageInstruction}
 Rules:
 - Write EXACTLY 3 short paragraphs separated by a blank line. No more, no fewer.
 - Paragraph 1: What they write about most and the emotion that sits underneath it. 2-3 sentences.
@@ -159,7 +167,7 @@ Rules:
   return { system, user };
 }
 
-export async function GET() {
+export async function GET(req: Request) {
   const supabase = createServerSupabase();
 
   const {
@@ -169,6 +177,13 @@ export async function GET() {
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
+  const rawLocale = getLocaleFromCookieString(req.headers.get("cookie") ?? "");
+  const locale    = SUPPORTED_LOCALES.includes(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const aiLang    = getAiLanguageName(locale);
+  const languageInstruction = aiLang
+    ? `\nLANGUAGE: Respond entirely in ${aiLang}. Every sentence must be in ${aiLang}. Do not use English anywhere in your response.\n`
+    : "";
 
   const userId = user.id;
 
@@ -359,6 +374,7 @@ export async function GET() {
     trendUp,
     trendDown,
     firstEntryDate,
+    languageInstruction,
   });
 
   let summary: string;

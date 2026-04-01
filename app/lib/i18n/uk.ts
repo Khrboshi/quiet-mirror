@@ -133,6 +133,8 @@ export const uk: Translations = {
     patternsGenerating: "Ваші особисті закономірності генеруються — поверніться після наступного відображення.",
     writeAnEntry:       "Написати запис →",
     summaryFailed:      "Не вдалося створити зведення.",
+    switchToLanguage:   (label: string) => `Перейти до ${label}`,
+    currentLanguage:    (label: string) => `Мова: ${label}. Натисніть для зміни.`,
   },
 
   navbar: {
@@ -311,6 +313,12 @@ export const uk: Translations = {
     refundContact:        "Не те, що очікували? Напишіть нам для повного повернення — без питань.",
     accountSectionTitle:  "Обліковий запис",
     accountBillingSubtitle: "Оплата прив'язана до вашого входу.",
+    colDate:              "Дата",
+    colStatus:            "Статус",
+    colAmount:            "Сума",
+    colReceipt:           "Квитанція",
+    noInvoicesYet:        "Поки немає рахунків.",
+    viewLabel:            "Переглянути",
   },
 
   // ── Tools page ───────────────────────────────────────────────────────────────

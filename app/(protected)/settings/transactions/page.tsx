@@ -47,7 +47,7 @@ function formatDateFromUnixSeconds(sec: number) {
 export default function TransactionsPage() {
   const { session } = useSupabase();
   const { planType, credits, loading } = useUserPlan();
-  const { t, locale } = useTranslation();
+  const { t } = useTranslation();
 
   const email = session?.user?.email ?? "Unknown user";
 
@@ -195,16 +195,16 @@ export default function TransactionsPage() {
               {invError}
             </div>
           ) : invoices.length === 0 ? (
-            <p className="text-qm-muted">No invoices yet.</p>
+            <p className="text-qm-muted">{t.settingsPage.noInvoicesYet}</p>
           ) : (
             <div className="mt-4 overflow-x-auto rounded-xl border border-white/10">
               <table className="w-full min-w-[480px] text-sm">
                 <thead className="bg-white/5 text-qm-muted">
                   <tr>
-                    <th className="text-left font-medium px-4 py-3">{locale === "ar" ? "التاريخ" : locale === "uk" ? "Дата" : t.settingsPage.emailLabel !== "Email" ? t.settingsPage.emailLabel !== "Email" ? t.settingsPage.emailLabel !== "Email" ? t.settingsPage.emailLabel !== "Email" ? "Date" : "Date" : t.settingsPage.emailLabel !== "Email" ? "Date" : "Date" : t.settingsPage.emailLabel !== "Email" ? t.settingsPage.emailLabel !== "Email" ? "Date" : "Date" : t.settingsPage.emailLabel !== "Email" ? "Date" : "Date" : t.settingsPage.emailLabel !== "Email" ? t.settingsPage.emailLabel !== "Email" ? t.settingsPage.emailLabel !== "Email" ? "Date" : "Date" : t.settingsPage.emailLabel !== "Email" ? "Date" : "Date" : t.settingsPage.emailLabel !== "Email" ? t.settingsPage.emailLabel !== "Email" ? "Date" : "Date" : t.settingsPage.emailLabel !== "Email" ? "Date" : "Date"}</th>
-                    <th className="text-left font-medium px-4 py-3">{locale === "ar" ? "الحالة" : locale === "uk" ? "Статус" : "Status"}</th>
-                    <th className="text-right font-medium px-4 py-3">{locale === "ar" ? "المبلغ" : locale === "uk" ? "Сума" : "Amount"}</th>
-                    <th className="text-right font-medium px-4 py-3">{locale === "ar" ? "الإيصال" : locale === "uk" ? "Квитанція" : "Receipt"}</th>
+                    <th className="text-start font-medium px-4 py-3">{t.settingsPage.colDate}</th>
+                    <th className="text-start font-medium px-4 py-3">{t.settingsPage.colStatus}</th>
+                    <th className="text-end font-medium px-4 py-3">{t.settingsPage.colAmount}</th>
+                    <th className="text-end font-medium px-4 py-3">{t.settingsPage.colReceipt}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -223,10 +223,10 @@ export default function TransactionsPage() {
                         <td className="px-4 py-3 text-qm-secondary capitalize">
                           {inv.status || "-"}
                         </td>
-                        <td className="px-4 py-3 text-right text-qm-primary">
+                        <td className="px-4 py-3 text-end text-qm-primary">
                           {formatMoney(amount, inv.currency)}
                         </td>
-                        <td className="px-4 py-3 text-right">
+                        <td className="px-4 py-3 text-end">
                           {url ? (
                             <a
                               href={url}
@@ -234,7 +234,7 @@ export default function TransactionsPage() {
                               rel="noreferrer"
                               className="text-qm-positive hover:text-qm-positive-hover"
                             >
-                              View
+                              {t.settingsPage.viewLabel}
                             </a>
                           ) : (
                             <span className="text-qm-faint">—</span>

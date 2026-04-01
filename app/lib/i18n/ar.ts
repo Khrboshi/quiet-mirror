@@ -126,6 +126,8 @@ export const ar: Translations = {
     patternsGenerating: "جارٍ إنشاء أنماطك الشخصية الآن — تحقق بعد تأملك التالي.",
     writeAnEntry:       "اكتب مدخلاً ←",
     summaryFailed:      "تعذّر إنشاء الملخص.",
+    switchToLanguage:   (label: string) => `التبديل إلى ${label}`,
+    currentLanguage:    (label: string) => `اللغة: ${label}. انقر للتبديل.`,
   },
   navbar: {
     signIn:         "تسجيل الدخول",
@@ -291,6 +293,12 @@ export const ar: Translations = {
     refundContact:        "لم يكن ما توقعته؟ راسلنا للحصول على استرداد كامل — بدون أسئلة.",
     accountSectionTitle:  "الحساب",
     accountBillingSubtitle: "الفواتير مرتبطة بتسجيل دخولك.",
+    colDate:              "التاريخ",
+    colStatus:            "الحالة",
+    colAmount:            "المبلغ",
+    colReceipt:           "الإيصال",
+    noInvoicesYet:        "لا توجد فواتير بعد.",
+    viewLabel:            "عرض",
   },
   toolsPage: {
     pageLabel:           "مساحتك",

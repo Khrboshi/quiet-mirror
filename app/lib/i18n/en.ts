@@ -112,6 +112,8 @@ export const en: Translations = {
     patternsGenerating: "Generating your personal patterns now — check back after your next reflection.",
     writeAnEntry:       "Write an entry →",
     summaryFailed:      "Couldn't generate summary.",
+    switchToLanguage:   (label: string) => `Switch to ${label}`,
+    currentLanguage:    (label: string) => `Language: ${label}. Click to switch.`,
   },
 
   navbar: {
@@ -284,6 +286,12 @@ export const en: Translations = {
     refundContact:        "Not what you expected? Email us for a full refund — no questions asked.",
     accountSectionTitle:  "Account",
     accountBillingSubtitle: "Billing is tied to your login.",
+    colDate:              "Date",
+    colStatus:            "Status",
+    colAmount:            "Amount",
+    colReceipt:           "Receipt",
+    noInvoicesYet:        "No invoices yet.",
+    viewLabel:            "View",
   },
 
   // ── Tools page ───────────────────────────────────────────────────────────────

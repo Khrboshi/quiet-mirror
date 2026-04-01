@@ -5,7 +5,7 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { ensureCreditsFresh } from "@/lib/creditRules";
 import { normalizeAIResponseSignals } from "@/lib/ai/normalizeInsightSignals";
 import { normalizePlan, type UserCreditsRow, type JournalAIRow, type GroqChatResponse, parseAIResponse } from "@/lib/planUtils";
-import { getLocaleFromCookieString, getAiLanguageName } from "@/app/lib/i18n";
+import { getLocaleFromCookieString, getAiLanguageName, SUPPORTED_LOCALES, DEFAULT_LOCALE } from "@/app/lib/i18n";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
@@ -56,7 +56,8 @@ const FALLBACK_QUESTIONS = [
 ];
 
 export async function GET(req: Request) {
-  const locale = getLocaleFromCookieString(req.headers.get("cookie") ?? "");
+  const rawLocale      = getLocaleFromCookieString(req.headers.get("cookie") ?? "");
+  const locale         = SUPPORTED_LOCALES.includes(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   const targetLanguage = getAiLanguageName(locale);
   const languageInstruction = targetLanguage
     ? `\nLANGUAGE RULE: Respond entirely in ${targetLanguage}. The question must be in ${targetLanguage} only.\n`
