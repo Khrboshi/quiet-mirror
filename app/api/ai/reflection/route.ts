@@ -135,10 +135,13 @@ export async function POST(req: Request) {
 
   const body = await req.json().catch(() => ({}));
   const entryId = typeof body?.entryId === "string" ? body.entryId.trim() : "";
-  // Locale: prefer what the client sends, fall back to the cookie
+  // Locale: validate against supported list to prevent unsupported languages reaching the AI
+  const SUPPORTED_AI_LOCALES = ["en", "uk"] as const;
+  type SupportedLocale = typeof SUPPORTED_AI_LOCALES[number];
   const cookieLocale = getLocaleFromCookieString(req.headers.get("cookie") ?? "");
-  const locale: string = (typeof body?.locale === "string" && body.locale.trim())
-    ? body.locale.trim()
+  const rawLocale = typeof body?.locale === "string" ? body.locale.trim() : "";
+  const locale: string = (SUPPORTED_AI_LOCALES as readonly string[]).includes(rawLocale)
+    ? rawLocale
     : cookieLocale;
 
   if (!entryId) {
