@@ -157,6 +157,7 @@ export const uk: Translations = {
     privateNoCred:  "Без стрічки, без тиску, без картки. Просто спокійне місце для ваших думок.",
     privateTagline: "Почніть із приватного запису у щоденнику.",
     privateJournalingTagline: "Приватний щоденник, який відображає вас",
+    mobileFooterNote: "Quiet Mirror створено для спокійного, приватного роздуму — не для демонстрації.",
   },
 
   insights: {

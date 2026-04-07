@@ -149,6 +149,7 @@ export const ar: Translations = {
     privateNoCred:  "لا خلاصة، لا ضغط، لا بطاقة مطلوبة. فقط مكان أهدأ لوضع ما يدور في بالك.",
     privateTagline: "ابدأ بمدخل مجلة خاصة.",
     privateJournalingTagline: "تدوين خاص يعكس عليك أفكارك",
+    mobileFooterNote: "Quiet Mirror مبني للتأمل الهادئ والخاص — لا للأداء.",
   },
   insights: {
     regenerateSummary: "إعادة إنشاء الملخص",

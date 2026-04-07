@@ -242,7 +242,7 @@ export default function Navbar() {
                       onClick={() => setMobileOpen(false)}
                       className="qm-btn-primary mt-4 inline-flex w-full items-center justify-center px-5 py-3.5 text-sm"
                     >
-                      Write your first entry free →
+                      {t.navbar.writeFreeEntry}
                     </Link>
                   </div>
                   ) : null
@@ -259,8 +259,7 @@ export default function Navbar() {
                   <LanguageSwitcher variant="full" />
                 </div>
                 <p className="mt-4 text-center text-xs leading-relaxed text-qm-faint">
-                  Quiet Mirror is built for quiet, private reflection — not
-                  performance.
+                  {t.navbar.mobileFooterNote}
                 </p>
               </div>
             </div>

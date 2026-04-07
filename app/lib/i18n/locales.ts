@@ -19,6 +19,9 @@ import type { Translations } from "./types";
 import { en } from "./en";
 import { uk } from "./uk";
 import { ar } from "./ar";
+import { fr } from "./fr";
+import { nl } from "./nl";
+import { ro } from "./ro";
 
 export interface LocaleDefinition {
   code:    string;
@@ -33,6 +36,9 @@ export const LOCALE_REGISTRY: LocaleDefinition[] = [
   { code: "en", label: "English",    flag: "🇬🇧", dir: "ltr", aiName: null,       strings: en },
   { code: "uk", label: "Українська", flag: "🇺🇦", dir: "ltr", aiName: "Ukrainian", strings: uk },
   { code: "ar", label: "العربية",    flag: "🇸🇦", dir: "rtl", aiName: "Arabic",    strings: ar },
+  { code: "fr", label: "Français",   flag: "🇫🇷", dir: "ltr", aiName: "French",    strings: fr },
+  { code: "nl", label: "Nederlands", flag: "🇳🇱", dir: "ltr", aiName: "Dutch",     strings: nl },
+  { code: "ro", label: "Română",     flag: "🇷🇴", dir: "ltr", aiName: "Romanian",  strings: ro },
 ];
 
 export type Locale = (typeof LOCALE_REGISTRY)[number]["code"];
@@ -58,6 +64,13 @@ export function getLocaleFromCookieString(cookieHeader: string | null): string {
   return SUPPORTED_LOCALES.includes(val ?? "") ? (val as string) : DEFAULT_LOCALE;
 }
 export function getIntlLocale(code: string): string {
-  const map: Record<string, string> = { en: "en-GB", uk: "uk-UA", ar: "ar-SA" };
+  const map: Record<string, string> = {
+    en: "en-GB",
+    uk: "uk-UA",
+    ar: "ar-SA",
+    fr: "fr-FR",
+    nl: "nl-NL",
+    ro: "ro-RO",
+  };
   return map[code] ?? code;
 }

@@ -125,10 +125,11 @@ export interface Translations {
     yourSpace:      string;
     openMenu:       string;
     closeMenu:      string;
-    writeFreeEntry: string;
-    privateNoCred:  string;
-    privateTagline: string;
+    writeFreeEntry:           string;
+    privateNoCred:            string;
+    privateTagline:           string;
     privateJournalingTagline: string;
+    mobileFooterNote:         string;
   };
 
   insights: {

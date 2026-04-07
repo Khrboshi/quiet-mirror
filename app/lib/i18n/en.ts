@@ -136,6 +136,7 @@ export const en: Translations = {
     privateNoCred:  "No feed, no pressure, no card required. Just a calmer place to put what is on your mind.",
     privateTagline: "Start with a private journal entry.",
     privateJournalingTagline: "Private journaling that reflects back",
+    mobileFooterNote: "Quiet Mirror is built for quiet, private reflection — not performance.",
   },
 
   insights: {
