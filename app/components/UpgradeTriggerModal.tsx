@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import { PRICING } from "@/app/lib/pricing";
+import { useTranslation } from "@/app/components/I18nProvider";
 
 export interface UpgradeTriggerModalProps {
   open: boolean;
@@ -19,7 +20,7 @@ export interface UpgradeTriggerModalProps {
 export default function UpgradeTriggerModal({
   open,
   onClose,
-  title = "You've used your free reflections this month.",
+  title,
   message,
   description,
   ctaLabel,
@@ -27,42 +28,39 @@ export default function UpgradeTriggerModal({
   cta,
   source,
 }: UpgradeTriggerModalProps) {
+  const { t } = useTranslation();
+  const ut = t.upgradeTrigger;
+
   useEffect(() => {
     if (!open) return;
-
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
-
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onClose]);
 
   if (!open) return null;
 
-  const finalDescription =
-    message ??
-    description ??
-    "Premium unlocks unlimited reflections, pattern insights across time, and a weekly summary of what Quiet Mirror noticed.";
-
-  const finalCtaLabel = ctaLabel ?? cta ?? `Start ${PRICING.trialLabel} →`;
-  const finalCtaHref = ctaHref ?? "/upgrade";
+  const finalTitle       = title ?? ut.modalTitle;
+  const finalDescription = message ?? description ?? ut.modalDesc;
+  const finalCtaLabel    = ctaLabel ?? cta ?? t.upgrade.startTrial(PRICING.trialLabel);
+  const finalCtaHref     = ctaHref ?? "/upgrade";
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 backdrop-blur-sm" style={{ backgroundColor: "rgba(10, 13, 26, 0.75)" }}
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 backdrop-blur-sm"
+      style={{ backgroundColor: "rgba(10, 13, 26, 0.75)" }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
       <div className="w-full max-w-md overflow-hidden rounded-[1.5rem] qm-panel-strong shadow-qm-soft">
-        {/* Header with emerald tint */}
+        {/* Header */}
         <div className="border-b border-qm-card bg-qm-card px-6 py-5">
           <span className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-qm-accent bg-qm-accent-soft px-2.5 py-1 text-[11px] font-semibold text-qm-accent">
             ✦ Premium feature
           </span>
           <h3 className="font-display text-xl font-semibold text-qm-primary">
-            {title}
+            {finalTitle}
           </h3>
           <p className="mt-2 text-sm leading-relaxed text-qm-secondary">
             {finalDescription}
@@ -71,12 +69,12 @@ export default function UpgradeTriggerModal({
 
         {/* Body */}
         <div className="px-6 py-5">
-          {/* What you get */}
+          {/* Feature list */}
           <div className="space-y-2.5">
             {[
-              { label: "Unlimited reflections", dot: "bg-qm-accent" },
-              { label: "Pattern insights across time", dot: "bg-qm-premium" },
-              { label: "Weekly personal summary", dot: "bg-qm-warning" },
+              { label: t.requirePremium.f1Label, dot: "bg-qm-accent" },
+              { label: t.requirePremium.f2Label, dot: "bg-qm-premium" },
+              { label: t.requirePremium.f3Label, dot: "bg-qm-warning" },
             ].map(({ label, dot }) => (
               <div key={label} className="flex items-center gap-2.5">
                 <span className={`h-1.5 w-1.5 rounded-full ${dot}`} />
@@ -90,7 +88,7 @@ export default function UpgradeTriggerModal({
             <span className="font-display text-2xl font-bold text-qm-primary">
               {PRICING.monthly}
             </span>
-            <span className="text-sm text-qm-secondary">/ month</span>
+            <span className="text-sm text-qm-secondary">{ut.perMonth}</span>
             <span className="rounded-full border border-qm-accent bg-qm-accent-soft px-2 py-0.5 text-[10px] font-medium text-qm-accent">
               {PRICING.valueLabel}
             </span>
@@ -104,12 +102,11 @@ export default function UpgradeTriggerModal({
             >
               {finalCtaLabel}
             </Link>
-
             <Link
               href="/insights/preview"
               className="inline-flex w-full items-center justify-center rounded-full qm-btn-secondary px-5 py-2.5 text-sm"
             >
-              Preview what Premium shows
+              {ut.seeWhatPremium}
             </Link>
           </div>
 
@@ -121,7 +118,7 @@ export default function UpgradeTriggerModal({
                 href="/terms"
                 className="underline underline-offset-2 transition-colors hover:text-qm-muted"
               >
-                Terms
+                {ut.terms}
               </Link>
             </p>
             <button
@@ -129,7 +126,7 @@ export default function UpgradeTriggerModal({
               onClick={onClose}
               className="text-xs text-qm-muted transition-colors hover:text-qm-secondary"
             >
-              Not now
+              {ut.notNow}
             </button>
           </div>
         </div>

@@ -45,6 +45,9 @@ export const ar: Translations = {
     networkError:      "خطأ في الشبكة. الرجاء المحاولة مرة أخرى.",
     networkRetry:      "خطأ في الشبكة. حاول مجدداً بعد لحظة.",
     safeReload:        "مدخلاتك بأمان. أعد تحميل الصفحة للمحاولة مرة أخرى.",
+    somethingWrong:    "حدث خطأ ما",
+    tryAgain:          "حاول مجدداً",
+    genericPageError:  (appName) => `واجه ${appName} مشكلة في تحميل هذه الصفحة. حاول مجدداً بعد لحظة.`,
   },
   nav: {
     backToDashboard: "العودة إلى لوحة التحكم",
@@ -370,6 +373,10 @@ export const ar: Translations = {
     fitnessSub:           "يتتبع Premium الأنماط العاطفية حول شعورك تجاه نفسك الجسدية.",
     generalHeadline:      "أصبح هذا التأمل الآن جزءاً من سجل أنماطك.",
     generalSub:           "يُظهر لك Premium ما يتكرر عبر مدخلاتك — الخيط العاطفي الذي لا يمكنك دائماً رؤيته من الداخل.",
+    modalTitle:           "لقد استخدمت تأملاتك المجانية هذا الشهر.",
+    modalDesc:            "يفتح Premium تأملات غير محدودة ورؤى الأنماط عبر الزمن وملخصاً أسبوعياً لما لاحظه Quiet Mirror.",
+    notNow:               "ليس الآن",
+    perMonth:             "/ شهر",
   },
   upgradeConfirmed: {
     headline1:     "بدأت فترتك التجريبية.",
@@ -660,6 +667,28 @@ export const ar: Translations = {
     upgradeBack:          "العودة إلى اللوحة",
     upgradeRefund:        (days: number) => `🛡️ استرداد كامل خلال ${days} أيام · إلغاء في أي وقت · بلا أسئلة.`,
     footerNote:           "تعمق التحليلات مع نمو تاريخ تأملاتك.",
+  },
+
+  installPrompt: {
+    title:       (appName) => `تثبيت ${appName}`,
+    iOSPart1:    "على iPhone Safari: اضغط",
+    iOSShare:    "مشاركة",
+    iOSThen:     "ثم",
+    iOSAddHome:  "إضافة إلى الشاشة الرئيسية",
+    androidDesc: "احصل على تجربة أسرع تشبه التطبيق مع أيقونة على جهازك.",
+    close:       "إغلاق",
+    install:     "تثبيت",
+    later:       "لاحقاً",
+    gotIt:       "حسناً",
+    footerNote:  "لن يظهر هذا عند فتح Quiet Mirror كتطبيق مثبت.",
+  },
+
+  authComplete: {
+    signingIn:       "جارٍ تسجيل الدخول\u2026",
+    signedIn:        "تم تسجيل دخولك.",
+    closeTab:        "علامة التبويب الأصلية جاهزة. يمكنك إغلاق هذه.",
+    continuePremium: "الاستمرار إلى Premium \u2192",
+    gotoDashboard:   "الذهاب إلى لوحة التحكم \u2192",
   },
 
 };

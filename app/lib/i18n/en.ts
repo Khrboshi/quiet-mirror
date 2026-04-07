@@ -21,6 +21,9 @@ export const en: Translations = {
     networkError:      "Network error. Please try again.",
     networkRetry:      "Network error. Try again in a moment.",
     safeReload:        "Your entries are safe. Reload to try again.",
+    somethingWrong:    "Something went wrong",
+    tryAgain:          "Try again",
+    genericPageError:  (appName) => `${appName} ran into an issue loading this page. Try again in a moment.`,
   },
 
   nav: {
@@ -371,6 +374,10 @@ export const en: Translations = {
     fitnessSub:           "Premium tracks the emotional patterns around how you feel about your physical self \u2014 what shifts, what stays, and what it connects to.",
     generalHeadline:      "This reflection is now part of your pattern history.",
     generalSub:           "Premium shows you what keeps repeating across your entries \u2014 the emotional thread you can\u2019t always see from inside it.",
+    modalTitle:           "You\u2019ve used your free reflections this month.",
+    modalDesc:            "Premium unlocks unlimited reflections, pattern insights across time, and a weekly summary of what Quiet Mirror noticed.",
+    notNow:               "Not now",
+    perMonth:             "/ month",
   },
 
   // ── Upgrade confirmed ────────────────────────────────────────────────────────
@@ -658,6 +665,30 @@ export const en: Translations = {
     upgradeBack:          "Back to dashboard",
     upgradeRefund:        (days: number) => `🛡️ ${days}-day full refund · Cancel anytime · No questions asked.`,
     footerNote:           "Insights deepen as your reflection history grows.",
+  },
+
+  // ── Install prompt (PWA banner) ───────────────────────────────────────────
+  installPrompt: {
+    title:       (appName) => `Install ${appName}`,
+    iOSPart1:    "On iPhone Safari: tap",
+    iOSShare:    "Share",
+    iOSThen:     "then",
+    iOSAddHome:  "Add to Home Screen",
+    androidDesc: "Get a faster, app-like experience with an app icon on your device.",
+    close:       "Close",
+    install:     "Install",
+    later:       "Later",
+    gotIt:       "Got it",
+    footerNote:  "This won\u2019t appear when Quiet Mirror is opened as an installed app.",
+  },
+
+  // ── Auth complete (magic-link callback tab) ───────────────────────────────
+  authComplete: {
+    signingIn:       "Signing you in\u2026",
+    signedIn:        "You\u2019re signed in.",
+    closeTab:        "Your original tab is ready. You can close this one.",
+    continuePremium: "Continue to Premium \u2192",
+    gotoDashboard:   "Go to dashboard \u2192",
   },
 
 };

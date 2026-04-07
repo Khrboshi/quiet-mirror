@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useInstallAvailability } from "@/app/hooks/useInstallAvailability";
 import { track } from "@/app/components/telemetry";
 import { CONFIG } from "@/app/lib/config";
+import { useTranslation } from "@/app/components/I18nProvider";
 
 const SNOOZE_KEY = "hvn_install_snooze_until_v1";
 const SNOOZE_DAYS = 5;
@@ -68,14 +69,14 @@ function PlusSquareIcon(props: { className?: string }) {
 export default function InstallPrompt() {
   const pathname = usePathname();
   const router = useRouter();
+  const { t } = useTranslation();
+  const ip = t.installPrompt;
 
   const blockedPath = useMemo(() => shouldNeverPromptOnPath(pathname), [pathname]);
 
   const [hidden, setHidden] = useState(false);
   const [snoozed, setSnoozed] = useState(true);
 
-  // Re-check snooze on route change.
-  // IMPORTANT: Do NOT reset hidden on navigation.
   useEffect(() => {
     const until = readSnoozeUntil();
     setSnoozed(until > Date.now());
@@ -104,18 +105,12 @@ export default function InstallPrompt() {
 
   const installNative = async () => {
     track("install_prompt_clicked_install", { pathname });
-
     const choice = await promptInstall();
-
-    // If we couldn't prompt (no deferred prompt), send user to /install page
     if (choice.outcome === "dismissed" && !canPromptNative && !(isIOS && isSafariIOS)) {
       router.push("/install");
       return;
     }
-
     track("install_prompt_outcome", { pathname, outcome: choice.outcome });
-
-    // Hide after click to prevent repeated prompting/warnings
     setHidden(true);
   };
 
@@ -133,23 +128,25 @@ export default function InstallPrompt() {
       >
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-sm font-semibold text-qm-primary">Install {CONFIG.appName}</p>
+            <p className="text-sm font-semibold text-qm-primary">
+              {ip.title(CONFIG.appName)}
+            </p>
 
             {isIOS && isSafariIOS ? (
               <p className="mt-1 text-xs text-qm-secondary">
-                On iPhone Safari: tap{" "}
+                {ip.iOSPart1}{" "}
                 <span className="inline-flex items-center gap-1 font-semibold text-qm-primary">
-                  <ShareIcon className="h-4 w-4" /> Share
+                  <ShareIcon className="h-4 w-4" /> {ip.iOSShare}
                 </span>{" "}
-                then{" "}
+                {ip.iOSThen}{" "}
                 <span className="inline-flex items-center gap-1 font-semibold text-qm-primary">
-                  <PlusSquareIcon className="h-4 w-4" /> Add to Home Screen
+                  <PlusSquareIcon className="h-4 w-4" /> {ip.iOSAddHome}
                 </span>
                 .
               </p>
             ) : (
               <p className="mt-1 text-xs text-qm-secondary">
-                Get a faster, app-like experience with an app icon on your device.
+                {ip.androidDesc}
               </p>
             )}
           </div>
@@ -158,7 +155,7 @@ export default function InstallPrompt() {
             onClick={() => dismiss("close")}
             className="qm-btn-secondary rounded-full px-3 py-1 text-xs"
           >
-            Close
+            {ip.close}
           </button>
         </div>
 
@@ -168,13 +165,13 @@ export default function InstallPrompt() {
               onClick={installNative}
               className="qm-btn-primary flex-1 px-4 py-2 text-sm"
             >
-              Install
+              {ip.install}
             </button>
             <button
               onClick={() => dismiss("later")}
               className="qm-btn-secondary rounded-full px-4 py-2 text-sm font-semibold"
             >
-              Later
+              {ip.later}
             </button>
           </div>
         ) : (
@@ -183,13 +180,13 @@ export default function InstallPrompt() {
               onClick={() => dismiss("later")}
               className="qm-btn-secondary rounded-full px-4 py-2 text-sm font-semibold"
             >
-              Got it
+              {ip.gotIt}
             </button>
           </div>
         )}
 
         <p className="mt-2 text-[11px] text-qm-secondary">
-          This won’t appear when Quiet Mirror is opened as an installed app.
+          {ip.footerNote}
         </p>
       </div>
     </div>

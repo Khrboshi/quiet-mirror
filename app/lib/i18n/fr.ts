@@ -17,6 +17,9 @@ export const fr: Translations = {
     networkError:      "Erreur réseau. Veuillez réessayer.",
     networkRetry:      "Erreur réseau. Réessayez dans un moment.",
     safeReload:        "Vos entrées sont en sécurité. Rechargez pour réessayer.",
+    somethingWrong:    "Quelque chose s'est mal passé",
+    tryAgain:          "Réessayer",
+    genericPageError:  (appName) => `${appName} a rencontré un problème lors du chargement de cette page. Réessayez dans un moment.`,
   },
 
   nav: {
@@ -367,6 +370,10 @@ export const fr: Translations = {
     fitnessSub:           "Premium suit les schémas émotionnels autour de ce que vous ressentez à propos de votre soi physique \u2014 ce qui change, ce qui reste, et à quoi cela se connecte.",
     generalHeadline:      "Cette réflexion fait maintenant partie de votre historique de schémas.",
     generalSub:           "Premium vous montre ce qui se répète dans vos entrées \u2014 le fil émotionnel que vous ne pouvez pas toujours voir de l\u2019intérieur.",
+    modalTitle:           "Vous avez utilisé vos réflexions gratuites ce mois-ci.",
+    modalDesc:            "Premium débloque des réflexions illimitées, des aperçus de tendances dans le temps et un résumé hebdomadaire de ce que Quiet Mirror a remarqué.",
+    notNow:               "Pas maintenant",
+    perMonth:             "/ mois",
   },
 
   // ── Upgrade confirmed ────────────────────────────────────────────────────────
@@ -660,4 +667,27 @@ export const fr: Translations = {
     upgradeRefund:        (days: number) => `🛡️ Remboursement complet sous ${days} jours · Annulez à tout moment · Sans questions posées.`,
     footerNote:           "Les aperçus s'approfondissent au fur et à mesure que votre historique de réflexions grandit.",
   },
+
+  installPrompt: {
+    title:       (appName) => `Installer ${appName}`,
+    iOSPart1:    "Sur iPhone Safari : appuyez sur",
+    iOSShare:    "Partager",
+    iOSThen:     "puis",
+    iOSAddHome:  "Sur l\u2019\u00e9cran d\u2019accueil",
+    androidDesc: "Obtenez une exp\u00e9rience plus rapide, semblable \u00e0 une app, avec une ic\u00f4ne sur votre appareil.",
+    close:       "Fermer",
+    install:     "Installer",
+    later:       "Plus tard",
+    gotIt:       "Compris",
+    footerNote:  "Ceci n\u2019appara\u00eEtra pas lorsque Quiet Mirror est ouvert en tant qu\u2019app install\u00e9e.",
+  },
+
+  authComplete: {
+    signingIn:       "Connexion en cours\u2026",
+    signedIn:        "Vous \u00eates connect\u00e9(e).",
+    closeTab:        "Votre onglet d\u2019origine est pr\u00eat. Vous pouvez fermer celui-ci.",
+    continuePremium: "Continuer vers Premium \u2192",
+    gotoDashboard:   "Aller au tableau de bord \u2192",
+  },
+
 };

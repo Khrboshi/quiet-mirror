@@ -18,6 +18,9 @@ export const ro: Translations = {
     networkError:      "Eroare de rețea. Vă rugăm să încercați din nou.",
     networkRetry:      "Eroare de rețea. Încercați din nou într-un moment.",
     safeReload:        "Înregistrările dvs. sunt în siguranță. Reîncărcați pentru a încerca din nou.",
+    somethingWrong:    "Ceva a mers prost",
+    tryAgain:          "Încercați din nou",
+    genericPageError:  (appName) => `${appName} a întâmpinat o problemă la încărcarea acestei pagini. Încercați din nou într-un moment.`,
   },
 
   nav: {
@@ -362,6 +365,10 @@ export const ro: Translations = {
     fitnessSub:           "Premium urmărește tiparele emoționale legate de cum vă simțiți față de sinele dvs. fizic — ce se schimbă, ce rămâne și la ce se conectează.",
     generalHeadline:      "Această reflecție face acum parte din istoricul tiparelor dvs.",
     generalSub:           "Premium vă arată ce continuă să se repete în înregistrările dvs. — firul emoțional pe care nu îl puteți vedea întotdeauna din interior.",
+    modalTitle:           "V-ați folosit reflecțiile gratuite din această lună.",
+    modalDesc:            "Premium deblochează reflecții nelimitate, perspective asupra tiparelor în timp și un rezumat săptămânal a ceea ce a observat Quiet Mirror.",
+    notNow:               "Nu acum",
+    perMonth:             "/ lună",
   },
 
   upgradeConfirmed: {
@@ -652,4 +659,27 @@ export const ro: Translations = {
     upgradeRefund:        (days: number) => `🛡️ Rambursare completă ${days} zile · Anulați oricând · Fără întrebări.`,
     footerNote:           "Perspectivele se aprofundează pe măsură ce istoricul reflecțiilor dvs. crește.",
   },
+
+  installPrompt: {
+    title:       (appName) => `Instalați ${appName}`,
+    iOSPart1:    "Pe iPhone Safari: apăsați",
+    iOSShare:    "Partajați",
+    iOSThen:     "apoi",
+    iOSAddHome:  "Adăugați pe ecranul principal",
+    androidDesc: "Obțineți o experiență mai rapidă, asemănătoare unei aplicații, cu o pictogramă pe dispozitivul dvs.",
+    close:       "Închideți",
+    install:     "Instalați",
+    later:       "Mai târziu",
+    gotIt:       "Am înțeles",
+    footerNote:  "Aceasta nu va apărea când Quiet Mirror este deschis ca aplicație instalată.",
+  },
+
+  authComplete: {
+    signingIn:       "Conectare în curs…",
+    signedIn:        "Sunteți conectat(ă).",
+    closeTab:        "Fila originală este gata. Puteți închide aceasta.",
+    continuePremium: "Continuați la Premium →",
+    gotoDashboard:   "Mergeți la panou →",
+  },
+
 };

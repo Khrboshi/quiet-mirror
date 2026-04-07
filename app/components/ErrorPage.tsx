@@ -5,6 +5,7 @@
 
 import Link from "next/link";
 import { CONFIG } from "@/app/lib/config";
+import { useTranslation } from "@/app/components/I18nProvider";
 
 type ErrorPageProps = {
   reset: () => void;
@@ -12,7 +13,7 @@ type ErrorPageProps = {
   message?: string;
   /** Where the back link goes — defaults to "/" */
   backHref?: string;
-  /** Label for the back link — defaults to "Back to home" */
+  /** Label for the back link — defaults to t.nav.backToHome */
   backLabel?: string;
 };
 
@@ -20,16 +21,17 @@ export default function ErrorPage({
   reset,
   message,
   backHref = "/",
-  backLabel = "Back to home",
+  backLabel,
 }: ErrorPageProps) {
-  const displayMessage =
-    message ?? `${CONFIG.appName} ran into an issue loading this page. Try again in a moment.`;
+  const { t } = useTranslation();
+  const displayMessage = message ?? t.errors.genericPageError(CONFIG.appName);
+  const displayBackLabel = backLabel ?? t.nav.backToHome;
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center bg-qm-bg px-4">
       <div className="mx-auto max-w-md qm-panel rounded-2xl p-8 text-center">
         <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-qm-muted">
-          Something went wrong
+          {t.errors.somethingWrong}
         </p>
         <p className="mt-3 text-sm leading-relaxed text-qm-secondary">
           {displayMessage}
@@ -39,13 +41,13 @@ export default function ErrorPage({
             onClick={reset}
             className="qm-btn-primary px-5 py-2.5 text-sm"
           >
-            Try again
+            {t.errors.tryAgain}
           </button>
           <Link
             href={backHref}
             className="qm-btn-secondary rounded-full px-5 py-2.5 text-sm"
           >
-            {backLabel}
+            {displayBackLabel}
           </Link>
         </div>
       </div>

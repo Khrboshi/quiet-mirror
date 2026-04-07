@@ -21,6 +21,9 @@ export interface Translations {
     networkError:      string;
     networkRetry:      string;
     safeReload:        string;
+    somethingWrong:    string;
+    tryAgain:          string;
+    genericPageError:  (appName: string) => string;
   };
 
   nav: {
@@ -369,6 +372,10 @@ export interface Translations {
     fitnessSub:           string;
     generalHeadline:      string;
     generalSub:           string;
+    modalTitle:           string;
+    modalDesc:            string;
+    notNow:               string;
+    perMonth:             string;
   };
 
   // ── Upgrade confirmed ────────────────────────────────────────────────────────
@@ -614,6 +621,30 @@ export interface Translations {
     upgradeRefund:        (days: number) => string;
     // Footer
     footerNote:           string;
+  };
+
+  // ── Install prompt (PWA banner) ───────────────────────────────────────────
+  installPrompt: {
+    title:          (appName: string) => string;
+    iOSPart1:       string;
+    iOSShare:       string;
+    iOSThen:        string;
+    iOSAddHome:     string;
+    androidDesc:    string;
+    close:          string;
+    install:        string;
+    later:          string;
+    gotIt:          string;
+    footerNote:     string;
+  };
+
+  // ── Auth complete (magic-link callback tab) ───────────────────────────────
+  authComplete: {
+    signingIn:       string;
+    signedIn:        string;
+    closeTab:        string;
+    continuePremium: string;
+    gotoDashboard:   string;
   };
 
 }

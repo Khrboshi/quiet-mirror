@@ -18,6 +18,9 @@ export const nl: Translations = {
     networkError:      "Netwerkfout. Probeer het opnieuw.",
     networkRetry:      "Netwerkfout. Probeer het over een moment opnieuw.",
     safeReload:        "Je berichten zijn veilig. Herlaad de pagina om het opnieuw te proberen.",
+    somethingWrong:    "Er ging iets mis",
+    tryAgain:          "Opnieuw proberen",
+    genericPageError:  (appName) => `${appName} liep tegen een probleem aan bij het laden van deze pagina. Probeer het over een moment opnieuw.`,
   },
 
   nav: {
@@ -362,6 +365,10 @@ export const nl: Translations = {
     fitnessSub:           "Premium volgt de emotionele patronen rondom hoe jij je voelt over je fysieke zelf — wat verschuift, wat blijft en waarmee het verbonden is.",
     generalHeadline:      "Deze reflectie maakt nu deel uit van je patroongeschiedenis.",
     generalSub:           "Premium toont je wat zich blijft herhalen in je berichten — de emotionele draad die je niet altijd kunt zien van binnenuit.",
+    modalTitle:           "Je hebt je gratis reflecties deze maand gebruikt.",
+    modalDesc:            "Premium ontgrendelt onbeperkte reflecties, patrooninzichten over tijd en een wekelijkse samenvatting van wat Quiet Mirror opmerkte.",
+    notNow:               "Niet nu",
+    perMonth:             "/ maand",
   },
 
   upgradeConfirmed: {
@@ -652,4 +659,27 @@ export const nl: Translations = {
     upgradeRefund:        (days: number) => `🛡️ ${days} dagen volledige terugbetaling · Altijd opzegbaar · Geen vragen.`,
     footerNote:           "Inzichten verdiepen naarmate je reflectiegeschiedenis groeit.",
   },
+
+  installPrompt: {
+    title:       (appName) => `${appName} installeren`,
+    iOSPart1:    "Op iPhone Safari: tik op",
+    iOSShare:    "Delen",
+    iOSThen:     "dan",
+    iOSAddHome:  "Zet op beginscherm",
+    androidDesc: "Krijg een snellere, app-achtige ervaring met een pictogram op je apparaat.",
+    close:       "Sluiten",
+    install:     "Installeren",
+    later:       "Later",
+    gotIt:       "Begrepen",
+    footerNote:  "Dit verschijnt niet wanneer Quiet Mirror wordt geopend als geïnstalleerde app.",
+  },
+
+  authComplete: {
+    signingIn:       "Aanmelden…",
+    signedIn:        "Je bent aangemeld.",
+    closeTab:        "Je oorspronkelijke tabblad is klaar. Je kunt dit sluiten.",
+    continuePremium: "Doorgaan naar Premium →",
+    gotoDashboard:   "Naar dashboard →",
+  },
+
 };
