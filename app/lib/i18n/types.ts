@@ -647,4 +647,109 @@ export interface Translations {
     gotoDashboard:   string;
   };
 
+  // ── Install page ──────────────────────────────────────────────────────────
+  installPage: {
+    tag:               (appName: string) => string;
+    headline:          (appName: string) => string;
+    desc:              (appName: string) => string;
+    appTagline:        string;
+    appSubTagline:     string;
+    benefit1Label:     string;
+    benefit1Detail:    string;
+    benefit2Label:     string;
+    benefit2Detail:    string;
+    benefit3Label:     string;
+    benefit3Detail:    string;
+    mobileTag:         (appName: string) => string;
+    mobileHeadline:    (appName: string) => string;
+    mobileDesc:        (appName: string) => string;
+    cardHeadline:      string;
+    cardSubtitle:      string;
+    alreadyInstalled:  string;
+    alreadyDesc:       (appName: string) => string;
+    addDevice:         string;
+    oneClickDesc:      string;
+    installBtn:        (appName: string) => string;
+    incognitoNote:     string;
+    iosSafariIntro:    string;
+    iosStep1:          string;
+    iosStep2:          string;
+    iosStep3:          string;
+    iosStep4:          (appName: string) => string;
+    iosSafariNote:     string;
+    desktopTitle:      string;
+    desktopStep1:      string;
+    desktopStep2:      string;
+    desktopStep3:      (appName: string) => string;
+    helpfulNote:       string;
+    helpfulBody:       (appName: string) => string;
+    backHome:          string;
+    footerNote:        (appName: string) => string;
+  };
+
+  // ── About page ────────────────────────────────────────────────────────────
+  aboutPage: {
+    tag:               (appName: string) => string;
+    headline1:         string;
+    headline2:         string;
+    subheadline:       (appName: string) => string;
+    ctaStart:          string;
+    ctaPricing:        string;
+    noCreditCard:      string;
+    whyNameTag:        (appName: string) => string;
+    why1:              string;
+    why2:              string;
+    why3:              (appName: string) => string;
+    pullQuote:         (appName: string) => string;
+    builtIndepTag:     string;
+    card1Label:        string;
+    card1Body:         (appName: string) => string;
+    card2Label:        string;
+    card2Body:         string;
+    card3Label:        string;
+    card3Body:         (appName: string, email: string) => string;
+    contactNote:       (email: string) => string;
+    differentTag:      string;
+    different1:        (appName: string) => string;
+    different2:        (appName: string) => string;
+    isTag:             (appName: string) => string;
+    is1:               string;
+    is2:               string;
+    is3:               string;
+    is4:               string;
+    isNotTag:          (appName: string) => string;
+    isNot1:            string;
+    isNot2:            string;
+    isNot3:            string;
+    isNot4:            string;
+    aiTag:             string;
+    ai1:               string;
+    ai2:               string;
+    ai3:               string;
+    privacyTag:        string;
+    privacy1:          string;
+    privacy2:          (appName: string) => string;
+    privacyLink:       string;
+    footerNote:        (appName: string) => string;
+    ctaStartFree:      string;
+    ctaBlog:           string;
+  };
+
+  // ── Email capture widget ──────────────────────────────────────────────────
+  emailCapture: {
+    successHeading:  string;
+    successSub:      string;
+    inlineHeading:   string;
+    inlineSub:       string;
+    placeholder:     string;
+    subscribe:       string;
+    loading:         string;
+    errorMsg:        string;
+    indexHeading:    string;
+    indexSub:        string;
+    successConfirm:  string;
+    successLookOut:  string;
+    noSpam:          string;
+  };
+
 }
