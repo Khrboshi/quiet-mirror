@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import { CONFIG } from "@/app/lib/config";
+import { useTranslation } from "@/app/components/I18nProvider";
 
 type Variant = "blog-index" | "article-inline";
 
@@ -10,24 +11,22 @@ export default function EmailCapture({ source = "blog", variant = "blog-index" }
   source?: string;
   variant?: Variant;
 }) {
+  const { t } = useTranslation();
+  const ec = t.emailCapture;
+
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
   async function handleSubmit() {
     if (!email || status === "loading") return;
     setStatus("loading");
-
     try {
       const res = await fetch("/api/email/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, source }),
       });
-      if (res.ok) {
-        setStatus("success");
-      } else {
-        setStatus("error");
-      }
+      setStatus(res.ok ? "success" : "error");
     } catch {
       setStatus("error");
     }
@@ -38,24 +37,20 @@ export default function EmailCapture({ source = "blog", variant = "blog-index" }
       <div className="my-8 qm-panel rounded-2xl p-5">
         {status === "success" ? (
           <div className="py-2 text-center">
-            <p className="text-sm font-medium text-qm-accent">You&apos;re in.</p>
-            <p className="mt-1 text-xs text-qm-muted">One quiet article a week, whenever it&apos;s ready.</p>
+            <p className="text-sm font-medium text-qm-accent">{ec.successHeading}</p>
+            <p className="mt-1 text-xs text-qm-muted">{ec.successSub}</p>
           </div>
         ) : (
           <>
-            <p className="text-sm font-medium text-qm-primary">
-              One quiet article a week.
-            </p>
-            <p className="mt-1 text-xs leading-relaxed text-qm-muted">
-              No noise, no streak guilt. Just something worth reading when it&apos;s ready.
-            </p>
+            <p className="text-sm font-medium text-qm-primary">{ec.inlineHeading}</p>
+            <p className="mt-1 text-xs leading-relaxed text-qm-muted">{ec.inlineSub}</p>
             <div className="mt-4 flex gap-2">
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 onKeyDown={(e) => { if (e.key === "Enter") handleSubmit(); }}
-                placeholder="your@email.com"
+                placeholder={ec.placeholder}
                 className="min-w-0 flex-1 rounded-full border border-qm-card bg-qm-elevated px-4 py-2.5 text-sm text-qm-primary outline-none transition placeholder:text-qm-faint focus:border-qm-accent"
               />
               <button
@@ -63,11 +58,11 @@ export default function EmailCapture({ source = "blog", variant = "blog-index" }
                 disabled={!email || status === "loading"}
                 className="qm-btn-primary shrink-0 px-4 py-2.5 text-xs disabled:opacity-50"
               >
-                {status === "loading" ? "…" : "Subscribe"}
+                {status === "loading" ? ec.loading : ec.subscribe}
               </button>
             </div>
             {status === "error" && (
-              <p className="mt-2 text-xs text-qm-danger">Something went wrong. Try again.</p>
+              <p className="mt-2 text-xs text-qm-danger">{ec.errorMsg}</p>
             )}
           </>
         )}
@@ -84,17 +79,17 @@ export default function EmailCapture({ source = "blog", variant = "blog-index" }
             {CONFIG.newsletterName}
           </p>
           <h3 className="mt-2 text-lg font-semibold leading-snug text-qm-primary">
-            One quiet article a week.
+            {ec.indexHeading}
           </h3>
           <p className="mt-2 text-sm leading-relaxed text-qm-secondary">
-            No streak guilt. No noise. Just one piece worth reading, whenever it&apos;s ready. Unsubscribe in one click.
+            {ec.indexSub}
           </p>
         </div>
 
         {status === "success" ? (
           <div className="flex flex-col items-start gap-1 sm:items-end">
-            <p className="text-sm font-semibold text-qm-accent">You&apos;re in. ✓</p>
-            <p className="text-xs text-qm-muted">Look out for the next article.</p>
+            <p className="text-sm font-semibold text-qm-accent">{ec.successConfirm}</p>
+            <p className="text-xs text-qm-muted">{ec.successLookOut}</p>
           </div>
         ) : (
           <div className="flex w-full flex-col gap-2 sm:w-auto sm:min-w-[280px]">
@@ -104,7 +99,7 @@ export default function EmailCapture({ source = "blog", variant = "blog-index" }
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 onKeyDown={(e) => { if (e.key === "Enter") handleSubmit(); }}
-                placeholder="your@email.com"
+                placeholder={ec.placeholder}
                 className="min-w-0 flex-1 rounded-full border border-qm-card bg-qm-elevated px-4 py-3 text-sm text-qm-primary outline-none transition placeholder:text-qm-faint focus:border-qm-accent"
               />
               <button
@@ -112,15 +107,13 @@ export default function EmailCapture({ source = "blog", variant = "blog-index" }
                 disabled={!email || status === "loading"}
                 className="qm-btn-primary shrink-0 px-5 py-3 text-sm disabled:opacity-50"
               >
-                {status === "loading" ? "…" : "Subscribe"}
+                {status === "loading" ? ec.loading : ec.subscribe}
               </button>
             </div>
             {status === "error" && (
-              <p className="mt-1 ps-2 text-xs text-qm-danger">Something went wrong. Try again.</p>
+              <p className="mt-1 ps-2 text-xs text-qm-danger">{ec.errorMsg}</p>
             )}
-            <p className="ps-2 text-[11px] text-qm-faint">
-              No spam. No selling. One click to leave.
-            </p>
+            <p className="ps-2 text-[11px] text-qm-faint">{ec.noSpam}</p>
           </div>
         )}
       </div>

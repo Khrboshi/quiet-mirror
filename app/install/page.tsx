@@ -5,8 +5,27 @@ import Link from "next/link";
 import Image from "next/image";
 import { useInstallAvailability } from "@/app/hooks/useInstallAvailability";
 import { CONFIG } from "@/app/lib/config";
+import { useTranslation } from "@/app/components/I18nProvider";
+
+// Renders **bold** markdown within translation strings as <b> elements.
+// Translators wrap the UI label name in ** to preserve bold formatting.
+function BoldText({ text }: { text: string }) {
+  const parts = text.split(/\*\*(.*?)\*\*/g);
+  return (
+    <>
+      {parts.map((part, i) =>
+        i % 2 === 1
+          ? <b key={i} className="text-qm-primary">{part}</b>
+          : part
+      )}
+    </>
+  );
+}
 
 export default function InstallPage() {
+  const { t } = useTranslation();
+  const ip = t.installPage;
+
   const { isStandalone, isIOS, isSafariIOS, canPromptNative, promptInstall } =
     useInstallAvailability({ allowPreventDefault: false });
 
@@ -16,6 +35,19 @@ export default function InstallPage() {
     await promptInstall();
   }
 
+  const benefits = [
+    { label: ip.benefit1Label, detail: ip.benefit1Detail },
+    { label: ip.benefit2Label, detail: ip.benefit2Detail },
+    { label: ip.benefit3Label, detail: ip.benefit3Detail },
+  ];
+
+  const iosSteps = [
+    { step: "1", node: <BoldText text={ip.iosStep1} /> },
+    { step: "2", node: <BoldText text={ip.iosStep2} /> },
+    { step: "3", node: <BoldText text={ip.iosStep3} /> },
+    { step: "4", node: <>{ip.iosStep4(CONFIG.appName)}</> },
+  ];
+
   return (
     <main className="min-h-screen bg-qm-bg text-qm-primary">
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:grid lg:grid-cols-[1.02fr_0.98fr] lg:gap-10 lg:px-8 lg:py-14">
@@ -23,17 +55,16 @@ export default function InstallPage() {
         {/* ── Left column ── */}
         <section className="hidden lg:block">
           <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-qm-positive">
-            Install {CONFIG.appName}
+            {ip.tag(CONFIG.appName)}
           </p>
           <h1 className="font-display mt-4 max-w-xl text-5xl font-semibold leading-[1.05] tracking-tight text-qm-primary">
-            Keep {CONFIG.appName} one tap away.
+            {ip.headline(CONFIG.appName)}
           </h1>
           <p className="mt-5 max-w-lg text-base leading-relaxed text-qm-muted">
-            Installing {CONFIG.appName} creates an app icon and makes returning to your
-            journal faster, cleaner, and more reliable.
+            {ip.desc(CONFIG.appName)}
           </p>
 
-          {/* App icon mockup — FIXED: /pwa/icon-192.png */}
+          {/* App icon mockup */}
           <div className="mt-8 flex items-center gap-4 rounded-2xl border border-white/[0.07] bg-white/[0.03] px-5 py-5">
             <div className="relative shrink-0">
               <Image
@@ -49,17 +80,13 @@ export default function InstallPage() {
             </div>
             <div>
               <p className="text-sm font-semibold text-qm-primary">{CONFIG.appName}</p>
-              <p className="text-xs text-qm-faint">Write honestly. Reflect clearly.</p>
-              <p className="mt-1.5 text-xs text-qm-faint">Lives on your Home Screen, opens instantly.</p>
+              <p className="text-xs text-qm-faint">{ip.appTagline}</p>
+              <p className="mt-1.5 text-xs text-qm-faint">{ip.appSubTagline}</p>
             </div>
           </div>
 
           <div className="mt-5 space-y-3">
-            {[
-              { label: "One tap to open", detail: "No browser tabs to hunt through." },
-              { label: "Feels like an app", detail: "Full screen, no address bar, no distractions." },
-              { label: "Smoother sign-in on iPhone", detail: "Code sign-in works more reliably from the Home Screen." },
-            ].map(({ label, detail }) => (
+            {benefits.map(({ label, detail }) => (
               <div key={label} className="flex items-start gap-3">
                 <span className="mt-0.5 shrink-0 text-xs text-qm-positive">✓</span>
                 <p className="text-sm text-qm-secondary">
@@ -79,125 +106,76 @@ export default function InstallPage() {
             {/* Mobile header */}
             <div className="lg:hidden">
               <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-qm-positive">
-                Install {CONFIG.appName}
+                {ip.mobileTag(CONFIG.appName)}
               </p>
               <h1 className="font-display mt-3 text-3xl font-semibold tracking-tight text-qm-primary">
-                Install {CONFIG.appName}
+                {ip.mobileHeadline(CONFIG.appName)}
               </h1>
               <p className="mt-3 text-sm leading-relaxed text-qm-muted">
-                Add {CONFIG.appName} to your device for faster access and a smoother return to your
-                journal.
+                {ip.mobileDesc(CONFIG.appName)}
               </p>
             </div>
 
             {/* Desktop card header */}
             <div className="hidden lg:block">
-              <h2 className="text-xl font-semibold text-qm-primary">Add to your device</h2>
-              <p className="mt-1 text-sm leading-relaxed text-qm-muted">
-                Works on iPhone, Android, and desktop Chrome or Edge.
-              </p>
+              <h2 className="text-xl font-semibold text-qm-primary">{ip.cardHeadline}</h2>
+              <p className="mt-1 text-sm leading-relaxed text-qm-muted">{ip.cardSubtitle}</p>
             </div>
 
             {isStandalone ? (
               <div className="mt-6 rounded-2xl border border-qm-positive-border bg-qm-positive-strong/[0.06] p-5">
-                <h3 className="text-lg font-semibold text-qm-primary">Already installed</h3>
+                <h3 className="text-lg font-semibold text-qm-primary">{ip.alreadyInstalled}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-qm-positive">
-                  This device already has {CONFIG.appName} installed. You can open it from your Home
-                  Screen or app launcher.
+                  {ip.alreadyDesc(CONFIG.appName)}
                 </p>
               </div>
             ) : (
               <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-                <h3 className="text-lg font-semibold text-qm-primary">Add to this device</h3>
+                <h3 className="text-lg font-semibold text-qm-primary">{ip.addDevice}</h3>
 
                 {canPromptNative ? (
                   <>
                     <p className="mt-2 text-sm leading-relaxed text-qm-muted">
-                      Your browser supports one-click installation.
+                      {ip.oneClickDesc}
                     </p>
                     <button
                       onClick={handleInstallClick}
                       className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-4 py-3.5 text-sm font-semibold text-white transition hover:bg-qm-accent-hover"
                     >
-                      Install {CONFIG.appName}
+                      {ip.installBtn(CONFIG.appName)}
                     </button>
                     <p className="mt-3 text-center text-xs leading-relaxed text-qm-faint">
-                      If installation does not appear in Incognito, open a normal browser window.
+                      {ip.incognitoNote}
                     </p>
                   </>
                 ) : (
                   <>
                     {platformHint === "ios" && isSafariIOS ? (
                       <div className="mt-4">
-                        <p className="mb-4 text-sm text-qm-muted">
-                          Follow these steps in Safari:
-                        </p>
+                        <p className="mb-4 text-sm text-qm-muted">{ip.iosSafariIntro}</p>
                         <ol className="space-y-3">
-                          {[
-                            {
-                              step: "1",
-                              text: (
-                                <>
-                                  Tap the <b className="text-qm-primary">Share</b> button — the box
-                                  with an arrow pointing up, at the bottom of your screen.
-                                </>
-                              ),
-                            },
-                            {
-                              step: "2",
-                              text: (
-                                <>
-                                  Scroll down and tap{" "}
-                                  <b className="text-qm-primary">Add to Home Screen</b>.
-                                </>
-                              ),
-                            },
-                            {
-                              step: "3",
-                              text: (
-                                <>
-                                  Tap <b className="text-qm-primary">Add</b> in the top right corner.
-                                </>
-                              ),
-                            },
-                            {
-                              step: "4",
-                              text: (
-                                <>
-                                  Open {CONFIG.appName} from your Home Screen for the more app-like experience.
-                                </>
-                              ),
-                            },
-                          ].map(({ step, text }) => (
+                          {iosSteps.map(({ step, node }) => (
                             <li key={step} className="flex items-start gap-3">
                               <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-qm-positive-border bg-qm-positive-soft text-xs font-bold text-qm-positive">
                                 {step}
                               </span>
                               <span className="text-sm leading-relaxed text-qm-secondary">
-                                {text}
+                                {node}
                               </span>
                             </li>
                           ))}
                         </ol>
                         <p className="mt-4 text-xs leading-relaxed text-qm-faint">
-                          Not seeing the Share button? Make sure you are using Safari, not
-                          Chrome or another browser.
+                          {ip.iosSafariNote}
                         </p>
                       </div>
                     ) : (
                       <div className="mt-4">
-                        <p className="text-sm font-medium text-qm-primary">
-                          Desktop or Android (Chrome / Edge)
-                        </p>
+                        <p className="text-sm font-medium text-qm-primary">{ip.desktopTitle}</p>
                         <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm leading-relaxed text-qm-secondary">
-                          <li>Open this site in a normal, non-Incognito window.</li>
-                          <li>
-                            Click the install icon in the address bar, if shown, or open the
-                            browser menu.
-                          </li>
-                          <li>
-                            Select <b className="text-qm-primary">Install {CONFIG.appName}</b>.
-                          </li>
+                          <li>{ip.desktopStep1}</li>
+                          <li>{ip.desktopStep2}</li>
+                          <li>{ip.desktopStep3(CONFIG.appName)}</li>
                         </ol>
                       </div>
                     )}
@@ -207,10 +185,9 @@ export default function InstallPage() {
             )}
 
             <div className="mt-4 rounded-2xl border border-white/10 bg-qm-bg p-4">
-              <p className="text-sm font-medium text-qm-primary">Helpful note</p>
+              <p className="text-sm font-medium text-qm-primary">{ip.helpfulNote}</p>
               <p className="mt-1 text-sm leading-relaxed text-qm-muted">
-                Installation improves convenience, but you can still use {CONFIG.appName} in your
-                browser whenever you prefer.
+                {ip.helpfulBody(CONFIG.appName)}
               </p>
             </div>
 
@@ -219,11 +196,10 @@ export default function InstallPage() {
                 href="/"
                 className="text-sm font-medium text-qm-positive transition-colors hover:text-qm-positive-hover"
               >
-                ← Back to Home
+                {ip.backHome}
               </Link>
               <p className="max-w-md text-xs leading-relaxed text-qm-faint">
-                {CONFIG.appName} works in the browser too. Installing it simply makes returning feel
-                quicker and more app-like.
+                {ip.footerNote(CONFIG.appName)}
               </p>
             </div>
           </div>
