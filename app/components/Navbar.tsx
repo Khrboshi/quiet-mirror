@@ -142,7 +142,7 @@ export default function Navbar() {
               );
             })}
 
-            <LanguageSwitcher variant="compact" />
+            <LanguageSwitcher variant="dropdown" />
             {!isLoggedIn ? (
               pathname !== "/magic-login" && (
               <Link
