@@ -903,3 +903,55 @@ body::-webkit-scrollbar-thumb:hover { background: var(--qm-border-subtle); }
 .text-hvn-accent-mint    { color: var(--qm-accent)         !important; }
 
 .border-hvn-card { border-color: var(--qm-border-card) !important; }
+
+/* ── RTL support — Arabic layout ─────────────────────────────────────────── */
+/* dir="rtl" is set on <html> by layout.tsx when locale = "ar".              */
+/* These rules handle anything Tailwind's rtl: variant can't cover.          */
+
+/* Body text flows right-to-left */
+[dir="rtl"] body {
+  text-align: right;
+}
+
+/* Ordered / unordered list indentation flips to the right side */
+[dir="rtl"] ol,
+[dir="rtl"] ul {
+  padding-inline-start: 1.25rem;
+  padding-inline-end: 0;
+}
+
+/* Number/bullet markers display on the right in RTL */
+[dir="rtl"] li {
+  direction: rtl;
+}
+
+/* Blockquotes indent from the right */
+[dir="rtl"] blockquote {
+  border-inline-start: 4px solid var(--qm-border-card);
+  padding-inline-start: 1rem;
+  border-left: none;
+}
+
+/* Scrollbars appear on the left in RTL browsers automatically —
+   no override needed. The custom scrollbar styles in globals.css
+   are decoration-only and direction-neutral. */
+
+/* Arabic-optimised font stack — loaded after the default display font.
+   System Arabic fonts (Geeza Pro on macOS/iOS, Arabic UI on Windows)
+   are used as the base; no extra font download needed.                       */
+[dir="rtl"] {
+  font-family:
+    "Geeza Pro",          /* macOS / iOS */
+    "Arabic UI Text",     /* macOS fallback */
+    "Arabic Typesetting", /* Windows */
+    "Traditional Arabic", /* Windows fallback */
+    "Noto Sans Arabic",   /* Linux / Android */
+    system-ui,
+    sans-serif;
+}
+
+/* Keep the brand name "Quiet Mirror" in its original Latin font
+   even in RTL mode — brand names are never translated or re-styled */
+[dir="rtl"] .font-brand-name {
+  font-family: var(--font-geist-sans, system-ui, sans-serif);
+}

@@ -74,7 +74,7 @@ export default function InstallPage() {
                 height={64}
                 className="rounded-[22%] shadow-xl shadow-black/40"
               />
-              <span className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-qm-accent text-[9px] font-bold text-white">
+              <span className="absolute -bottom-1 -end-1 flex h-5 w-5 items-center justify-center rounded-full bg-qm-accent text-[9px] font-bold text-white">
                 ✓
               </span>
             </div>
@@ -172,7 +172,7 @@ export default function InstallPage() {
                     ) : (
                       <div className="mt-4">
                         <p className="text-sm font-medium text-qm-primary">{ip.desktopTitle}</p>
-                        <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm leading-relaxed text-qm-secondary">
+                        <ol className="mt-3 list-decimal space-y-2 ps-5 text-sm leading-relaxed text-qm-secondary">
                           <li>{ip.desktopStep1}</li>
                           <li>{ip.desktopStep2}</li>
                           <li>{ip.desktopStep3(CONFIG.appName)}</li>

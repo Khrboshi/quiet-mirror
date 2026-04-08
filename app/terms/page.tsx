@@ -119,7 +119,7 @@ export default function TermsOfServicePage() {
               5. Acceptable use
             </h2>
             <p className="mt-2 text-qm-secondary">You agree not to use {CONFIG.appName} to:</p>
-            <ul className="mt-3 list-disc space-y-2 pl-5 text-qm-secondary">
+            <ul className="mt-3 list-disc space-y-2 ps-5 text-qm-secondary">
               <li>Violate any applicable law or regulation.</li>
               <li>Attempt to gain unauthorised access to {CONFIG.appName} systems or other users&apos; data.</li>
               <li>Transmit malware, spam, or any content designed to disrupt the service.</li>
@@ -146,7 +146,7 @@ export default function TermsOfServicePage() {
             <h2 id="premium-heading" className="text-lg font-semibold text-qm-primary">
               7. Premium subscription
             </h2>
-            <ul className="mt-3 list-disc space-y-2 pl-5 text-qm-secondary">
+            <ul className="mt-3 list-disc space-y-2 ps-5 text-qm-secondary">
               <li>
                 <span className="font-semibold text-qm-primary">Pricing:</span>{" "}
                 Premium is billed monthly at the price shown on the upgrade page at the time of purchase.

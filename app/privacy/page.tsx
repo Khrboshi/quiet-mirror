@@ -90,7 +90,7 @@ export default function PrivacyPolicyPage() {
             <h2 id="what-we-collect-heading" className="text-lg font-semibold text-qm-primary">
               What information we collect
             </h2>
-            <ul className="mt-3 list-disc space-y-2 pl-5 text-qm-secondary">
+            <ul className="mt-3 list-disc space-y-2 ps-5 text-qm-secondary">
               <li>
                 <span className="font-semibold text-qm-primary">
                   Account details:
@@ -127,7 +127,7 @@ export default function PrivacyPolicyPage() {
             <h2 id="what-we-do-not-do-heading" className="text-lg font-semibold text-qm-primary">
               What we do not do
             </h2>
-            <ul className="mt-3 list-disc space-y-2 pl-5 text-qm-secondary">
+            <ul className="mt-3 list-disc space-y-2 ps-5 text-qm-secondary">
               <li>We do not sell your personal data.</li>
               <li>
                 We do not turn your private journal into public content by
@@ -178,7 +178,7 @@ export default function PrivacyPolicyPage() {
               deliver the service to you, and for no other purpose. Our current
               subprocessors are:
             </p>
-            <ul className="mt-3 list-disc space-y-2 pl-5 text-qm-secondary">
+            <ul className="mt-3 list-disc space-y-2 ps-5 text-qm-secondary">
               <li>
                 <span className="font-semibold text-qm-primary">Vercel</span>{" "}
                 — hosting and serverless functions.
@@ -256,7 +256,7 @@ export default function PrivacyPolicyPage() {
             <h2 id="your-choices-heading" className="text-lg font-semibold text-qm-primary">
               Your choices
             </h2>
-            <ul className="mt-3 list-disc space-y-2 pl-5 text-qm-secondary">
+            <ul className="mt-3 list-disc space-y-2 ps-5 text-qm-secondary">
               <li>Access and update basic account information.</li>
               <li>Request export or deletion of your data.</li>
               <li>

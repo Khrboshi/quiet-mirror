@@ -213,7 +213,7 @@ export default function JournalForm(_props: Props) {
 
       {/* Fixed bottom save bar */}
       <div
-        className="fixed bottom-0 left-0 right-0 z-40 border-t backdrop-blur-sm px-4 py-3 pb-safe-4"
+        className="fixed bottom-0 inset-x-0 z-40 border-t backdrop-blur-sm px-4 py-3 pb-safe-4"
         style={{
           borderColor: "var(--qm-border-card)",
           backgroundColor: "var(--qm-bg-glass-95)",

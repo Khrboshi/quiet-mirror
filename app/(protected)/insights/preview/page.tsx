@@ -341,7 +341,7 @@ export default async function InsightsPreviewPage() {
             ))}
           </div>
 
-          <div className="absolute bottom-0 left-0 right-0 h-32 flex items-end justify-center bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent pb-5">
+          <div className="absolute bottom-0 inset-x-0 h-32 flex items-end justify-center bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent pb-5">
             <Link href="/upgrade?from=insights-preview"
               className="inline-flex items-center gap-2 rounded-full border border-qm-positive-border bg-qm-positive-strong/[0.06] px-4 py-2 text-xs font-semibold text-qm-positive transition hover:bg-qm-positive-strong/[0.12]">
               {ip.corepatternLockCta}
