@@ -128,7 +128,9 @@ export const QM = {
 // Matches the domain names used in generateReflection.ts. Use this when you
 // have a domain string from the AI response and need its display colour.
 
-export const DOMAIN_COLOR: Record<string, string> = {
+export type Domain = keyof typeof DOMAIN_COLOR;
+
+export const DOMAIN_COLOR = {
   GENERAL:      QM.dv.positive,
   WORK:         QM.dv.work,
   RELATIONSHIP: QM.dv.love,
@@ -172,7 +174,10 @@ export function getCssColor(variable: string, element?: Element): string {
   }
 
   const target = element ?? document.documentElement;
-  return getComputedStyle(target).getPropertyValue(key).trim();
+  const value = getComputedStyle(target).getPropertyValue(key).trim();
+  // Return the original variable reference if the CSS variable is missing
+  // so callers receive a safe fallback rather than a silent empty string.
+  return value || variable;
 }
 
 // ── Convenience: resolve the full DOMAIN_COLOR map to actual hex values ───────
