@@ -26,7 +26,7 @@ export default function BlogPage() {
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-qm-border-subtle bg-qm-bg">
         <div className="pointer-events-none absolute start-0 top-0 h-[320px] w-[420px] rounded-full bg-[color:var(--qm-accent-soft)] blur-3xl" />
-        <div className="pointer-events-none absolute right-[-80px] top-0 h-[320px] w-[360px] rounded-full bg-[color:var(--qm-accent-2-soft)] blur-3xl" />
+        <div className="pointer-events-none absolute end-[-80px] top-0 h-[320px] w-[360px] rounded-full bg-[color:var(--qm-accent-2-soft)] blur-3xl" />
 
         <div className="relative mx-auto max-w-6xl px-6 pb-14 pt-12 sm:pb-16 sm:pt-16">
           <div className="max-w-4xl">
