@@ -443,6 +443,7 @@ export interface Translations {
     proofNote: string; proofUnlock: string; proofSeeEx: string;
     recTag: string; rec1: string; rec2: string; rec3: string;
     demoTag: string; demoH1: string; demoH2: string; demoDesc: string;
+    step: string;
     demoInput: string; demoTime: string; demoEntry: string;
     demoBadge1: string; demoBadge2: string; demoBadge3: string;
     demoOutput: string; demoImmediate: string; demoReflection: string;
@@ -511,6 +512,7 @@ export interface Translations {
     f1Label: string; f1Sub: string; f2Label: string; f2Sub: string;
     f3Label: string; f3Sub: string; f4Label: string; f4Sub: string;
     cta: string;
+    noPressure: (n: number) => string;
   };
   magicLoginPage: {
     returningGreeting: string; newGreeting: string;
@@ -861,6 +863,23 @@ export interface Translations {
     bottomDesc:     (appName: string) => string;
     bottomCta:      string;
     bottomPrivacy:  string;
+  };
+
+  // ── Locale-aware pricing display strings ─────────────────────────────────
+  pricingStrings: {
+    trialLabel:         (days: number) => string;
+    valueLabel:         (days: number) => string;
+    trialFreeFor:       (days: number) => string;
+    trialNoChargeUntil: (untilDay: number) => string;
+    perMonth:           (price: string) => string;
+    perMonthLabel:      string;
+    perMoShort:         string;
+    thenPerMonth:       (cadence: string) => string;
+    noChargeToday:      string;
+    fullAccess:         string;
+    step:               string;
+    startTrialCta:      (label: string) => string;
+    cancelAnytimeLong:  string;
   };
 
 }

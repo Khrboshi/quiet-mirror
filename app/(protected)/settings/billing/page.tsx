@@ -53,7 +53,9 @@ function SectionTitle({
 
 export default async function BillingPage() {
   const supabase = createServerSupabase();
-  const s = getTranslations(getLocaleFromCookieString(cookies().toString())).settingsPage;
+  const _t = getTranslations(getLocaleFromCookieString(cookies().toString()));
+  const s  = _t.settingsPage;
+  const ps = _t.pricingStrings;
 
   const {
     data: { user },
@@ -198,7 +200,7 @@ export default async function BillingPage() {
                 <div className="mt-4 space-y-2 border-t border-qm-border-subtle pt-4">
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-qm-faint">Price</span>
-                    <span className="font-medium text-qm-primary">{PRICING.monthlyCadence}</span>
+                    <span className="font-medium text-qm-primary">{ps.perMonth(PRICING.monthly)}</span>
                   </div>
                   {nextBillingLabel && (
                     <div className="flex items-center justify-between text-xs">
@@ -236,7 +238,7 @@ export default async function BillingPage() {
               {isPaid && (
                 <div className="mt-4 rounded-lg border border-qm-positive-border bg-qm-positive-bg px-3 py-2.5">
                   <p className="text-xs font-medium text-qm-positive">
-                    🛡️ {PRICING.trialDays}-day full refund guarantee
+                    🛡️ {ps.trialFreeFor(PRICING.trialDays)} {ps.fullAccess} — {ps.trialNoChargeUntil(PRICING.trialDays + 1)}
                   </p>
                   <p className="mt-0.5 text-xs text-qm-faint">
                     Email{" "}

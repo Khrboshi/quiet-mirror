@@ -13,6 +13,7 @@ interface RequirePremiumProps {
 export default function RequirePremium({ children }: RequirePremiumProps) {
   const { t } = useTranslation();
   const rp = t.requirePremium;
+  const ps = t.pricingStrings;
   const { loading, planType } = useUserPlan();
 
   if (loading) {
@@ -99,12 +100,12 @@ export default function RequirePremium({ children }: RequirePremiumProps) {
                 </span>
                 <span className="text-sm text-qm-secondary">/ month</span>
                 <span className="rounded-full border border-qm-accent bg-qm-accent-soft px-2.5 py-0.5 text-[11px] font-medium text-qm-accent">
-                  {PRICING.valueLabel}
+                  {ps.valueLabel(PRICING.trialDays)}
                 </span>
               </div>
 
               <p className="mt-1 text-xs text-qm-muted">
-                {PRICING.trialFreeFor} · then {PRICING.monthlyCadence} · Cancel anytime
+                {ps.trialFreeFor(PRICING.trialDays)} · {ps.thenPerMonth(ps.perMonth(PRICING.monthly))} · {t.upgrade.cancelAnytime}
               </p>
 
               <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
@@ -112,7 +113,7 @@ export default function RequirePremium({ children }: RequirePremiumProps) {
                   href="/upgrade"
                   className="inline-flex items-center justify-center rounded-full qm-btn-primary px-6 py-3 text-sm"
                 >
-                  Start {PRICING.trialLabel} →
+                  {ps.startTrialCta(ps.trialLabel(PRICING.trialDays))}
                 </Link>
                 <Link
                   href="/insights/preview"
@@ -127,9 +128,7 @@ export default function RequirePremium({ children }: RequirePremiumProps) {
           {/* Soft exit — no pressure */}
           <div className="qm-panel rounded-2xl px-6 py-5">
             <p className="text-sm leading-relaxed text-qm-secondary">
-              No pressure to upgrade. Free includes {PRICING.freeMonthlyCredits} reflections per month and
-              full journaling — enough to keep writing honestly at your own
-              pace.
+              {rp.noPressure(PRICING.freeMonthlyCredits)}
             </p>
             <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
               <Link

@@ -441,6 +441,7 @@ export const nl: Translations = {
     rec2:"Dezelfde spanning blijft opduiken in verschillende situaties, maar je kunt het patroon nog niet duidelijk zien.",
     rec3:"Je wilt dat dagboekschrijven helpt, maar blanco pagina's en generieke prompts lijken je nooit te ontmoeten waar je bent.",
     demoTag:"Wat er eigenlijk gebeurt",demoH1:"Schrijf één keer. Hoor het",demoH2:"anders terug.",
+    step: "Stap",
     demoDesc:"Je schrijft wat er in je hoofd speelt — eerlijk, rommelig, zonder jezelf te bewerken. Quiet Mirror leest het en spiegelt terug wat het opmerkte. Geen advies. Geen diagnose. Gewoon een spiegel zachtjes vastgehouden.",
     demoInput:"Wat je schrijft",demoTime:"~2 min",
     demoEntry:"\"Het werk is overweldigend. Ik blijf ja zeggen en er dan spijt van krijgen. Thuis is het hetzelfde — ik regel alles en voel me schuldig bij de gedachte terug te stappen.\"",
@@ -545,6 +546,7 @@ export const nl: Translations = {
     f3Label:"Wekelijkse persoonlijke samenvatting",f3Sub:"Een beknopte spiegel van wat Quiet Mirror deze week opmerkte",
     f4Label:"Inzichten over waarom-dit-blijft-gebeuren",f4Sub:"Begrijp de terugkerende lussen onder je berichten",
     cta:"Upgraden naar Premium →",
+    noPressure: (n) => `Geen druk om te upgraden. Gratis bevat ${n} reflecties per maand en volledig dagboek.`,
   },
 
   magicLoginPage: {
@@ -890,6 +892,24 @@ export const nl: Translations = {
     bottomDesc: (appName) => `${appName} geeft je een privéplek voor wat je draagt. De AI oordeelt niet, diagnosticeert niet en haast je niet — het weerspiegelt patronen zachtjes, alleen als je erom vraagt.`,
     bottomCta: "Gratis reflectie starten",
     bottomPrivacy: "Hoe je gegevens worden beschermd →",
+  },
+
+
+  // ── pricingStrings ──
+  pricingStrings: {
+    trialLabel: (days) => `${days}-daagse gratis proefperiode`,
+    valueLabel: (days) => `${days}-daagse gratis proefperiode inbegrepen`,
+    trialFreeFor: (days) => `Gratis gedurende ${days} dagen`,
+    trialNoChargeUntil: (untilDay) => `geen kosten tot dag ${untilDay}`,
+    perMonth: (price) => `${price}/maand`,
+    perMonthLabel: "/ maand",
+    perMoShort: "/ mo",
+    thenPerMonth: (cadence) => `dan ${cadence}`,
+    noChargeToday: "geen kosten vandaag",
+    fullAccess: "volledige toegang",
+    step: "Stap",
+    startTrialCta: (label) => `Begin ${label} →`,
+    cancelAnytimeLong: "Annuleer voor het einde",
   },
 
 };

@@ -89,6 +89,7 @@ export default function JournalEntryClient({
   const router = useRouter();
   const { planType, credits, loading, refresh } = useUserPlan();
   const { t, locale } = useTranslation();
+  const ps = t.pricingStrings;
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => { setMounted(true); }, []);
@@ -276,7 +277,7 @@ export default function JournalEntryClient({
                 href="/upgrade"
                 className="inline-flex items-center justify-center rounded-full bg-qm-accent px-4 py-2 text-xs font-semibold text-white shadow-sm transition-all hover:bg-qm-accent-hover hover:-translate-y-px"
               >
-                {`Start ${PRICING.trialLabel} →`}
+                {ps.startTrialCta(ps.trialLabel(PRICING.trialDays))}
               </Link>
               <Link
                 href="/insights/preview"
@@ -552,7 +553,7 @@ export default function JournalEntryClient({
                     href="/upgrade"
                     className="inline-flex items-center gap-2 rounded-full bg-qm-accent px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-qm-accent-hover"
                   >
-                    {`Start ${PRICING.trialLabel} →`}
+                    {ps.startTrialCta(ps.trialLabel(PRICING.trialDays))}
                   </Link>
                   <Link
                     href="/insights/preview"
@@ -616,10 +617,10 @@ export default function JournalEntryClient({
         open={showUpgrade}
         onClose={() => setShowUpgrade(false)}
         title={`You've used your ${PRICING.freeMonthlyCredits} free reflections this month.`}
-        message={`Start a free trial to keep reflecting on every entry — no charge for ${PRICING.trialDays} ${PRICING.trialDayWord}, cancel anytime before then.`}
+        message={`${ps.trialFreeFor(PRICING.trialDays)} — ${ps.fullAccess}. ${ps.cancelAnytimeLong}.`}
         source="reflection_limit"
         ctaHref="/upgrade"
-        ctaLabel={`Start ${PRICING.trialLabel} →`}
+        ctaLabel={ps.startTrialCta(ps.trialLabel(PRICING.trialDays))}
       />
     </div>
   );

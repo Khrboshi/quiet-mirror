@@ -447,6 +447,7 @@ export const fr: Translations = {
     rec2:"La même tension revient dans différentes situations, mais vous ne pouvez pas encore tout à fait voir le schéma.",
     rec3:"Vous voulez que le journal vous aide, mais les pages blanches et les invitations génériques ne semblent jamais vous rejoindre où vous êtes.",
     demoTag:"Ce qui se passe réellement",demoH1:"Écrivez une fois. Entendez-le",demoH2:"différemment.",
+    step: "Étape",
     demoDesc:"Vous écrivez tout ce qui vous vient à l'esprit — honnêtement, en désordre, sans vous éditer. Quiet Mirror le lit et reflète ce qu'il a remarqué. Pas de conseils. Pas de diagnostic. Juste un miroir tenu doucement.",
     demoInput:"Ce que vous écrivez",demoTime:"~2 min",
     demoEntry:"\"Le travail a été écrasant. Je continue à dire oui et ensuite à le regretter. À la maison c'est pareil — je gère tout et je me sens coupable même de penser à prendre du recul.\"",
@@ -551,6 +552,7 @@ export const fr: Translations = {
     f3Label:"Résumé hebdomadaire personnel",f3Sub:"Un miroir concis de ce que Quiet Mirror a remarqué cette semaine",
     f4Label:"Aperçus sur pourquoi-ça-continue-à-arriver",f4Sub:"Comprenez les boucles récurrentes sous vos entrées",
     cta:"Passer à Premium →",
+    noPressure: (n) => `Pas de pression pour mettre à niveau. Gratuit inclut ${n} réflexions par mois et le journal complet.`,
   },
 
   magicLoginPage: {
@@ -898,6 +900,24 @@ export const fr: Translations = {
     bottomDesc: (appName) => `${appName} vous donne un endroit privé pour poser ce que vous portez. L’IA ne juge pas, ne diagnostique pas, ne vous précipite pas — elle reflète les schémas doucement, seulement quand vous le demandez.`,
     bottomCta: "Commencer une réflexion gratuite",
     bottomPrivacy: "Comment vos données sont protégées →",
+  },
+
+
+  // ── pricingStrings ──
+  pricingStrings: {
+    trialLabel: (days) => `essai gratuit de ${days} jours`,
+    valueLabel: (days) => `essai gratuit de ${days} jours inclus`,
+    trialFreeFor: (days) => `Gratuit pendant ${days} jours`,
+    trialNoChargeUntil: (untilDay) => `sans frais jusqu’au jour ${untilDay}`,
+    perMonth: (price) => `${price}/mois`,
+    perMonthLabel: "/ mois",
+    perMoShort: "/ mois",
+    thenPerMonth: (cadence) => `puis ${cadence}`,
+    noChargeToday: "sans frais aujourd’hui",
+    fullAccess: "accès complet",
+    step: "Étape",
+    startTrialCta: (label) => `Commencer ${label} →`,
+    cancelAnytimeLong: "Annulez avant la fin",
   },
 
 };

@@ -7,6 +7,7 @@ import { PAYMENT } from "@/app/lib/payment";
 
 export default function HomeBelowFold() {
   const { t } = useTranslation();
+  const ps = t.pricingStrings;
   const h = t.homeBelowFold;
 
   return (
@@ -144,7 +145,7 @@ export default function HomeBelowFold() {
               { step:"3", label:h.step3Label, sub:h.step3Sub, accent:"text-qm-warning", border:"border-qm-warning-border" },
             ].map(({ step, label, sub, accent, border }) => (
               <div key={step} className={`rounded-2xl border bg-qm-elevated p-5 ${border}`}>
-                <p className={`mb-2 text-xs font-semibold uppercase tracking-[0.2em] ${accent}`}>Step {step}</p>
+                <p className={`mb-2 text-xs font-semibold uppercase tracking-[0.2em] ${accent}`}>{h.step} {step}</p>
                 <p className="text-[15px] font-medium leading-snug text-qm-primary">{label}</p>
                 <p className="mt-1.5 text-sm leading-relaxed text-qm-faint">{sub}</p>
               </div>
@@ -313,7 +314,7 @@ export default function HomeBelowFold() {
           <ScrollReveal stagger className="mt-10 grid gap-4 sm:grid-cols-3">
             {[
               { icon:"🔒", title:h.trust1Title, body:h.trust1Body, border:"border-qm-positive-border", bg:"bg-qm-positive-strong/[0.03]" },
-              { icon:"🛡️", title:PRICING.trialLabel, body:`${PRICING.trialFreeFor} — full access. ${PRICING.trialNoChargeUntil.charAt(0).toUpperCase()+PRICING.trialNoChargeUntil.slice(1)}.`, border:"border-qm-premium-border", bg:"bg-qm-premium-strong/[0.03]" },
+              { icon:"🛡️", title:ps.trialLabel(PRICING.trialDays), body:`${ps.trialFreeFor(PRICING.trialDays)} — ${ps.fullAccess}. ${ps.trialNoChargeUntil(PRICING.trialDays + 1).charAt(0).toUpperCase()+ps.trialNoChargeUntil(PRICING.trialDays + 1).slice(1)}.`, border:"border-qm-premium-border", bg:"bg-qm-premium-strong/[0.03]" },
               { icon:"✦", title:h.trust3Title, body:h.trust3Body, border:"border-qm-premium-border", bg:"bg-qm-premium-strong/[0.03]" },
             ].map(({ icon, title, body, border, bg })=>(
               <div key={title} className={`rounded-2xl border p-5 ${border} ${bg}`}>
@@ -373,7 +374,7 @@ export default function HomeBelowFold() {
               <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
                 <span className="text-3xl font-bold text-qm-primary">{PRICING.monthly}</span>
                 <span className="text-sm text-qm-muted">/ month</span>
-                <span className="rounded-full border border-qm-positive-border bg-qm-positive-soft px-2.5 py-0.5 text-[11px] font-medium text-qm-positive">{PRICING.valueLabel}</span>
+                <span className="rounded-full border border-qm-positive-border bg-qm-positive-soft px-2.5 py-0.5 text-[11px] font-medium text-qm-positive">{ps.valueLabel(PRICING.trialDays)}</span>
               </div>
               <p className="mt-1 text-xs text-qm-faint">{h.premiumCancelNote}</p>
               <p className="mt-3 text-sm text-qm-secondary">{h.premiumDesc}</p>
@@ -396,8 +397,8 @@ export default function HomeBelowFold() {
               <div className="mt-auto flex flex-col gap-2 pt-6">
                 <Link href="/upgrade" className="inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-5 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px">{h.premiumCta}</Link>
                 <div className="rounded-xl border border-qm-positive-border bg-qm-positive-strong/[0.04] px-4 py-2.5 text-center">
-                  <p className="text-xs font-medium text-qm-secondary">🛡️ {PRICING.trialLabel} — no charge today</p>
-                  <p className="mt-0.5 text-[11px] leading-relaxed text-qm-faint">{PRICING.trialFreeFor} · then {PRICING.monthlyCadence} · {h.premiumCancelNote}</p>
+                  <p className="text-xs font-medium text-qm-secondary">🛡️ {ps.trialLabel(PRICING.trialDays)} — {ps.noChargeToday}</p>
+                  <p className="mt-0.5 text-[11px] leading-relaxed text-qm-faint">{ps.trialFreeFor(PRICING.trialDays)} · {ps.thenPerMonth(ps.perMonth(PRICING.monthly))} · {h.premiumCancelNote}</p>
                 </div>
                 <Link href="/insights/preview" className="inline-flex w-full items-center justify-center rounded-full border border-qm-border-card px-5 py-2.5 text-xs font-medium text-qm-secondary transition-colors hover:bg-qm-soft">{h.premiumPreview}</Link>
               </div>
@@ -445,7 +446,7 @@ export default function HomeBelowFold() {
             </div>
             <div className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs text-qm-faint">
               <span>✓ {h.ctaT1}</span><span>✓ {h.ctaT2}</span>
-              <span>✓ {PRICING.trialLabel}</span><span>✓ {h.ctaT4}</span>
+              <span>✓ {ps.trialLabel(PRICING.trialDays)}</span><span>✓ {h.ctaT4}</span>
             </div>
           </ScrollReveal>
         </div>

@@ -30,6 +30,7 @@ export default function UpgradeTriggerModal({
 }: UpgradeTriggerModalProps) {
   const { t } = useTranslation();
   const ut = t.upgradeTrigger;
+  const ps = t.pricingStrings;
 
   useEffect(() => {
     if (!open) return;
@@ -44,7 +45,7 @@ export default function UpgradeTriggerModal({
 
   const finalTitle       = title ?? ut.modalTitle;
   const finalDescription = message ?? description ?? ut.modalDesc;
-  const finalCtaLabel    = ctaLabel ?? cta ?? t.upgrade.startTrial(PRICING.trialLabel);
+  const finalCtaLabel    = ctaLabel ?? cta ?? ps.startTrialCta(ps.trialLabel(PRICING.trialDays));
   const finalCtaHref     = ctaHref ?? "/upgrade";
 
   return (
@@ -90,7 +91,7 @@ export default function UpgradeTriggerModal({
             </span>
             <span className="text-sm text-qm-secondary">{ut.perMonth}</span>
             <span className="rounded-full border border-qm-accent bg-qm-accent-soft px-2 py-0.5 text-[10px] font-medium text-qm-accent">
-              {PRICING.valueLabel}
+              {ps.valueLabel(PRICING.trialDays)}
             </span>
           </div>
 
@@ -113,7 +114,7 @@ export default function UpgradeTriggerModal({
           {/* Trust + dismiss */}
           <div className="mt-4 flex items-center justify-between">
             <p className="text-[11px] text-qm-faint">
-              🛡️ {PRICING.trialFreeFor} ·{" "}
+              🛡️ {ps.trialFreeFor(PRICING.trialDays)} ·{" "}
               <Link
                 href="/terms"
                 className="underline underline-offset-2 transition-colors hover:text-qm-muted"

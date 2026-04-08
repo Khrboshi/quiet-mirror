@@ -81,6 +81,7 @@ export default async function InsightsPreviewPage() {
   const locale = getLocaleFromCookieString(cookies().toString());
   const t      = getTranslations(locale);
   const ip     = t.insightPreview;
+  const ps     = t.pricingStrings;
   const supabase = createServerSupabase();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -462,7 +463,7 @@ export default async function InsightsPreviewPage() {
               href="/upgrade?from=insights-preview"
               className="inline-flex items-center gap-2 rounded-full bg-qm-accent px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-qm-accent-hover"
             >
-              {ip.upgradeCta(PRICING.monthlyCadence)}
+              {ip.upgradeCta(ps.perMonth(PRICING.monthly))}
             </Link>
             <Link
               href="/dashboard"

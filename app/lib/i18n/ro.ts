@@ -441,6 +441,7 @@ export const ro: Translations = {
     rec2:"Aceeași tensiune continuă să apară în situații diferite, dar încă nu puteți vedea tiparul clar.",
     rec3:"Doriți ca jurnalul să ajute, dar paginile goale și prompturile generice nu par niciodată să vă întâlnească acolo unde sunteți.",
     demoTag:"Ce se întâmplă de fapt",demoH1:"Scrieți o dată. Auziți-o",demoH2:"diferit.",
+    step: "Pasul",
     demoDesc:"Scrieți ce vă trece prin minte — onest, dezordonat, fără să vă editați. Quiet Mirror citește și reflectă înapoi ce a observat. Fără sfaturi. Fără diagnostic. Doar o oglindă ținută blând.",
     demoInput:"Ce scrieți",demoTime:"~2 min",
     demoEntry:"\"Munca a fost copleșitoare. Continuu să spun da și apoi să regret. Acasă e la fel — rezolv totul și mă simt vinovat chiar și gândindu-mă să fac un pas înapoi.\"",
@@ -545,6 +546,7 @@ export const ro: Translations = {
     f3Label:"Rezumat personal săptămânal",f3Sub:"O oglindă concisă a ceea ce a observat Quiet Mirror săptămâna aceasta",
     f4Label:"Perspective despre de-ce-se-întâmplă-asta",f4Sub:"Înțelegeți buclele recurente de sub înregistrările dvs.",
     cta:"Upgrade la Premium →",
+    noPressure: (n) => `Fără presiune de upgrade. Gratuit include ${n} reflecții pe lună și jurnal complet.`,
   },
 
   magicLoginPage: {
@@ -890,6 +892,24 @@ export const ro: Translations = {
     bottomDesc: (appName) => `${appName} vă oferă un loc privat pentru ce purtați. AI-ul nu judecă, nu diagnostichează, nu vă grăbește — reflectă tiparele blând, doar când cereți.`,
     bottomCta: "Începeți o reflecție gratuită",
     bottomPrivacy: "Cum sunt protejate datele dvs. →",
+  },
+
+
+  // ── pricingStrings ──
+  pricingStrings: {
+    trialLabel: (days) => `perioadă de probă gratuită de ${days} zile`,
+    valueLabel: (days) => `perioadă de probă gratuită de ${days} zile inclusă`,
+    trialFreeFor: (days) => `Gratuit timp de ${days} zile`,
+    trialNoChargeUntil: (untilDay) => `fără taxe până în ziua ${untilDay}`,
+    perMonth: (price) => `${price}/lună`,
+    perMonthLabel: "/ lună",
+    perMoShort: "/ lună",
+    thenPerMonth: (cadence) => `apoi ${cadence}`,
+    noChargeToday: "fără taxe astăzi",
+    fullAccess: "acces complet",
+    step: "Pasul",
+    startTrialCta: (label) => `Începți ${label} →`,
+    cancelAnytimeLong: "Anulați înainte de final",
   },
 
 };

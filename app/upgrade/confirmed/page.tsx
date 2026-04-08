@@ -8,7 +8,9 @@ import { getTranslations, getLocaleFromCookieString } from "@/app/lib/i18n";
 export const metadata = { title: `Welcome to Premium | ${CONFIG.appName}` };
 
 export default function UpgradeConfirmedPage() {
-  const uc = getTranslations(getLocaleFromCookieString(cookies().toString())).upgradeConfirmed;
+  const _t = getTranslations(getLocaleFromCookieString(cookies().toString()));
+  const uc = _t.upgradeConfirmed;
+  const ps = _t.pricingStrings;
 
   const features = [
     { label: uc.feature1Label, sub: uc.feature1Sub, color: "text-qm-positive" },
@@ -44,7 +46,7 @@ export default function UpgradeConfirmedPage() {
         <p className="mx-auto mt-5 max-w-md text-center text-[15px] leading-relaxed text-qm-muted">
           {CONFIG.appName} will now read across your entries over time — not just today&apos;s. The
           patterns, the weekly mirror, and the why-this-keeps-happening layer are all yours
-          for the next {PRICING.trialDays} days, and beyond if you choose to stay.
+          for {ps.trialFreeFor(PRICING.trialDays).toLowerCase()}, and beyond if you choose to stay.
         </p>
 
         {/* What just unlocked */}
@@ -98,10 +100,10 @@ export default function UpgradeConfirmedPage() {
         {/* Trial badge */}
         <div className="mt-6 rounded-2xl border border-qm-positive-border bg-qm-positive-strong/[0.04] px-6 py-4 text-center">
           <p className="text-xs font-medium text-qm-positive">
-            🛡️ Your {PRICING.trialLabel} has started — no charge today
+            🛡️ {ps.trialLabel(PRICING.trialDays)} — {ps.noChargeToday}
           </p>
           <p className="mt-1.5 text-xs text-qm-faint">
-            {PRICING.monthlyCadence} begins after your trial ends. Cancel any time before then in{" "}
+            {ps.perMonth(PRICING.monthly)} begins after your trial ends. {ps.cancelAnytimeLong} in{" "}
             <Link href="/settings/billing" className="text-qm-muted underline underline-offset-2 hover:text-qm-secondary">
               {uc.billingSettings}
             </Link>

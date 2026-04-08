@@ -105,9 +105,8 @@ export default function Footer() {
   const year = new Date().getFullYear();
   const { session } = useSupabase();
   const { t } = useTranslation();
+  const ps = t.pricingStrings;
   const isSignedIn = !!session;
-
-  return (
     <footer className="mt-16 border-t border-qm-border-subtle bg-qm-bg" role="contentinfo">
       <div className="mx-auto max-w-6xl px-6 py-10">
         <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
@@ -155,7 +154,7 @@ export default function Footer() {
             </span>
             <span className="inline-flex items-center gap-1 text-qm-accent">
               <span aria-hidden="true">✨</span>
-              <span>{PRICING.trialLabel}</span>
+              <span>{ps.trialLabel(PRICING.trialDays)}</span>
             </span>
           </div>
         </div>

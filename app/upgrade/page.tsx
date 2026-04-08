@@ -20,10 +20,11 @@ function UpgradeButton({
   const router = useRouter();
   const { t } = useTranslation();
   const uf = t.upgradeFull;
+  const ps = t.pricingStrings;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const defaultLabel = t.upgrade.startTrial(PRICING.trialLabel);
+  const defaultLabel = ps.startTrialCta(ps.trialLabel(PRICING.trialDays));
 
   async function handleUpgrade() {
     setLoading(true);
@@ -70,15 +71,16 @@ export default function UpgradePage() {
   const { t } = useTranslation();
   const up = t.upgradePage;
   const uf = t.upgradeFull;
+  const ps = t.pricingStrings;
 
   const faqs = [
     { q: uf.faq1Q, a: uf.faq1A },
     { q: uf.faq2Q, a: uf.faq2A(PRICING.freeMonthlyCredits) },
-    { q: uf.faq3Q, a: uf.faq3A(PRICING.trialLabel, PRICING.trialNoChargeUntil, CONFIG.supportEmail) },
+    { q: uf.faq3Q, a: uf.faq3A(ps.trialLabel(PRICING.trialDays), ps.trialNoChargeUntil(PRICING.trialDays + 1), CONFIG.supportEmail) },
     { q: uf.faq4Q, a: uf.faq4A },
     { q: uf.faq5Q, a: uf.faq5A },
     { q: uf.faq6Q, a: uf.faq6A(CONFIG.appName) },
-    { q: uf.faq7Q(PRICING.monthlyCadence), a: uf.faq7A(CONFIG.appName, PRICING.monthlyCadence) },
+    { q: uf.faq7Q(ps.perMonth(PRICING.monthly)), a: uf.faq7A(CONFIG.appName, ps.perMonth(PRICING.monthly)) },
   ];
 
   return (
@@ -134,7 +136,7 @@ export default function UpgradePage() {
                 </div>
                 {[
                   { label: up.compRow1, free: "✓",  premium: "✓" },
-                  { label: up.compRow2, free: `${PRICING.freeMonthlyCredits} / mo`, premium: up.compUnlimited },
+                  { label: up.compRow2, free: `${PRICING.freeMonthlyCredits} ${ps.perMoShort}`, premium: up.compUnlimited },
                   { label: up.compRow3, free: "—",  premium: "✓" },
                   { label: up.compRow4, free: "—",  premium: "✓" },
                   { label: up.compRow5, free: "—",  premium: "✓" },
@@ -163,11 +165,11 @@ export default function UpgradePage() {
                   </span>
                   <span className="text-sm text-qm-muted">{uf.perMonth}</span>
                   <span className="rounded-full border border-qm-positive-border bg-qm-positive-soft px-2.5 py-0.5 text-[11px] font-medium text-qm-positive">
-                    {PRICING.valueLabel}
+                    {ps.valueLabel(PRICING.trialDays)}
                   </span>
                 </div>
                 <p className="mb-4 text-xs text-qm-faint">
-                  {PRICING.trialFreeFor} · {t.upgrade.cancelAnytime}
+                  {ps.trialFreeFor(PRICING.trialDays)} · {t.upgrade.cancelAnytime}
                 </p>
 
                 <div className="flex flex-col gap-2 sm:max-w-sm">
@@ -175,10 +177,10 @@ export default function UpgradePage() {
 
                   <div className="rounded-xl border border-qm-positive-border bg-qm-positive-strong/[0.04] px-4 py-2.5 text-center">
                     <p className="text-xs font-medium text-qm-secondary">
-                      {PRICING.trialLabel} — {uf.trialNoCharge}
+                      {ps.trialLabel(PRICING.trialDays)} — {uf.trialNoCharge}
                     </p>
                     <p className="mt-0.5 text-[11px] leading-relaxed text-qm-faint">
-                      {uf.trialExplainer(PRICING.trialLabel)}
+                      {uf.trialExplainer(ps.trialLabel(PRICING.trialDays))}
                     </p>
                   </div>
 
@@ -406,7 +408,7 @@ export default function UpgradePage() {
           <div className="flex flex-col items-center gap-2">
             <UpgradeButton className="inline-flex items-center justify-center rounded-full bg-qm-accent px-7 py-3.5 text-sm font-semibold text-white shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px disabled:opacity-60" />
             <p className="text-xs text-qm-faint">
-              {PRICING.trialFreeFor} · {t.upgrade.cancelAnytime}
+              {ps.trialFreeFor(PRICING.trialDays)} · {t.upgrade.cancelAnytime}
             </p>
           </div>
         </div>
@@ -452,7 +454,7 @@ export default function UpgradePage() {
           <div className="mt-7 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <UpgradeButton
               className="inline-flex items-center justify-center rounded-full bg-qm-accent px-7 py-4 text-base font-semibold text-white shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px disabled:opacity-60 sm:py-3.5 sm:text-sm"
-              label={t.upgrade.startTrial(PRICING.trialLabel) + " →"}
+              label={ps.startTrialCta(ps.trialLabel(PRICING.trialDays))}
             />
             <Link
               href="/magic-login"

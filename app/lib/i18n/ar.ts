@@ -447,6 +447,7 @@ export const ar: Translations = {
     rec2:"نفس التوتر يظهر في مواقف مختلفة، لكنك لا تستطيع بعد رؤية النمط بوضوح.",
     rec3:"تريد أن تساعدك الكتابة في المجلة، لكن الصفحات الفارغة لا تلتقي بك أبداً حيث أنت.",
     demoTag:"ما يحدث فعلاً",demoH1:"اكتب مرة واحدة. اسمعه يعود",demoH2:"بشكل مختلف.",
+    step: "الخطوة",
     demoDesc:"تكتب ما يدور في بالك — بصدق، بشكل فوضوي، دون تعديل نفسك. يقرأ Quiet Mirror ذلك ويعكسه عليك بلطف.",
     demoInput:"ما تكتبه",demoTime:"~دقيقتان",
     demoEntry:"«العمل أصبح مرهقاً. أستمر في قول نعم ثم أشعر بالاستياء. في المنزل نفس الشيء — أتعامل مع كل شيء وأشعر بالذنب حتى عند التفكير في التراجع.»",
@@ -548,6 +549,7 @@ export const ar: Translations = {
     f3Label:"ملخص شخصي أسبوعي",f3Sub:"مرآة موجزة لما لاحظه Quiet Mirror هذا الأسبوع",
     f4Label:"رؤى لماذا يستمر هذا",f4Sub:"فهم الحلقات المتكررة تحت مدخلاتك",
     cta:"ترقية إلى Premium ←",
+    noPressure: (n) => `لا ضغط للترقية. المجاني يشمل ${n} تأملات شهريًا وتدوين كامل.`,
   },
   magicLoginPage: {
     returningGreeting:"مرحباً بعودتك.",newGreeting:"مجلتك الخاصة.",
@@ -899,6 +901,24 @@ export const ar: Translations = {
     bottomDesc: (appName) => `${appName} يمنحك مكانًا خاصًا لوضع ما تحمله. الذكاء الاصطناعي لا يحكم ولا يشخّص ولا يتسرع — يعكس الأنماط بلطف فقط عندما تطلب.`,
     bottomCta: "ابدأ تأملاً مجانيًا",
     bottomPrivacy: "كيف تُحمى بياناتك →",
+  },
+
+
+  // ── pricingStrings ──
+  pricingStrings: {
+    trialLabel: (days) => `تجربة مجانية ${days} أيام`,
+    valueLabel: (days) => `تجربة مجانية ${days} أيام مضمنة`,
+    trialFreeFor: (days) => `مجاني لمدة ${days} أيام`,
+    trialNoChargeUntil: (untilDay) => `بدون رسوم حتى اليوم ${untilDay}`,
+    perMonth: (price) => `${price}/شهر`,
+    perMonthLabel: "/ شهر",
+    perMoShort: "/ شهر",
+    thenPerMonth: (cadence) => `ثم ${cadence}`,
+    noChargeToday: "بدون رسوم اليوم",
+    fullAccess: "وصول كامل",
+    step: "الخطوة",
+    startTrialCta: (label) => `ابدأ ${label} →`,
+    cancelAnytimeLong: "ألغِ في أي وقت قبل ذلك",
   },
 
 };

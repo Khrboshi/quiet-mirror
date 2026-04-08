@@ -450,6 +450,7 @@ export const en: Translations = {
     rec2:"The same tension keeps showing up in different situations, but you cannot quite see the pattern yet.",
     rec3:"You want journaling to help, but blank pages and generic prompts never seem to meet you where you are.",
     demoTag:"What actually happens",demoH1:"Write once. Hear it back",demoH2:"differently.",
+    step: "Step",
     demoDesc:"You write whatever is on your mind — honestly, messily, without editing yourself. Quiet Mirror reads it and reflects back what it noticed. No advice. No diagnosis. Just a mirror held up gently.",
     demoInput:"What you write",demoTime:"~2 min",
     demoEntry:"\"Work has been overwhelming. I keep saying yes and then resenting it. At home it's the same — I handle everything and feel guilty even thinking about stepping back.\"",
@@ -551,6 +552,7 @@ export const en: Translations = {
     f3Label:"Weekly personal summary",f3Sub:"A concise mirror of what Quiet Mirror noticed this week",
     f4Label:"Why-this-keeps-happening insights",f4Sub:"Understand the recurring loops underneath your entries",
     cta:"Upgrade to Premium →",
+    noPressure: (n) => `No pressure to upgrade. Free includes ${n} reflections per month and full journaling — enough to keep writing honestly at your own pace.`,
   },
   magicLoginPage: {
     returningGreeting:"Welcome back.",newGreeting:"Your private journal.",
@@ -897,6 +899,24 @@ export const en: Translations = {
     bottomDesc:     (appName) => `${appName} gives you a private place to put what you\u2019re carrying. The AI does not judge, diagnose, or rush you \u2014 it reflects patterns back gently, only when you ask.`,
     bottomCta:      "Start free reflection",
     bottomPrivacy:  "How your data is protected \u2192",
+  },
+
+
+  // ── pricingStrings ──
+  pricingStrings: {
+    trialLabel: (days) => `${days}-day free trial`,
+    valueLabel: (days) => `${days}-day free trial included`,
+    trialFreeFor: (days) => `Free for ${days} days`,
+    trialNoChargeUntil: (untilDay) => `no charge until day ${untilDay}`,
+    perMonth: (price) => `${price}/month`,
+    perMonthLabel: "/ month",
+    perMoShort: "/ mo",
+    thenPerMonth: (cadence) => `then ${cadence}`,
+    noChargeToday: "no charge today",
+    fullAccess: "full access",
+    step: "Step",
+    startTrialCta: (label) => `Start ${label} →`,
+    cancelAnytimeLong: "Cancel any time before then",
   },
 
 };
