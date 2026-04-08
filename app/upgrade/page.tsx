@@ -219,7 +219,7 @@ export default function UpgradePage() {
               <div className="pointer-events-none absolute -inset-4 rounded-[2.5rem] bg-qm-positive-strong/[0.07] blur-[60px]" />
               <div className="relative overflow-hidden rounded-[1.75rem] border border-white/[0.09] shadow-2xl shadow-black/60">
                 {/* Header */}
-                <div className="flex items-center justify-between border-b border-qm-border-subtle px-6 py-4" style={{ backgroundColor: "#0f121f" }}>
+                <div className="flex items-center justify-between border-b border-qm-border-subtle px-6 py-4" style={{ backgroundColor: "var(--qm-bg-elevated)" }}>
                   <div className="flex items-center gap-2">
                     <span className="h-1.5 w-1.5 rounded-full bg-qm-positive shadow-sm" />
                     <p className="text-xs font-medium text-qm-faint">{uf.proofCardHeader}</p>
@@ -230,7 +230,7 @@ export default function UpgradePage() {
                 </div>
 
                 {/* Input side */}
-                <div className="px-6 pb-5 pt-5" style={{ backgroundColor: "#141828" }}>
+                <div className="px-6 pb-5 pt-5" style={{ backgroundColor: "var(--qm-bg-soft)" }}>
                   <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-faint">
                     {uf.proofFromEntries}
                   </p>
