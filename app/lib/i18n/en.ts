@@ -906,7 +906,7 @@ export const en: Translations = {
   pricingStrings: {
     trialLabel: (days) => `${days}-day free trial`,
     valueLabel: (days) => `${days}-day free trial included`,
-    trialFreeFor: (days) => `Free for ${days} days`,
+    trialFreeFor: (days) => `Free for ${days} ${days === 1 ? 'day' : 'days'}`,
     trialNoChargeUntil: (untilDay) => `no charge until day ${untilDay}`,
     perMonth: (price) => `${price}/month`,
     perMonthLabel: "/ month",

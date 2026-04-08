@@ -46,7 +46,7 @@ export default function UpgradeConfirmedPage() {
         <p className="mx-auto mt-5 max-w-md text-center text-[15px] leading-relaxed text-qm-muted">
           {CONFIG.appName} will now read across your entries over time — not just today&apos;s. The
           patterns, the weekly mirror, and the why-this-keeps-happening layer are all yours
-          for {ps.trialFreeFor(PRICING.trialDays).toLowerCase()}, and beyond if you choose to stay.
+          {ps.trialFreeFor(PRICING.trialDays)}, and beyond if you choose to stay.
         </p>
 
         {/* What just unlocked */}

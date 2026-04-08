@@ -908,7 +908,7 @@ export const ar: Translations = {
   pricingStrings: {
     trialLabel: (days) => `تجربة مجانية ${days} أيام`,
     valueLabel: (days) => `تجربة مجانية ${days} أيام مضمنة`,
-    trialFreeFor: (days) => `مجاني لمدة ${days} أيام`,
+    trialFreeFor: (days) => `مجاني لمدة ${days} ${days === 1 ? 'يوم' : 'أيام'}`,
     trialNoChargeUntil: (untilDay) => `بدون رسوم حتى اليوم ${untilDay}`,
     perMonth: (price) => `${price}/شهر`,
     perMonthLabel: "/ شهر",

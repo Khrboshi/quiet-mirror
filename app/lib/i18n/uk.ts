@@ -938,7 +938,7 @@ export const uk: Translations = {
   pricingStrings: {
     trialLabel: (days) => `безкоштовний пробний ${days} дні`,
     valueLabel: (days) => `безкоштовний пробний ${days} дні включено`,
-    trialFreeFor: (days) => `Безкоштовно ${days} дні`,
+    trialFreeFor: (days) => `Безкоштовно ${days} ${days === 1 ? 'день' : 'дні'}`,
     trialNoChargeUntil: (untilDay) => `без оплати до ${untilDay} дня`,
     perMonth: (price) => `${price}/місяць`,
     perMonthLabel: "/ місяць",

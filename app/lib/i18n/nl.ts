@@ -899,7 +899,7 @@ export const nl: Translations = {
   pricingStrings: {
     trialLabel: (days) => `${days}-daagse gratis proefperiode`,
     valueLabel: (days) => `${days}-daagse gratis proefperiode inbegrepen`,
-    trialFreeFor: (days) => `Gratis gedurende ${days} dagen`,
+    trialFreeFor: (days) => `Gratis gedurende ${days} ${days === 1 ? 'dag' : 'dagen'}`,
     trialNoChargeUntil: (untilDay) => `geen kosten tot dag ${untilDay}`,
     perMonth: (price) => `${price}/maand`,
     perMonthLabel: "/ maand",

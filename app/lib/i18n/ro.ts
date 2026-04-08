@@ -899,7 +899,7 @@ export const ro: Translations = {
   pricingStrings: {
     trialLabel: (days) => `perioadă de probă gratuită de ${days} zile`,
     valueLabel: (days) => `perioadă de probă gratuită de ${days} zile inclusă`,
-    trialFreeFor: (days) => `Gratuit timp de ${days} zile`,
+    trialFreeFor: (days) => `Gratuit timp de ${days} ${days === 1 ? 'zi' : 'zile'}`,
     trialNoChargeUntil: (untilDay) => `fără taxe până în ziua ${untilDay}`,
     perMonth: (price) => `${price}/lună`,
     perMonthLabel: "/ lună",
