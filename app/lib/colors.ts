@@ -199,5 +199,5 @@ export function resolveDomainColors(element?: Element): Record<Domain, string> {
       domain,
       getCssColor(cssVar, element),
     ])
-  );
+  ) as Record<Domain, string>;
 }
