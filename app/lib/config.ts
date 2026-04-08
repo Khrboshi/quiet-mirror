@@ -37,6 +37,13 @@ export const CONFIG = {
   /** Name the AI uses to identify itself in all system prompts */
   aiPersonaName: "Quiet Mirror",
 
+  // ── Theme colours ─────────────────────────────────────────────────────────
+  /** PWA / browser chrome colour in dark mode */
+  themeColorDark:  "#0b1120",
+
+  /** PWA / browser chrome colour in light mode */
+  themeColorLight: "#f5f0eb",
+
   // ── URLs ─────────────────────────────────────────────────────────────────
   /** Public site URL — falls back to Vercel preview URL */
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://quietmirror.me",
