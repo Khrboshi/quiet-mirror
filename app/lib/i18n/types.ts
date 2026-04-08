@@ -801,6 +801,8 @@ export interface Translations {
     card3Note:            string;
     card4Tag:             string;
     card4Text:            string;
+    card4TextAccent:      string;
+    card4TextPost:        string;
     card4Note:            string;
     card5Tag:             string;
     card5Text:            string;

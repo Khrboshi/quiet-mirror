@@ -361,7 +361,11 @@ export default function UpgradePage() {
             {/* Card 4 */}
             <div className="rounded-[1.5rem] border border-sky-500/20 bg-sky-500/[0.04] p-6">
               <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-sky-400">{uf.card4Tag}</p>
-              <p className="mt-3 text-[15px] leading-[1.7] text-qm-primary">{uf.card4Text}</p>
+              <p className="mt-3 text-[15px] leading-[1.7] text-qm-primary">
+                {uf.card4Text}{" "}
+                <span className="text-sky-300">{uf.card4TextAccent}</span>
+                {uf.card4TextPost}
+              </p>
               <div className="mt-4 flex items-center gap-2 text-xs text-qm-faint">
                 <span className="text-sky-400">↑</span>
                 <span>{uf.card4Note}</span>

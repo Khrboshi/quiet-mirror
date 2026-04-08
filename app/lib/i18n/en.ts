@@ -839,7 +839,7 @@ export const en: Translations = {
     card3Quote:           "You often sound most overwhelmed when you feel responsible for keeping everything steady for everyone else \u2014 and rarely give yourself the same patience.",
     card3Note:            "This pattern appeared in your last 3 weeks of entries. Tends to peak on Sundays.",
     card4Tag:             "What is shifting",
-    card4Text:            "Curiosity and honesty are rising in recent entries \u2014 which often signals that something important is becoming clearer.",
+    card4Text:            "Curiosity and honesty are",
     card4Note:            "Clarity signal up over the last 2 weeks",
     card5Tag:             "Your weekly mirror",
     card5Text:            "This week, your entries returned most often to questions of worth, pace, and what you\u2019re actually allowed to need.",
