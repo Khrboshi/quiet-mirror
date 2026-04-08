@@ -478,7 +478,7 @@ function WeeklyTrends({
                 </span>
                 <Sparkline
                   values={tSparklines[k]}
-                  color=QM.dv.positive
+                  color={QM.dv.positive}
                   width={80}
                   height={28}
                 />
@@ -499,7 +499,7 @@ function WeeklyTrends({
                 </span>
                 <Sparkline
                   values={eSparklines[k]}
-                  color=QM.dv.grief
+                  color={QM.dv.grief}
                   width={80}
                   height={28}
                 />
@@ -819,13 +819,13 @@ export default function InsightsClient() {
               label={t.insights.topEmotion}
               value={topEmotion ?? "—"}
               sub={allEmotions[0] ? `${allEmotions[0][1]} ${allEmotions[0][1] === 1 ? "time" : "times"}` : undefined}
-              accent=QM.dv.grief
+              accent={QM.dv.grief}
             />
             <StatCard
               label={t.insights.topTheme}
               value={topTheme ?? "—"}
               sub={allThemes[0] ? `${allThemes[0][1]} entries` : undefined}
-              accent=QM.dv.positive
+              accent={QM.dv.positive}
             />
             <StatCard
               label={t.insights.momentum}
@@ -970,7 +970,7 @@ export default function InsightsClient() {
                       count={v}
                       max={maxTheme}
                       rank={i}
-                      accent=QM.dv.positive
+                      accent={QM.dv.positive}
                     />
                   ))}
                 </ul>
@@ -1015,7 +1015,7 @@ export default function InsightsClient() {
                       count={v}
                       max={maxEmotion}
                       rank={i}
-                      accent=QM.dv.grief
+                      accent={QM.dv.grief}
                     />
                   ))}
                 </ul>
