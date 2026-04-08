@@ -130,6 +130,12 @@ export const QM = {
 
 export type Domain = keyof typeof DOMAIN_COLOR;
 
+// NOTE: lib/ai/generateReflection.ts defines its own internal Domain type
+// (not exported) with the same 10 values. If a new domain is ever added
+// to generateReflection.ts it must also be added to DOMAIN_COLOR here.
+// The two types are intentionally kept separate to avoid coupling the
+// AI generation logic to the UI colour layer.
+
 export const DOMAIN_COLOR = {
   GENERAL:      QM.dv.positive,
   WORK:         QM.dv.work,
@@ -187,7 +193,7 @@ export function getCssColor(variable: string, element?: Element): string {
 //   const resolved = resolveDomainColors()
 //   // { WORK: "#60a5fa", RELATIONSHIP: "#f472b6", ... }
 
-export function resolveDomainColors(element?: Element): Record<string, string> {
+export function resolveDomainColors(element?: Element): Record<Domain, string> {
   return Object.fromEntries(
     Object.entries(DOMAIN_COLOR).map(([domain, cssVar]) => [
       domain,
