@@ -140,7 +140,7 @@ export const DOMAIN_COLOR = {
   CREATIVE:     QM.dv.creative,
   IDENTITY:     QM.dv.identity,
   FITNESS:      QM.dv.fitness,
-  MONEY:        QM.dv.fear,
+  MONEY:        QM.dv.positive,
 };
 
 // ── Runtime CSS variable resolver ─────────────────────────────────────────────
