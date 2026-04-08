@@ -201,17 +201,20 @@ export async function GET(req: Request) {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("weekly_summary, weekly_summary_generated_at")
+    .select("weekly_summary, weekly_summary_generated_at, weekly_summary_locale")
     .eq("id", userId)
     .maybeSingle() as { data: ProfileSummaryRow | null; error: unknown };
 
   const cachedSummary = profile?.weekly_summary ?? null;
   const cachedAt = profile?.weekly_summary_generated_at ?? null;
+  const cachedLocale = (profile as any)?.weekly_summary_locale ?? "en";
 
+  // Cache is fresh only if it's within TTL AND was generated in the same language
   const isFresh =
     cachedSummary &&
     cachedAt &&
-    Date.now() - new Date(cachedAt).getTime() < CACHE_TTL_MS;
+    Date.now() - new Date(cachedAt).getTime() < CACHE_TTL_MS &&
+    cachedLocale === locale;
 
   if (isFresh) {
     return NextResponse.json(
@@ -459,7 +462,12 @@ export async function GET(req: Request) {
   await adminClient
     .from("profiles")
     .upsert(
-      { id: userId, weekly_summary: summary, weekly_summary_generated_at: generatedAt },
+      {
+        id: userId,
+        weekly_summary: summary,
+        weekly_summary_generated_at: generatedAt,
+        weekly_summary_locale: locale,
+      },
       { onConflict: "id" }
     );
 

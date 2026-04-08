@@ -4,6 +4,7 @@
 
 import { SupabaseClient } from "@supabase/supabase-js";
 import { CONFIG } from "@/app/lib/config";
+import { getAiLanguageName } from "@/app/lib/i18n";
 import {
   bucketCorepattern,
   normalizeAIResponseSignals,
@@ -81,9 +82,15 @@ function buildPrompt(opts: {
   trendUp: string[];
   trendDown: string[];
   firstEntryDate: string | null;
+  locale?: string;
 }): { system: string; user: string } {
   const { entryCount, topThemes, topEmotions, topCorepatterns, topDomains,
-    momentum, trendUp, trendDown, firstEntryDate } = opts;
+    momentum, trendUp, trendDown, firstEntryDate, locale = "en" } = opts;
+
+  const targetLanguage = getAiLanguageName(locale);
+  const languageInstruction = targetLanguage
+    ? `\nLANGUAGE: Respond entirely in ${targetLanguage}. Every sentence must be in ${targetLanguage}. Do not use English anywhere in your response.\n`
+    : "";
 
   const since = firstEntryDate
     ? new Date(firstEntryDate).toLocaleDateString("en-US", { month: "long", year: "numeric" })
@@ -95,7 +102,7 @@ function buildPrompt(opts: {
 
   const system = `You are ${CONFIG.aiPersonaName} — a private journaling companion that reflects back what it notices.
 Write a short, personal summary of what has been showing up across this person's journal entries.
-
+${languageInstruction}
 Rules:
 - Write EXACTLY 3 short paragraphs separated by a blank line. No more, no fewer.
 - Paragraph 1: What they write about most and the emotion that sits underneath it. 2-3 sentences.
@@ -185,7 +192,8 @@ function sanitizeSummaryVoice(text: string): string {
 
 export async function generateWeeklySummaryForUser(
   userId: string,
-  adminClient: SupabaseClient
+  adminClient: SupabaseClient,
+  locale: string = "en"
 ): Promise<GenerateResult> {
   // Fetch reflected entries
   const { data: rows } = await adminClient
@@ -278,6 +286,7 @@ export async function generateWeeklySummaryForUser(
   const { system, user: userPrompt } = buildPrompt({
     entryCount, topThemes, topEmotions, topCorepatterns,
     topDomains, momentum, trendUp, trendDown, firstEntryDate,
+    locale,
   });
 
   let summary: string;
