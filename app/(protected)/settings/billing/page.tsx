@@ -107,9 +107,9 @@ export default async function BillingPage() {
       <header className="mb-10">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="font-display text-2xl font-semibold text-qm-primary">Billing</h1>
+            <h1 className="font-display text-2xl font-semibold text-qm-primary">{s.billingTitle}</h1>
             <p className="mt-2 text-sm text-qm-muted">
-              Manage your subscription and billing details.
+              {s.billingSubtitle}
             </p>
           </div>
 
@@ -120,14 +120,14 @@ export default async function BillingPage() {
                 href={PAYMENT.portalUrl("/settings/billing")}
                 className="inline-flex items-center justify-center rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-qm-primary hover:bg-white/15"
               >
-                Manage subscription
+                {s.manageSubscription}
               </a>
             ) : (
               <a
                 href="/upgrade"
                 className="inline-flex items-center justify-center rounded-full bg-qm-accent px-4 py-2 text-sm font-semibold text-white hover:bg-qm-accent-hover"
               >
-                Upgrade to Premium
+                {s.upgradeToPremium}
               </a>
             )}
           </div>
@@ -145,14 +145,7 @@ export default async function BillingPage() {
                 : s.refundWindowDays(PRICING.trialDays)}
             </p>
             <p className="mt-0.5 text-xs text-qm-muted">
-              Not what you expected? Email{" "}
-              <a
-                href={`mailto:${CONFIG.supportEmail}`}
-                className="text-qm-primary underline underline-offset-2 hover:text-qm-positive-hover"
-              >
-                {CONFIG.supportEmail}
-              </a>{" "}
-              for a full refund — no questions asked.
+              {s.refundContact(CONFIG.supportEmail).split(CONFIG.supportEmail)[0]}<a href={`mailto:${CONFIG.supportEmail}`} className="text-qm-primary underline underline-offset-2 hover:text-qm-positive-hover">{CONFIG.supportEmail}</a>{s.refundContact(CONFIG.supportEmail).split(CONFIG.supportEmail)[1] ?? ""}
             </p>
           </div>
         </div>
@@ -162,7 +155,7 @@ export default async function BillingPage() {
         {/* Left: Plan card */}
         <section className="lg:col-span-2 rounded-2xl border border-qm-border-subtle bg-qm-bg p-6">
           <SectionTitle
-            title="Plan"
+title={s.planSectionTitle}
             subtitle={
               plan === "PREMIUM"
                 ? s.planStatusPremium
@@ -199,12 +192,12 @@ export default async function BillingPage() {
               {isPaid && (
                 <div className="mt-4 space-y-2 border-t border-qm-border-subtle pt-4">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-qm-faint">Price</span>
+                    <span className="text-qm-faint">{s.priceLabel}</span>
                     <span className="font-medium text-qm-primary">{ps.perMonth(PRICING.monthly)}</span>
                   </div>
                   {nextBillingLabel && (
                     <div className="flex items-center justify-between text-xs">
-                      <span className="text-qm-faint">Next charge</span>
+                      <span className="text-qm-faint">{s.nextCharge}</span>
                       <span className="font-medium text-qm-primary">{nextBillingLabel}</span>
                     </div>
                   )}
@@ -219,18 +212,18 @@ export default async function BillingPage() {
 
               {isPaid ? (
                 <p className="mt-2 text-sm text-qm-muted">
-                  Cancel anytime via{" "}
+                  {s.cancelViaPrefix}{" "}
                   <a
                     href={PAYMENT.portalUrl("/settings/billing")}
                     className="text-qm-positive hover:text-qm-positive-hover"
                   >
-                    Manage subscription
-                  </a>{" "}
-                  in {PAYMENT.providerName}.
+                    {s.manageSubscription}
+                  </a>
+                  {s.cancelViaSuffix(PAYMENT.providerName)}
                 </p>
               ) : (
                 <p className="mt-2 text-sm text-qm-muted">
-                  Premium unlocks unlimited reflections and deeper insights.
+                  {s.premiumUnlocksDesc}
                 </p>
               )}
 

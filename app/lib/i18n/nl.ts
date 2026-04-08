@@ -279,10 +279,15 @@ export const nl: Translations = {
     priceLabel:           "Prijs",
     nextBillingLabel:     "Volgende afschrijving",
     cancellationsLabel:   "Opzeggingen",
+    cancelVia: (manageLabel, provider) => `Annuleer altijd via ${manageLabel} in ${provider}.`,
+    cancelViaPrefix:    "Annuleer altijd via",
+    cancelViaSuffix:    (provider) => ` in ${provider}.`,
+    premiumUnlocksDesc: "Premium ontgrendelt onbeperkte reflecties en diepere inzichten.",
+    nextCharge:         "Volgende afschrijving",
     noPressure:           "Geen druk. Gratis blijft volledig bruikbaar.",
     refundWindowLast:     (days) => `Laatste dag van je ${days}-daagse terugbetalingsvenster`,
     refundWindowDays:     (days) => `${days} dagen over in je ${days}-daagse terugbetalingsvenster`,
-    refundContact:        "Niet wat je verwachtte? Mail ons voor volledige terugbetaling — geen vragen.",
+    refundContact: (email) => `Niet wat je verwachtte? Mail ${email} voor volledige terugbetaling — geen vragen.`,
     accountSectionTitle:  "Account",
     accountBillingSubtitle: "Facturering is gekoppeld aan je inloggegevens.",
     colDate:              "Datum",
@@ -873,6 +878,7 @@ export const nl: Translations = {
     closingDesc: (appName) => `Begin met één bericht. Als je het diepere beeld wilt, helpt Premium ${appName} de dots te verbinden.`,
     closingStartFree: "Eerst gratis beginnen",
     closingTrust: "Geen kosten vandaag · Altijd opzegbaar · Geen advertenties, ooit",
+    andConnector: "en",
   },
 
   // ── blogPage ────────────────────────────────────────────────
@@ -892,6 +898,10 @@ export const nl: Translations = {
     bottomDesc: (appName) => `${appName} geeft je een privéplek voor wat je draagt. De AI oordeelt niet, diagnosticeert niet en haast je niet — het weerspiegelt patronen zachtjes, alleen als je erom vraagt.`,
     bottomCta: "Gratis reflectie starten",
     bottomPrivacy: "Hoe je gegevens worden beschermd →",
+    catEmotionalLoad: "Emotionele belasting",
+    catJournaling:    "Dagboekschrijven",
+    catRest:          "Rust",
+    catSelfAwareness: "Zelfbewustzijn",
   },
 
 

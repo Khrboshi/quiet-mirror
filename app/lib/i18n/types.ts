@@ -281,10 +281,15 @@ export interface Translations {
     priceLabel:       string;
     nextBillingLabel: string;
     cancellationsLabel:string;
+    cancelVia:         (manageLabel: string, provider: string) => string;
+    premiumUnlocksDesc:string;
+    nextCharge:        string;
+    cancelViaPrefix:   string;
+    cancelViaSuffix:   (provider: string) => string;
     noPressure:        string;
     refundWindowLast: (days: number) => string;
     refundWindowDays: (days: number) => string;
-    refundContact:    string;
+    refundContact:    (email: string) => string;
     accountSectionTitle:string;
     accountBillingSubtitle:string;
     // Transactions table columns
@@ -844,6 +849,7 @@ export interface Translations {
     closingDesc:          (appName: string) => string;
     closingStartFree:     string;
     closingTrust:         string;
+    andConnector:         string;
   };
 
   // ── Blog page chrome ─────────────────────────────────────────────────────
@@ -863,6 +869,10 @@ export interface Translations {
     bottomDesc:     (appName: string) => string;
     bottomCta:      string;
     bottomPrivacy:  string;
+    catEmotionalLoad: string;
+    catJournaling:    string;
+    catRest:          string;
+    catSelfAwareness: string;
   };
 
   // ── Locale-aware pricing display strings ─────────────────────────────────

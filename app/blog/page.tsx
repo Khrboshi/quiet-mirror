@@ -13,6 +13,14 @@ export default function BlogPage() {
 
   const featuredTopics = [bp.topic1, bp.topic2, bp.topic3];
 
+  // Map English category keys from articles.ts to translated labels
+  const categoryLabel: Record<string, string> = {
+    "Emotional load":  bp.catEmotionalLoad,
+    "Journaling":      bp.catJournaling,
+    "Rest":            bp.catRest,
+    "Self-awareness":  bp.catSelfAwareness,
+  };
+
   return (
     <main className="min-h-screen bg-qm-bg text-qm-primary">
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
@@ -77,7 +85,7 @@ export default function BlogPage() {
             >
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-qm-accent">
-                  {article.category}
+                  {categoryLabel[article.category] ?? article.category}
                 </p>
                 <h2 className="mt-3 text-xl font-semibold leading-snug text-qm-primary">
                   {article.title}

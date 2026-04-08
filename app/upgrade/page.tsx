@@ -198,8 +198,8 @@ export default function UpgradePage() {
                   <Link href="/terms" className="text-qm-positive underline underline-offset-2 transition-colors hover:text-qm-positive-hover">
                     {uf.termsOfService}
                   </Link>{" "}
-                  {/* "and" is short enough to stay — connector word */}
-                  and{" "}
+                  {/* "and" connector — translated */}
+                  {uf.andConnector}{" "}
                   <Link href="/privacy" className="text-qm-positive underline underline-offset-2 transition-colors hover:text-qm-positive-hover">
                     {uf.privacyPolicy}
                   </Link>

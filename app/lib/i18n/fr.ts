@@ -280,10 +280,15 @@ export const fr: Translations = {
     priceLabel:           "Prix",
     nextBillingLabel:     "Prochaine facturation",
     cancellationsLabel:   "Annulations",
+    cancelVia: (manageLabel, provider) => `Annulez à tout moment via ${manageLabel} dans ${provider}.`,
+    cancelViaPrefix:    "Annulez à tout moment via",
+    cancelViaSuffix:    (provider) => ` dans ${provider}.`,
+    premiumUnlocksDesc: "Premium débloque des réflexions illimitées et des aperçus plus profonds.",
+    nextCharge:         "Prochain prélèvement",
     noPressure:            "Pas de pression. Le plan Gratuit reste entièrement utilisable.",
     refundWindowLast:     (days) => `Dernier jour de votre fenêtre de remboursement de ${days} jours`,
     refundWindowDays:     (days) => `${days} jours restants dans votre fenêtre de remboursement de ${days} jours`,
-    refundContact:        "Pas ce que vous attendiez ? Envoyez-nous un e-mail pour un remboursement complet — sans questions posées.",
+    refundContact: (email) => `Pas ce que vous attendiez ? Écrivez à ${email} pour un remboursement complet — sans questions.`,
     accountSectionTitle:  "Compte",
     accountBillingSubtitle: "La facturation est liée à votre identifiant.",
     colDate:              "Date",
@@ -881,6 +886,7 @@ export const fr: Translations = {
     closingDesc: (appName) => `Commencez par une seule entrée. Quand vous voulez l’image plus profonde, Premium aide ${appName} à relier les points.`,
     closingStartFree: "Commencer gratuitement d’abord",
     closingTrust: "Sans frais aujourd’hui · Annulez à tout moment · Sans publicité, jamais",
+    andConnector: "et",
   },
 
   // ── blogPage ────────────────────────────────────────────────
@@ -900,6 +906,10 @@ export const fr: Translations = {
     bottomDesc: (appName) => `${appName} vous donne un endroit privé pour poser ce que vous portez. L’IA ne juge pas, ne diagnostique pas, ne vous précipite pas — elle reflète les schémas doucement, seulement quand vous le demandez.`,
     bottomCta: "Commencer une réflexion gratuite",
     bottomPrivacy: "Comment vos données sont protégées →",
+    catEmotionalLoad: "Charge émotionnelle",
+    catJournaling:    "Journaling",
+    catRest:          "Repos",
+    catSelfAwareness: "Conscience de soi",
   },
 
 

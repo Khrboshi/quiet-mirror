@@ -19,7 +19,7 @@ export default function Navbar() {
   const { session, supabase } = useSupabase();
   const { isStandalone } = useInstallAvailability();
 
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const isLoggedIn = !!session;
 
@@ -81,7 +81,9 @@ export default function Navbar() {
     return shouldShowInstall
       ? base
       : base.filter((link) => link.href !== "/install");
-  }, [isLoggedIn, shouldShowInstall]);
+    // locale in deps ensures labels re-render when language changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoggedIn, shouldShowInstall, locale]);
 
   const isActiveLink = (href: string) =>
     pathname === href || (href !== "/" && pathname.startsWith(href));
