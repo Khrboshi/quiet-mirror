@@ -145,7 +145,7 @@ export default async function BillingPage() {
                 : s.refundWindowDays(PRICING.trialDays)}
             </p>
             <p className="mt-0.5 text-xs text-qm-muted">
-              {s.refundContact.split(CONFIG.supportEmail)[0]}<a href={`mailto:${CONFIG.supportEmail}`} className="text-qm-primary underline underline-offset-2 hover:text-qm-positive-hover">{CONFIG.supportEmail}</a>{s.refundContact.includes(CONFIG.supportEmail) ? s.refundContact.split(CONFIG.supportEmail)[1] : ""}
+              {s.refundContact(CONFIG.supportEmail).split(CONFIG.supportEmail)[0]}<a href={`mailto:${CONFIG.supportEmail}`} className="text-qm-primary underline underline-offset-2 hover:text-qm-positive-hover">{CONFIG.supportEmail}</a>{s.refundContact(CONFIG.supportEmail).split(CONFIG.supportEmail)[1] ?? ""}
             </p>
           </div>
         </div>
@@ -212,7 +212,14 @@ title={s.planSectionTitle}
 
               {isPaid ? (
                 <p className="mt-2 text-sm text-qm-muted">
-                  {s.cancelVia(PAYMENT.providerName)}
+                  {s.cancelViaPrefix}{" "}
+                  <a
+                    href={PAYMENT.portalUrl("/settings/billing")}
+                    className="text-qm-positive hover:text-qm-positive-hover"
+                  >
+                    {s.manageSubscription}
+                  </a>
+                  {s.cancelViaSuffix(PAYMENT.providerName)}
                 </p>
               ) : (
                 <p className="mt-2 text-sm text-qm-muted">
