@@ -252,8 +252,10 @@ export interface Translations {
     dataRequestNote:  (email: string) => string;
     // Plan values
     reflectionsUnlimited:string;
-    insightsFull:     string;
-    weeklySummaryIncluded:string;
+    insightsFull:          string;
+    insightsLabel:         string;
+    weeklySummaryIncluded: string;
+    weeklySummaryLabel:    string;
     reflectionsNone:  string;
     reflectionsRemaining: (n: number, total: number) => string;
     reflectionsResume:(date: string) => string;

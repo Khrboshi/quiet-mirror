@@ -247,8 +247,8 @@ export default async function SettingsPage() {
               <div className="rounded-xl border border-qm-positive-border bg-qm-positive-bg px-5 py-1">
                 <DataRow label={s.planLabel} value={<PlanBadge plan={plan} labels={s} />} />
                 <DataRow label={s.reflectionsLabel} value={<span className="text-qm-positive">Unlimited</span>} />
-                <DataRow label="Insights" value={s.insightsFull} />
-                <DataRow label="Weekly summary" value={s.weeklySummaryIncluded} />
+                <DataRow label={s.insightsLabel} value={s.insightsFull} />
+                <DataRow label={s.weeklySummaryLabel} value={s.weeklySummaryIncluded} />
               </div>
             ) : (
               // Free state — show credits used/remaining
