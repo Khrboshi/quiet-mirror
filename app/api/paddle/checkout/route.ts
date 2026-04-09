@@ -110,27 +110,40 @@ export async function POST() {
       }
     }
 
-    // Create a Paddle transaction — generates a hosted checkout URL.
-    // supabase_user_id in customData flows through to all webhook events.
-    // NOTE: checkout.url is the hosted checkout page URL, not a success redirect.
-    // The success redirect is configured in Paddle dashboard → Checkout settings.
+    // Create a Paddle transaction — then construct the hosted checkout URL
+    // directly from the transaction ID.
+    //
+    // We do NOT use transaction.checkout.url because Paddle sets that to the
+    // "Default payment link" domain (e.g. quietmirror.me?_ptxn=...), which is
+    // intended for Paddle.js overlay checkout. We use redirect-based checkout,
+    // so we build the checkout.paddle.com URL ourselves using the transaction ID.
+    //
+    // Hosted checkout URL format:
+    //   Sandbox:    https://sandbox-checkout.paddle.com/checkout/buy?_ptxn=TXN_ID
+    //   Production: https://checkout.paddle.com/checkout/buy?_ptxn=TXN_ID
     const transaction = await paddle.transactions.create({
       items: [{ priceId, quantity: 1 }],
       customData: { supabase_user_id: user.id } as Record<string, unknown>,
       ...(customerId ? { customerId } : {}),
     });
 
-    const checkoutUrl = transaction.checkout?.url;
-    if (!checkoutUrl) {
+    const txnId = transaction.id;
+    if (!txnId) {
       console.error(
-        "[paddle/checkout] no checkout URL in response:",
+        "[paddle/checkout] no transaction ID in response:",
         transaction
       );
       return NextResponse.json(
-        { error: "Paddle did not return a checkout URL" },
+        { error: "Paddle did not return a transaction ID" },
         { status: 500 }
       );
     }
+
+    const isSandbox = process.env.PADDLE_ENVIRONMENT === "sandbox";
+    const checkoutBase = isSandbox
+      ? "https://sandbox-checkout.paddle.com"
+      : "https://checkout.paddle.com";
+    const checkoutUrl = `${checkoutBase}/checkout/buy?_ptxn=${txnId}`;
 
     return NextResponse.json({ url: checkoutUrl });
   } catch (err: unknown) {
