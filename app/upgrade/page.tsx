@@ -8,6 +8,7 @@ import { useTranslation } from "@/app/components/I18nProvider";
 import { PAYMENT } from "@/app/lib/payment";
 import { CONFIG } from "@/app/lib/config";
 import { QM } from "@/app/lib/colors";
+import PaddleCheckout from "@/app/components/PaddleCheckout";
 
 // ─── Upgrade button ─────────────────────────────────────────────────────────
 
@@ -37,8 +38,18 @@ function UpgradeButton({
         return;
       }
       const data = await res.json();
-      if (data?.url) {
-        window.location.assign(data.url);
+      if (data?.transactionId && typeof window.openPaddleCheckout === "function") {
+        // Open Paddle.js overlay checkout — no external redirect
+        window.openPaddleCheckout(data.transactionId);
+      } else if (data?.transactionId) {
+        // Paddle.js not ready yet — rare race condition, retry once
+        setTimeout(() => {
+          if (typeof window.openPaddleCheckout === "function") {
+            window.openPaddleCheckout(data.transactionId);
+          } else {
+            setError(`${t.errors.entryGenericFail} ${CONFIG.supportEmail}.`);
+          }
+        }, 1000);
       } else {
         setError(`${t.errors.entryGenericFail} ${CONFIG.supportEmail}.`);
       }
@@ -87,6 +98,8 @@ export default function UpgradePage() {
 
   return (
     <div className="min-h-screen bg-qm-bg text-qm-primary">
+      {/* Paddle.js overlay checkout — loads script and exposes openPaddleCheckout() */}
+      <PaddleCheckout />
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-qm-border-subtle">
         <div className="pointer-events-none absolute left-1/2 top-0 h-[420px] w-[700px] -translate-x-1/2 rounded-full bg-qm-positive-strong/[0.13] blur-[110px]" />

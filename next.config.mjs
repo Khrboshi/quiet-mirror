@@ -13,7 +13,7 @@ const nextConfig = {
     //   img-src     — 'self' + data: (noise SVG in globals.css) + blob:
     //   font-src    — 'self' only (Google Fonts served locally via next/font)
     //   connect-src — self API routes + Supabase (REST + WebSocket) + PostHog + Vercel
-    //   frame-src   — 'none' (Stripe checkout is a redirect, not an iframe)
+    //   frame-src   — Paddle overlay iframe (*.paddle.com)
     //   object-src  — 'none' (no browser plugins)
     //   base-uri    — 'self' (prevents <base> tag injection attacks)
     //   form-action — 'self' (all form submissions go to own API routes)
@@ -33,8 +33,9 @@ const nextConfig = {
         "wss://*.supabase.co",
         "https://*.posthog.com",
         "https://va.vercel-scripts.com",
+        "https://*.paddle.com",
       ].join(" "),
-      "frame-src 'none'",
+      "frame-src https://*.paddle.com",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",

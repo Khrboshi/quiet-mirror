@@ -1,14 +1,18 @@
 // app/api/paddle/checkout/route.ts
-// Creates a Paddle hosted-checkout transaction and returns the checkout URL.
+// Creates a Paddle transaction and returns the transaction ID.
+//
+// The client uses the transaction ID with Paddle.js to open an overlay
+// checkout directly on the upgrade page — no external redirect needed.
 //
 // TRIAL: configure the trial period on your Paddle Price in the dashboard.
 //        Set it to PRICING.trialDays (currently 3 days). Paddle requires
 //        trial_period to be set on the Price itself, not at transaction time.
 //
 // ENV VARS REQUIRED (Vercel):
-//   PADDLE_API_KEY       — Paddle secret API key (live_xxx or sandbox_xxx)
-//   PADDLE_PRICE_ID      — Paddle price ID for the subscription (pri_xxx)
-//   PADDLE_ENVIRONMENT   — "production" or "sandbox" (defaults to "production")
+//   PADDLE_API_KEY            — Paddle secret API key (live_xxx or sandbox_xxx)
+//   PADDLE_PRICE_ID           — Paddle price ID for the subscription (pri_xxx)
+//   PADDLE_ENVIRONMENT        — "production" or "sandbox" (defaults to "production")
+//   NEXT_PUBLIC_PADDLE_CLIENT_TOKEN — Paddle client-side token (from dashboard)
 
 import { NextResponse } from "next/server";
 import { Paddle, Environment } from "@paddle/paddle-node-sdk";
@@ -110,27 +114,17 @@ export async function POST() {
       }
     }
 
-    // Create a Paddle transaction — then construct the hosted checkout URL
-    // directly from the transaction ID.
-    //
-    // We do NOT use transaction.checkout.url because Paddle sets that to the
-    // "Default payment link" domain (e.g. quietmirror.me?_ptxn=...), which is
-    // intended for Paddle.js overlay checkout. We use redirect-based checkout,
-    // so we build the checkout.paddle.com URL ourselves using the transaction ID.
-    //
-    // Hosted checkout URL format:
-    //   Sandbox:    https://sandbox-checkout.paddle.com/checkout/buy?_ptxn=TXN_ID
-    //   Production: https://checkout.paddle.com/checkout/buy?_ptxn=TXN_ID
+    // Create a Paddle transaction and return its ID to the client.
+    // The client opens a Paddle.js overlay checkout using the transaction ID —
+    // no external redirect needed. This is the correct pattern for web SaaS.
     const transaction = await paddle.transactions.create({
       items: [{ priceId, quantity: 1 }],
       customData: { supabase_user_id: user.id } as Record<string, unknown>,
       ...(customerId ? { customerId } : {}),
     });
 
-    const txnId = transaction.id;
-    if (!txnId) {
-      // Log only safe diagnostic fields — never the full transaction object
-      // as it may contain user-linked metadata (email, customData, etc.)
+    const transactionId = transaction.id;
+    if (!transactionId) {
       console.error(
         "[paddle/checkout] no transaction ID in response. status:",
         transaction.status ?? "unknown"
@@ -141,13 +135,7 @@ export async function POST() {
       );
     }
 
-    const isSandbox = process.env.PADDLE_ENVIRONMENT === "sandbox";
-    const checkoutBase = isSandbox
-      ? "https://sandbox-checkout.paddle.com"
-      : "https://checkout.paddle.com";
-    const checkoutUrl = `${checkoutBase}/checkout/buy?_ptxn=${txnId}`;
-
-    return NextResponse.json({ url: checkoutUrl });
+    return NextResponse.json({ transactionId });
   } catch (err: unknown) {
     // Log full error server-side — never expose vendor/SDK details to client
     console.error("[paddle/checkout] error:", err);
