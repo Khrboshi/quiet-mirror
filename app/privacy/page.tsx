@@ -7,6 +7,7 @@ import { cookies } from "next/headers";
 import { CONFIG } from "@/app/lib/config";
 import { PAYMENT } from "@/app/lib/payment";
 import { getTranslations, getLocaleFromCookieString } from "@/app/lib/i18n";
+import LegalLanguageNotice from "@/app/components/LegalLanguageNotice";
 
 // ─── Update this date whenever the policy changes ────────────────────────────
 const LAST_UPDATED = "June 1, 2025";
@@ -46,16 +47,7 @@ export default function PrivacyPolicyPage() {
 
         {/* Language notice — shown only for non-English locales */}
         {!isEnglish && (
-          <div className="mb-8 rounded-xl border border-qm-border-card bg-qm-elevated px-5 py-3 text-sm text-qm-secondary">
-            {lp.languageNotice.split(lp.contactUs)[0]}
-            <a
-              href={`mailto:${CONFIG.supportEmail}`}
-              className="font-semibold text-qm-accent underline underline-offset-2 hover:text-qm-accent-hover"
-            >
-              {lp.contactUs}
-            </a>
-            {lp.languageNotice.split(lp.contactUs)[1]}
-          </div>
+          <LegalLanguageNotice notice={lp.languageNotice} linkLabel={lp.contactUs} />
         )}
 
         <p className="qm-eyebrow text-qm-accent">
