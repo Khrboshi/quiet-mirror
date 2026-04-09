@@ -239,21 +239,20 @@ function FreeInsightTeaser({
   return (
     <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-5 sm:p-6">
       <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-faint">
-        A pattern is forming
+        {t.dashboard.patternForming}
       </p>
 
       {hasHint ? (
         <p className="text-sm leading-relaxed text-qm-secondary">
-          Across your entries, there may be a recurring thread around{" "}
+          {t.dashboard.patternTeaser.split("{theme}")[0]}
           <span className="select-none rounded bg-white/10 px-1 text-qm-primary blur-[5px]">
             {emotion ?? theme}
           </span>
-          . Premium helps you see it clearly.
+          {t.dashboard.patternTeaser.split("{theme}")[1]}
         </p>
       ) : (
         <p className="text-sm leading-relaxed text-qm-secondary">
-          Quiet Mirror has noticed a recurring thread in your entries. Premium helps
-          you see what quietly repeats.
+          {t.dashboard.patternTeaserNoHint}
         </p>
       )}
 
@@ -261,7 +260,7 @@ function FreeInsightTeaser({
         href="/upgrade"
         className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-qm-accent px-4 py-2 text-xs font-semibold text-white transition hover:bg-qm-accent-hover"
       >
-        Unlock insights →
+        {t.dashboard.unlockInsights}
       </Link>
     </div>
   );
@@ -331,7 +330,7 @@ function ThreadCard({
             href={`/journal/${lastEntryId}`}
             className="inline-flex rounded-full border border-white/[0.08] bg-white/[0.03] px-4 py-2 text-sm font-medium text-qm-secondary transition hover:bg-white/[0.07]"
           >
-            Open last entry
+            {t.dashboard.openLastEntry}
           </Link>
         )}
       </div>
@@ -415,7 +414,7 @@ function ProgressNudge({ entryCount }: { entryCount: number }) {
     <div className="mb-8 rounded-2xl border border-qm-border-subtle bg-qm-elevated p-5">
       <div className="mb-2 flex items-center justify-between">
         <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-faint">
-          Your pattern is forming
+          {t.dashboard.patternFormingYours}
         </p>
         <p className="text-xs text-qm-faint">
           {entryCount} / 5 entries
@@ -510,16 +509,15 @@ export default function DashboardClient({
 
           {isPremium ? (
             <span>
-              Reflections: <span className="text-qm-positive">unlimited</span>
+              {t.dashboard.reflUnlimited}
             </span>
           ) : reflectionsPaused ? (
             <span>
-              Reflections paused —{" "}
-              <span className="text-qm-faint">returns {resetLabel}</span>
+              {t.dashboard.reflPaused(resetLabel)}
             </span>
           ) : (
             <span>
-              Reflections remaining:{" "}
+              {t.dashboard.reflRemaining}{" "}
               <span className="text-qm-muted">
                 {planLoading ? "…" : String(credits ?? 0)}
               </span>
@@ -638,16 +636,16 @@ export default function DashboardClient({
 
           <div className="mt-4 space-y-2.5">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-qm-faint">Total entries</span>
+              <span className="text-qm-faint">{t.dashboard.totalEntries}</span>
               <span className="font-medium text-qm-primary">{entryCount}</span>
             </div>
             <div className="flex items-center justify-between text-sm">
-              <span className="text-qm-faint">Writing days</span>
+              <span className="text-qm-faint">{t.dashboard.writingDays}</span>
               <span className="font-medium text-qm-primary">{writingDays}</span>
             </div>
             {lastEntryDate && (
               <div className="flex items-center justify-between text-sm">
-                <span className="text-qm-faint">Last entry</span>
+                <span className="text-qm-faint">{t.dashboard.lastEntryLabel}</span>
                 <span className="font-medium text-qm-primary" suppressHydrationWarning>
                   {friendlyDate(lastEntryDate, mounted, t)}
                 </span>

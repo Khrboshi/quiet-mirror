@@ -199,7 +199,7 @@ export default async function SettingsPage() {
             subtitle={s.accountSubtitle}
             right={
               <ActionLink href="/settings/transactions" variant="secondary">
-                Transactions
+                {s.transactionsLabel}
               </ActionLink>
             }
           >
@@ -218,7 +218,7 @@ export default async function SettingsPage() {
               />
             </div>
             <p className="mt-3 text-xs text-qm-faint">
-              Billing emails are sent to this address.
+              {s.billingEmailNote}
             </p>
           </Card>
 
@@ -279,7 +279,7 @@ export default async function SettingsPage() {
                   </p>
                 ) : (
                   <p className="text-xs text-qm-faint">
-                    Free plan includes {PRICING.freeMonthlyCredits} AI reflections per month.{" "}
+                    {s.reflectionsFreeNote(PRICING.freeMonthlyCredits)}{" "}
                     <Link href="/upgrade" className="text-qm-positive-strong hover:text-qm-positive-hover transition-colors">
                       Upgrade for unlimited →
                     </Link>
@@ -297,7 +297,7 @@ export default async function SettingsPage() {
             <div className="rounded-xl border border-qm-border-subtle bg-qm-bg px-5 py-1">
               <DataRow
                 label={s.aiTrainingLabel}
-                value={<span className="text-qm-positive">Never used</span>}
+                value={<span className="text-qm-positive">{s.aiTrainingValue}</span>}
               />
               <DataRow label={s.dataSharingLabel} value={s.dataSharingValue} />
               <DataRow
@@ -342,7 +342,7 @@ export default async function SettingsPage() {
               <DataRow label={s.emailLabel} value={CONFIG.supportEmail} />
             </div>
             <p className="mt-3 text-xs text-qm-faint">
-              Include your account email for faster help.
+              {s.accountEmailHint}
             </p>
           </Card>
 

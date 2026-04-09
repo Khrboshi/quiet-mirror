@@ -170,6 +170,24 @@ export interface Translations {
     trial:          string;
     premium:        string;
     free:           string;
+    // Pattern teaser card
+    patternForming:       string;
+    patternFormingYours:  string;
+    patternTeaser:        string;
+    patternTeaserNoHint:  string;
+    unlockInsights:       string;
+    // Last entry card
+    openLastEntry:        string;
+    // Stats bar
+    reflUnlimited:        string;
+    reflPaused:           (date: string) => string;
+    reflRemaining:        string;
+    // History section
+    totalEntries:         string;
+    writingDays:          string;
+    lastEntryLabel:       string;
+    // Prompts
+    startArrow:           string;
     prompts: readonly {
       q: string;
       sub: string;
@@ -240,6 +258,7 @@ export interface Translations {
     memberSinceLabel: string;
     entriesWrittenLabel:string;
     billingEmailNote: string;
+    accountEmailHint: string;
     planLabel:        string;
     reflectionsLabel: string;
     resetsLabel:      string;
