@@ -587,6 +587,8 @@ export const uk: Translations = {
     codeLabel:"Код",linkLabel:"Магічне посилання",
     codeBest:"Найкраще на iPhone",linkBest:"Найкраще на комп'ютері",
     sendLink:"Надіслати магічне посилання",sendEmail:"Надіслати email для входу",sending:"Надсилання…",
+    emailAddressLabel: "Електронна адреса",
+    backToHome:        "← На головну",
     codePlaceholder:"Введіть 6–8 цифровий код",verify:"Підтвердити та увійти",verifying:"Перевірка…",
   },
   upgradePage: {

@@ -549,6 +549,8 @@ export const ro: Translations = {
     codeLabel:"Cod",linkLabel:"Link magic",
     codeBest:"Cel mai bun pe iPhone",linkBest:"Cel mai bun pe desktop",
     sendLink:"Trimiteți link magic",sendEmail:"Trimiteți e-mail de autentificare",sending:"Se trimite…",
+    emailAddressLabel: "Adresă de e-mail",
+    backToHome:        "← Înapoi acasă",
     codePlaceholder:"Introduceți codul de 6–8 cifre",verify:"Verificați și conectați-vă",verifying:"Se verifică…",
   },
 

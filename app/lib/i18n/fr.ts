@@ -555,6 +555,8 @@ export const fr: Translations = {
     codeLabel:"Code",linkLabel:"Lien magique",
     codeBest:"Idéal sur iPhone",linkBest:"Idéal sur ordinateur",
     sendLink:"Envoyer le lien magique",sendEmail:"Envoyer l'e-mail de connexion",sending:"Envoi…",
+    emailAddressLabel: "Adresse e-mail",
+    backToHome:        "← Retour à l'accueil",
     codePlaceholder:"Entrez le code à 6–8 chiffres",verify:"Vérifier et se connecter",verifying:"Vérification…",
   },
 

@@ -514,6 +514,8 @@ export interface Translations {
     codeBest: string; linkBest: string;
     sendLink: string; sendEmail: string; sending: string;
     codePlaceholder: string; verify: string; verifying: string;
+    emailAddressLabel: string;
+    backToHome:        string;
   };
   upgradePage: {
     faq1Q: string; faq1A: string; faq2Q: string; faq2A: (n: number) => string;

@@ -552,6 +552,8 @@ export const ar: Translations = {
     codeLabel:"رمز",linkLabel:"رابط سحري",
     codeBest:"الأفضل على iPhone",linkBest:"الأفضل على سطح المكتب",
     sendLink:"أرسل الرابط السحري",sendEmail:"أرسل بريد تسجيل الدخول",sending:"جارٍ الإرسال…",
+    emailAddressLabel: "عنوان البريد الإلكتروني",
+    backToHome:        "→ العودة إلى الرئيسية",
     codePlaceholder:"أدخل رمز 6-8 أرقام",verify:"تحقق وسجّل الدخول",verifying:"جارٍ التحقق…",
   },
   upgradePage: {

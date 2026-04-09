@@ -549,6 +549,8 @@ export const nl: Translations = {
     codeLabel:"Code",linkLabel:"Magische link",
     codeBest:"Beste op iPhone",linkBest:"Beste op desktop",
     sendLink:"Magische link sturen",sendEmail:"Aanmeld-e-mail sturen",sending:"Versturen…",
+    emailAddressLabel: "E-mailadres",
+    backToHome:        "← Terug naar home",
     codePlaceholder:"Voer 6–8 cijferige code in",verify:"Verifiëren en aanmelden",verifying:"Verifiëren…",
   },
 
