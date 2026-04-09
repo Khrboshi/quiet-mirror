@@ -193,7 +193,6 @@ export const fr: Translations = {
     writingDays: "Jours d'écriture",
     lastEntryLabel: "Dernière entrée",
     startArrow: "Commencer →",
-    accountEmailHint: "Inclus l'email de ton compte pour une aide plus rapide.",
     prompts: [
       { q: "Comment vous sentez-vous physiquement en ce moment ?",  sub: "Tension, calme, fatigue, agitation — tout ce que vous remarquez.", accent: "emerald" },
       { q: "Quelle est la chose qui occupe votre esprit ?",          sub: "Une phrase suffit.",                                               accent: "violet"  },

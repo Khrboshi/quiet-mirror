@@ -194,7 +194,6 @@ export const ro: Translations = {
     writingDays: "Zile de scris",
     lastEntryLabel: "Ultima înregistrare",
     startArrow: "Începe →",
-    accountEmailHint: "Include e-mailul contului tău pentru ajutor mai rapid.",
     prompts: [
       { q: "Cum se simte corpul tău acum?",                    sub: "Tensiune, calm, oboseală, neliniște — orice observi.", accent: "emerald" },
       { q: "Care este un lucru care te ocupă mintea?",          sub: "O propoziție este suficientă.",                          accent: "violet"  },

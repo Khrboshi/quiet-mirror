@@ -197,7 +197,6 @@ export const en: Translations = {
     writingDays: "Writing days",
     lastEntryLabel: "Last entry",
     startArrow: "Start →",
-    accountEmailHint: "Include your account email for faster help.",
     prompts: [
       { q: "How is your body feeling right now?",      sub: "Tension, calm, tired, restless — anything you notice.", accent: "emerald" },
       { q: "What is one thing occupying your mind?",   sub: "One sentence is enough.",                               accent: "violet"  },

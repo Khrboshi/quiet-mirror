@@ -194,7 +194,6 @@ export const nl: Translations = {
     writingDays: "Schrijfdagen",
     lastEntryLabel: "Laatste bericht",
     startArrow: "Begin →",
-    accountEmailHint: "Voeg je account-e-mail toe voor snellere hulp.",
     prompts: [
       { q: "Hoe voelt je lichaam zich nu?",                     sub: "Spanning, rust, moe, rusteloos — wat je ook opmerkt.", accent: "emerald" },
       { q: "Wat houdt je bezig?",                               sub: "Één zin is genoeg.",                                   accent: "violet"  },

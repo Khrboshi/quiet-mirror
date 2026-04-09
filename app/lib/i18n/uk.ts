@@ -224,7 +224,6 @@ export const uk: Translations = {
     writingDays: "Днів письма",
     lastEntryLabel: "Останній запис",
     startArrow: "Почати →",
-    accountEmailHint: "Додай email акаунту для швидшої допомоги.",
     prompts: [
       { q: "Як твоє тіло почувається прямо зараз?",       sub: "Напруга, спокій, втома, неспокій — все, що ти помічаєш.", accent: "emerald" },
       { q: "Яка одна думка зараз займає твою увагу?",      sub: "Одного речення достатньо.",                                 accent: "violet"  },

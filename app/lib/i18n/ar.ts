@@ -208,7 +208,6 @@ export const ar: Translations = {
     writingDays: "أيام الكتابة",
     lastEntryLabel: "آخر مدخل",
     startArrow: "ابدأ ←",
-    accountEmailHint: "أضف بريدك الإلكتروني للحساب للحصول على مساعدة أسرع.",
     prompts: [
       { q: "كيف يشعر جسدك الآن؟",             sub: "توتر، هدوء، تعب، قلق — أي شيء تلاحظه.",   accent: "emerald" },
       { q: "ما الشيء الواحد الذي يشغل ذهنك؟",  sub: "جملة واحدة تكفي.",                         accent: "violet"  },
