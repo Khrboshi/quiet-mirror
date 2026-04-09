@@ -38,14 +38,22 @@ function UpgradeButton({
         return;
       }
       const data = await res.json();
-      if (data?.transactionId && typeof window.openPaddleCheckout === "function") {
-        // Open Paddle.js overlay checkout — no external redirect
-        window.openPaddleCheckout(data.transactionId);
-      } else if (data?.transactionId) {
-        // Paddle.js not ready yet — rare race condition, retry once
+      if (data?.priceId && typeof window.openPaddleCheckout === "function") {
+        // Open Paddle.js overlay — Paddle creates the transaction in ready state
+        window.openPaddleCheckout({
+          priceId: data.priceId,
+          userId: data.userId,
+          userEmail: data.userEmail,
+        });
+      } else if (data?.priceId) {
+        // Paddle.js not ready yet — rare race condition, retry once after 1s
         setTimeout(() => {
           if (typeof window.openPaddleCheckout === "function") {
-            window.openPaddleCheckout(data.transactionId);
+            window.openPaddleCheckout({
+              priceId: data.priceId,
+              userId: data.userId,
+              userEmail: data.userEmail,
+            });
           } else {
             setError(`${t.errors.entryGenericFail} ${CONFIG.supportEmail}.`);
           }
