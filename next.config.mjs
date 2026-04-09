@@ -34,8 +34,6 @@ const nextConfig = {
         "https://*.posthog.com",
         "https://va.vercel-scripts.com",
         "https://*.paddle.com",
-        "https://sandbox-checkout-service.paddle.com",
-        "https://checkout-service.paddle.com",
       ].join(" "),
       "frame-src https://*.paddle.com",
       "object-src 'none'",
