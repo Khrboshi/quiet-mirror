@@ -281,8 +281,8 @@ export default function HomeBelowFold() {
               {w:h.ex1W,r:h.ex1R,tags:[h.ex1T1,h.ex1T2,h.ex1T3]},
               {w:h.ex2W,r:h.ex2R,tags:[h.ex2T1,h.ex2T2,h.ex2T3]},
               {w:h.ex3W,r:h.ex3R,tags:[h.ex3T1,h.ex3T2,h.ex3T3]},
-            ].map(({w,r,tags})=>(
-              <ScrollReveal key={tags[0]} className="flex flex-col overflow-hidden rounded-[1.5rem] border border-qm-border-card">
+            ].map(({w,r,tags}, i)=>(
+              <ScrollReveal key={i} className="flex flex-col overflow-hidden rounded-[1.5rem] border border-qm-border-card">
                 <div className="min-h-[160px] border-b border-qm-border-card bg-qm-elevated px-5 py-4">
                   <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-muted">{h.exWroteLabel}</p>
                   <p className="mt-2 text-sm italic leading-relaxed text-qm-secondary">&ldquo;{w}&rdquo;</p>
@@ -291,7 +291,7 @@ export default function HomeBelowFold() {
                   <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-accent">{h.exReflectedLabel}</p>
                   <p className="mt-2 text-sm leading-relaxed text-qm-primary">{r}</p>
                   <div className="mt-3 flex flex-wrap gap-1.5">
-                    {tags.map(e=><span key={e} className="rounded-full border border-qm-border-card bg-qm-elevated px-2.5 py-0.5 text-[11px] text-qm-muted">{e}</span>)}
+                    {tags.map((e,j)=><span key={j} className="rounded-full border border-qm-border-card bg-qm-elevated px-2.5 py-0.5 text-[11px] text-qm-muted">{e}</span>)}
                   </div>
                 </div>
               </ScrollReveal>
