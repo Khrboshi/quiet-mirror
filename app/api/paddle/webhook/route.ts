@@ -106,15 +106,20 @@ export async function POST(req: Request) {
         await setUserPlan({ supabase: supabase as any, userId, planType: "PREMIUM" });
 
         // Store Paddle IDs so portal + transactions routes can use them.
+        // Use upsert (not update) so a profiles row is created if the user
+        // signed up via magic link before any Stripe/billing visit created one.
         // Log if it fails — setUserPlan succeeded so user is PREMIUM,
         // but portal/transactions routes won't work until this is stored.
         const { error: profileErr } = await supabase
           .from("profiles")
-          .update({
-            paddle_customer_id:     sub.customerId ?? null,
-            paddle_subscription_id: sub.id         ?? null,
-          })
-          .eq("id", userId);
+          .upsert(
+            {
+              id:                     userId,
+              paddle_customer_id:     sub.customerId ?? null,
+              paddle_subscription_id: sub.id         ?? null,
+            },
+            { onConflict: "id" }
+          );
 
         if (profileErr) {
           console.error(
