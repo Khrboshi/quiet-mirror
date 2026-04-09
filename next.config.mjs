@@ -23,7 +23,7 @@ const nextConfig = {
     // middleware — see: https://nextjs.org/docs/app/building-your-application/configuring/content-security-policy
     const ContentSecurityPolicy = [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com",
+      "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com https://cdn.paddle.com",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob:",
       "font-src 'self'",
