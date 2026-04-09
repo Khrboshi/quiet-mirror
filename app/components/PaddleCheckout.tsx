@@ -67,7 +67,9 @@ export default function PaddleCheckout() {
 
     if (window.Paddle) {
       initPaddle();
-      return;
+      return () => {
+        delete window.openPaddleCheckout;
+      };
     }
 
     const script = document.createElement("script");
