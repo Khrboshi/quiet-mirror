@@ -9,11 +9,11 @@ const nextConfig = {
     //
     //   script-src  — 'self' + Vercel Speed Insights CDN
     //                 'unsafe-inline' required for Next.js App Router hydration scripts
-    //   style-src   — 'self' + 'unsafe-inline' for Tailwind + Paddle overlay CSS
+    //   style-src   — 'self' + 'unsafe-inline' for Tailwind
     //   img-src     — 'self' + data: (noise SVG in globals.css) + blob:
     //   font-src    — 'self' only (Google Fonts served locally via next/font)
     //   connect-src — self API routes + Supabase (REST + WebSocket) + PostHog + Vercel
-    //   frame-src   — Paddle overlay iframe (*.paddle.com)
+    //   frame-src   — 'none' (no iframes needed — Dodo checkout is a full-page redirect)
     //   object-src  — 'none' (no browser plugins)
     //   base-uri    — 'self' (prevents <base> tag injection attacks)
     //   form-action — 'self' (all form submissions go to own API routes)
@@ -23,8 +23,8 @@ const nextConfig = {
     // middleware — see: https://nextjs.org/docs/app/building-your-application/configuring/content-security-policy
     const ContentSecurityPolicy = [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com https://cdn.paddle.com",
-      "style-src 'self' 'unsafe-inline' https://cdn.paddle.com https://sandbox-cdn.paddle.com",
+      "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com",
+      "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob:",
       "font-src 'self'",
       [
@@ -33,9 +33,8 @@ const nextConfig = {
         "wss://*.supabase.co",
         "https://*.posthog.com",
         "https://va.vercel-scripts.com",
-        "https://*.paddle.com",
       ].join(" "),
-      "frame-src https://*.paddle.com",
+      "frame-src 'none'",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",

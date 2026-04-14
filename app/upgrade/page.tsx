@@ -8,7 +8,6 @@ import { useTranslation } from "@/app/components/I18nProvider";
 import { PAYMENT } from "@/app/lib/payment";
 import { CONFIG } from "@/app/lib/config";
 import { QM } from "@/app/lib/colors";
-import PaddleCheckout from "@/app/components/PaddleCheckout";
 
 // ─── Upgrade button ─────────────────────────────────────────────────────────
 
@@ -38,26 +37,10 @@ function UpgradeButton({
         return;
       }
       const data = await res.json();
-      if (data?.priceId && typeof window.openPaddleCheckout === "function") {
-        // Open Paddle.js overlay — Paddle creates the transaction in ready state
-        window.openPaddleCheckout({
-          priceId: data.priceId,
-          userId: data.userId,
-          userEmail: data.userEmail,
-        });
-      } else if (data?.priceId) {
-        // Paddle.js not ready yet — rare race condition, retry once after 1s
-        setTimeout(() => {
-          if (typeof window.openPaddleCheckout === "function") {
-            window.openPaddleCheckout({
-              priceId: data.priceId,
-              userId: data.userId,
-              userEmail: data.userEmail,
-            });
-          } else {
-            setError(`${t.errors.entryGenericFail} ${CONFIG.supportEmail}.`);
-          }
-        }, 1000);
+      if (data?.checkoutUrl) {
+        // Redirect to Dodo-hosted checkout page.
+        // On success, Dodo redirects back to /upgrade/confirmed.
+        window.location.href = data.checkoutUrl;
       } else {
         setError(`${t.errors.entryGenericFail} ${CONFIG.supportEmail}.`);
       }
@@ -106,8 +89,6 @@ export default function UpgradePage() {
 
   return (
     <div className="min-h-screen bg-qm-bg text-qm-primary">
-      {/* Paddle.js overlay checkout — loads script and exposes openPaddleCheckout() */}
-      <PaddleCheckout />
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-qm-border-subtle">
         <div className="pointer-events-none absolute left-1/2 top-0 h-[420px] w-[700px] -translate-x-1/2 rounded-full bg-qm-positive-strong/[0.13] blur-[110px]" />
