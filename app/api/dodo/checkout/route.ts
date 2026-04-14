@@ -65,6 +65,16 @@ export async function POST() {
     }
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://quietmirror.me";
+
+    // Require email — Dodo needs it to create a customer.
+    // Users who signed up via phone auth or anonymous sessions won't have one.
+    if (!user.email) {
+      return NextResponse.json(
+        { error: "An email address is required to subscribe. Please update your account email first." },
+        { status: 400 }
+      );
+    }
+
     const dodo = getDodo();
 
     // Create a hosted checkout session.
@@ -73,8 +83,8 @@ export async function POST() {
     const session = await dodo.checkoutSessions.create({
       product_cart: [{ product_id: productId, quantity: 1 }],
       customer: {
-        email: user.email!,
-        name:  user.email!,
+        email: user.email,
+        name:  user.email,
       },
       return_url: `${siteUrl}/upgrade/confirmed`,
       metadata: { supabase_user_id: user.id },

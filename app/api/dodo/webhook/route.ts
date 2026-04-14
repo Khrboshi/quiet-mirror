@@ -120,6 +120,27 @@ export async function POST(req: Request) {
           break;
         }
 
+        // Idempotency guard: only downgrade if the subscription_id in this event
+        // matches the subscription_id we have on record for this user.
+        // This prevents a late retry of a cancelled event from overwriting a
+        // newer subscription.active that the user has since created.
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("dodo_subscription_id")
+          .eq("id", userId)
+          .maybeSingle();
+
+        const incomingSubId = sub.subscription_id ?? null;
+        const storedSubId   = profile?.dodo_subscription_id ?? null;
+
+        if (incomingSubId && storedSubId && incomingSubId !== storedSubId) {
+          console.log(
+            "[dodo/webhook] ignoring stale downgrade — incoming sub:",
+            incomingSubId, "stored sub:", storedSubId
+          );
+          break;
+        }
+
         await setUserPlan({ supabase: supabase as any, userId, planType: "FREE" });
         console.log("[dodo/webhook] downgraded to FREE:", userId, payload.type);
         break;

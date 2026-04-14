@@ -9,11 +9,11 @@ const nextConfig = {
     //
     //   script-src  — 'self' + Vercel Speed Insights CDN
     //                 'unsafe-inline' required for Next.js App Router hydration scripts
-    //   style-src   — 'self' + 'unsafe-inline' for Tailwind + Paddle overlay CSS
+    //   style-src   — 'self' + 'unsafe-inline' for Tailwind
     //   img-src     — 'self' + data: (noise SVG in globals.css) + blob:
     //   font-src    — 'self' only (Google Fonts served locally via next/font)
     //   connect-src — self API routes + Supabase (REST + WebSocket) + PostHog + Vercel
-    //   frame-src   — Paddle overlay iframe (*.paddle.com)
+    //   frame-src   — 'none' (no iframes needed — Dodo checkout is a full-page redirect)
     //   object-src  — 'none' (no browser plugins)
     //   base-uri    — 'self' (prevents <base> tag injection attacks)
     //   form-action — 'self' (all form submissions go to own API routes)
