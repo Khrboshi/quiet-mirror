@@ -23,10 +23,12 @@ function getDodo() {
   const key = process.env.DODO_PAYMENTS_API_KEY;
   if (!key) throw new Error("DODO_PAYMENTS_API_KEY is not set");
   const env = process.env.DODO_PAYMENTS_ENVIRONMENT;
-  return new DodoPayments({
-    bearerToken: key,
-    environment: env === "live_mode" ? "live_mode" : "test_mode",
-  });
+  if (env !== "live_mode" && env !== "test_mode") {
+    throw new Error(
+      `DODO_PAYMENTS_ENVIRONMENT must be "live_mode" or "test_mode", got: "${env ?? "undefined"}"`
+    );
+  }
+  return new DodoPayments({ bearerToken: key, environment: env });
 }
 
 export async function POST() {

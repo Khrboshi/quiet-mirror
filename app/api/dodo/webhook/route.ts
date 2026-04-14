@@ -16,6 +16,13 @@
 //   metadata.supabase_user_id is passed at checkout creation and flows
 //   through to all subscription webhook events automatically.
 //
+// IDEMPOTENCY:
+//   PREMIUM events: upsert must succeed — if it fails we return 500 so Dodo
+//   retries. Without a stored dodo_subscription_id the stale-event guard is
+//   untrustworthy.
+//   FREE events: only downgrade if incoming subscription_id matches stored one,
+//   preventing late retries from overwriting a newer active subscription.
+//
 // SUPABASE COLUMNS REQUIRED on profiles table:
 //   dodo_customer_id TEXT
 //   dodo_subscription_id TEXT
@@ -67,94 +74,124 @@ export async function POST(req: Request) {
 
   const supabase = createAdminSupabase();
 
-  try {
-    switch (payload.type) {
+  switch (payload.type) {
 
-      // ── PREMIUM events ────────────────────────────────────────────────────
-      case "subscription.active":
-      case "subscription.renewed": {
-        const sub = payload.data as any;
-        const userId = extractUserId(sub.metadata);
+    // ── PREMIUM events ──────────────────────────────────────────────────────
+    case "subscription.active":
+    case "subscription.renewed": {
+      const sub = payload.data as any;
+      const userId = extractUserId(sub.metadata);
 
-        if (!userId) {
-          console.error("[dodo/webhook] no supabase_user_id in metadata:", payload.type);
-          break;
-        }
+      if (!userId) {
+        console.error("[dodo/webhook] no supabase_user_id in metadata:", payload.type);
+        // Return 400 — don't ACK events we can't map to a user.
+        // Dodo will retry; if metadata is permanently missing the event
+        // will exhaust retries and appear in the Dodo dashboard.
+        return NextResponse.json(
+          { error: "Missing supabase_user_id in metadata" },
+          { status: 400 }
+        );
+      }
 
-        // Set plan first — user gets access even if profile update fails
+      // Persist Dodo IDs FIRST — dodo_subscription_id must be stored before
+      // we ACK so the stale-event guard in FREE events is trustworthy.
+      // If this fails, return 500 so Dodo retries the entire event.
+      const { error: profileErr } = await supabase
+        .from("profiles")
+        .upsert(
+          {
+            id:                   userId,
+            dodo_customer_id:     sub.customer?.customer_id ?? null,
+            dodo_subscription_id: sub.subscription_id       ?? null,
+          },
+          { onConflict: "id" }
+        );
+
+      if (profileErr) {
+        console.error(
+          "[dodo/webhook] failed to persist Dodo IDs — returning 500 for retry:",
+          userId, profileErr
+        );
+        return NextResponse.json(
+          { error: "Failed to persist subscription IDs" },
+          { status: 500 }
+        );
+      }
+
+      // Upgrade plan only after IDs are safely stored
+      try {
         await setUserPlan({ supabase: supabase as any, userId, planType: "PREMIUM" });
-
-        // Store Dodo IDs so portal and transactions routes can use them
-        const { error: profileErr } = await supabase
-          .from("profiles")
-          .upsert(
-            {
-              id:                    userId,
-              dodo_customer_id:      sub.customer?.customer_id ?? null,
-              dodo_subscription_id:  sub.subscription_id       ?? null,
-            },
-            { onConflict: "id" }
-          );
-
-        if (profileErr) {
-          console.error(
-            "[dodo/webhook] failed to store Dodo IDs — portal/transactions will fail for user:",
-            userId, profileErr
-          );
-        }
-
-        console.log("[dodo/webhook] upgraded to PREMIUM:", userId, payload.type);
-        break;
+      } catch (planErr) {
+        console.error("[dodo/webhook] setUserPlan failed — returning 500 for retry:", userId, planErr);
+        return NextResponse.json({ error: "Failed to set user plan" }, { status: 500 });
       }
 
-      // ── FREE events ───────────────────────────────────────────────────────
-      case "subscription.cancelled":
-      case "subscription.expired":
-      case "subscription.on_hold":
-      case "subscription.failed": {
-        const sub = payload.data as any;
-        const userId = extractUserId(sub.metadata);
-
-        if (!userId) {
-          console.error("[dodo/webhook] downgrade event — no user ID:", payload.type);
-          break;
-        }
-
-        // Idempotency guard: only downgrade if the subscription_id in this event
-        // matches the subscription_id we have on record for this user.
-        // This prevents a late retry of a cancelled event from overwriting a
-        // newer subscription.active that the user has since created.
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("dodo_subscription_id")
-          .eq("id", userId)
-          .maybeSingle();
-
-        const incomingSubId = sub.subscription_id ?? null;
-        const storedSubId   = profile?.dodo_subscription_id ?? null;
-
-        if (incomingSubId && storedSubId && incomingSubId !== storedSubId) {
-          console.log(
-            "[dodo/webhook] ignoring stale downgrade — incoming sub:",
-            incomingSubId, "stored sub:", storedSubId
-          );
-          break;
-        }
-
-        await setUserPlan({ supabase: supabase as any, userId, planType: "FREE" });
-        console.log("[dodo/webhook] downgraded to FREE:", userId, payload.type);
-        break;
-      }
-
-      default:
-        // Unhandled — log and return 200 so Dodo doesn't retry
-        console.log("[dodo/webhook] unhandled event:", payload.type);
-        break;
+      console.log("[dodo/webhook] upgraded to PREMIUM:", userId, payload.type);
+      break;
     }
-  } catch (err) {
-    // Return 500 so Dodo retries the event
-    console.error("[dodo/webhook] handler error:", err);
-    return NextResponse.json({ error: "Webhook handler failed" }, { status: 500 });
+
+    // ── FREE events ─────────────────────────────────────────────────────────
+    case "subscription.cancelled":
+    case "subscription.expired":
+    case "subscription.on_hold":
+    case "subscription.failed": {
+      const sub = payload.data as any;
+      const userId = extractUserId(sub.metadata);
+
+      if (!userId) {
+        console.error("[dodo/webhook] downgrade event — no user ID:", payload.type);
+        // Return 400 — don't ACK unmapped events
+        return NextResponse.json(
+          { error: "Missing supabase_user_id in metadata" },
+          { status: 400 }
+        );
+      }
+
+      // Read stored subscription_id for the stale-event guard.
+      // If the read fails, return 500 so Dodo retries — proceeding without
+      // the guard could downgrade a user who has a newer active subscription.
+      const { data: profile, error: profileReadErr } = await supabase
+        .from("profiles")
+        .select("dodo_subscription_id")
+        .eq("id", userId)
+        .maybeSingle();
+
+      if (profileReadErr) {
+        console.error("[dodo/webhook] failed to read profile for idempotency check:", userId, profileReadErr);
+        return NextResponse.json(
+          { error: "Failed to read subscription state" },
+          { status: 500 }
+        );
+      }
+
+      const incomingSubId = sub.subscription_id ?? null;
+      const storedSubId   = profile?.dodo_subscription_id ?? null;
+
+      // Only skip if BOTH IDs are present and don't match — if storedSubId is
+      // null (edge case: never stored) we allow the downgrade conservatively.
+      if (incomingSubId && storedSubId && incomingSubId !== storedSubId) {
+        console.log(
+          "[dodo/webhook] ignoring stale downgrade — incoming sub:",
+          incomingSubId, "stored sub:", storedSubId
+        );
+        break;
+      }
+
+      try {
+        await setUserPlan({ supabase: supabase as any, userId, planType: "FREE" });
+      } catch (planErr) {
+        console.error("[dodo/webhook] setUserPlan failed — returning 500 for retry:", userId, planErr);
+        return NextResponse.json({ error: "Failed to set user plan" }, { status: 500 });
+      }
+
+      console.log("[dodo/webhook] downgraded to FREE:", userId, payload.type);
+      break;
+    }
+
+    default:
+      // Unhandled event type — ACK with 200 so Dodo doesn't retry indefinitely
+      console.log("[dodo/webhook] unhandled event:", payload.type);
+      break;
   }
 
   return NextResponse.json({ received: true });
