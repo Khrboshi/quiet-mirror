@@ -180,7 +180,7 @@ export async function setUserPlan(params: {
       ? TRIAL_MONTHLY_CREDITS
       : PRICING.freeMonthlyCredits;
 
-  await supabase.from("user_credits").upsert(
+  const { error: upsertErr } = await supabase.from("user_credits").upsert(
     {
       user_id: userId,
       plan_type: planType,
@@ -190,4 +190,10 @@ export async function setUserPlan(params: {
     } as UserCreditsInsert,
     { onConflict: "user_id" }
   );
+
+  if (upsertErr) {
+    throw new Error(
+      `setUserPlan failed to write user_credits for user ${userId}: ${upsertErr.message}`
+    );
+  }
 }
