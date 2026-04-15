@@ -1,0 +1,42 @@
+# .sourcery.yaml
+# Sourcery configuration for Quiet Mirror
+# Stack: Next.js 14 (App Router) · TypeScript · Tailwind CSS
+# https://docs.sourcery.ai/Configuration/
+
+rule_settings:
+  # Default severity for new issues
+  default_severity: warning
+
+ignore:
+  # ── Known false positives ────────────────────────────────────────────────────
+
+  # dangerouslySetInnerHTML in app/blog/[slug]/page.tsx is used exclusively
+  # for injecting a JSON-LD structured data <script> tag (standard SEO pattern).
+  # The data source is ARTICLES in app/blog/articles.ts — a hardcoded static
+  # TypeScript file with no user input, no database content, and no external
+  # data. There is no XSS attack surface.
+  - rule: react/no-danger
+    path: app/blog/[slug]/page.tsx
+
+  # @img/sharp-libvips-darwin-arm64 is flagged for LGPL-3.0 license.
+  # LGPL requires open-sourcing modifications to the LGPL library itself,
+  # not the application that links to it. This does not affect Quiet Mirror's
+  # proprietary SaaS codebase.
+  - rule: license/lgpl
+    path: "**"
+
+  # ── Dependency CVEs requiring Next.js 15 upgrade ─────────────────────────────
+  # The following CVEs (picomatch ReDoS, yaml DoS, Next.js DoS) are fixed in
+  # Next.js 15.x. Upgrading from 14.x is a breaking change requiring a
+  # dedicated migration PR. Tracked as a planned task.
+  # Target: upgrade Next.js to 15.x in a dedicated PR after regression testing.
+  - rule: npm/audit
+    path: package.json
+
+security:
+  # Suppress transitive dependency alerts for packages we cannot update
+  # without a major Next.js version bump
+  ignore_paths:
+    - node_modules/picomatch
+    - node_modules/yaml
+    - node_modules/next
