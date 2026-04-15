@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: BlogArticlePageProps): Promis
       type: "article",
       title: article.title,
       description: article.summary,
-      url: `${SITE_URL}/blog/${slug}`,
+      url: `${SITE_URL}/blog/${article.slug}`,
       siteName: CONFIG.appName,
     },
     twitter: {
