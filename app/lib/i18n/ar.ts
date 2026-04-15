@@ -40,6 +40,8 @@ export const ar: Translations = {
     entryDeleteFailed: "تعذّر حذف هذا المدخل. الرجاء المحاولة مرة أخرى.",
     entryGenericFail:  "حدث خطأ ما. الرجاء المحاولة مرة أخرى.",
     entryNotFound:     "المدخل غير موجود.",
+    notFoundTitle:     "الصفحة غير موجودة",
+    notFoundBody:      "هذه الصفحة غير موجودة. إذا كنت تعتقد أن هذا خطأ، حاول العودة إلى المكان الذي أتيت منه.",
     reflectionFailed:  "تعذّر إنشاء التأمل في الوقت الحالي.",
     insightsFailed:    "تعذّر تحميل الرؤى.",
     insightsNoData:    "البيانات غير كافية بعد — استمر في الكتابة وتوليد التأملات.",

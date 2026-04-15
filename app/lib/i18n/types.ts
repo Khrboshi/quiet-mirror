@@ -15,6 +15,8 @@ export interface Translations {
     entryDeleteFailed: string;
     entryGenericFail:  string;
     entryNotFound:     string;
+    notFoundTitle:     string;
+    notFoundBody:      string;
     reflectionFailed:  string;
     insightsFailed:    string;
     insightsNoData:    string;

@@ -13,6 +13,8 @@ export const ro: Translations = {
     entryDeleteFailed: "Nu s-a putut șterge această înregistrare. Te rugăm să încerci din nou.",
     entryGenericFail:  "Ceva a mers prost. Te rugăm să încerci din nou.",
     entryNotFound:     "Înregistrarea nu a fost găsită.",
+    notFoundTitle:     "Pagina nu a fost găsită",
+    notFoundBody:      "Această pagină nu există. Dacă crezi că este o eroare, încearcă să te întorci de unde ai venit.",
     reflectionFailed:  "Nu am putut genera o reflecție chiar acum.",
     insightsFailed:    "Încărcarea perspectivelor a eșuat.",
     insightsNoData:    "Încă nu sunt suficiente date — continuă să scrii și să generezi reflecții.",

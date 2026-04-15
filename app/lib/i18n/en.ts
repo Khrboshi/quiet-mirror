@@ -16,6 +16,8 @@ export const en: Translations = {
     entryDeleteFailed: "Could not delete this entry. Please try again.",
     entryGenericFail:  "Something went wrong. Please try again.",
     entryNotFound:     "Entry not found.",
+    notFoundTitle:     "Page not found",
+    notFoundBody:      "This page doesn't exist. If you think this is a bug, try going back to where you came from.",
     reflectionFailed:  "We couldn't generate a reflection right now.",
     insightsFailed:    "Failed to load insights.",
     insightsNoData:    "Not enough data yet — keep writing and generating reflections.",

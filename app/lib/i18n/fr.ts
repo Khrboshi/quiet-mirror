@@ -12,6 +12,8 @@ export const fr: Translations = {
     entryDeleteFailed: "Impossible de supprimer cette entrée. Veuillez réessayer.",
     entryGenericFail:  "Une erreur est survenue. Veuillez réessayer.",
     entryNotFound:     "Entrée introuvable.",
+    notFoundTitle:     "Page introuvable",
+    notFoundBody:      "Cette page n'existe pas. Si vous pensez qu'il s'agit d\'une erreur, essayez de revenir là où vous étiez.",
     reflectionFailed:  "Nous n'avons pas pu générer une réflexion pour le moment.",
     insightsFailed:    "Échec du chargement des aperçus.",
     insightsNoData:    "Pas encore assez de données — continuez à écrire et à générer des réflexions.",

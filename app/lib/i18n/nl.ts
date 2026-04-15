@@ -13,6 +13,8 @@ export const nl: Translations = {
     entryDeleteFailed: "Dit bericht kon niet worden verwijderd. Probeer het opnieuw.",
     entryGenericFail:  "Er ging iets mis. Probeer het opnieuw.",
     entryNotFound:     "Bericht niet gevonden.",
+    notFoundTitle:     "Pagina niet gevonden",
+    notFoundBody:      "Deze pagina bestaat niet. Als je denkt dat dit een fout is, ga dan terug naar waar je vandaan kwam.",
     reflectionFailed:  "We konden nu geen reflectie genereren.",
     insightsFailed:    "Inzichten laden mislukt.",
     insightsNoData:    "Nog niet genoeg gegevens — blijf schrijven en reflecties genereren.",
