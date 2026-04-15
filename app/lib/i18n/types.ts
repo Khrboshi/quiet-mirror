@@ -146,6 +146,11 @@ export interface Translations {
     momentum:          string;
     momentumDefault:   string;
     momentumDescriptions: Record<string, string>;
+    // InsightsClient (full premium page) hardcoded fixes
+    pageHeading:      string;
+    pageSubheading:   string;
+    recentlyLabel:    string;
+    patternsNote:     string;
   };
 
   dashboard: {
@@ -182,6 +187,8 @@ export interface Translations {
     reflUnlimited:        string;
     reflPaused:           (date: string) => string;
     reflRemaining:        string;
+    reflLabel:            string;
+    reflUnlimitedShort:   string;
     // History section
     totalEntries:         string;
     writingDays:          string;
@@ -316,6 +323,22 @@ export interface Translations {
     colReceipt:       string;
     noInvoicesYet:    string;
     viewLabel:        string;
+    // Billing page — premium-path hardcoded fixes
+    thankYouSupporting:   (appName: string) => string;
+    cancelContactPrompt:  (email: string) => string;
+    supportSidebarLabel:  string;
+    supportSidebarText:   string;
+    viewPremium:          string;
+    // Transactions page
+    transactionsHeading:  string;
+    backToSettings:       string;
+    subscriptionHeading:  string;
+    planColPrefix:        string;
+    creditsColLabel:      string;
+    paymentHistoryHeading:string;
+    totalPaidLabel:       string;
+    loadingInvoices:      string;
+    goToBillingPage:      string;
   };
 
   // ── Tools page ───────────────────────────────────────────────────────────────

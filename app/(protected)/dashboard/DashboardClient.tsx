@@ -653,8 +653,8 @@ export default function DashboardClient({
             )}
             {isPremium && (
               <div className="flex items-center justify-between text-sm">
-                <span className="text-qm-faint">Reflections</span>
-                <span className="font-medium text-qm-positive">Unlimited</span>
+                <span className="text-qm-faint">{t.dashboard.reflLabel}</span>
+                <span className="font-medium text-qm-positive">{t.dashboard.reflUnlimitedShort}</span>
               </div>
             )}
           </div>

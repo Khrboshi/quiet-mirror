@@ -246,7 +246,7 @@ export default async function SettingsPage() {
               // Premium state
               <div className="rounded-xl border border-qm-positive-border bg-qm-positive-bg px-5 py-1">
                 <DataRow label={s.planLabel} value={<PlanBadge plan={plan} labels={s} />} />
-                <DataRow label={s.reflectionsLabel} value={<span className="text-qm-positive">Unlimited</span>} />
+                <DataRow label={s.reflectionsLabel} value={<span className="text-qm-positive">{s.reflectionsUnlimited}</span>} />
                 <DataRow label={s.insightsLabel} value={s.insightsFull} />
                 <DataRow label={s.weeklySummaryLabel} value={s.weeklySummaryIncluded} />
               </div>
@@ -275,13 +275,13 @@ export default async function SettingsPage() {
 
                 {remainingCredits === 0 ? (
                   <p className="text-xs text-qm-faint">
-                    Reflections resume {resetLabel}. Upgrade for unlimited access.
+                    {s.reflectionsResume(resetLabel)}
                   </p>
                 ) : (
                   <p className="text-xs text-qm-faint">
                     {s.reflectionsFreeNote(PRICING.freeMonthlyCredits)}{" "}
                     <Link href="/upgrade" className="text-qm-positive-strong hover:text-qm-positive-hover transition-colors">
-                      Upgrade for unlimited →
+                      {s.upgradeUnlimited}
                     </Link>
                   </p>
                 )}

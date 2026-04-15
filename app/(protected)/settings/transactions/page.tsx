@@ -108,7 +108,7 @@ export default function TransactionsPage() {
     <div className="mx-auto max-w-5xl px-6 py-14 text-qm-primary">
       <div className="flex flex-wrap items-start justify-between gap-4 mb-8">
         <div>
-          <h1 className="font-display text-3xl font-semibold tracking-tight mb-2">Transactions</h1>
+          <h1 className="font-display text-3xl font-semibold tracking-tight mb-2">{t.settingsPage.transactionsHeading}</h1>
           <p className="text-qm-muted text-sm">{email}</p>
         </div>
 
@@ -117,13 +117,13 @@ export default function TransactionsPage() {
             href="/settings"
             className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-qm-primary hover:bg-white/10"
           >
-            Back to Settings
+            {t.settingsPage.backToSettings}
           </Link>
           <Link
             href="/settings/billing"
             className="rounded-full bg-qm-positive-strong px-3 py-2 text-sm font-medium text-black hover:bg-qm-positive"
           >
-            Billing
+            {t.settingsPage.billingTitle}
           </Link>
         </div>
       </div>
@@ -131,17 +131,17 @@ export default function TransactionsPage() {
       <div className="grid gap-6 md:grid-cols-2">
         {/* Subscription */}
         <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-          <h2 className="text-lg font-semibold mb-2">Subscription</h2>
+          <h2 className="text-lg font-semibold mb-2">{t.settingsPage.subscriptionHeading}</h2>
 
           {loading ? (
-            <p className="text-qm-muted">Loading…</p>
+            <p className="text-qm-muted">{t.ui.loading}</p>
           ) : (
             <p className="text-qm-muted">
-              Plan: <span className="text-qm-primary">{readablePlan}</span>
+              {t.settingsPage.planColPrefix} <span className="text-qm-primary">{readablePlan}</span>
               {planType !== "PREMIUM" ? (
                 <>
                   {" "}
-                  — credits: <span className="text-qm-primary">{credits ?? 0}</span>
+                  — {t.settingsPage.creditsColLabel} <span className="text-qm-primary">{credits ?? 0}</span>
                 </>
               ) : null}
             </p>
@@ -153,7 +153,7 @@ export default function TransactionsPage() {
               onClick={goToPortal}
               className="rounded-full bg-qm-positive-strong px-4 py-2 text-sm font-medium text-black hover:bg-qm-positive"
             >
-              Manage subscription
+              {t.settingsPage.manageSubscription}
             </button>
 
             {showUpgrade ? (
@@ -161,7 +161,7 @@ export default function TransactionsPage() {
                 href="/upgrade"
                 className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-qm-primary hover:bg-white/10"
               >
-                Upgrade
+                {t.settingsPage.upgradeLabel}
               </Link>
             ) : null}
 
@@ -169,7 +169,7 @@ export default function TransactionsPage() {
               href="/dashboard"
               className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-qm-primary hover:bg-white/10"
             >
-              Dashboard
+              {t.navbar.dashboard}
             </Link>
           </div>
 
@@ -179,9 +179,9 @@ export default function TransactionsPage() {
         {/* Payment history */}
         <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
           <div className="flex items-center justify-between gap-4 mb-2">
-            <h2 className="text-lg font-semibold">Payment history</h2>
+            <h2 className="text-lg font-semibold">{t.settingsPage.paymentHistoryHeading}</h2>
             <div className="text-xs text-qm-muted">
-              Total paid:{" "}
+              {t.settingsPage.totalPaidLabel}{" "}
               <span className="text-qm-primary">
                 {formatMoney(totalPaid, invoices[0]?.currency || "usd")}
               </span>
@@ -189,7 +189,7 @@ export default function TransactionsPage() {
           </div>
 
           {invLoading ? (
-            <p className="text-qm-muted">Loading invoices…</p>
+            <p className="text-qm-muted">{t.settingsPage.loadingInvoices}</p>
           ) : invError ? (
             <div className="rounded-xl border border-qm-danger-border bg-qm-danger-soft p-4 text-sm text-qm-danger">
               {invError}
@@ -261,7 +261,7 @@ export default function TransactionsPage() {
               href="/settings/billing"
               className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-qm-primary hover:bg-white/10"
             >
-              Go to Billing page
+              {t.settingsPage.goToBillingPage}
             </Link>
           </div>
         </div>

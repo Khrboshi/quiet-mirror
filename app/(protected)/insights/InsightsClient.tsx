@@ -760,15 +760,15 @@ export default function InsightsClient() {
   return (
     <div className="mx-auto max-w-5xl space-y-8 px-4 pb-10 sm:px-6">
       <div>
-        <h1 className="font-display text-3xl font-semibold text-qm-primary sm:text-4xl">Insights</h1>
+        <h1 className="font-display text-3xl font-semibold text-qm-primary sm:text-4xl">{t.insights.pageHeading}</h1>
         <p className="mt-1 text-sm text-qm-faint">
-          What Quiet Mirror has noticed across your reflections
+          {t.insights.pageSubheading}
           {totalEntryCount > 0 && (
             <>
               {" "}
               —{" "}
               <span className="text-qm-muted">
-                {totalEntryCount} {totalEntryCount === 1 ? "entry" : "entries"}
+                {totalEntryCount} {totalEntryCount === 1 ? t.dashboard.entry : t.dashboard.entries}
               </span>
             </>
           )}
@@ -864,7 +864,7 @@ export default function InsightsClient() {
 
             {hasTrend && (
               <div className="mt-4 flex flex-wrap items-center gap-2">
-                <span className="text-xs text-qm-faint me-0.5">Recently:</span>
+                <span className="text-xs text-qm-faint me-0.5">{t.insights.recentlyLabel}</span>
                 {data.trend?.up?.map((e) => (
                   <TrendPill key={`u-${e}`} label={e} dir="up" />
                 ))}
@@ -875,7 +875,7 @@ export default function InsightsClient() {
             )}
 
             <p className="mt-4 text-xs text-qm-faint">
-              These are patterns, not diagnoses. They shift as you keep writing.
+              {t.insights.patternsNote}
             </p>
           </section>
 

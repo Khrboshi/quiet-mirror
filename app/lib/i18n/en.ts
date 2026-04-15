@@ -160,6 +160,10 @@ export const en: Translations = {
       Softening:"Intensity has been settling recently",
       Steady:   "Consistent emotional tone across entries",
     },
+    pageHeading:    "Insights",
+    pageSubheading: "What Quiet Mirror has noticed across your reflections",
+    recentlyLabel:  "Recently:",
+    patternsNote:   "These are patterns, not diagnoses. They shift as you keep writing.",
   },
 
   dashboard: {
@@ -193,6 +197,8 @@ export const en: Translations = {
     reflUnlimited: "Reflections: unlimited",
     reflPaused: (date) => `Reflections paused — returns ${date}`,
     reflRemaining: "Reflections remaining:",
+    reflLabel:          "Reflections",
+    reflUnlimitedShort: "Unlimited",
     totalEntries: "Total entries",
     writingDays: "Writing days",
     lastEntryLabel: "Last entry",
