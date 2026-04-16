@@ -8,6 +8,9 @@
 
 import { NextResponse } from "next/server";
 import DodoPayments from "dodopayments";
+// CustomerPortalSession is the SDK's typed response for customerPortal.create().
+// It has { link: string } — no cast needed, no optional chaining on .link.
+import type { CustomerPortalSession } from "dodopayments/resources/customers/customers.js";
 import { createServerSupabase } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -63,20 +66,24 @@ export async function GET(req: Request) {
 
     const dodo = getDodo();
 
-    // Creates a short-lived portal session URL
-    const session = await (dodo.customers as any).customerPortal.create(
-      profile.dodo_customer_id
-    );
+    // dodo.customers.customerPortal is fully typed in the SDK — no cast needed.
+    // CustomerPortal.create() returns APIPromise<CustomerPortalSession>
+    // where CustomerPortalSession = { link: string }.
+    const session: CustomerPortalSession =
+      await dodo.customers.customerPortal.create(profile.dodo_customer_id);
 
-    const portalUrl = session?.link;
+    // .link is typed string (non-optional) but guard anyway in case the API
+    // returns an unexpected shape at runtime.
+    const portalUrl = session.link;
     if (!portalUrl) {
       console.error("[dodo/portal] no link in portal session response:", session);
       return NextResponse.redirect(new URL(FALLBACK, getBaseUrl(req.url)), 303);
     }
 
     return NextResponse.redirect(portalUrl, 303);
-  } catch (err: any) {
-    console.error("[dodo/portal] error:", err?.message || err);
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error("[dodo/portal] error:", msg);
     return NextResponse.redirect(
       new URL(FALLBACK, new URL(req.url).origin),
       303
