@@ -220,12 +220,10 @@ export default function JournalEntryClient({
             {/* Credits counter — only show for free users */}
             {mounted && !isUnlimited && (
               <p className="mt-0.5 text-xs text-white/30">
-                {loading ? "…" : credits}{" "}
-                {credits === 1 ? "reflection" : "reflections"} remaining
-                this month
+                {loading ? "…" : t.reflection.creditsRemaining(credits ?? 0)}
                 {isLimitReached && (
                   <span className="ms-1 text-qm-warning">
-                    · resets next month
+                    · {t.reflection.creditsResetsNext}
                   </span>
                 )}
               </p>
@@ -265,12 +263,10 @@ export default function JournalEntryClient({
         {isLimitReached && !reflection && !busy && (
           <div className="border-b border-white/5 bg-qm-positive-strong/[0.03] px-6 py-5">
             <p className="text-sm font-medium text-white/80">
-              You&apos;ve used your {PRICING.freeMonthlyCredits} free reflections this month.
+              {t.reflection.limitReachedHeadline(PRICING.freeMonthlyCredits)}
             </p>
             <p className="mt-1.5 text-xs leading-relaxed text-qm-faint">
-              Premium unlocks unlimited reflections on every entry — plus
-              pattern insights across time, a weekly summary, and the
-              why-this-keeps-happening layer.
+              {t.reflection.limitReachedBody}
             </p>
             <div className="mt-4 flex flex-wrap items-center gap-3">
               <Link
@@ -329,7 +325,7 @@ export default function JournalEntryClient({
           <div className="space-y-5 px-6 py-6">
             <div className="space-y-3 rounded-xl border border-qm-warning-border bg-qm-warning-bg px-5 py-4">
               <p className="text-sm font-medium text-qm-warning">
-                What you wrote matters, and you matter.
+                {t.reflection.crisisMatters}
               </p>
               <p className="text-xs leading-relaxed text-white/60">
                 {reflection.message}
@@ -337,7 +333,7 @@ export default function JournalEntryClient({
             </div>
             <div className="space-y-2">
               <p className="text-[10px] font-semibold uppercase tracking-widest text-white/30">
-                If you need support right now
+                {t.reflection.crisisSupportLabel}
               </p>
               {(reflection.resources ?? []).map((r) => (
                 <div
@@ -352,8 +348,7 @@ export default function JournalEntryClient({
               ))}
             </div>
             <p className="text-center text-[10px] text-white/25">
-              Your entries are always private &middot; You don&apos;t have to
-              figure this out alone
+              {t.reflection.crisisPrivacy}
             </p>
           </div>
         ) : reflection ? (
@@ -408,7 +403,7 @@ export default function JournalEntryClient({
             <div className="grid grid-cols-2 gap-5 px-6 py-5">
               <div>
                 <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-white/30">
-                  Themes
+                  {t.reflection.themesLabel}
                 </p>
                 <div className="flex flex-wrap gap-1.5">
                   {reflection.themes.filter(Boolean).map((t, i) => (
@@ -423,7 +418,7 @@ export default function JournalEntryClient({
               </div>
               <div>
                 <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-white/30">
-                  Emotions
+                  {t.reflection.emotionsLabel}
                 </p>
                 <div className="flex flex-wrap gap-1.5">
                   {reflection.emotions.filter(Boolean).map((e, i) => (
@@ -516,8 +511,7 @@ export default function JournalEntryClient({
                   {t.reflection.patternHistoryNote}
                 </p>
                 <p className="mt-1 text-xs leading-relaxed text-qm-faint">
-                  Quiet Mirror tracks what keeps showing up across all your entries.
-                  Your insights view shows the thread that connects them.
+                  {t.reflection.patternHistorySub}
                 </p>
               </div>
               <Link
@@ -616,7 +610,7 @@ export default function JournalEntryClient({
       <UpgradeTriggerModal
         open={showUpgrade}
         onClose={() => setShowUpgrade(false)}
-        title={`You've used your ${PRICING.freeMonthlyCredits} free reflections this month.`}
+        title={t.reflection.limitReachedHeadline(PRICING.freeMonthlyCredits)}
         message={`${ps.trialFreeFor(PRICING.trialDays)} — ${ps.fullAccess}. ${ps.cancelAnytimeLong}.`}
         source="reflection_limit"
         ctaHref="/upgrade"

@@ -83,6 +83,13 @@ export interface Translations {
     seeFullPattern:       string;
     readingEntry:         string;
     nothingRemoved:       string;
+    limitReachedHeadline: (n: number) => string;
+    limitReachedBody:     string;
+    themesLabel:          string;
+    emotionsLabel:        string;
+    crisisMatters:        string;
+    crisisSupportLabel:   string;
+    crisisPrivacy:        string;
   };
 
   upgrade: {
@@ -230,6 +237,23 @@ export interface Translations {
       sub: string;
       accent: string;
     }[];
+    welcomeTag:                 string;
+    welcomeHeading:             string;
+    welcomeBody:                (appName: string) => string;
+    writeFirstEntry:            string;
+    welcomePrivacy:             string;
+    patternStartedTag:          string;
+    patternStartedBody:         (emotion: string | null, theme: string | null) => string;
+    writeAnotherEntry:          string;
+    yourPatternNow:             string;
+    seeFullInsights:            string;
+    reflectRecentEntry:         string;
+    yourPatterns:               string;
+    freeNudge:                  (appName: string, n: number) => string;
+    threadBodyWritten:          (when: string, emotion: string) => string;
+    threadBodyWrittenNoEmotion: (when: string) => string;
+    threadPromptEmotion:        (emotion: string) => string;
+    threadPromptNoEmotion:      string;
   };
 
   // ── Footer ──────────────────────────────────────────────────────────────────
@@ -457,11 +481,15 @@ export interface Translations {
   upgradeConfirmed: {
     headline1:        string;
     headline2:        string;
+    subDesc:          (appName: string, trialFor: string) => string;
     whatUnlocked:     string;
+    patternsNote:     (appName: string) => string;
     ctaWrite:         string;
     ctaInsights:      string;
+    dashboardDelay:   string;
     refreshOnce:      string;
     manageBilling:    string;
+    billingNote:      string;
     billingSettings:  string;
   };
   // ── Homepage (marketing page) ────────────────────────────────────────────────

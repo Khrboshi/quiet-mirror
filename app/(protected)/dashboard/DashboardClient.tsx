@@ -7,6 +7,7 @@ import { useSupabase } from "@/app/components/SupabaseSessionProvider";
 import { useUserPlan } from "@/app/components/useUserPlan";
 import type { DashboardData } from "./page";
 import { PRICING } from "@/app/lib/pricing";
+import { CONFIG } from "@/app/lib/config";
 import { useTranslation } from "@/app/components/I18nProvider";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -160,7 +161,7 @@ function PremiumInsightCard({
   return (
     <div className="rounded-2xl border border-qm-positive-border bg-gradient-to-br from-qm-positive-strong/[0.06] to-transparent p-5 sm:p-6">
       <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-positive">
-        Your pattern right now
+        {t.dashboard.yourPatternNow}
       </p>
 
       <p className="font-display text-base font-medium leading-relaxed text-qm-primary sm:text-[17px]">
@@ -187,7 +188,7 @@ function PremiumInsightCard({
           href="/insights"
           className="text-xs font-medium text-qm-positive transition hover:text-qm-positive-hover"
         >
-          See full insights →
+          {t.dashboard.seeFullInsights}
         </Link>
         {!reflectedThisWeek && (
           <>
@@ -196,7 +197,7 @@ function PremiumInsightCard({
               href="/journal"
               className="text-xs text-qm-faint transition hover:text-qm-muted"
             >
-              Reflect on a recent entry
+              {t.dashboard.reflectRecentEntry}
             </Link>
           </>
         )}
@@ -223,14 +224,10 @@ function FreeInsightTeaser({
     return (
       <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-5 sm:p-6">
         <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-faint">
-          Your patterns
+          {t.dashboard.yourPatterns}
         </p>
         <p className="text-sm leading-relaxed text-qm-muted">
-          Write{" "}
-          <span className="text-qm-primary">
-            {t.dashboard.moreEntries(3 - entryCount)}
-          </span>{" "}
-          and Quiet Mirror will start noticing what quietly repeats across your writing.
+          {t.dashboard.freeNudge(CONFIG.appName, 3 - entryCount)}
         </p>
       </div>
     );
@@ -297,16 +294,16 @@ function ThreadCard({
   const body = wroteToday
     ? t.dashboard.dayEvolved
     : lastEntryId && lastTopEmotion
-    ? `You wrote ${when}. ${lastTopEmotion} was present. Has anything shifted?`
+    ? t.dashboard.threadBodyWritten(when!, lastTopEmotion)
     : lastEntryId
-    ? `You last wrote ${when}. Has anything softened since?`
+    ? t.dashboard.threadBodyWrittenNoEmotion(when!)
     : t.dashboard.oneHonestSentence;
 
   const threadPrompt = wroteToday
     ? t.dashboard.alreadyWroteToday
     : lastTopEmotion
-    ? `Following up on your last entry — ${lastTopEmotion} was present. Has anything shifted?`
-    : `Following up on your last entry — has anything softened since you wrote?`;
+    ? t.dashboard.threadPromptEmotion(lastTopEmotion)
+    : t.dashboard.threadPromptNoEmotion;
 
   return (
     <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-5">
@@ -345,24 +342,22 @@ function WelcomePanel() {
   return (
     <div className="mb-8 rounded-2xl border border-qm-positive-border bg-qm-positive-strong/[0.04] p-6">
       <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-positive">
-        Welcome to Quiet Mirror
+        {t.dashboard.welcomeTag}
       </p>
       <h2 className="font-display text-lg font-semibold leading-snug text-qm-primary">
-        This is your private space to think out loud.
+        {t.dashboard.welcomeHeading}
       </h2>
       <p className="mt-2 text-sm leading-relaxed text-qm-muted">
-        Write what&apos;s actually going on — Quiet Mirror reads it, reflects it back
-        gently, and starts noticing what quietly repeats across your entries over
-        time. One sentence is always enough to start.
+        {t.dashboard.welcomeBody(CONFIG.appName)}
       </p>
       <Link
         href="/journal/new"
         className="mt-5 inline-flex items-center gap-2 rounded-full bg-qm-accent px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-qm-accent-hover"
       >
-        Write your first entry →
+        {t.dashboard.writeFirstEntry}
       </Link>
       <p className="mt-3 text-xs text-qm-faint">
-        Takes less than a minute · stays private · never trains AI
+        {t.dashboard.welcomePrivacy}
       </p>
     </div>
   );
@@ -377,27 +372,20 @@ function PatternStartedCard({
   emotion: string | null;
   theme: string | null;
 }) {
+  const { t } = useTranslation();
   return (
     <div className="mb-8 rounded-2xl border border-qm-premium-border bg-qm-premium-strong/[0.04] p-6">
       <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-premium">
-        Your pattern history has started
+        {t.dashboard.patternStartedTag}
       </p>
       <p className="text-sm leading-relaxed text-qm-secondary">
-        Quiet Mirror has your first reflection.{" "}
-        {emotion || theme ? (
-          <>
-            It noticed{" "}
-            <span className="text-qm-primary">{emotion ?? theme}</span> in what
-            you wrote.{" "}
-          </>
-        ) : null}
-        The more you write, the more clearly the patterns will show.
+        {t.dashboard.patternStartedBody(emotion, theme)}
       </p>
       <Link
         href="/journal/new"
         className="mt-4 inline-flex items-center gap-2 text-xs font-medium text-qm-premium transition hover:text-qm-premium-hover"
       >
-        Write another entry →
+        {t.dashboard.writeAnotherEntry}
       </Link>
     </div>
   );
@@ -430,8 +418,7 @@ function ProgressNudge({ entryCount }: { entryCount: number }) {
         <span className="text-qm-primary">
           {t.dashboard.moreEntries(remaining)}
         </span>{" "}
-        and Quiet Mirror will start showing you what quietly repeats across your
-        writing.
+        {t.dashboard.freeNudge(CONFIG.appName, remaining)}
       </p>
     </div>
   );

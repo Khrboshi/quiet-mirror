@@ -45,9 +45,7 @@ export default async function UpgradeConfirmedPage() {
         </h1>
 
         <p className="mx-auto mt-5 max-w-md text-center text-[15px] leading-relaxed text-qm-muted">
-          {CONFIG.appName} will now read across your entries over time — not just today&apos;s. The
-          patterns, the weekly mirror, and the why-this-keeps-happening layer are all yours
-          {ps.trialFreeFor(PRICING.trialDays)}, and beyond if you choose to stay.
+          {uc.subDesc(CONFIG.appName, ps.trialFreeFor(PRICING.trialDays))}
         </p>
 
         {/* What just unlocked */}
@@ -69,8 +67,7 @@ export default async function UpgradeConfirmedPage() {
         </div>
 
         <p className="mt-6 text-center text-sm leading-relaxed text-qm-faint">
-          The patterns become clearer the more you write. You don&apos;t need to do anything
-          differently — just keep writing honestly, and {CONFIG.appName} does the noticing.
+          {uc.patternsNote(CONFIG.appName)}
         </p>
 
         {/* CTAs */}
@@ -91,8 +88,7 @@ export default async function UpgradeConfirmedPage() {
 
         {/* Billing note */}
         <p className="mt-8 text-center text-xs text-qm-faint">
-          Your dashboard may take up to 30 seconds to reflect your new plan. If it doesn&apos;t
-          update,{" "}
+          {uc.dashboardDelay}{" "}
           <Link href="/dashboard" className="text-qm-faint underline underline-offset-2 hover:text-qm-secondary">{uc.refreshOnce}</Link>
           .{" "}
           <Link href="/settings/billing" className="text-qm-faint underline underline-offset-2 hover:text-qm-secondary">{uc.manageBilling}</Link>
@@ -108,7 +104,7 @@ export default async function UpgradeConfirmedPage() {
             <Link href="/settings/billing" className="text-qm-muted underline underline-offset-2 hover:text-qm-secondary">
               {uc.billingSettings}
             </Link>
-            {" "}and you won&apos;t be charged anything.
+            {" "}{uc.billingNote}
           </p>
         </div>
 
