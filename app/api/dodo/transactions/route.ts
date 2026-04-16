@@ -7,7 +7,12 @@
 
 import { NextResponse } from "next/server";
 import DodoPayments from "dodopayments";
+// PaymentListResponse is the SDK's type for each item returned by payments.list().
+// Despite the name, it represents a single payment element, not the list wrapper —
+// confirmed by DefaultPageNumberPagination<PaymentListResponse> in the SDK source.
 import type { PaymentListResponse } from "dodopayments/resources/payments.js";
+/** A single element from page.items in the payments list response */
+type PaymentItem = PaymentListResponse;
 import { createServerSupabase } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -60,7 +65,7 @@ export async function GET() {
 
     // Normalize to the InvoiceItem shape consumed by
     // app/(protected)/settings/transactions/page.tsx
-    const items = (page.items ?? []).map((payment: PaymentListResponse) => ({
+    const items = (page.items ?? []).map((payment: PaymentItem) => ({
       id:                payment.payment_id ?? null,
       number:            payment.payment_id ?? null,
       status:            payment.status     ?? null,

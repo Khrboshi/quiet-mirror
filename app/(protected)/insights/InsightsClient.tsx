@@ -533,10 +533,12 @@ function WeeklySummarySection({ hasRealData }: { hasRealData: boolean }) {
       }
       const res = await fetch("/api/ai/weekly-summary", { cache: "no-store" });
       if (!res.ok) {
-        const j = await res.json().catch(() => ({}) as Record<string, unknown>);
+        const j: unknown = await res.json().catch(() => ({}));
         setState({
           status: "error",
-          message: j?.error || t.ui.summaryFailed,
+          message: typeof (j as Record<string,unknown>).error === "string"
+            ? (j as Record<string,unknown>).error as string
+            : t.ui.summaryFailed,
         });
         return;
       }
@@ -676,8 +678,12 @@ export default function InsightsClient() {
       try {
         const res = await fetch("/api/ai/insights", { cache: "no-store" });
         if (!res.ok) {
-          const j = await res.json().catch(() => ({}) as Record<string, unknown>);
-          setError((j as Record<string, unknown>)?.error as string || t.errors.insightsFailed);
+          const j: unknown = await res.json().catch(() => ({}));
+          setError(
+            typeof (j as Record<string,unknown>).error === "string"
+              ? (j as Record<string,unknown>).error as string
+              : t.errors.insightsFailed
+          );
           return;
         }
         setData(await res.json());

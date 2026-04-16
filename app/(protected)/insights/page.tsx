@@ -2,11 +2,9 @@ import { redirect } from "next/navigation";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { type PlanType } from "@/lib/planUtils";
 import InsightsClient from "./InsightsClient";
+import type { UserPlanRow } from "@/lib/supabaseTypes";
 
 export const dynamic = "force-dynamic";
-
-// Local type — replace with generated Supabase types when available
-type UserPlanRow = { plan_type: string | null };
 
 function normalizePlan(v: unknown): PlanType {
   const p = String(v ?? "FREE").toUpperCase();
