@@ -18,10 +18,11 @@ const base = CONFIG.siteUrl.replace(/\/$/, "");
 export default function sitemap(): MetadataRoute.Sitemap {
   const currentDate = new Date();
   
-  // Blog posts — using currentDate since your BlogArticle type doesn't have publishedAt/updatedAt
+  // Blog posts — each article has a real publishedAt date for accurate
+  // lastModified signals. Search engines use this to prioritise recrawls.
   const blogPosts: MetadataRoute.Sitemap = ARTICLES.map((article) => ({
     url: `${base}/blog/${article.slug}`,
-    lastModified: currentDate,
+    lastModified: new Date(article.publishedAt),
     changeFrequency: "monthly" as const,
     priority: 0.7,
   }));
