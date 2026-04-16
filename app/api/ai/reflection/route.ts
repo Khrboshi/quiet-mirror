@@ -130,7 +130,18 @@ async function refundOneCredit(supabase: SupabaseClient, userId: string): Promis
     return;
   }
 
-  const current = typeof data.remaining_credits === "number" ? data.remaining_credits : 0;
+  // Guard: bail if remaining_credits is not a valid number.
+  // Defaulting to 0 would incorrectly grant a credit to a corrupted or
+  // transitional row (e.g. null from a mid-migration state).
+  if (typeof data.remaining_credits !== "number") {
+    console.warn(
+      "[reflection] refund: remaining_credits is not a number — skipping refund to avoid minting credits:",
+      data.remaining_credits
+    );
+    return;
+  }
+
+  const current = data.remaining_credits;
 
   // Guard: never exceed the monthly cap (handles edge case where row was reset)
   if (current >= PRICING.freeMonthlyCredits) {
@@ -139,19 +150,28 @@ async function refundOneCredit(supabase: SupabaseClient, userId: string): Promis
   }
 
   // Optimistic-lock write: only succeeds if no concurrent write changed the value
-  const { error: writeErr } = await supabase
+  const { data: updateData, error: writeErr } = await supabase
     .from("user_credits")
     .update({
       remaining_credits: current + 1,
       updated_at: new Date().toISOString(),
     })
     .eq("user_id", userId)
-    .eq("remaining_credits", current); // optimistic lock
+    .eq("remaining_credits", current) // optimistic lock
+    .select("remaining_credits");
 
   if (writeErr) {
     console.error("[reflection] refund: write failed:", writeErr);
+  } else if (!updateData || updateData.length === 0) {
+    // 0 rows updated — either a concurrent write changed remaining_credits between
+    // our read and write (expected race, correct to skip), or an unexpected filter
+    // mismatch. Log at debug level so production traces can distinguish the two.
+    console.log(
+      "[reflection] refund: optimistic lock — 0 rows updated for user:",
+      userId,
+      "expected_credits:", current
+    );
   }
-  // If 0 rows updated (concurrent write won the race), that is correct — skip silently
 }
 
 function noStoreHeaders() {
