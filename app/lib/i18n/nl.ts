@@ -110,6 +110,7 @@ export const nl: Translations = {
 
   ui: {
     loading:          "…",
+    loadingLabel:     "Laden…",
     questionsHeading: (count) => {
       if (count <= 0) return "Vragen";
       if (count === 1) return "1 Vraag";

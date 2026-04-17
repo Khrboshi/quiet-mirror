@@ -107,6 +107,7 @@ export interface Translations {
 
   ui: {
     loading:          string;
+    loadingLabel:     string;
     questionsHeading: (count: number) => string;
     wordCount:        (n: number) => string;
     entryCount:       (current: number, total: number) => string;

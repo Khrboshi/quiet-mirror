@@ -109,6 +109,7 @@ export const fr: Translations = {
 
   ui: {
     loading:          "…",
+    loadingLabel:     "Chargement…",
     questionsHeading: (count) => {
       if (count <= 0) return "Questions";
       if (count === 1) return "1 question";

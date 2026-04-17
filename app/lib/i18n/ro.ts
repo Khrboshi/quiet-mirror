@@ -110,6 +110,7 @@ export const ro: Translations = {
 
   ui: {
     loading:          "…",
+    loadingLabel:     "Se încarcă…",
     questionsHeading: (count) => {
       if (count <= 0) return "Întrebări";
       if (count === 1) return "1 Întrebare";

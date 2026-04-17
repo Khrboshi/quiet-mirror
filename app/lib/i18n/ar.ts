@@ -131,6 +131,7 @@ export const ar: Translations = {
   },
   ui: {
     loading:            "…",
+    loadingLabel:       "جارٍ التحميل…",
     questionsHeading:   (count) => arQuestions(count),
     wordCount:          (n) => arWords(n),
     entryCount:         (current, total) => `${current}/${total}`,

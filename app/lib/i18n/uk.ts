@@ -134,6 +134,7 @@ export const uk: Translations = {
 
   ui: {
     loading:          "…",
+    loadingLabel:     "Завантаження…",
     questionsHeading: (count) => {
       if (count <= 0) return "Запитання";
       if (count === 1) return "1 запитання";

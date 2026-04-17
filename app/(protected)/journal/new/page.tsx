@@ -1,7 +1,10 @@
 import { Suspense } from "react";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createServerSupabase } from "@/lib/supabase/server";
 import JournalForm from "@/app/components/JournalForm";
+import { LoadingIndicatorInline } from "@/app/components/LoadingIndicator";
+import { getLocaleFromCookieString, getTranslations } from "@/app/lib/i18n";
 
 export const dynamic = "force-dynamic";
 
@@ -12,6 +15,10 @@ export default async function NewJournalPage() {
   const { data: { session } } = await supabase.auth.getSession();
   if (!session?.user) redirect("/magic-login");
 
+  const t = getTranslations(
+    getLocaleFromCookieString((await cookies()).toString()),
+  );
+
   return (
     <div className="mx-auto max-w-3xl px-4">
       {/*
@@ -20,14 +27,7 @@ export default async function NewJournalPage() {
         Without this boundary, Next.js 14 excludes the route from static
         optimisation and logs a build warning.
       */}
-      <Suspense fallback={
-        <div className="flex min-h-[60vh] items-center justify-center">
-          <div className="flex items-center gap-3 rounded-full border border-qm-border-subtle bg-qm-elevated px-4 py-2 text-sm text-qm-secondary">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-qm-positive" />
-            <span>Loading…</span>
-          </div>
-        </div>
-      }>
+      <Suspense fallback={<LoadingIndicatorInline label={t.ui.loadingLabel} />}>
         <JournalForm />
       </Suspense>
     </div>
