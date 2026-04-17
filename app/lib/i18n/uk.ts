@@ -236,12 +236,13 @@ export const uk: Translations = {
     patternUnderneathSub:    (appName) => `Конкретна динаміка, яку ${appName} найчастіше помічає у твоїх записах.`,
     mostRecurringPattern:    "Твій найчастіший глибинний паттерн",
     corepatternCount:        (count, total) => {
-      const form = total % 10 === 1 && total % 100 !== 11
-        ? "записі"
-        : (total % 10 >= 2 && total % 10 <= 4 && (total % 100 < 10 || total % 100 >= 20))
-          ? "записах"
-          : "записах";
-      return `${count}× у ${total} ${form}`;
+      // Ukrainian locative case after "у":
+      //   1, 21, 31…       → записі    (loc. singular)
+      //   everything else  → записах   (loc. plural — the few/many
+      //                                  distinction only applies in
+      //                                  nominative/accusative, not locative)
+      const singular = total % 10 === 1 && total % 100 !== 11;
+      return `${count}× у ${total} ${singular ? "записі" : "записах"}`;
     },
     // Closing CTA
     patternClearer:          "Паттерн став чіткішим.",
