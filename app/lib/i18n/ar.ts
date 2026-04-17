@@ -251,6 +251,12 @@ export const ar: Translations = {
     totalEntries: "إجمالي المدخلات",
     writingDays: "أيام الكتابة",
     lastEntryLabel: "آخر مدخل",
+    yourHistory: "سجلك",
+    allEntriesCta: "كل المدخلات ←",
+    viewInsightsCta: "عرض التحليلات ←",
+    unlockUnlimitedCta: "افتح تأملات غير محدودة ←",
+    trialBadgeFull: (days) => `استرداد كامل خلال ${days} يومًا · إلغاء في أي وقت`,
+    todaysPromptsLabel: "مقترحات اليوم",
     startArrow: "ابدأ ←",
     prompts: [
       { q: "كيف يشعر جسدك الآن؟",             sub: "توتر، هدوء، تعب، قلق — أي شيء تلاحظه.",   accent: "emerald" },

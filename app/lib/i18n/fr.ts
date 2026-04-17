@@ -236,6 +236,12 @@ export const fr: Translations = {
     totalEntries: "Entrées totales",
     writingDays: "Jours d'écriture",
     lastEntryLabel: "Dernière entrée",
+    yourHistory: "Votre historique",
+    allEntriesCta: "Toutes les entrées →",
+    viewInsightsCta: "Voir les aperçus →",
+    unlockUnlimitedCta: "Débloquer les réflexions illimitées →",
+    trialBadgeFull: (days) => `Remboursement intégral pendant ${days} jours · Annulable à tout moment`,
+    todaysPromptsLabel: "Invitations du jour",
     startArrow: "Commencer →",
     prompts: [
       { q: "Comment vous sentez-vous physiquement en ce moment ?",  sub: "Tension, calme, fatigue, agitation — tout ce que vous remarquez.", accent: "emerald" },

@@ -237,6 +237,12 @@ export const ro: Translations = {
     totalEntries: "Total înregistrări",
     writingDays: "Zile de scris",
     lastEntryLabel: "Ultima înregistrare",
+    yourHistory: "Istoricul tău",
+    allEntriesCta: "Toate înregistrările →",
+    viewInsightsCta: "Vezi perspectivele →",
+    unlockUnlimitedCta: "Deblochează reflecții nelimitate →",
+    trialBadgeFull: (days) => `Rambursare completă în ${days} zile · Anulare oricând`,
+    todaysPromptsLabel: "Sugestiile de azi",
     startArrow: "Începe →",
     prompts: [
       { q: "Cum se simte corpul tău acum?",                    sub: "Tensiune, calm, oboseală, neliniște — orice observi.", accent: "emerald" },

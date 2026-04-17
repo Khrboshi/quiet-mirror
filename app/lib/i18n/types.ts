@@ -239,6 +239,14 @@ export interface Translations {
     totalEntries:         string;
     writingDays:          string;
     lastEntryLabel:       string;
+    yourHistory:          string;
+    allEntriesCta:        string;
+    viewInsightsCta:      string;
+    // Zero-credit upgrade nudge + trial badge
+    unlockUnlimitedCta:   string;
+    trialBadgeFull:       (days: number) => string;
+    // Section labels
+    todaysPromptsLabel:   string;
     // Prompts
     startArrow:           string;
     prompts: readonly {

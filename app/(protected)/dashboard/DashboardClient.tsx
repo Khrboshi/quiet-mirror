@@ -536,9 +536,9 @@ export default function DashboardClient({
               href="/upgrade"
               className="inline-flex items-center rounded-full bg-qm-accent px-4 py-1.5 text-xs font-semibold text-white hover:bg-qm-accent-hover transition-colors"
             >
-              Unlock unlimited reflections →
+              {t.dashboard.unlockUnlimitedCta}
             </Link>
-            <span className="text-xs text-qm-faint">{PRICING.trialDays}-day full refund · Cancel anytime</span>
+            <span className="text-xs text-qm-faint">{t.dashboard.trialBadgeFull(PRICING.trialDays)}</span>
           </div>
         )}
       </div>
@@ -579,7 +579,7 @@ export default function DashboardClient({
       {/* ── Daily prompts ── */}
       <div className="mb-6">
         <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-faint">
-          Today&apos;s prompts
+          {t.dashboard.todaysPromptsLabel}
         </p>
 
         <div className="grid gap-3 sm:grid-cols-3">
@@ -598,7 +598,7 @@ export default function DashboardClient({
                 </p>
                 <p className="mt-1.5 text-xs leading-relaxed text-qm-faint">{c.sub}</p>
                 <p className="mt-3 text-xs font-medium transition text-qm-positive group-hover:text-qm-positive-hover">
-                  Start →
+                  {t.dashboard.startArrow}
                 </p>
               </Link>
             );
@@ -620,7 +620,7 @@ export default function DashboardClient({
         {/* ✅ History card — cleaner, less "settings panel" feel */}
         <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-5">
           <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-faint">
-            Your history
+            {t.dashboard.yourHistory}
           </p>
 
           <div className="mt-4 space-y-2.5">
@@ -653,14 +653,14 @@ export default function DashboardClient({
               href="/journal"
               className="text-xs text-qm-faint transition hover:text-qm-secondary"
             >
-              All entries →
+              {t.dashboard.allEntriesCta}
             </Link>
             {isPremium && (
               <Link
                 href="/insights"
                 className="text-xs text-qm-positive transition hover:text-qm-positive-hover"
               >
-                View insights →
+                {t.dashboard.viewInsightsCta}
               </Link>
             )}
           </div>

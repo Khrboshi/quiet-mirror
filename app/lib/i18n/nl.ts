@@ -237,6 +237,12 @@ export const nl: Translations = {
     totalEntries: "Totaal berichten",
     writingDays: "Schrijfdagen",
     lastEntryLabel: "Laatste bericht",
+    yourHistory: "Je geschiedenis",
+    allEntriesCta: "Alle berichten →",
+    viewInsightsCta: "Bekijk inzichten →",
+    unlockUnlimitedCta: "Onbeperkte reflecties ontgrendelen →",
+    trialBadgeFull: (days) => `Volledige terugbetaling binnen ${days} dagen · Altijd op te zeggen`,
+    todaysPromptsLabel: "Prompts van vandaag",
     startArrow: "Begin →",
     prompts: [
       { q: "Hoe voelt je lichaam zich nu?",                     sub: "Spanning, rust, moe, rusteloos — wat je ook opmerkt.", accent: "emerald" },

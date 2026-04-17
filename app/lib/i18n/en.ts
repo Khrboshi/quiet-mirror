@@ -248,6 +248,12 @@ export const en: Translations = {
     totalEntries: "Total entries",
     writingDays: "Writing days",
     lastEntryLabel: "Last entry",
+    yourHistory: "Your history",
+    allEntriesCta: "All entries →",
+    viewInsightsCta: "View insights →",
+    unlockUnlimitedCta: "Unlock unlimited reflections →",
+    trialBadgeFull: (days) => `${days}-day full refund · Cancel anytime`,
+    todaysPromptsLabel: "Today's prompts",
     startArrow: "Start →",
     prompts: [
       { q: "How is your body feeling right now?",      sub: "Tension, calm, tired, restless — anything you notice.", accent: "emerald" },

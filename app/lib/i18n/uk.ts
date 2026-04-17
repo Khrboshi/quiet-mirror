@@ -267,6 +267,12 @@ export const uk: Translations = {
     totalEntries: "Усього записів",
     writingDays: "Днів письма",
     lastEntryLabel: "Останній запис",
+    yourHistory: "Твоя історія",
+    allEntriesCta: "Усі записи →",
+    viewInsightsCta: "Переглянути аналітику →",
+    unlockUnlimitedCta: "Відкрий необмежені відображення →",
+    trialBadgeFull: (days) => `Повернення коштів протягом ${days} днів · Скасування будь-коли`,
+    todaysPromptsLabel: "Підказки на сьогодні",
     startArrow: "Почати →",
     prompts: [
       { q: "Як твоє тіло почувається прямо зараз?",       sub: "Напруга, спокій, втома, неспокій — все, що ти помічаєш.", accent: "emerald" },
