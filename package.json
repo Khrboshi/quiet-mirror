@@ -9,7 +9,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint \"**/*.{ts,tsx}\" --ignore-pattern .next --ignore-pattern node_modules"
   },
   "dependencies": {
     "@dodopayments/nextjs": "^0.3.5",

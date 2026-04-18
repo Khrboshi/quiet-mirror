@@ -4,6 +4,7 @@ import { PRICING } from "@/app/lib/pricing";
 import { CONFIG } from "@/app/lib/config";
 import { getRequestTranslations } from "@/app/lib/i18n/server";
 
+// eslint-disable-next-line no-restricted-syntax -- TODO(i18n): migrate to generateMetadata + getRequestTranslations. Tracked in issue #91.
 export const metadata = { title: `Welcome to Premium | ${CONFIG.appName}` };
 
 export default async function UpgradeConfirmedPage() {

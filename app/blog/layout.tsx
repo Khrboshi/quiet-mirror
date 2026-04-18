@@ -6,6 +6,7 @@
 import { CONFIG } from "@/app/lib/config";
 import type { Metadata } from "next";
 
+// eslint-disable-next-line no-restricted-syntax -- TODO(i18n): migrate to generateMetadata + getRequestTranslations. Tracked in issue #89.
 export const metadata: Metadata = {
   title: `${CONFIG.appName} Journal — Articles for Overloaded Minds`,
   description:

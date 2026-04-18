@@ -4,6 +4,7 @@ import { CONFIG } from "@/app/lib/config";
 import type { Metadata } from "next";
 import { getRequestTranslations } from "@/app/lib/i18n/server";
 
+// eslint-disable-next-line no-restricted-syntax -- TODO(i18n): migrate to generateMetadata + getRequestTranslations. Tracked in issue #87.
 export const metadata: Metadata = {
   title: `Sign in to ${CONFIG.appName}`,
   description: `Sign in to your private ${CONFIG.appName} journal with a magic link — no password needed. Your entries remain private and secure.`,
