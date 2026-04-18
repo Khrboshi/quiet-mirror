@@ -783,6 +783,8 @@ export interface Translations {
 
   // ── Auth complete (magic-link callback tab) ───────────────────────────────
   authComplete: {
+    metaTitle:       (appName: string) => string;
+    metaDescription: (appName: string) => string;
     signingIn:       string;
     signedIn:        string;
     closeTab:        string;

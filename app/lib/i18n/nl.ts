@@ -791,6 +791,8 @@ export const nl: Translations = {
   },
 
   authComplete: {
+    metaTitle:       (appName) => `Aanmelden | ${appName}`,
+    metaDescription: (appName) => `Aanmelden bij ${appName} voltooien.`,
     signingIn:       "Aanmelden…",
     signedIn:        "Je bent aangemeld.",
     closeTab:        "Je oorspronkelijke tabblad is klaar. Je kunt dit sluiten.",

@@ -813,6 +813,8 @@ export const en: Translations = {
 
   // ── Auth complete (magic-link callback tab) ───────────────────────────────
   authComplete: {
+    metaTitle:       (appName) => `Signing you in | ${appName}`,
+    metaDescription: (appName) => `Completing sign-in to ${appName}.`,
     signingIn:       "Signing you in\u2026",
     signedIn:        "You\u2019re signed in.",
     closeTab:        "Your original tab is ready. You can close this one.",

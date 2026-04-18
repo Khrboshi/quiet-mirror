@@ -796,6 +796,8 @@ export const ro: Translations = {
   },
 
   authComplete: {
+    metaTitle:       (appName) => `Conectare în curs | ${appName}`,
+    metaDescription: (appName) => `Finalizarea conectării la ${appName}.`,
     signingIn:       "Conectare în curs…",
     signedIn:        "Sunteți conectat(ă).",
     closeTab:        "Fila originală este gata. Puteți închide aceasta.",

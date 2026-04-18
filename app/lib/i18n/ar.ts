@@ -807,6 +807,8 @@ export const ar: Translations = {
   },
 
   authComplete: {
+    metaTitle:       (appName) => `جارٍ تسجيل الدخول | ${appName}`,
+    metaDescription: (appName) => `إتمام تسجيل الدخول إلى ${appName}.`,
     signingIn:       "جارٍ تسجيل الدخول\u2026",
     signedIn:        "تم تسجيل دخولك.",
     closeTab:        "علامة التبويب الأصلية جاهزة. يمكنك إغلاق هذه.",

@@ -839,6 +839,8 @@ export const uk: Translations = {
   },
 
   authComplete: {
+    metaTitle:       (appName) => `Виконуємо вхід | ${appName}`,
+    metaDescription: (appName) => `Завершення входу до ${appName}.`,
     signingIn:       "Виконую вхід\u2026",
     signedIn:        "Ти увійшли.",
     closeTab:        "Початкова вкладка готова. Ти можеш закрити цю.",

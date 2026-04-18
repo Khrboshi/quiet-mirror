@@ -799,6 +799,8 @@ export const fr: Translations = {
   },
 
   authComplete: {
+    metaTitle:       (appName) => `Connexion en cours | ${appName}`,
+    metaDescription: (appName) => `Finalisation de la connexion \u00e0 ${appName}.`,
     signingIn:       "Connexion en cours\u2026",
     signedIn:        "Vous \u00eates connect\u00e9(e).",
     closeTab:        "Votre onglet d\u2019origine est pr\u00eat. Vous pouvez fermer celui-ci.",
