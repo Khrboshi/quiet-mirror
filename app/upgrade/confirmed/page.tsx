@@ -13,10 +13,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function UpgradeConfirmedPage() {
-  const _t = await getRequestTranslations();
-  const uc = _t.upgradeConfirmed;
-  const ps = _t.pricingStrings;
-  const pf = _t.premiumFeatures;
+  const t = await getRequestTranslations();
+  const uc = t.upgradeConfirmed;
+  const ps = t.pricingStrings;
+  const pf = t.premiumFeatures;
 
   const features = [
     { label: pf.f1Label, sub: pf.f1Sub, color: "text-qm-positive" },
