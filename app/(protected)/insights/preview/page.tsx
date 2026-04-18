@@ -194,16 +194,13 @@ export default async function InsightsPreviewPage() {
           </div>
           <div className="pointer-events-none select-none space-y-4 blur-[3px]">
             <p className="text-base leading-relaxed text-qm-primary">
-              You often write about work and career, relationships, and general life reflections,
-              with a sense of apprehension simmering beneath the surface. Your entries are filled
-              with moments of effort and relief, but the pressure to perform is a constant companion.
+              {ip.demoParagraph1}
             </p>
             <p className="text-sm leading-relaxed text-qm-muted">
-              A pattern has emerged: stress is often intensified by feelings of being unseen or
-              undervalued. This sense of disconnection is recurring, and it&apos;s affecting your well-being.
+              {ip.demoParagraph2}
             </p>
             <p className="text-sm text-qm-muted">
-              What&apos;s been on your mind lately, and how have you been taking care of yourself?
+              {ip.demoParagraph3}
             </p>
           </div>
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-qm-bg backdrop-blur-[1px]">

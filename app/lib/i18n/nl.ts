@@ -651,6 +651,14 @@ export const nl: Translations = {
     desc:"Upgrade om te zien wat er steeds terugkomt in al je berichten.",
     cta:"Upgraden naar Premium →",
     noPressure: (n) => `Geen druk om te upgraden. Gratis bevat ${n} reflecties per maand en volledig dagboek.`,
+    headingPrimary:        "Je hebt eerlijk geschreven.",
+    headingAccent:         "Hier begint het diepere beeld.",
+    body:                  "Deze functie is onderdeel van Premium — de laag die door je berichten heen leest over tijd en je laat zien wat blijft terugkomen, wat verschuift, en wat er mogelijk onder zit.",
+    premiumFeatureBadge:   "✦ Premium functie",
+    perMonthSuffix:        "/ maand",
+    previewCta:            "Bekijk wat Premium toont",
+    continueFreeCta:       "← Gratis blijven schrijven",
+    trustLine:             "Je berichten zijn privé, worden nooit gedeeld, en nooit gebruikt om AI-modellen te trainen.",
   },
 
   magicLoginPage: {
@@ -761,6 +769,9 @@ export const nl: Translations = {
     upgradeCta:           (price: string) => `Volledige inzichten ontgrendelen — ${price} →`,
     upgradeBack:          "Terug naar dashboard",
     upgradeRefund:        (days: number) => `🛡️ ${days} dagen volledige terugbetaling · Altijd opzegbaar · Geen vragen.`,
+    demoParagraph1:       "Je schrijft vaak over werk en carrière, relaties, en algemene reflecties over het leven, met een gevoel van bezorgdheid dat onder de oppervlakte sudderen. Je berichten zijn gevuld met momenten van inspanning en opluchting, maar de druk om te presteren is een constante metgezel.",
+    demoParagraph2:       "Er is een patroon ontstaan: stress wordt vaak versterkt door gevoelens van niet gezien of ondergewaardeerd worden. Dit gevoel van verbondenheidsverlies komt terug, en het beïnvloedt je welzijn.",
+    demoParagraph3:       "Wat houdt je de laatste tijd bezig, en hoe zorg je voor jezelf?",
     footerNote:           "Inzichten verdiepen naarmate je reflectiegeschiedenis groeit.",
   },
 
