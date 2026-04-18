@@ -805,6 +805,8 @@ export const ro: Translations = {
 
   // ── installPage ──────────────────────────────────────────────────────────
   installPage: {
+    metaTitle: (appName) => `Instalează aplicația | ${appName}`,
+    metaDescription: (appName) => `Adaugă ${appName} pe ecranul de pornire pentru o experiență de jurnal mai rapidă, similară unei aplicații. Nu este nevoie de app store.`,
     tag: (appName) => `Instalează ${appName}`,
     headline: (appName) => `Păstrați ${appName} la o singură atingere distanță.`,
     desc: (appName) => `Instalarea ${appName} creează o pictogramă de aplicație și face revenirea la jurnalul tău mai rapidă, mai curată și mai fiabilă.`,

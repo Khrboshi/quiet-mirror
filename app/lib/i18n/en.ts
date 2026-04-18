@@ -821,6 +821,8 @@ export const en: Translations = {
 
   // ── Install page ──────────────────────────────────────────────────────────
   installPage: {
+    metaTitle:         (appName) => `Install the App | ${appName}`,
+    metaDescription:   (appName) => `Add ${appName} to your home screen for a faster, app-like journaling experience. No app store needed.`,
     tag:               (appName) => `Install ${appName}`,
     headline:          (appName) => `Keep ${appName} one tap away.`,
     desc:              (appName) => `Installing ${appName} creates an app icon and makes returning to your journal faster, cleaner, and more reliable.`,
