@@ -657,6 +657,14 @@ export const fr: Translations = {
     desc:"Passez à Premium pour voir ce qui revient à travers toutes vos entrées.",
     cta:"Passer à Premium →",
     noPressure: (n) => `Pas de pression pour mettre à niveau. Gratuit inclut ${n} réflexions par mois et le journal complet.`,
+    headingPrimary:        "Vous écrivez avec honnêteté.",
+    headingAccent:         "C'est ici que l'image plus profonde commence.",
+    body:                  "Cette fonctionnalité fait partie de Premium — la couche qui lit à travers vos entrées au fil du temps et vous montre ce qui se répète, ce qui évolue, et ce qui peut se trouver en dessous.",
+    premiumFeatureBadge:   "✦ Fonctionnalité Premium",
+    perMonthSuffix:        "/ mois",
+    previewCta:            "Aperçu de ce que Premium montre",
+    continueFreeCta:       "← Continuer le journal gratuit",
+    trustLine:             "Vos entrées sont privées, jamais partagées, et jamais utilisées pour entraîner des modèles d'IA.",
   },
 
   magicLoginPage: {

@@ -640,6 +640,15 @@ export interface Translations {
     checking: string; heading: string; desc: string;
     cta: string;
     noPressure: (n: number) => string;
+    // Gate screen (shown when a non-premium user hits a premium-only page)
+    headingPrimary:        string;
+    headingAccent:         string;
+    body:                  string;
+    premiumFeatureBadge:   string;
+    perMonthSuffix:        string;
+    previewCta:            string;
+    continueFreeCta:       string;
+    trustLine:             string;
   };
   magicLoginPage: {
     returningGreeting: string; newGreeting: string;
@@ -748,6 +757,10 @@ export interface Translations {
     upgradeCta:           (price: string) => string;
     upgradeBack:          string;
     upgradeRefund:        (days: number) => string;
+    // Blurred weekly-summary demo (behind the Premium lock)
+    demoParagraph1:       string;
+    demoParagraph2:       string;
+    demoParagraph3:       string;
     // Footer
     footerNote:           string;
   };
