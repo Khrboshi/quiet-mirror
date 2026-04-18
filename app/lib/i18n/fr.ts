@@ -808,6 +808,8 @@ export const fr: Translations = {
 
   // ── installPage ──────────────────────────────────────────────────────────
   installPage: {
+    metaTitle: (appName) => `Installer l\'application | ${appName}`,
+    metaDescription: (appName) => `Ajoutez ${appName} à votre écran d\'accueil pour une expérience de journal plus rapide et proche d\'une app. Aucun magasin d\'applications nécessaire.`,
     tag: (appName) => `Installer ${appName}`,
     headline: (appName) => `Gardez ${appName} à portée d\'un seul geste.`,
     desc: (appName) => `L\'installation de ${appName} crée une icône d\'application et rend le retour à votre journal plus rapide, plus propre et plus fiable.`,

@@ -800,6 +800,8 @@ export const nl: Translations = {
 
   // ── installPage ──────────────────────────────────────────────────────────
   installPage: {
+    metaTitle: (appName) => `De app installeren | ${appName}`,
+    metaDescription: (appName) => `Voeg ${appName} toe aan je beginscherm voor een snellere, app-achtige dagboekervaring. Geen app store nodig.`,
     tag: (appName) => `${appName} installeren`,
     headline: (appName) => `Houd ${appName} op één tik afstand.`,
     desc: (appName) => `Het installeren van ${appName} maakt een app-pictogram en zorgt dat het terugkeren naar je dagboek sneller, overzichtelijker en betrouwbaarder is.`,

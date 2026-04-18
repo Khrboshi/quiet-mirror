@@ -816,6 +816,8 @@ export const ar: Translations = {
 
   // ── installPage ──────────────────────────────────────────────────────────
   installPage: {
+    metaTitle: (appName) => `تثبيت التطبيق | ${appName}`,
+    metaDescription: (appName) => `أضف ${appName} إلى شاشتك الرئيسية للحصول على تجربة تدوين أسرع وأشبه بتطبيق. لا حاجة إلى متجر التطبيقات.`,
     tag: (appName) => `تثبيت ${appName}`,
     headline: (appName) => `أبقِ ${appName} على بُعد نقرة واحدة.`,
     desc: (appName) => `يُنشئ تثبيت ${appName} أيقونة تطبيق ويجعل العودة إلى يوميتك أسرع وأنظف وأكثر موثوقية.`,

@@ -791,6 +791,8 @@ export interface Translations {
 
   // ── Install page ──────────────────────────────────────────────────────────
   installPage: {
+    metaTitle:         (appName: string) => string;
+    metaDescription:   (appName: string) => string;
     tag:               (appName: string) => string;
     headline:          (appName: string) => string;
     desc:              (appName: string) => string;
