@@ -17,7 +17,7 @@
           "error",
           {
             "selector": "ExportNamedDeclaration > VariableDeclaration > VariableDeclarator[id.name='metadata']",
-            "message": "Do not use `export const metadata`. Use `export async function generateMetadata()` with getRequestTranslations() + CONFIG from @/app/lib/config so titles and descriptions reflect the user's locale and the canonical brand name. Static metadata freezes English at build time — the exact bug fixed in PR #86. Reference pattern: app/install/layout.tsx. If you truly need static metadata (e.g., only `robots`, no locale-sensitive text), add an eslint-disable comment with a justification."
+            "message": "Do not use `export const metadata`. Use `export async function generateMetadata()` with getRequestTranslations() + CONFIG from @/app/lib/config so titles and descriptions reflect the user's locale and the canonical brand name. Static metadata freezes English at build time — the exact bug fixed in PR #86. See docs/I18N.md#the-metadata-rule for the pattern, and app/install/layout.tsx for a reference example. If you truly need static metadata (e.g., only `robots`, no locale-sensitive text), add an eslint-disable comment with a justification."
           }
         ]
       }
