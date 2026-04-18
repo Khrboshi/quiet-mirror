@@ -495,6 +495,7 @@ export const ro: Translations = {
   },
 
   upgradeConfirmed: {
+    metaTitle:       (appName) => `Bun venit la Premium | ${appName}`,
     headline1:       "Perioada ta de probă a început.",
     headline2:       "Stratul mai profund este deschis.",
     subDesc:         (appName, trialFor) => `${appName} va citi acum intrările tale de-a lungul timpului — nu doar pe cea de azi. Tiparele, oglinda săptămânală și stratul de-ce-se-repetă-asta sunt ale tale ${trialFor} și după aceea, dacă alegi să rămâi.`,

@@ -512,6 +512,7 @@ export const en: Translations = {
 
   // ── Upgrade confirmed ────────────────────────────────────────────────────────
   upgradeConfirmed: {
+    metaTitle:       (appName) => `Welcome to Premium | ${appName}`,
     headline1:       "Your trial has started.",
     headline2:       "The deeper layer is open.",
     subDesc:         (appName, trialFor) => `${appName} will now read across your entries over time — not just today’s. The patterns, the weekly mirror, and the why-this-keeps-happening layer are all yours ${trialFor}, and beyond if you choose to stay.`,

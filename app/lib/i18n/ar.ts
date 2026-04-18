@@ -503,6 +503,7 @@ export const ar: Translations = {
     perMonth:             "/ شهر",
   },
   upgradeConfirmed: {
+    metaTitle:       (appName) => `مرحبًا بك في Premium | ${appName}`,
     headline1:       "بدأت فترتك التجريبية.",
     headline2:       "الطبقة الأعمق مفتوحة.",
     subDesc:         (appName, trialFor) => `سيقرأ ${appName} الآن مدخلاتك عبر الزمن — ليس فقط اليوم. الأنماط والمرآة الأسبوعية وطبقة لماذا-يتكرر-هذا كلها لك ${trialFor}، وما بعده إن اخترت البقاء.`,

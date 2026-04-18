@@ -496,6 +496,7 @@ export const fr: Translations = {
 
   // ── Upgrade confirmed ────────────────────────────────────────────────────────
   upgradeConfirmed: {
+    metaTitle:       (appName) => `Bienvenue dans Premium | ${appName}`,
     headline1:       "Votre essai a commencé.",
     headline2:       "La couche plus profonde est ouverte.",
     subDesc:         (appName, trialFor) => `${appName} lira désormais vos entrées dans le temps — pas seulement celle d’aujourd’hui. Les schémas, le miroir hebdomadaire et la couche pourquoi-ça-revient sont tous vôtres ${trialFor}, et au-delà si vous choisissez de rester.`,

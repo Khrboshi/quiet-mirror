@@ -490,6 +490,7 @@ export const nl: Translations = {
   },
 
   upgradeConfirmed: {
+    metaTitle:       (appName) => `Welkom bij Premium | ${appName}`,
     headline1:       "Je proefperiode is begonnen.",
     headline2:       "De diepere laag is open.",
     subDesc:         (appName, trialFor) => `${appName} zal nu je berichten door de tijd heen lezen — niet alleen die van vandaag. De patronen, de wekelijkse spiegel en de laag waarom-dit-blijft-terugkomen zijn allemaal van jou ${trialFor}, en daarna als je ervoor kiest te blijven.`,

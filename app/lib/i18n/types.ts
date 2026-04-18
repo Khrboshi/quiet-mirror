@@ -516,6 +516,7 @@ export interface Translations {
 
   // ── Upgrade confirmed ────────────────────────────────────────────────────────
   upgradeConfirmed: {
+    metaTitle:        (appName: string) => string;
     headline1:        string;
     headline2:        string;
     subDesc:          (appName: string, trialFor: string) => string;
