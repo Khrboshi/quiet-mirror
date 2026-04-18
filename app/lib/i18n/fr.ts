@@ -777,6 +777,9 @@ export const fr: Translations = {
     upgradeCta:           (price: string) => `Débloquer les aperçus complets — ${price} →`,
     upgradeBack:          "Retour au tableau de bord",
     upgradeRefund:        (days: number) => `🛡️ Remboursement complet sous ${days} jours · Annulez à tout moment · Sans questions posées.`,
+    demoParagraph1:       "Vous écrivez souvent sur le travail et la carrière, les relations, et des réflexions plus générales sur la vie, avec une appréhension qui bouillonne sous la surface. Vos entrées sont remplies de moments d'effort et de soulagement, mais la pression de la performance reste un compagnon constant.",
+    demoParagraph2:       "Un schéma a émergé : le stress est souvent intensifié par le sentiment de ne pas être vu·e ou d'être sous-estimé·e. Ce sentiment de déconnexion revient, et il affecte votre bien-être.",
+    demoParagraph3:       "Qu'est-ce qui vous préoccupe ces derniers temps, et comment prenez-vous soin de vous ?",
     footerNote:           "Les aperçus s'approfondissent au fur et à mesure que votre historique de réflexions grandit.",
   },
 

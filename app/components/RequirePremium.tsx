@@ -22,7 +22,7 @@ export default function RequirePremium({ children }: RequirePremiumProps) {
       <div className="flex min-h-[60vh] items-center justify-center bg-qm-bg">
         <div className="flex items-center gap-3 rounded-full border border-qm-subtle bg-qm-card px-4 py-2 text-sm text-qm-secondary">
           <span className="h-2 w-2 animate-pulse rounded-full bg-qm-accent" />
-          <span>Checking your plan…</span>
+          <span>{rp.checking}</span>
         </div>
       </div>
     );
@@ -38,21 +38,19 @@ export default function RequirePremium({ children }: RequirePremiumProps) {
           {/* Main card */}
           <div className="qm-panel rounded-[1.75rem] p-7 shadow-qm-soft sm:p-8">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-qm-accent bg-qm-accent-soft px-3 py-1 text-xs font-semibold text-qm-accent">
-              ✦ Premium feature
+              {rp.premiumFeatureBadge}
             </span>
 
             <h1 className="font-display mt-5 text-2xl font-semibold leading-snug text-qm-primary sm:text-3xl">
-              You&apos;ve been writing honestly.
+              {rp.headingPrimary}
               <br />
               <span className="text-qm-accent">
-                This is where the deeper picture starts.
+                {rp.headingAccent}
               </span>
             </h1>
 
             <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-qm-secondary">
-              This feature is part of Premium — the layer that reads across your
-              entries over time and shows you what keeps repeating, what&apos;s
-              shifting, and what may be underneath it.
+              {rp.body}
             </p>
 
             {/* What Premium unlocks */}
@@ -99,7 +97,7 @@ export default function RequirePremium({ children }: RequirePremiumProps) {
                 <span className="font-display text-3xl font-bold text-qm-primary">
                   {PRICING.monthly}
                 </span>
-                <span className="text-sm text-qm-secondary">/ month</span>
+                <span className="text-sm text-qm-secondary">{rp.perMonthSuffix}</span>
                 <span className="rounded-full border border-qm-accent bg-qm-accent-soft px-2.5 py-0.5 text-[11px] font-medium text-qm-accent">
                   {ps.valueLabel(PRICING.trialDays)}
                 </span>
@@ -120,7 +118,7 @@ export default function RequirePremium({ children }: RequirePremiumProps) {
                   href="/insights/preview"
                   className="inline-flex items-center justify-center rounded-full qm-btn-secondary px-5 py-3 text-sm"
                 >
-                  Preview what Premium shows
+                  {rp.previewCta}
                 </Link>
               </div>
             </div>
@@ -136,21 +134,20 @@ export default function RequirePremium({ children }: RequirePremiumProps) {
                 href="/journal"
                 className="text-sm font-medium text-qm-accent transition-colors hover:opacity-80"
               >
-                ← Continue journaling free
+                {rp.continueFreeCta}
               </Link>
               <Link
                 href="/dashboard"
                 className="text-sm text-qm-muted transition-colors hover:text-qm-secondary"
               >
-                Go to dashboard
+                {t.nav.goToDashboard}
               </Link>
             </div>
           </div>
 
           {/* Trust line */}
           <p className="text-center text-xs text-qm-faint">
-            Your entries are private, never shared, and never used to train AI
-            models.
+            {rp.trustLine}
           </p>
         </div>
       </div>

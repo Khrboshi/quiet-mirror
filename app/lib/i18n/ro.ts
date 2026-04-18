@@ -656,6 +656,14 @@ export const ro: Translations = {
     desc:"Fă upgrade pentru a vedea ce continuă să apară în toate înregistrările tale",
     cta:"Upgrade la Premium →",
     noPressure: (n) => `Fără presiune de upgrade. Gratuit include ${n} reflecții pe lună și jurnal complet.`,
+    headingPrimary:        "Ai scris cu sinceritate.",
+    headingAccent:         "De aici începe imaginea mai profundă.",
+    body:                  "Această funcție face parte din Premium — stratul care citește prin înregistrările tale în timp și îți arată ce se repetă, ce se schimbă și ce poate fi dedesubt.",
+    premiumFeatureBadge:   "✦ Funcție Premium",
+    perMonthSuffix:        "/ lună",
+    previewCta:            "Vezi ce afișează Premium",
+    continueFreeCta:       "← Continuă să scrii gratuit",
+    trustLine:             "Înregistrările tale sunt private, nu sunt niciodată partajate și niciodată folosite pentru antrenarea modelelor AI.",
   },
 
   magicLoginPage: {
@@ -766,6 +774,9 @@ export const ro: Translations = {
     upgradeCta:           (price: string) => `Deblocați perspectivele complete — ${price} →`,
     upgradeBack:          "Înapoi la panou",
     upgradeRefund:        (days: number) => `🛡️ Rambursare completă ${days} zile · Anulează oricând · Fără întrebări.`,
+    demoParagraph1:       "Scrii adesea despre muncă și carieră, relații și reflecții generale asupra vieții, cu un sentiment de neliniște care fierbe sub suprafață. Înregistrările tale sunt pline de momente de efort și ușurare, dar presiunea de a performa este un companion constant.",
+    demoParagraph2:       "A apărut un tipar: stresul este adesea intensificat de sentimentul că nu ești văzut sau apreciat. Acest sentiment de deconectare se repetă și îți afectează bunăstarea.",
+    demoParagraph3:       "Ce te preocupă în ultima vreme și cum ai grijă de tine?",
     footerNote:           "Perspectivele se aprofundează pe măsură ce istoricul reflecțiilor tău crește.",
   },
 
