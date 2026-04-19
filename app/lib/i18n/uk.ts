@@ -726,6 +726,10 @@ export const uk: Translations = {
     backToHome:        "← На головну",
     codePlaceholder:"Введи 6–8 цифровий код",verify:"Підтвердити та увійти",verifying:"Перевірка…",
     formAriaLabel:     "Форма входу за magic-посиланням",
+    metaTitle:(appName)=>`Вхід до ${appName}`,
+    metaDescription:(appName)=>`Увійдіть до свого приватного журналу ${appName} за magic-посиланням — без пароля. Твої записи залишаються приватними та захищеними.`,
+    ogTitle:(appName)=>`Вхід до ${appName}`,
+    ogDescription:"Отримай доступ до свого приватного журналу через безпечне magic-посилання.",
   },
   upgradePage: {
     metaTitle:(appName)=>`Перейти на Premium | ${appName}`,

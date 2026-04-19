@@ -686,6 +686,10 @@ export const fr: Translations = {
     backToHome:        "← Retour à l'accueil",
     codePlaceholder:"Entrez le code à 6–8 chiffres",verify:"Vérifier et se connecter",verifying:"Vérification…",
     formAriaLabel:     "Formulaire de connexion par lien magique",
+    metaTitle:(appName)=>`Se connecter à ${appName}`,
+    metaDescription:(appName)=>`Connectez-vous à votre journal privé ${appName} avec un lien magique — pas de mot de passe. Vos entrées restent privées et sécurisées.`,
+    ogTitle:(appName)=>`Se connecter à ${appName}`,
+    ogDescription:"Accédez à votre journal privé avec un lien magique sécurisé.",
   },
 
   upgradePage: {

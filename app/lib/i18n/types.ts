@@ -664,6 +664,10 @@ export interface Translations {
     emailAddressLabel: string;
     backToHome:        string;
     formAriaLabel:     string;
+    metaTitle:       (appName: string) => string;
+    metaDescription: (appName: string) => string;
+    ogTitle:         (appName: string) => string;
+    ogDescription:   string;
   };
   upgradePage: {
     metaTitle: (appName: string) => string;

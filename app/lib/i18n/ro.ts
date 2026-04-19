@@ -685,6 +685,10 @@ export const ro: Translations = {
     backToHome:        "← Înapoi acasă",
     codePlaceholder:"Introdu codul de 6–8 cifre",verify:"Verifică și conectează-te",verifying:"Se verifică…",
     formAriaLabel:     "Formular de autentificare prin magic link",
+    metaTitle:(appName)=>`Autentifică-te în ${appName}`,
+    metaDescription:(appName)=>`Autentifică-te în jurnalul tău privat ${appName} cu un magic link — fără parolă. Înregistrările tale rămân private și sigure.`,
+    ogTitle:(appName)=>`Autentifică-te în ${appName}`,
+    ogDescription:"Accesează-ți jurnalul privat printr-un magic link securizat.",
   },
 
   upgradePage: {
