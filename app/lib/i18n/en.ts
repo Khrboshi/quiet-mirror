@@ -706,7 +706,7 @@ export const en: Translations = {
   upgradePage: {
     metaTitle:(appName)=>`Upgrade to Premium | ${appName}`,
     metaDescription:(appName,cadence)=>`Unlock unlimited AI reflections, weekly pattern summaries, and deep insight tracking with ${appName} Premium. ${cadence}.`,
-    faq1Q:"What does Quiet Mirror actually show me with Premium?",
+    faq1Q:(appName)=>`What does ${appName} actually show me with Premium?`,
     faq1A:"Premium unlocks the layer that reads across all your entries over time — not just the one you wrote today. You start seeing which emotional themes appear most often, how they connect to each other, what has been shifting, and why something may keep happening.",
     faq2Q:"How many reflections do I get on the free plan?",
     faq2A:(n)=>`Free includes ${n} AI reflections per month — enough to experience how Quiet Mirror works. Premium gives you unlimited reflections on every entry.`,
@@ -999,7 +999,7 @@ export const en: Translations = {
     midH:                 "The pattern you\u2019ve been sensing is already there.",
     midAccent:            "Premium helps you finally name it.",
     faqHeading:           "A few honest answers",
-    faq1Q:                "What does Quiet Mirror actually show me with Premium?",
+    faq1Q:                (appName) => `What does ${appName} actually show me with Premium?`,
     faq1A:                "Premium unlocks the layer that reads across all your entries over time \u2014 not just the one you wrote today. You start seeing which emotional themes appear most often, how they connect to each other, what has been shifting, and why something may keep happening. The weekly summary pulls it all together into one personal read each week.",
     faq2Q:                "How many reflections do I get on the free plan?",
     faq2A:                (n) => `Free includes ${n} AI reflections per month \u2014 enough to experience how Quiet Mirror works. Premium gives you unlimited reflections on every entry.`,

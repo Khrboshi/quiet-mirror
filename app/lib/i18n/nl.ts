@@ -689,7 +689,7 @@ export const nl: Translations = {
   upgradePage: {
     metaTitle:(appName)=>`Upgrade naar Premium | ${appName}`,
     metaDescription:(appName,cadence)=>`Ontgrendel onbeperkte AI-reflecties, wekelijkse patroonsamenvattingen en diepgaande inzichten met ${appName} Premium. ${cadence}.`,
-    faq1Q:"Wat toont Quiet Mirror me echt met Premium?",
+    faq1Q:(appName)=>`Wat toont ${appName} me echt met Premium?`,
     faq1A:"Premium ontgrendelt de laag die al je berichten over tijd leest — niet alleen die van vandaag. Je begint te zien welke emotionele thema's het vaakst voorkomen, hoe ze verbonden zijn, wat er is verschoven en waarom iets blijft gebeuren.",
     faq2Q:"Hoeveel reflecties krijg ik op het gratis plan?",
     faq2A:(n)=>`Gratis bevat ${n} AI-reflecties per maand — genoeg om te ervaren hoe Quiet Mirror werkt. Premium geeft je onbeperkte reflecties op elk bericht.`,
@@ -979,7 +979,7 @@ export const nl: Translations = {
     midH: "Het patroon dat je voelde is er al.",
     midAccent: "Premium helpt je het eindelijk te benoemen.",
     faqHeading: "Een paar eerlijke antwoorden",
-    faq1Q: "Wat laat Quiet Mirror me echt zien met Premium?",
+    faq1Q: (appName) => `Wat laat ${appName} me echt zien met Premium?`,
     faq1A: "Premium ontgrendelt de laag die al je berichten door de tijd leest — niet alleen die van vandaag. Je begint te zien welke emotionele thema’s het vaakst voorkomen, hoe ze verbonden zijn, wat er is verschoven en waarom iets blijft gebeuren.",
     faq2Q: "Hoeveel reflecties krijg ik op het Gratis plan?",
     faq2A: (n) => `Gratis bevat ${n} AI-reflecties per maand — genoeg om Quiet Mirror te ervaren. Premium geeft je onbeperkte reflecties op elk bericht.`,

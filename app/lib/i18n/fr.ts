@@ -695,7 +695,7 @@ export const fr: Translations = {
   upgradePage: {
     metaTitle:(appName)=>`Passer à Premium | ${appName}`,
     metaDescription:(appName,cadence)=>`Débloquez des réflexions IA illimitées, des résumés hebdomadaires de schémas et un suivi approfondi des aperçus avec ${appName} Premium. ${cadence}.`,
-    faq1Q:"Que me montre réellement Quiet Mirror avec Premium ?",
+    faq1Q:(appName)=>`Que me montre réellement ${appName} avec Premium ?`,
     faq1A:"Premium débloque la couche qui lit à travers toutes vos entrées dans le temps — pas seulement celle que vous avez écrite aujourd'hui. Vous commencez à voir quels thèmes émotionnels apparaissent le plus souvent, comment ils se connectent les uns aux autres, ce qui a évolué et pourquoi quelque chose peut continuer à arriver.",
     faq2Q:"Combien de réflexions ai-je avec le plan gratuit ?",
     faq2A:(n)=>`Le plan gratuit inclut ${n} ${n === 1 ? "réflexion" : "réflexions"} IA par mois — assez pour découvrir comment fonctionne Quiet Mirror. Premium vous donne des réflexions illimitées sur chaque entrée.`,
@@ -987,7 +987,7 @@ export const fr: Translations = {
     midH: "Le schéma que vous pressentez est déjà là.",
     midAccent: "Premium vous aide enfin à le nommer.",
     faqHeading: "Quelques réponses honnêtes",
-    faq1Q: "Que me montre vraiment Quiet Mirror avec Premium ?",
+    faq1Q: (appName) => `Que me montre vraiment ${appName} avec Premium ?`,
     faq1A: "Premium débloque la couche qui lit toutes vos entrées dans le temps — pas seulement celle d’aujourd’hui. Vous commencez à voir quels thèmes émotionnels apparaissent le plus souvent, comment ils se connectent, ce qui a évolué et pourquoi quelque chose continue de se produire.",
     faq2Q: "Combien de réflexions ai-je sur le plan gratuit ?",
     faq2A: (n) => `Gratuit inclut ${n} réflexions IA par mois — suffisant pour expérimenter Quiet Mirror. Premium vous donne des réflexions illimitées sur chaque entrée.`,

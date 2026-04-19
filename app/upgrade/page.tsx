@@ -78,7 +78,7 @@ export default function UpgradePage() {
   const pf = t.premiumFeatures;
 
   const faqs = [
-    { q: uf.faq1Q, a: uf.faq1A },
+    { q: uf.faq1Q(CONFIG.appName), a: uf.faq1A },
     { q: uf.faq2Q, a: uf.faq2A(PRICING.freeMonthlyCredits) },
     { q: uf.faq3Q, a: uf.faq3A(ps.trialLabel(PRICING.trialDays), ps.trialNoChargeUntil(PRICING.trialDays + 1), CONFIG.supportEmail) },
     { q: uf.faq4Q, a: uf.faq4A },

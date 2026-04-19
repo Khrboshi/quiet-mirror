@@ -694,7 +694,7 @@ export const ro: Translations = {
   upgradePage: {
     metaTitle:(appName)=>`Upgradează la Premium | ${appName}`,
     metaDescription:(appName,cadence)=>`Deblochează reflecții AI nelimitate, rezumate săptămânale de tipare și urmărire profundă a perspectivelor cu ${appName} Premium. ${cadence}.`,
-    faq1Q:"Ce îmi arată Quiet Mirror cu adevărat cu Premium?",
+    faq1Q:(appName)=>`Ce îmi arată ${appName} cu adevărat cu Premium?`,
     faq1A:"Premium deblochează stratul care citește toate înregistrările tale în timp — nu doar cea pe care ai scris-o astăzi. Începe să vezi ce teme emoționale apar cel mai des, cum se conectează, ce s-a schimbat și de ce ceva continuă să se întâmple.",
     faq2Q:"Câte reflecții primesc pe planul gratuit?",
     faq2A:(n)=>`Gratuit include ${n} reflecții AI pe lună — suficient pentru a experimenta cum funcționează Quiet Mirror. Premium îți oferă reflecții nelimitate la fiecare înregistrare.`,
@@ -984,7 +984,7 @@ export const ro: Translations = {
     midH: "Tiparul pe care l-ai simțit este deja acolo.",
     midAccent: "Premium te ajută în sfârșit să îl numiți.",
     faqHeading: "Câteva răspunsuri sincere",
-    faq1Q: "Ce îmi arată Quiet Mirror cu adevărat cu Premium?",
+    faq1Q: (appName) => `Ce îmi arată ${appName} cu adevărat cu Premium?`,
     faq1A: "Premium deblochează stratul care citește toate înregistrările tale în timp — nu doar cea de astăzi. Începe să vezi ce teme emoționale apar cel mai des, cum se conectează, ce s-a schimbat și de ce ceva continuă să se întâmple.",
     faq2Q: "Câte reflecții primesc pe planul Gratuit?",
     faq2A: (n) => `Gratuit include ${n} reflecții AI pe lună — suficient pentru a experimenta Quiet Mirror. Premium îți oferă reflecții nelimitate pe fiecare înregistrare.`,

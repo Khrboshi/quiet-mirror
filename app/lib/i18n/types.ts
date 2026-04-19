@@ -672,7 +672,7 @@ export interface Translations {
   upgradePage: {
     metaTitle: (appName: string) => string;
     metaDescription: (appName: string, cadence: string) => string;
-    faq1Q: string; faq1A: string; faq2Q: string; faq2A: (n: number) => string;
+    faq1Q: (appName: string) => string; faq1A: string; faq2Q: string; faq2A: (n: number) => string;
     faq3Q: string; faq3A: string; faq4Q: string; faq4A: string;
     faq5Q: string; faq5A: string;
     compRow1: string; compRow2: string; compRow3: string;
@@ -976,7 +976,7 @@ export interface Translations {
     midAccent:            string;
     // FAQ
     faqHeading:           string;
-    faq1Q:                string;
+    faq1Q:                (appName: string) => string;
     faq1A:                string;
     faq2Q:                string;
     faq2A:                (n: number) => string;
