@@ -872,6 +872,10 @@ export const en: Translations = {
 
   // ── About page ────────────────────────────────────────────────────────────
   aboutPage: {
+    metaTitle:       (appName) => `About ${appName} — The Journal That Reads Underneath`,
+    metaDescription: "A private journal that reflects back what you write — and over time, shows you the patterns you've been too close to see. Built independently, no ads, no investors.",
+    ogTitle:         (appName) => `About ${appName} — The Journal That Reads Underneath`,
+    ogDescription:   "A private journal that reflects back what you write — and over time, shows you the patterns you've been too close to see.",
     tag:           (appName) => `About ${appName}`,
     headline1:     "A mirror for what you carry \u2014",
     headline2:     "held quietly, without judgment.",

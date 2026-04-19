@@ -851,6 +851,10 @@ export const nl: Translations = {
 
   // ── aboutPage ──────────────────────────────────────────────────────────
   aboutPage: {
+    metaTitle: (appName) => `Over ${appName} — Het dagboek dat onderhuids leest`,
+    metaDescription: 'Een privédagboek dat teruggeeft wat je schrijft — en je na verloop van tijd de patronen laat zien die je te dichtbij was om op te merken. Onafhankelijk gebouwd, geen advertenties, geen investeerders.',
+    ogTitle: (appName) => `Over ${appName} — Het dagboek dat onderhuids leest`,
+    ogDescription: 'Een privédagboek dat teruggeeft wat je schrijft — en je na verloop van tijd de patronen laat zien die je te dichtbij was om op te merken.',
     tag: (appName) => `Over ${appName}`,
     headline1: 'Een spiegel voor wat je draagt —',
     headline2: 'rustig gehouden, zonder oordeel.',

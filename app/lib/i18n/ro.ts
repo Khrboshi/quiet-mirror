@@ -856,6 +856,10 @@ export const ro: Translations = {
 
   // ── aboutPage ──────────────────────────────────────────────────────────
   aboutPage: {
+    metaTitle: (appName) => `Despre ${appName} — Jurnalul care citește dedesubt`,
+    metaDescription: 'Un jurnal privat care reflectă ce scrii — și, în timp, îți arată tiparele pe care ai fost prea aproape ca să le vezi. Construit independent, fără reclame, fără investitori.',
+    ogTitle: (appName) => `Despre ${appName} — Jurnalul care citește dedesubt`,
+    ogDescription: 'Un jurnal privat care reflectă ce scrii — și, în timp, îți arată tiparele pe care ai fost prea aproape ca să le vezi.',
     tag: (appName) => `Despre ${appName}`,
     headline1: 'O oglindă pentru ceea ce poartă —',
     headline2: 'ținută în liniște, fără judecată.',

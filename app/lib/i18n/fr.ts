@@ -859,6 +859,10 @@ export const fr: Translations = {
 
   // ── aboutPage ──────────────────────────────────────────────────────────
   aboutPage: {
+    metaTitle: (appName) => `À propos de ${appName} — Le Journal Qui Lit en Dessous`,
+    metaDescription: 'Un journal privé qui reflète ce que vous écrivez — et avec le temps, vous montre les schémas que vous étiez trop proche pour voir. Construit indépendamment, sans publicité, sans investisseurs.',
+    ogTitle: (appName) => `À propos de ${appName} — Le Journal Qui Lit en Dessous`,
+    ogDescription: 'Un journal privé qui reflète ce que vous écrivez — et avec le temps, vous montre les schémas que vous étiez trop proche pour voir.',
     tag: (appName) => `À propos de ${appName}`,
     headline1: 'Un miroir pour ce que vous portez —',
     headline2: 'tenu en silence, sans jugement.',

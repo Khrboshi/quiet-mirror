@@ -842,6 +842,10 @@ export interface Translations {
 
   // ── About page ────────────────────────────────────────────────────────────
   aboutPage: {
+    metaTitle:         (appName: string) => string;
+    metaDescription:   string;
+    ogTitle:           (appName: string) => string;
+    ogDescription:     string;
     tag:               (appName: string) => string;
     headline1:         string;
     headline2:         string;

@@ -3,21 +3,23 @@
 // about/page.tsx is a client component (needs useTranslation) so metadata
 // lives here in the layout instead, following Next.js App Router conventions.
 
-import { CONFIG } from "@/app/lib/config";
 import type { Metadata } from "next";
+import { CONFIG } from "@/app/lib/config";
+import { getRequestTranslations } from "@/app/lib/i18n/server";
 
-// eslint-disable-next-line no-restricted-syntax -- TODO(i18n): migrate to generateMetadata + getRequestTranslations. Tracked in issue #88.
-export const metadata: Metadata = {
-  title: `About ${CONFIG.appName} — The Journal That Reads Underneath`,
-  description:
-    "A private journal that reflects back what you write — and over time, shows you the patterns you've been too close to see. Built independently, no ads, no investors.",
-  openGraph: {
-    title: `About ${CONFIG.appName} — The Journal That Reads Underneath`,
-    description:
-      "A private journal that reflects back what you write — and over time, shows you the patterns you've been too close to see.",
-    url: CONFIG.siteUrl + "/about",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getRequestTranslations();
+  return {
+    title:       t.aboutPage.metaTitle(CONFIG.appName),
+    description: t.aboutPage.metaDescription,
+    openGraph: {
+      title:       t.aboutPage.ogTitle(CONFIG.appName),
+      description: t.aboutPage.ogDescription,
+      url:         new URL("/about", CONFIG.siteUrl).toString(),
+      siteName:    CONFIG.appName,
+    },
+  };
+}
 
 export default function AboutLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
