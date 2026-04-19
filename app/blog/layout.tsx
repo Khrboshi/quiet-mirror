@@ -3,21 +3,23 @@
 // blog/page.tsx is a client component (needs useTranslation) so metadata
 // lives here in the layout, following the same pattern as app/about/layout.tsx.
 
-import { CONFIG } from "@/app/lib/config";
 import type { Metadata } from "next";
+import { CONFIG } from "@/app/lib/config";
+import { getRequestTranslations } from "@/app/lib/i18n/server";
 
-// eslint-disable-next-line no-restricted-syntax -- TODO(i18n): migrate to generateMetadata + getRequestTranslations. Tracked in issue #89.
-export const metadata: Metadata = {
-  title: `${CONFIG.appName} Journal — Articles for Overloaded Minds`,
-  description:
-    "Gentle articles about emotional load, rest, journaling, and self-awareness. No productivity hacks — just softer ways to understand what you're feeling.",
-  openGraph: {
-    title: `${CONFIG.appName} Journal — Articles for Overloaded Minds`,
-    description:
-      "Gentle articles about emotional load, rest, and self-awareness. No productivity hacks.",
-    url: CONFIG.siteUrl + "/blog",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getRequestTranslations();
+  return {
+    title:       t.blogPage.metaTitle(CONFIG.appName),
+    description: t.blogPage.metaDescription,
+    openGraph: {
+      title:       t.blogPage.ogTitle(CONFIG.appName),
+      description: t.blogPage.ogDescription,
+      url:         new URL("/blog", CONFIG.siteUrl).toString(),
+      siteName:    CONFIG.appName,
+    },
+  };
+}
 
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;

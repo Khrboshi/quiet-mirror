@@ -1025,6 +1025,10 @@ export const en: Translations = {
 
   // ── Blog page chrome ─────────────────────────────────────────────────────
   blogPage: {
+    metaTitle:       (appName) => `${appName} Journal — Articles for Overloaded Minds`,
+    metaDescription: "Gentle articles about emotional load, rest, journaling, and self-awareness. No productivity hacks — just softer ways to understand what you're feeling.",
+    ogTitle:         (appName) => `${appName} Journal — Articles for Overloaded Minds`,
+    ogDescription:   "Gentle articles about emotional load, rest, and self-awareness. No productivity hacks.",
     tag:            (appName) => `${appName} Journal`,
     heading:        "Gentle articles for overloaded minds.",
     subheading:     "These pieces are for people who are doing their best with a lot on their plate. No productivity hacks, no optimization \u2014 just softer ways to understand what you\u2019re feeling and why it makes sense.",

@@ -1013,6 +1013,10 @@ export const fr: Translations = {
 
   // ── blogPage ────────────────────────────────────────────────
   blogPage: {
+    metaTitle: (appName) => `Journal ${appName} — Articles pour esprits surchargés`,
+    metaDescription: "Articles doux sur la charge émotionnelle, le repos, la tenue d'un journal et la conscience de soi. Pas de hacks de productivité — juste des façons plus douces de comprendre ce que vous ressentez.",
+    ogTitle: (appName) => `Journal ${appName} — Articles pour esprits surchargés`,
+    ogDescription: "Articles doux sur la charge émotionnelle, le repos et la conscience de soi. Pas de hacks de productivité.",
     tag: (appName) => `Journal ${appName}`,
     heading: "Des articles doux pour les esprits surchargés.",
     subheading: "Ces textes sont pour les personnes qui font de leur mieux avec beaucoup sur les épaules. Pas de hacks de productivité — juste des façons plus douces de comprendre ce que vous ressentez et pourquoi ça a du sens.",

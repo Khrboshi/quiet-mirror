@@ -1003,6 +1003,10 @@ export interface Translations {
 
   // ── Blog page chrome ─────────────────────────────────────────────────────
   blogPage: {
+    metaTitle:       (appName: string) => string;
+    metaDescription: string;
+    ogTitle:         (appName: string) => string;
+    ogDescription:   string;
     tag:            (appName: string) => string;
     heading:        string;
     subheading:     string;

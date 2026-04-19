@@ -1010,6 +1010,10 @@ export const ro: Translations = {
 
   // ── blogPage ────────────────────────────────────────────────
   blogPage: {
+    metaTitle: (appName) => `Jurnal ${appName} — Articole pentru minți supraîncărcate`,
+    metaDescription: "Articole blânde despre încărcătura emoțională, odihnă, jurnalizare și conștiință de sine. Fără trucuri de productivitate — doar moduri mai blânde de a înțelege ce simți.",
+    ogTitle: (appName) => `Jurnal ${appName} — Articole pentru minți supraîncărcate`,
+    ogDescription: "Articole blânde despre încărcătura emoțională, odihnă și conștiință de sine. Fără trucuri de productivitate.",
     tag: (appName) => `Jurnal ${appName}`,
     heading: "Articole blânde pentru minți supraîncărcate.",
     subheading: "Aceste texte sunt pentru oamenii care fac tot posibilul cu multe pe umeri. Fără trucuri de productivitate — doar modalități mai blânde de a înțelege ce simțiți și de ce are sens.",

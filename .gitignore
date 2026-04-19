@@ -8,3 +8,5 @@ out/
 .DS_Store
 .env*
 npm-debug.log*
+# TypeScript incremental build info
+tsconfig.tsbuildinfo

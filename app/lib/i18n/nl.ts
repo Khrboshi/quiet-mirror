@@ -1005,6 +1005,10 @@ export const nl: Translations = {
 
   // ── blogPage ────────────────────────────────────────────────
   blogPage: {
+    metaTitle: (appName) => `${appName} Journal — Artikelen voor overbelaste geesten`,
+    metaDescription: "Rustige artikelen over emotionele last, rust, dagboek schrijven en zelfbewustzijn. Geen productiviteitstrucs — gewoon zachtere manieren om te begrijpen wat je voelt.",
+    ogTitle: (appName) => `${appName} Journal — Artikelen voor overbelaste geesten`,
+    ogDescription: "Rustige artikelen over emotionele last, rust en zelfbewustzijn. Geen productiviteitstrucs.",
     tag: (appName) => `${appName} Journal`,
     heading: "Zachte artikelen voor overbelaste geesten.",
     subheading: "Deze stukken zijn voor mensen die hun best doen met veel op hun bord. Geen productiviteitshacks — gewoon zachtere manieren om te begrijpen wat je voelt en waarom het logisch is.",
