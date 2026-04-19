@@ -4,21 +4,24 @@ import { CONFIG } from "@/app/lib/config";
 import type { Metadata } from "next";
 import { getRequestTranslations } from "@/app/lib/i18n/server";
 
-// eslint-disable-next-line no-restricted-syntax -- TODO(i18n): migrate to generateMetadata + getRequestTranslations. Tracked in issue #87.
-export const metadata: Metadata = {
-  title: `Sign in to ${CONFIG.appName}`,
-  description: `Sign in to your private ${CONFIG.appName} journal with a magic link — no password needed. Your entries remain private and secure.`,
-  robots: {
-    index: false, // Prevent search engines from indexing login page
-    follow: false,
-  },
-  // Add OpenGraph for better sharing if someone bookmarks
-  openGraph: {
-    title: `Sign in to ${CONFIG.appName}`,
-    description: `Access your private journal with a secure magic link.`,
-    url: `/magic-login`,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getRequestTranslations();
+  return {
+    title:       t.magicLoginPage.metaTitle(CONFIG.appName),
+    description: t.magicLoginPage.metaDescription(CONFIG.appName),
+    robots: {
+      index: false, // Prevent search engines from indexing login page
+      follow: false,
+    },
+    // Add OpenGraph for better sharing if someone bookmarks
+    openGraph: {
+      title:       t.magicLoginPage.ogTitle(CONFIG.appName),
+      description: t.magicLoginPage.ogDescription,
+      url:         new URL("/magic-login", CONFIG.siteUrl).toString(),
+      siteName:    CONFIG.appName,
+    },
+  };
+}
 
 export default async function MagicLoginLayout({
   children

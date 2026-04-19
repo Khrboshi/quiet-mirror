@@ -689,6 +689,10 @@ export const ar: Translations = {
     backToHome:        "→ العودة إلى الرئيسية",
     codePlaceholder:"أدخل رمز 6-8 أرقام",verify:"تحقق وسجّل الدخول",verifying:"جارٍ التحقق…",
     formAriaLabel:     "نموذج تسجيل الدخول عبر رابط سحري",
+    metaTitle:(appName)=>`تسجيل الدخول إلى ${appName}`,
+    metaDescription:(appName)=>`سجّل الدخول إلى دفتر يومياتك الخاص ${appName} عبر رابط سحري — بدون كلمة مرور. تبقى إدخالاتك خاصة وآمنة.`,
+    ogTitle:(appName)=>`تسجيل الدخول إلى ${appName}`,
+    ogDescription:"ادخل إلى دفتر يومياتك الخاص عبر رابط سحري آمن.",
   },
   upgradePage: {
     metaTitle:(appName)=>`الترقية إلى Premium | ${appName}`,

@@ -680,6 +680,10 @@ export const nl: Translations = {
     backToHome:        "← Terug naar begin",
     codePlaceholder:"Voer 6–8 cijferige code in",verify:"Verifiëren en aanmelden",verifying:"Verifiëren…",
     formAriaLabel:     "Inlogformulier met magische link",
+    metaTitle:(appName)=>`Inloggen bij ${appName}`,
+    metaDescription:(appName)=>`Log in op je privéjournal ${appName} met een magische link — geen wachtwoord nodig. Je inzendingen blijven privé en veilig.`,
+    ogTitle:(appName)=>`Inloggen bij ${appName}`,
+    ogDescription:"Open je privéjournal met een veilige magische link.",
   },
 
   upgradePage: {

@@ -698,6 +698,10 @@ export const en: Translations = {
     backToHome:        "← Back to home",
     codePlaceholder:"Enter 6–8 digit code",verify:"Verify and sign in",verifying:"Verifying…",
     formAriaLabel:     "Magic link sign in form",
+    metaTitle:(appName)=>`Sign in to ${appName}`,
+    metaDescription:(appName)=>`Sign in to your private ${appName} journal with a magic link — no password needed. Your entries remain private and secure.`,
+    ogTitle:(appName)=>`Sign in to ${appName}`,
+    ogDescription:"Access your private journal with a secure magic link.",
   },
   upgradePage: {
     metaTitle:(appName)=>`Upgrade to Premium | ${appName}`,
