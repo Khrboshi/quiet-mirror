@@ -852,11 +852,21 @@ body::-webkit-scrollbar-thumb:hover { background: var(--qm-border-subtle); }
 
 /* ============================================================
    LEGACY --hvn-* COMPATIBILITY SHIM
-   
-   These variables are used in 25 component files and map
-   1-to-1 to the canonical --qm-* design tokens.
-   
-   DO NOT remove until all component files are migrated to --qm-*.
+
+   All component files have been migrated to --qm-* tokens
+   (verified: `grep -rn "hvn-" app/ --include="*.tsx" --include="*.ts"`
+   returns no matches outside this file).
+
+   The remaining `hvn`-prefixed identifiers in the codebase are
+   two intentional legacy call sites that do NOT consume this shim:
+     • app/components/InstallPrompt.tsx  — localStorage key
+                                            `hvn_install_snooze_until_v1`
+     • public/service-worker.js          — cache prefix `hvn-static-*`
+
+   This CSS block is therefore dead code and is a candidate for
+   removal in a follow-up PR. Retained here in this cleanup commit
+   to keep the diff scoped to the comment only.
+
    DO NOT add new --hvn-* usages — always use --qm-* in new code.
    ============================================================ */
 
