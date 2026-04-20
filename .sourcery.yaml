@@ -1,6 +1,6 @@
 # .sourcery.yaml
 # Sourcery configuration for Quiet Mirror
-# Stack: Next.js 14 (App Router) · TypeScript · Tailwind CSS
+# Stack: Next.js 15 (App Router) · TypeScript · Tailwind CSS
 # https://docs.sourcery.ai/Configuration/
 
 rule_settings:
@@ -27,50 +27,7 @@ ignore:
   - rule: license/lgpl
     path: node_modules/@img/sharp-libvips-linuxmusl-x64
 
-security:
-  ignore:
-    # ── picomatch ReDoS — GHSA-c2c7-rcm5-vvqj ───────────────────────────────
-    # Transitive dependency of Next.js 14. Fixed in Next.js 15.x.
-    # Upgrade is a breaking change tracked as a planned separate PR.
-    # New picomatch issues outside this advisory will still surface.
-    - rule: npm/audit
-      package: picomatch
-      id: GHSA-c2c7-rcm5-vvqj
-      reason: "Transitive dep of Next.js 14 — fixed by Next.js 15 upgrade (planned PR)"
-      until: "2026-12-31"
-
-    # ── yaml DoS — GHSA-48c2-rrv3-qjmp ──────────────────────────────────────
-    # Transitive dependency of Next.js 14. Fixed in Next.js 15.x.
-    - rule: npm/audit
-      package: yaml
-      id: GHSA-48c2-rrv3-qjmp
-      reason: "Transitive dep of Next.js 14 — fixed by Next.js 15 upgrade (planned PR)"
-      until: "2026-12-31"
-
-    # ── Next.js DoS CVEs — all fixed in Next.js 15.x ─────────────────────────
-    # Breaking change upgrade tracked as a planned separate PR.
-    - rule: npm/audit
-      package: next
-      id: GHSA-h25m-26qc-wcjf
-      reason: "Fixed in Next.js 15.x — breaking change upgrade tracked as planned PR"
-      until: "2026-12-31"
-    - rule: npm/audit
-      package: next
-      id: GHSA-9g9p-9gw9-jx7f
-      reason: "Fixed in Next.js 15.x — breaking change upgrade tracked as planned PR"
-      until: "2026-12-31"
-    - rule: npm/audit
-      package: next
-      id: GHSA-ggv3-7p47-pfv8
-      reason: "Fixed in Next.js 15.x — breaking change upgrade tracked as planned PR"
-      until: "2026-12-31"
-    - rule: npm/audit
-      package: next
-      id: GHSA-3x4c-7xq6-9pq8
-      reason: "Fixed in Next.js 15.x — breaking change upgrade tracked as planned PR"
-      until: "2026-12-31"
-    - rule: npm/audit
-      package: next
-      id: GHSA-q4gf-8mx6-v5v3
-      reason: "Fixed in Next.js 15.x — breaking change upgrade tracked as planned PR"
-      until: "2026-12-31"
+# No security.ignore block — all previously ignored advisories have been
+# resolved by the Next.js 15 upgrade and the resulting transitive bumps
+# (picomatch ≥ 2.3.2 / ≥ 4.0.4, yaml ≥ 2.8.3, next ≥ 15.5.15). New advisories
+# will surface normally; add a fresh block only when genuinely needed.
