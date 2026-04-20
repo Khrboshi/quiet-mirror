@@ -1086,6 +1086,10 @@ export const ro: Translations = {
     privacyMetaDescription: (appName) => `Află cum ${appName} colectează, utilizează și protejează datele tale. Intrările tale de jurnal sunt private și nu sunt folosite niciodată pentru antrenarea modelelor AI.`,
     privacyOgTitle:         (appName) => `Politică de confidențialitate | ${appName}`,
     privacyOgDescription:   (appName) => `Află cum ${appName} îți protejează confidențialitatea. Intrările tale nu sunt vândute și nu sunt folosite pentru antrenarea AI.`,
+    termsMetaTitle:       (appName) => `Termeni de serviciu | ${appName}`,
+    termsMetaDescription: (appName) => `Termenii care reglementează utilizarea ${appName}. Confidențialitatea și drepturile tale sunt descrise clar aici.`,
+    termsOgTitle:         (appName) => `Termeni de serviciu | ${appName}`,
+    termsOgDescription:   (appName) => `Citește termenii care reglementează utilizarea ${appName}.`,
   },
 
 };

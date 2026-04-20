@@ -1077,6 +1077,10 @@ export interface Translations {
     privacyMetaDescription:     (appName: string) => string;
     privacyOgTitle:             (appName: string) => string;
     privacyOgDescription:       (appName: string) => string;
+    termsMetaTitle:             (appName: string) => string;
+    termsMetaDescription:       (appName: string) => string;
+    termsOgTitle:               (appName: string) => string;
+    termsOgDescription:         (appName: string) => string;
   };
 
 }

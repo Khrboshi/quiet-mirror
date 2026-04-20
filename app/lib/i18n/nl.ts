@@ -1081,6 +1081,10 @@ export const nl: Translations = {
     privacyMetaDescription: (appName) => `Ontdek hoe ${appName} je gegevens verzamelt, gebruikt en beschermt. Je dagboekinvoer is privé en wordt nooit gebruikt om AI-modellen te trainen.`,
     privacyOgTitle:         (appName) => `Privacybeleid | ${appName}`,
     privacyOgDescription:   (appName) => `Ontdek hoe ${appName} je privacy beschermt. Je invoer wordt nooit verkocht of gebruikt om AI te trainen.`,
+    termsMetaTitle:       (appName) => `Servicevoorwaarden | ${appName}`,
+    termsMetaDescription: (appName) => `Voorwaarden die je gebruik van ${appName} regelen. Je privacy en rechten worden hier duidelijk uiteengezet.`,
+    termsOgTitle:         (appName) => `Servicevoorwaarden | ${appName}`,
+    termsOgDescription:   (appName) => `Lees de voorwaarden die je gebruik van ${appName} regelen.`,
   },
 
 };

@@ -1101,6 +1101,10 @@ export const en: Translations = {
     privacyMetaDescription: (appName) => `Learn how ${appName} collects, uses, and protects your data. Your journal entries are private and never used to train AI models.`,
     privacyOgTitle:         (appName) => `Privacy Policy | ${appName}`,
     privacyOgDescription:   (appName) => `Learn how ${appName} protects your privacy. Your journal entries are never sold or used to train AI models.`,
+    termsMetaTitle:       (appName) => `Terms of Service | ${appName}`,
+    termsMetaDescription: (appName) => `Terms governing your use of ${appName}. Your privacy and rights are clearly outlined here.`,
+    termsOgTitle:         (appName) => `Terms of Service | ${appName}`,
+    termsOgDescription:   (appName) => `Read the terms governing your use of ${appName}.`,
   },
 
 };

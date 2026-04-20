@@ -1097,6 +1097,10 @@ export const ar: Translations = {
     privacyMetaDescription: (appName) => `تعرّف على كيفية جمع ${appName} لبياناتك واستخدامها وحمايتها. مذكراتك خاصة ولا تُستخدم أبدًا لتدريب نماذج الذكاء الاصطناعي.`,
     privacyOgTitle:         (appName) => `سياسة الخصوصية | ${appName}`,
     privacyOgDescription:   (appName) => `تعرّف على كيفية حماية ${appName} لخصوصيتك. مذكراتك لا تُباع ولا تُستخدم لتدريب الذكاء الاصطناعي.`,
+    termsMetaTitle:       (appName) => `شروط الخدمة | ${appName}`,
+    termsMetaDescription: (appName) => `الشروط التي تحكم استخدامك لـ ${appName}. خصوصيتك وحقوقك موضّحة هنا بوضوح.`,
+    termsOgTitle:         (appName) => `شروط الخدمة | ${appName}`,
+    termsOgDescription:   (appName) => `اطّلع على الشروط التي تحكم استخدامك لـ ${appName}.`,
   },
 
 };
