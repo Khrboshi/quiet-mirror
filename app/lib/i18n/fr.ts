@@ -1089,6 +1089,10 @@ export const fr: Translations = {
     privacyMetaDescription: (appName) => `Découvrez comment ${appName} collecte, utilise et protège vos données. Vos entrées de journal sont privées et ne servent jamais à entraîner de modèles d'IA.`,
     privacyOgTitle:         (appName) => `Politique de confidentialité | ${appName}`,
     privacyOgDescription:   (appName) => `Découvrez comment ${appName} protège votre vie privée. Vos entrées ne sont jamais vendues ni utilisées pour entraîner des IA.`,
+    termsMetaTitle:       (appName) => `Conditions d'utilisation | ${appName}`,
+    termsMetaDescription: (appName) => `Conditions régissant votre utilisation de ${appName}. Votre vie privée et vos droits y sont clairement exposés.`,
+    termsOgTitle:         (appName) => `Conditions d'utilisation | ${appName}`,
+    termsOgDescription:   (appName) => `Consultez les conditions régissant votre utilisation de ${appName}.`,
   },
 
 };

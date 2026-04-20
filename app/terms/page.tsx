@@ -6,24 +6,31 @@ import { CONFIG } from "@/app/lib/config";
 import { PRICING } from "@/app/lib/pricing";
 import { PAYMENT } from "@/app/lib/payment";
 import { getTranslations, DEFAULT_LOCALE } from "@/app/lib/i18n";
-import { getRequestLocale } from "@/app/lib/i18n/server";
+import { getRequestLocale, getRequestTranslations } from "@/app/lib/i18n/server";
 import LegalLanguageNotice from "@/app/components/LegalLanguageNotice";
 
 const LAST_UPDATED = "June 1, 2025";
 
-export const metadata: Metadata = {
-  title: "Terms of Service",
-  description: `Terms governing your use of ${CONFIG.appName}. Your privacy and rights are clearly outlined here.`,
-  robots: {
-    index: true,
-    follow: true,
-  },
-  openGraph: {
-    title: `Terms of Service | ${CONFIG.appName}`,
-    description: `Read the terms governing your use of ${CONFIG.appName}.`,
-    type: "website",
-  },
-};
+// ─── SEO metadata ────────────────────────────────────────────────────────────
+// Localised per-request so the browser tab title and social previews match the
+// user's language, even though the legal body itself stays in English (with a
+// notice banner explaining that). See docs/I18N.md#the-metadata-rule.
+export async function generateMetadata(): Promise<Metadata> {
+  const { legalPages: lp } = await getRequestTranslations();
+  return {
+    title:       lp.termsMetaTitle(CONFIG.appName),
+    description: lp.termsMetaDescription(CONFIG.appName),
+    robots: {
+      index:  true,
+      follow: true,
+    },
+    openGraph: {
+      title:       lp.termsOgTitle(CONFIG.appName),
+      description: lp.termsOgDescription(CONFIG.appName),
+      type:        "website",
+    },
+  };
+}
 
 export default async function TermsOfServicePage() {
   const locale    = await getRequestLocale();
