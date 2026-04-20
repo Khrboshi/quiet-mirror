@@ -1093,6 +1093,10 @@ export const ar: Translations = {
     questions: "أسئلة؟ راسلنا على",
     termsOfService: "شروط الخدمة",
     privacyPolicy: "سياسة الخصوصية",
+    privacyMetaTitle:       (appName) => `سياسة الخصوصية | ${appName}`,
+    privacyMetaDescription: (appName) => `تعرّف على كيفية جمع ${appName} لبياناتك واستخدامها وحمايتها. مذكراتك خاصة ولا تُستخدم أبدًا لتدريب نماذج الذكاء الاصطناعي.`,
+    privacyOgTitle:         (appName) => `سياسة الخصوصية | ${appName}`,
+    privacyOgDescription:   (appName) => `تعرّف على كيفية حماية ${appName} لخصوصيتك. مذكراتك لا تُباع ولا تُستخدم لتدريب الذكاء الاصطناعي.`,
   },
 
 };

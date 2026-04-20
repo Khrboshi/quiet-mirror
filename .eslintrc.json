@@ -5,7 +5,6 @@
     {
       "files": ["app/**/*.tsx", "app/**/*.ts"],
       "excludedFiles": [
-        "app/privacy/page.tsx",
         "app/terms/page.tsx",
         "app/blog/[slug]/page.tsx",
         "app/layout.tsx",

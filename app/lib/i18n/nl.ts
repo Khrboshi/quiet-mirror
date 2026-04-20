@@ -1077,6 +1077,10 @@ export const nl: Translations = {
     questions: "Vragen? Stuur ons een e-mail op",
     termsOfService: "Servicevoorwaarden",
     privacyPolicy: "Privacybeleid",
+    privacyMetaTitle:       (appName) => `Privacybeleid | ${appName}`,
+    privacyMetaDescription: (appName) => `Ontdek hoe ${appName} je gegevens verzamelt, gebruikt en beschermt. Je dagboekinvoer is privé en wordt nooit gebruikt om AI-modellen te trainen.`,
+    privacyOgTitle:         (appName) => `Privacybeleid | ${appName}`,
+    privacyOgDescription:   (appName) => `Ontdek hoe ${appName} je privacy beschermt. Je invoer wordt nooit verkocht of gebruikt om AI te trainen.`,
   },
 
 };

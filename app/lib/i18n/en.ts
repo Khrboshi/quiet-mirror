@@ -1097,6 +1097,10 @@ export const en: Translations = {
     questions: "Questions? Email us at",
     termsOfService: "Terms of Service",
     privacyPolicy: "Privacy Policy",
+    privacyMetaTitle:       (appName) => `Privacy Policy | ${appName}`,
+    privacyMetaDescription: (appName) => `Learn how ${appName} collects, uses, and protects your data. Your journal entries are private and never used to train AI models.`,
+    privacyOgTitle:         (appName) => `Privacy Policy | ${appName}`,
+    privacyOgDescription:   (appName) => `Learn how ${appName} protects your privacy. Your journal entries are never sold or used to train AI models.`,
   },
 
 };

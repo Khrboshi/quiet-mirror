@@ -1125,6 +1125,10 @@ export const uk: Translations = {
     questions: "Питання? Напиши нам на",
     termsOfService: "Умови використання",
     privacyPolicy: "Політика конфіденційності",
+    privacyMetaTitle:       (appName) => `Політика конфіденційності | ${appName}`,
+    privacyMetaDescription: (appName) => `Дізнайся, як ${appName} збирає, використовує та захищає твої дані. Твої записи в щоденнику приватні й ніколи не використовуються для навчання AI-моделей.`,
+    privacyOgTitle:         (appName) => `Політика конфіденційності | ${appName}`,
+    privacyOgDescription:   (appName) => `Дізнайся, як ${appName} захищає твою приватність. Твої записи ніколи не продаються й не використовуються для навчання AI.`,
   },
 
 };

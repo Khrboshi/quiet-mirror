@@ -1085,6 +1085,10 @@ export const fr: Translations = {
     questions: "Questions ? Écrivez-nous à",
     termsOfService: "Conditions d'utilisation",
     privacyPolicy: "Politique de confidentialité",
+    privacyMetaTitle:       (appName) => `Politique de confidentialité | ${appName}`,
+    privacyMetaDescription: (appName) => `Découvrez comment ${appName} collecte, utilise et protège vos données. Vos entrées de journal sont privées et ne servent jamais à entraîner de modèles d'IA.`,
+    privacyOgTitle:         (appName) => `Politique de confidentialité | ${appName}`,
+    privacyOgDescription:   (appName) => `Découvrez comment ${appName} protège votre vie privée. Vos entrées ne sont jamais vendues ni utilisées pour entraîner des IA.`,
   },
 
 };

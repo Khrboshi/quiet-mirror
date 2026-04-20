@@ -1063,16 +1063,20 @@ export interface Translations {
   // Privacy Policy and Terms of Service stay in English.
   // Only this notice banner and the page titles are translated.
   legalPages: {
-    languageNotice:  string;
-    contactUs:       string;
-    privacyTitle:    string;
-    privacyHeadline: string;
-    termsTitle:      string;
-    termsHeadline:   string;
-    lastUpdated:     string;
-    questions:       string;
-    termsOfService:  string;
-    privacyPolicy:   string;
+    languageNotice:             string;
+    contactUs:                  string;
+    privacyTitle:               string;
+    privacyHeadline:            string;
+    termsTitle:                 string;
+    termsHeadline:              string;
+    lastUpdated:                string;
+    questions:                  string;
+    termsOfService:             string;
+    privacyPolicy:              string;
+    privacyMetaTitle:           (appName: string) => string;
+    privacyMetaDescription:     (appName: string) => string;
+    privacyOgTitle:             (appName: string) => string;
+    privacyOgDescription:       (appName: string) => string;
   };
 
 }

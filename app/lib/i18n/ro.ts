@@ -1082,6 +1082,10 @@ export const ro: Translations = {
     questions: "Întrebări? Scrie-ne la",
     termsOfService: "Termeni de serviciu",
     privacyPolicy: "Politică de confidențialitate",
+    privacyMetaTitle:       (appName) => `Politică de confidențialitate | ${appName}`,
+    privacyMetaDescription: (appName) => `Află cum ${appName} colectează, utilizează și protejează datele tale. Intrările tale de jurnal sunt private și nu sunt folosite niciodată pentru antrenarea modelelor AI.`,
+    privacyOgTitle:         (appName) => `Politică de confidențialitate | ${appName}`,
+    privacyOgDescription:   (appName) => `Află cum ${appName} îți protejează confidențialitatea. Intrările tale nu sunt vândute și nu sunt folosite pentru antrenarea AI.`,
   },
 
 };
