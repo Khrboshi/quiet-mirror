@@ -36,22 +36,6 @@ const config: Config = {
           800: "#5f5480",
           900: "#4f4669",
         },
-        // Legacy --hvn-* aliases — keeps existing component classes working
-        // while the codebase migrates to --qm-* tokens.
-        // DO NOT add new usages — always use qm.* in new code.
-        hvn: {
-          bg:                "var(--qm-bg)",
-          "bg-elevated":     "var(--qm-bg-elevated)",
-          "bg-soft":         "var(--qm-bg-soft)",
-          "accent-mint":     "var(--qm-accent)",
-          "accent-mint-hover": "var(--qm-accent-hover)",
-          "accent-mint-soft": "var(--qm-accent-soft)",
-          "card-border":     "var(--qm-border-card)",
-          "border-subtle":   "var(--qm-border-subtle)",
-          "text-primary":    "var(--qm-text-primary)",
-          "text-secondary":  "var(--qm-text-secondary)",
-          "text-muted":      "var(--qm-text-muted)",
-        },
         // CSS-variable-backed colors (auto-switch dark ↔ light)
         qm: {
           bg:            "var(--qm-bg)",
