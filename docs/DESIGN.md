@@ -26,11 +26,10 @@ app/lib/payment.ts     — payment provider name, routes, labels
 ## The rules
 
 1. **Never hardcode brand values.** The app name, tagline, support email, and site URL come from `CONFIG` in `app/lib/config.ts`. Rebranding is a one-file change — keep it that way.
-2. **Never hardcode colours.** Use `--qm-*` variables or the `qm.*` Tailwind aliases. No raw hex, no `bg-emerald-500`, no `bg-[color:var(--hvn-accent-mint)]`. Both are wrong; the second is legacy.
+2. **Never hardcode colours.** Use `--qm-*` variables or the `qm.*` Tailwind aliases. No raw hex, no `bg-emerald-500`, no `bg-[color:#...]` arbitrary values. The legacy Tailwind palette names get remapped by a safety net in `globals.css` — see ["Legacy Tailwind remapping"](#legacy-tailwind-remapping) — but that's a migration aid, not a licence to write them.
 3. **Never hardcode prices or trial lengths.** Use `PRICING` from `app/lib/pricing.ts`. Never write `"$9"` or `"3 days"` inline — the constants carry plural-aware labels.
 4. **Never reference the payment provider by name in UI.** Use `PAYMENT` from `app/lib/payment.ts`. When the provider changes, one file updates everywhere.
 5. **Dark mode is system-driven.** `tailwind.config.ts` sets `darkMode: "media"` and `globals.css` uses `@media (prefers-color-scheme: light)`. There is no manual toggle and no `dark:` class strategy. Design both modes at once or not at all.
-6. **Never add new `hvn.*` / `--hvn-*` usages.** The shim exists for backwards compatibility only — see ["Legacy Tailwind remapping"](#legacy-tailwind-remapping).
 
 ---
 
@@ -116,7 +115,7 @@ Always build titles and metadata from `BRAND.titleTemplate` / `BRAND.fullTitle` 
 
 `app/lib/pricing.ts` exports one object, `PRICING`, derived from a single `TRIAL_DAYS` constant at the top of the file. To change the trial length, edit that number — `trialLabel` ("3-day free trial"), `trialFreeFor` ("Free for 3 days"), `trialDayWord` ("day"/"days"), and `trialNoChargeUntil` ("no charge until day 4") all update automatically, including singular/plural agreement.
 
-Never write `"3 days"` inline — use `trialDayWord` with `trialDays`, or pick the pre-built label that matches the sentence shape. Never write `"$9"` inline — use `monthly` or `monthlyCadence`. `freeMonthlyCredits` (3) is enforced by the reflection API route; the UI reads the same constant so the numbers can't drift.
+Never write `"3 days"` inline — use `trialDayWord` with `trialDays`, or pick the pre-built label that matches the sentence shape. Never write `"$9"` inline — use `monthly` ("$9"), `monthlyCadence` ("$9/month"), or `monthlyUsd` (the raw `9`, for arithmetic). The pricing badge uses `valueLabel` ("3-day free trial included"). `freeMonthlyCredits` (3) is enforced by the reflection API route; the UI reads the same constant so the numbers can't drift.
 
 ---
 
@@ -134,7 +133,7 @@ The bottom third of `globals.css` (from "LEGACY TAILWIND → QUIET MIRROR REMAPP
 
 It is not a licence to keep writing `bg-emerald-500`. The remap uses `!important`, which makes legitimate overrides harder and makes specificity debugging painful. **Migrate on sight.** If you touch a file that uses these classes, convert them to `bg-qm-accent` or the appropriate semantic token in the same commit.
 
-The separate `--hvn-*` block at the end of the file is a smaller shim for the earlier "Havenly" naming: 25-ish component files still reference `--hvn-accent-mint`, `--hvn-bg`, etc., and the block aliases them to their `--qm-*` equivalents. Same rule — never add new `--hvn-*` or `hvn.*` usages; migrate what you touch.
+An earlier, separate `--hvn-*` CSS-var shim (a remnant of the pre-rename "Havenly" days) was retired in PRs #108/#109 once the last callers had been migrated. Nothing in the codebase references `--hvn-*` or `hvn.*` any more — if you see those names, they're a stale reference to delete, not something to preserve.
 
 The `havenly:*` localStorage keys and the `havenly_auth` BroadcastChannel are a different kind of legacy — those are NEVER TOUCH because renaming them would strand users mid-magic-link. New storage keys use the `qm:` prefix (e.g. `qm:locale`).
 
