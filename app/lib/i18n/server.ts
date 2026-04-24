@@ -1,8 +1,9 @@
 // app/lib/i18n/server.ts
 //
 // Server-only i18n helpers that centralise the "read the request cookie,
-// resolve the locale, return translations" pattern that was duplicated
-// in ~14 server components before this file existed.
+// resolve the locale, return translations" pattern that would otherwise
+// be duplicated across every server component, layout, and route handler
+// that needs translations.
 //
 // IMPORTANT: import from here only in server components / server actions /
 // route handlers. Importing `next/headers` in a client component will error
