@@ -11,14 +11,6 @@ export const CONFIG = {
   /** Short tagline used in page titles e.g. "Quiet Mirror — The Journal That Reads Underneath" */
   tagline: "The Journal That Reads Underneath",
 
-  /** One-line description used in meta description tags */
-  description:
-    "Write what's weighing on you. Get a gentle reflection back. Start seeing the patterns you've been too close to name. Free to start.",
-
-  /** Short OG description (keep under 100 chars) */
-  ogDescription:
-    "Write honestly. Get a gentle reflection back. See the patterns shaping your life.",
-
   // ── Contact ──────────────────────────────────────────────────────────────
   /** Support email shown to users everywhere in the app */
   supportEmail: "hello@quietmirror.me",
