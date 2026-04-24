@@ -549,6 +549,8 @@ export const ar: Translations = {
   },
 
   languagePage: {
+    metaTitle:   (appName) => `اختر لغتك | ${appName}`,
+    metaDescription: (appName) => `اختر اللغة التي تكتب بها يومياتك. يقوم ${appName} بترجمة التطبيق والتأملات وردود الذكاء الاصطناعي لتتناسب مع اختيارك.`,
     title:       "اختر لغتك",
     subtitle:    "يعمل Quiet Mirror بلغتك — المجلة والتأملات وردود الذكاء الاصطناعي تتبع اختيارك.",
     active:      "نشطة",

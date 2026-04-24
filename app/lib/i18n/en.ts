@@ -558,6 +558,8 @@ export const en: Translations = {
   },
 
   languagePage: {
+    metaTitle:   (appName) => `Choose your language | ${appName}`,
+    metaDescription: (appName) => `Pick the language you journal in. ${appName} translates the app, reflections, and AI responses to match.`,
     title:       "Choose your language",
     subtitle:    "Quiet Mirror works in your language — the journal, reflections, and AI responses all follow your choice.",
     active:      "Active",

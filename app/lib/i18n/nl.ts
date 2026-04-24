@@ -537,6 +537,8 @@ export const nl: Translations = {
   },
 
   languagePage: {
+    metaTitle:   (appName) => `Kies je taal | ${appName}`,
+    metaDescription: (appName) => `Kies de taal waarin je je dagboek bijhoudt. ${appName} vertaalt de app, reflecties en AI-antwoorden volgens je keuze.`,
     title:       "Kies je taal",
     subtitle:    "Quiet Mirror werkt in jouw taal — het dagboek, reflecties en AI-antwoorden volgen allemaal je keuze.",
     active:      "Actief",

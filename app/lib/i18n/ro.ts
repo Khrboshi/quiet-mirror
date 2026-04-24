@@ -542,6 +542,8 @@ export const ro: Translations = {
   },
 
   languagePage: {
+    metaTitle:   (appName) => `Alege limba ta | ${appName}`,
+    metaDescription: (appName) => `Alege limba în care îți scrii jurnalul. ${appName} traduce aplicația, reflecțiile și răspunsurile AI pentru a se potrivi alegerii tale.`,
     title:       "Alege limba ta",
     subtitle:    "Quiet Mirror funcționează în limba ta — jurnalul, reflecțiile și răspunsurile AI urmează toate alegerea ta",
     active:      "Activ",

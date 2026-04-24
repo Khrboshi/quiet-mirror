@@ -586,6 +586,8 @@ export const uk: Translations = {
   },
 
   languagePage: {
+    metaTitle:   (appName) => `Обери мову | ${appName}`,
+    metaDescription: (appName) => `Оберіть мову, якою ви ведете щоденник. ${appName} перекладе інтерфейс, відображення та відповіді AI відповідно до вашого вибору.`,
     title:       "Обери мову",
     subtitle:    "Quiet Mirror працює вашою мовою — щоденник, відображення та відповіді AI відповідають твоєму вибору.",
     active:      "Активна",

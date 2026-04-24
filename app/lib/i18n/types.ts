@@ -564,6 +564,8 @@ export interface Translations {
 
   // ── Language selection page ───────────────────────────────────────────────────
   languagePage: {
+    metaTitle:       (appName: string) => string;
+    metaDescription: (appName: string) => string;
     title:       string;
     subtitle:    string;
     active:      string;
