@@ -27,7 +27,4 @@ ignore:
   - rule: license/lgpl
     path: node_modules/@img/sharp-libvips-linuxmusl-x64
 
-# No security.ignore block — all previously ignored advisories have been
-# resolved by the Next.js 15 upgrade and the resulting transitive bumps
-# (picomatch ≥ 2.3.2 / ≥ 4.0.4, yaml ≥ 2.8.3, next ≥ 15.5.15). New advisories
-# will surface normally; add a fresh block only when genuinely needed.
+# No security.ignore block — picomatch ReDoS and related advisories were resolved by the Next.js 15 upgrade (transitive bumps); new advisories will surface normally.
