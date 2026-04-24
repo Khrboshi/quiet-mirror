@@ -34,6 +34,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const t = await getRequestTranslations();
   const title       = t.homepage.metaTitle(CONFIG.appName);
   const description = t.homepage.metaDescription;
+  const ogTitle       = t.homepage.ogTitle(CONFIG.appName);
+  const ogDescription = t.homepage.ogDescription;
   return {
     metadataBase: new URL(SITE_URL),
     title: {
@@ -67,8 +69,8 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       type: "website",
       siteName: CONFIG.appName,
-      title:       t.homepage.ogTitle(CONFIG.appName),
-      description: t.homepage.ogDescription,
+      title:       ogTitle,
+      description: ogDescription,
       url: SITE_URL,
       // Add OpenGraph image for better social sharing
       images: [
@@ -76,14 +78,17 @@ export async function generateMetadata(): Promise<Metadata> {
           url: "/og-image.png",
           width: 1200,
           height: 630,
-          alt: t.homepage.ogTitle(CONFIG.appName),
+          alt: ogTitle,
         },
       ],
     },
     twitter: {
-      card: "summary_large_image", // summary_large_image for better visibility
-      title:       t.homepage.ogTitle(CONFIG.appName),
-      description: t.homepage.ogDescription,
+      // summary_large_image renders a full-width preview card, giving the
+      // site's OG image the prominence it was sized for (1200x630) instead
+      // of the cropped thumbnail that `summary` uses.
+      card: "summary_large_image",
+      title:       ogTitle,
+      description: ogDescription,
       images: ["/og-image.png"],
     },
     // Add robots meta for better SEO control
