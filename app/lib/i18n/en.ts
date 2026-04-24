@@ -327,6 +327,7 @@ export const en: Translations = {
     contact:           "Contact",
     noAds:             "No ads",
     noDataSales:       "No data sales",
+    tagline:           "The Journal That Reads Underneath",
     privacyAssurance:  "Your entries stay private and are never used to train AI models.",
     allRightsReserved: (appName, year) => `© ${year} ${appName}. All rights reserved.`,
   },

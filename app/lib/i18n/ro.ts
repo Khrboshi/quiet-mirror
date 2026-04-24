@@ -316,6 +316,7 @@ export const ro: Translations = {
     contact:           "Contact",
     noAds:             "Fără reclame",
     noDataSales:       "Fără vânzarea datelor",
+    tagline:           "Jurnalul care citește dedesubt",
     privacyAssurance:  "Înregistrările tale rămân private și nu sunt niciodată folosite pentru a antrena modele AI.",
     allRightsReserved: (appName, year) => `© ${year} ${appName}. Toate drepturile rezervate.`,
   },

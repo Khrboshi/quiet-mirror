@@ -311,6 +311,7 @@ export const nl: Translations = {
     contact:           "Contact",
     noAds:             "Geen advertenties",
     noDataSales:       "Geen dataverkoop",
+    tagline:           "Het dagboek dat onderhuids leest",
     privacyAssurance:  "Je berichten blijven privé en worden nooit gebruikt om AI-modellen te trainen.",
     allRightsReserved: (appName, year) => `© ${year} ${appName}. Alle rechten voorbehouden.`,
   },

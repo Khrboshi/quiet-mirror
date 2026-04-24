@@ -350,6 +350,7 @@ export const uk: Translations = {
     contact:           "Зв'язатися",
     noAds:             "Без реклами",
     noDataSales:       "Без продажу даних",
+    tagline:           "Щоденник, який читає глибше",
     privacyAssurance:  "твої записи залишаються приватними і ніколи не використовуються для навчання ШІ.",
     allRightsReserved: (appName, year) => `© ${year} ${appName}. Усі права захищені.`,
   },

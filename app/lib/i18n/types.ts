@@ -319,6 +319,8 @@ export interface Translations {
     // Trust badges
     noAds:            string;
     noDataSales:      string;
+    // Brand
+    tagline:          string;
     // Privacy assurance
     privacyAssurance: string;
     // Copyright

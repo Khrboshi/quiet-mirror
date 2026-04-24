@@ -330,6 +330,7 @@ export const ar: Translations = {
     contact:           "تواصل معنا",
     noAds:             "بدون إعلانات",
     noDataSales:       "لا بيع للبيانات",
+    tagline:           "اليوميات التي تقرأ ما تحتها",
     privacyAssurance:  "مدخلاتك تظل خاصة ولا تُستخدم أبداً لتدريب نماذج الذكاء الاصطناعي.",
     allRightsReserved: (appName, year) => `© ${year} ${appName}. جميع الحقوق محفوظة.`,
   },

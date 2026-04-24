@@ -311,6 +311,7 @@ export const fr: Translations = {
     contact:           "Contact",
     noAds:             "Pas de publicités",
     noDataSales:       "Pas de vente de données",
+    tagline:           "Le Journal Qui Lit en Dessous",
     privacyAssurance:  "Vos entrées restent privées et ne sont jamais utilisées pour entraîner des modèles d'IA.",
     allRightsReserved: (appName, year) => `© ${year} ${appName}. Tous droits réservés.`,
   },

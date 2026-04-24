@@ -133,7 +133,7 @@ export default function Footer() {
             </Link>
 
             <p className="text-xs leading-relaxed text-qm-secondary">
-              {CONFIG.tagline}
+              {t.footer.tagline}
             </p>
 
             <p className="text-[11px] leading-relaxed text-qm-muted">
