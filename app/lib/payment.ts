@@ -4,11 +4,17 @@
 //
 // ── MIGRATION STATE ─────────────────────────────────────────────────────────
 // NEW subscribers  → Dodo Payments  (app/api/dodo/*)
-// OLD subscribers  → Stripe         (app/api/stripe/webhook kept running — NEVER TOUCH)
+// OLD subscribers  → Stripe webhook only (app/api/stripe/webhook — NEVER TOUCH)
 //
-// Once all existing Stripe subscriptions have expired, the stripe routes and
-// STRIPE_* env vars can be removed. The webhook route must stay forever or
-// until confirmed no active Stripe subscriptions remain.
+// stripe/checkout, stripe/invoices, and stripe/portal were retired — confirmed
+// zero callers; all UI routes through PAYMENT.* → /api/dodo/*.
+//
+// Remaining Stripe surface:
+//   app/api/stripe/webhook/route.ts — keep until all legacy Stripe
+//   subscriptions have expired and are confirmed inactive.
+//   Env vars still needed: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET.
+//   Env vars now unused:   STRIPE_PRICE_ID, STRIPE_PORTAL_RETURN_URL
+//   (safe to remove from Vercel once confirmed no rollback is needed).
 // ────────────────────────────────────────────────────────────────────────────
 //
 // To switch to another provider in the future:

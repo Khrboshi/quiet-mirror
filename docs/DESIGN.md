@@ -123,7 +123,7 @@ Never write `"3 days"` inline — use `trialDayWord` with `trialDays`, or pick t
 
 `app/lib/payment.ts` exports `PAYMENT`: `providerName` ("Dodo Payments"), `checkoutApiRoute`, `invoicesApiRoute`, `portalUrl()`, `portalLabel`, `manageLabel`, `checkoutTrustLine`, `billingManagedLine`.
 
-**Migration state.** New subscribers go through Dodo Payments (`app/api/dodo/*`). Existing Stripe subscriptions keep running via `app/api/stripe/webhook/route.ts`, which is on the NEVER TOUCH list until every legacy subscription has expired. When that happens, the Stripe routes and `STRIPE_*` env vars can be removed; until then, the webhook stays. The UI layer is provider-agnostic — every "Dodo Payments" string in the product comes from `PAYMENT.providerName`, so the switchover was one file, not thirty.
+**Migration state.** New subscribers go through Dodo Payments (`app/api/dodo/*`). The orphan Stripe routes (`checkout`, `invoices`, `portal`) were retired after audit confirmed zero callers — all UI flows through `PAYMENT.*` which resolves to `/api/dodo/*`. The remaining Stripe surface is `app/api/stripe/webhook/route.ts` only, which is on the NEVER TOUCH list until every legacy Stripe subscription has expired. Env vars still required: `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`. Env vars now unused: `STRIPE_PRICE_ID`, `STRIPE_PORTAL_RETURN_URL` (safe to remove from Vercel once no rollback is needed). The UI layer is provider-agnostic — every "Dodo Payments" string in the product comes from `PAYMENT.providerName`, so the switchover was one file, not thirty.
 
 ---
 
