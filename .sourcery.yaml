@@ -11,12 +11,47 @@ ignore:
   # LGPL-3.0 requires open-sourcing modifications to the LGPL library itself,
   # not the application that dynamically links to it. Node.js apps that
   # dynamically link to libvips are not affected by the copyleft clause.
-  # Covers all @img/sharp-libvips-* platforms (top-level and Next.js-nested),
-  # including every sub-file within each package directory.
+  # Explicit paths required — Sourcery license scanner does not support globs.
   - rule: license/lgpl
-    path: node_modules/@img/sharp-libvips-*
+    path: node_modules/@img/sharp-libvips-darwin-arm64
   - rule: license/lgpl
-    path: node_modules/next/node_modules/@img/sharp-libvips-*
+    path: node_modules/@img/sharp-libvips-darwin-x64
+  - rule: license/lgpl
+    path: node_modules/@img/sharp-libvips-linux-arm
+  - rule: license/lgpl
+    path: node_modules/@img/sharp-libvips-linux-arm64
+  - rule: license/lgpl
+    path: node_modules/@img/sharp-libvips-linux-ppc64
+  - rule: license/lgpl
+    path: node_modules/@img/sharp-libvips-linux-riscv64
+  - rule: license/lgpl
+    path: node_modules/@img/sharp-libvips-linux-s390x
+  - rule: license/lgpl
+    path: node_modules/@img/sharp-libvips-linux-x64
+  - rule: license/lgpl
+    path: node_modules/@img/sharp-libvips-linuxmusl-arm64
+  - rule: license/lgpl
+    path: node_modules/@img/sharp-libvips-linuxmusl-x64
+  - rule: license/lgpl
+    path: node_modules/next/node_modules/@img/sharp-libvips-darwin-arm64
+  - rule: license/lgpl
+    path: node_modules/next/node_modules/@img/sharp-libvips-darwin-x64
+  - rule: license/lgpl
+    path: node_modules/next/node_modules/@img/sharp-libvips-linux-arm
+  - rule: license/lgpl
+    path: node_modules/next/node_modules/@img/sharp-libvips-linux-arm64
+  - rule: license/lgpl
+    path: node_modules/next/node_modules/@img/sharp-libvips-linux-ppc64
+  - rule: license/lgpl
+    path: node_modules/next/node_modules/@img/sharp-libvips-linux-riscv64
+  - rule: license/lgpl
+    path: node_modules/next/node_modules/@img/sharp-libvips-linux-s390x
+  - rule: license/lgpl
+    path: node_modules/next/node_modules/@img/sharp-libvips-linux-x64
+  - rule: license/lgpl
+    path: node_modules/next/node_modules/@img/sharp-libvips-linuxmusl-arm64
+  - rule: license/lgpl
+    path: node_modules/next/node_modules/@img/sharp-libvips-linuxmusl-x64
 
   # ── False positive: DOMPurify present as transitive dependency ────────────────
   # DOMPurify is a DOM-only sanitizer that requires a browser environment.
@@ -27,5 +62,3 @@ ignore:
 
 # No security.ignore block — picomatch ReDoS and related advisories were resolved
 # by the Next.js 15 upgrade (transitive bumps); new advisories will surface normally.
-# dangerouslySetInnerHTML ignore removed — JSON-LD now rendered via Next.js
-# metadata.other, eliminating the dangerouslySetInnerHTML usage entirely (#125).
