@@ -99,7 +99,7 @@ export default function UpgradePage() {
             {/* Left — copy + CTA */}
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-qm-positive">
-                {CONFIG.appName}{uf.heroTag}
+                <span className="font-brand-name">{CONFIG.appName}</span>{uf.heroTag}
               </p>
 
               <h1 className="mt-4 font-display text-[2.2rem] font-semibold leading-[1.05] tracking-tight sm:text-5xl md:text-[3.2rem]">
@@ -281,7 +281,7 @@ export default function UpgradePage() {
                   <div className="mb-3 flex items-center gap-3">
                     <div className="h-px flex-1 bg-qm-positive-soft" />
                     <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-positive">
-                      {CONFIG.appName} {uf.proofReflects}
+                      <span className="font-brand-name">{CONFIG.appName}</span>{" "}{uf.proofReflects}
                     </span>
                     <div className="h-px flex-1 bg-qm-positive-soft" />
                   </div>
