@@ -12,7 +12,9 @@
     "lint": "eslint \"**/*.{ts,tsx}\" --ignore-pattern .next --ignore-pattern node_modules",
     "i18n:check":         "node scripts/i18n-sync.mjs",
     "i18n:sync":          "node scripts/i18n-sync.mjs --write",
-    "i18n:audit-values":  "node scripts/i18n-sync.mjs --audit-values"
+    "i18n:audit-values":     "node scripts/i18n-sync.mjs --audit-values",
+    "i18n:grammar-check":    "node scripts/i18n-grammar-check.mjs",
+    "i18n:grammar-dry-run": "node scripts/i18n-grammar-check.mjs --dry-run"
   },
   "dependencies": {
     "@dodopayments/nextjs": "^0.3.5",
