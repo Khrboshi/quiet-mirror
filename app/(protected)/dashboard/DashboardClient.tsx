@@ -78,7 +78,9 @@ function getDailyPrompts<T extends { q: string; sub: string; accent: string }>(
   return [pool[start % pool.length], pool[(start + 1) % pool.length]] as [T, T];
 }
 
-const ACCENT_CLASSES: Record<string, { border: string; label: string; dot: string }> = {
+type Accent = "emerald" | "violet" | "amber" | "sky" | "rose" | "slate";
+
+const ACCENT_CLASSES: Record<Accent, { border: string; label: string; dot: string }> = {
   emerald: { border: "border-qm-positive-border hover:border-qm-positive",   label: "text-qm-positive", dot: "bg-qm-positive" },
   violet:  { border: "border-qm-premium-border hover:border-qm-premium",     label: "text-qm-premium",  dot: "bg-qm-premium" },
   amber:   { border: "border-qm-warning-border hover:border-qm-warning",     label: "text-qm-warning",  dot: "bg-qm-warning" },
@@ -301,8 +303,8 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
     wroteToday, reflectedThisWeek,
   } = data;
 
-  const acA = ACCENT_CLASSES[promptA.accent] ?? ACCENT_CLASSES.slate;
-  const acB = ACCENT_CLASSES[promptB.accent] ?? ACCENT_CLASSES.slate;
+  const acA = ACCENT_CLASSES[(promptA.accent as Accent) in ACCENT_CLASSES ? (promptA.accent as Accent) : "slate"];
+  const acB = ACCENT_CLASSES[(promptB.accent as Accent) in ACCENT_CLASSES ? (promptB.accent as Accent) : "slate"];
 
   // Thread prompt for the CTA
   const threadPrompt = wroteToday
@@ -345,7 +347,7 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
           {writingDays > 0 && (
             <>
               <span style={{ opacity: 0.3 }}>·</span>
-              <span>{writingDays} {t.dashboard.writingDays.toLowerCase()}</span>
+              <span>{writingDays} {t.dashboard.writingDays}</span>
             </>
           )}
         </div>
