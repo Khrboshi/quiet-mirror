@@ -109,6 +109,7 @@ export async function GET(req: Request) {
   for (const row of rows) {
     try {
       const parsed = parseAIResponse(row.ai_response);
+      if (!parsed) continue;
 
       const normalized = normalizeAIResponseSignals(parsed);
 

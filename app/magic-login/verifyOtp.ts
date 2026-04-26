@@ -1,6 +1,6 @@
 "use server";
 
-import { createServerClient } from "@supabase/ssr";
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
 export async function verifyOtp(formData: FormData) {
@@ -17,13 +17,13 @@ export async function verifyOtp(formData: FormData) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get(name) {
+        get(name: string) {
           return cookieStore.get(name)?.value;
         },
-        set(name, value, options) {
+        set(name: string, value: string, options: CookieOptions) {
           cookieStore.set({ name, value, ...options, path: "/" });
         },
-        remove(name, options) {
+        remove(name: string, options: CookieOptions) {
           cookieStore.set({ name, value: "", ...options, path: "/" });
         },
       },

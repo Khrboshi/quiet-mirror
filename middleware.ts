@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { createServerClient } from "@supabase/ssr";
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
 
 const AUTH_PATHS = ["/magic-login", "/auth/callback", "/logout", "/install", "/insights/preview"];
 const PROTECTED_PREFIXES = ["/dashboard", "/journal", "/tools", "/insights", "/settings"];
@@ -28,7 +28,7 @@ export async function middleware(req: NextRequest) {
   const supabase = createServerClient(supabaseUrl, supabaseAnon, {
     cookies: {
       getAll: () => req.cookies.getAll(),
-      setAll: (cookies) => {
+      setAll: (cookies: Array<{ name: string; value: string; options: CookieOptions }>) => {
         cookies.forEach(({ name, value, options }) => {
           res.cookies.set({
             name,
