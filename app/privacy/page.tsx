@@ -66,7 +66,7 @@ export default async function PrivacyPolicyPage() {
         </h1>
 
         <p className="mt-3 max-w-2xl text-qm-secondary">
-          {CONFIG.appName} is designed to be a quiet, private place for
+          <span className="font-brand-name">{CONFIG.appName}</span> is designed to be a quiet, private place for
           reflection. This page explains what we collect, what we don&apos;t,
           and how your data is handled.
         </p>
@@ -94,10 +94,10 @@ export default async function PrivacyPolicyPage() {
 
           <section id="what-quiet-mirror-is" aria-labelledby="what-quiet-mirror-is-heading">
             <h2 id="what-quiet-mirror-is-heading" className="text-lg font-semibold text-qm-primary">
-              What {CONFIG.appName} is (and is not)
+              What <span className="font-brand-name">{CONFIG.appName}</span> is (and is not)
             </h2>
             <p className="mt-2 text-qm-secondary">
-              {CONFIG.appName} is a journaling and reflection companion. It is
+              <span className="font-brand-name">{CONFIG.appName}</span> is a journaling and reflection companion. It is
               not a clinical service, not emergency support, and not a
               substitute for professional care. If you are in immediate danger
               or experiencing a crisis, please contact your local emergency
@@ -137,7 +137,7 @@ export default async function PrivacyPolicyPage() {
                 </span>{" "}
                 if you subscribe to Premium, payment details are collected and
                 processed directly by {PAYMENT.providerName}.{" "}
-                {CONFIG.appName} does not store your card number.
+                <span className="font-brand-name">{CONFIG.appName}</span> does not store your card number.
               </li>
             </ul>
           </section>
@@ -192,7 +192,7 @@ export default async function PrivacyPolicyPage() {
               Data storage and subprocessors
             </h2>
             <p className="mt-2 text-qm-secondary">
-              {CONFIG.appName} uses third-party infrastructure to operate. Your
+              <span className="font-brand-name">{CONFIG.appName}</span> uses third-party infrastructure to operate. Your
               data is stored and processed by these providers strictly to
               deliver the service to you, and for no other purpose. Our current
               subprocessors are:
@@ -253,7 +253,7 @@ export default async function PrivacyPolicyPage() {
               application (secure transport, access controls, and
               least-privilege principles). No system can be guaranteed 100%
               secure, but privacy and safety are core product requirements for{" "}
-              {CONFIG.appName}.
+              <span className="font-brand-name">{CONFIG.appName}</span>.
             </p>
           </section>
 
@@ -291,7 +291,7 @@ export default async function PrivacyPolicyPage() {
             <p className="mt-2 text-qm-secondary">
               If we make material changes to this policy, we will update the
               &ldquo;Last updated&rdquo; date at the top and, where appropriate,
-              notify you by email. Continued use of {CONFIG.appName} after
+              notify you by email. Continued use of <span className="font-brand-name">{CONFIG.appName}</span> after
               changes are posted constitutes acceptance of the updated policy.
             </p>
           </section>
@@ -333,7 +333,7 @@ export default async function PrivacyPolicyPage() {
               href="/about"
               className="qm-btn-secondary inline-block px-4 py-2 text-sm"
             >
-              Learn about {CONFIG.appName} →
+              Learn about <span className="font-brand-name">{CONFIG.appName}</span> →
             </Link>
           </div>
         </div>

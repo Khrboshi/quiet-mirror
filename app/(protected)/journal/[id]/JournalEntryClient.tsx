@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { useRouter } from "next/navigation";
 import { useUserPlan } from "@/app/components/useUserPlan";
 import UpgradeTriggerModal from "@/app/components/UpgradeTriggerModal";
@@ -50,31 +50,49 @@ function parseNextStep(step: string): { optionA: string; optionB: string; script
 }
 
 
-const EMOTION_COLORS: Record<string, string> = {
-  anxiety: "bg-amber-500/15 text-amber-300 border-amber-500/25",
-  anxious: "bg-amber-500/15 text-amber-300 border-amber-500/25",
-  fear: "bg-red-500/15 text-red-300 border-red-500/25",
-  scared: "bg-red-500/15 text-red-300 border-red-500/25",
-  uncertainty: "bg-slate-500/20 text-slate-300 border-slate-500/25",
-  grief: "bg-indigo-500/15 text-indigo-300 border-indigo-500/25",
-  sadness: "bg-blue-500/15 text-blue-300 border-blue-500/25",
-  longing: "bg-violet-500/15 text-violet-300 border-violet-500/25",
-  guilt: "bg-orange-500/15 text-orange-300 border-orange-500/25",
-  shame: "bg-orange-500/15 text-orange-300 border-orange-500/25",
-  frustration: "bg-rose-500/15 text-rose-300 border-rose-500/25",
-  anger: "bg-rose-500/15 text-rose-300 border-rose-500/25",
-  confusion: "bg-teal-500/15 text-teal-300 border-teal-500/25",
-  overwhelm: "bg-purple-500/15 text-purple-300 border-purple-500/25",
-  hope: "bg-emerald-500/15 text-emerald-300 border-emerald-500/25",
-  pride: "bg-emerald-500/15 text-emerald-300 border-emerald-500/25",
-  love: "bg-pink-500/15 text-pink-300 border-pink-500/25",
-  hurt: "bg-red-500/15 text-red-300 border-red-500/25",
-  tiredness: "bg-slate-500/20 text-slate-300 border-slate-500/25",
-  exhaustion: "bg-slate-500/20 text-slate-300 border-slate-500/25",
+// Emotion → --qm-dv-* token mapping.
+// Each emotion is assigned to its closest semantic data-viz token so the
+// legacy-remap layer in globals.css cannot override these colours — they
+// are intentionally distinct (grief ≠ hope ≠ anxiety) and must stay that way.
+// CSS variables are fixed across light/dark mode by design.
+const EMOTION_TOKEN: Record<string, string> = {
+  anxiety:     "var(--qm-dv-health)",   // health/stress family
+  anxious:     "var(--qm-dv-health)",
+  fear:        "var(--qm-dv-fear)",     // fear/anger family
+  scared:      "var(--qm-dv-fear)",
+  hurt:        "var(--qm-dv-fear)",
+  frustration: "var(--qm-dv-fear)",
+  anger:       "var(--qm-dv-fear)",
+  grief:       "var(--qm-dv-grief)",    // grief/confusion/doubt family
+  confusion:   "var(--qm-dv-grief)",
+  uncertainty: "var(--qm-dv-grief)",
+  sadness:     "var(--qm-dv-grief)",
+  longing:     "var(--qm-dv-grief)",
+  overwhelm:   "var(--qm-dv-grief)",
+  guilt:       "var(--qm-dv-creative)", // creative/shame/guilt family
+  shame:       "var(--qm-dv-creative)",
+  hope:        "var(--qm-dv-positive)", // calm/hope/gratitude/joy family
+  pride:       "var(--qm-dv-positive)",
+  love:        "var(--qm-dv-love)",     // love/relationship/connection family
+  tiredness:   "var(--qm-dv-fitness)",  // fitness/energy family
+  exhaustion:  "var(--qm-dv-fitness)",
 };
 
-function emotionClass(e: string): string {
-  return EMOTION_COLORS[e.toLowerCase()] ?? "bg-white/5 text-white/60 border-white/10";
+// Returns inline style props for an emotion pill — bg, text, and border all
+// derived from the same --qm-dv-* token at different opacities.
+function emotionStyle(e: string): CSSProperties {
+  const token = EMOTION_TOKEN[e.toLowerCase()];
+  if (!token) return {
+    backgroundColor: "rgba(255,255,255,0.05)",
+    color:           "rgba(255,255,255,0.60)",
+    borderColor:     "rgba(255,255,255,0.10)",
+  };
+  // alpha channels chosen to match the previous Tailwind /15 bg, full text, /25 border pattern
+  return {
+    backgroundColor: token.replace("var(", "color-mix(in srgb, ").replace(")", " 15%, transparent)"),
+    color:           token,
+    borderColor:     token.replace("var(", "color-mix(in srgb, ").replace(")", " 25%, transparent)"),
+  };
 }
 
 export default function JournalEntryClient({
@@ -424,7 +442,8 @@ export default function JournalEntryClient({
                   {reflection.emotions.filter(Boolean).map((e, i) => (
                     <span
                       key={`${e}-${i}`}
-                      className={`rounded-full border px-2.5 py-1 text-xs ${emotionClass(e)}`}
+                      className="rounded-full border px-2.5 py-1 text-xs"
+                      style={emotionStyle(e)}
                     >
                       {e}
                     </span>

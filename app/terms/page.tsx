@@ -63,9 +63,9 @@ export default async function TermsOfServicePage() {
         </h1>
 
         <p className="mt-3 max-w-2xl text-qm-secondary">
-          These terms govern your use of {CONFIG.appName}. By creating an account or
+          These terms govern your use of <span className="font-brand-name">{CONFIG.appName}</span>. By creating an account or
           using the service, you agree to these terms. If you do not agree,
-          please do not use {CONFIG.appName}.
+          please do not use <span className="font-brand-name">{CONFIG.appName}</span>.
         </p>
 
         <div className="mt-6 rounded-2xl border border-qm-border-card bg-qm-elevated p-5 text-sm shadow-qm-card">
@@ -89,10 +89,10 @@ export default async function TermsOfServicePage() {
 
           <section id="what-quiet-mirror-is" aria-labelledby="what-quiet-mirror-is-heading">
             <h2 id="what-quiet-mirror-is-heading" className="text-lg font-semibold text-qm-primary">
-              1. What {CONFIG.appName} is
+              1. What <span className="font-brand-name">{CONFIG.appName}</span> is
             </h2>
             <p className="mt-2 text-qm-secondary">
-              {CONFIG.appName} is a private journaling and AI reflection companion. It is
+              <span className="font-brand-name">{CONFIG.appName}</span> is a private journaling and AI reflection companion. It is
               not therapy, clinical care, crisis support, or a substitute for
               professional mental-health services. If you are in immediate danger
               or experiencing a crisis, please contact your local emergency
@@ -105,7 +105,7 @@ export default async function TermsOfServicePage() {
               2. Eligibility
             </h2>
             <p className="mt-2 text-qm-secondary">
-              You must be at least 16 years old to use {CONFIG.appName}. By creating an
+              You must be at least 16 years old to use <span className="font-brand-name">{CONFIG.appName}</span>. By creating an
               account you represent that you meet this requirement.
             </p>
           </section>
@@ -128,7 +128,7 @@ export default async function TermsOfServicePage() {
             </h2>
             <p className="mt-2 text-qm-secondary">
               You retain ownership of all journal entries and content you create
-              in {CONFIG.appName}. By submitting content, you grant {CONFIG.appName} a limited
+              in <span className="font-brand-name">{CONFIG.appName}</span>. By submitting content, you grant <span className="font-brand-name">{CONFIG.appName}</span> a limited
               licence to store, process, and display that content back to you —
               and only to you — as part of the service. We do not claim any
               other rights to your content.
@@ -139,12 +139,12 @@ export default async function TermsOfServicePage() {
             <h2 id="acceptable-use-heading" className="text-lg font-semibold text-qm-primary">
               5. Acceptable use
             </h2>
-            <p className="mt-2 text-qm-secondary">You agree not to use {CONFIG.appName} to:</p>
+            <p className="mt-2 text-qm-secondary">You agree not to use <span className="font-brand-name">{CONFIG.appName}</span> to:</p>
             <ul className="mt-3 list-disc space-y-2 ps-5 text-qm-secondary">
               <li>Violate any applicable law or regulation.</li>
-              <li>Attempt to gain unauthorised access to {CONFIG.appName} systems or other users&apos; data.</li>
+              <li>Attempt to gain unauthorised access to <span className="font-brand-name">{CONFIG.appName}</span> systems or other users&apos; data.</li>
               <li>Transmit malware, spam, or any content designed to disrupt the service.</li>
-              <li>Use automated tools (bots, scrapers) to access or extract data from {CONFIG.appName} without written permission.</li>
+              <li>Use automated tools (bots, scrapers) to access or extract data from <span className="font-brand-name">{CONFIG.appName}</span> without written permission.</li>
             </ul>
             <p className="mt-3 text-qm-secondary">
               We reserve the right to suspend or terminate accounts that violate these terms.
@@ -208,7 +208,7 @@ export default async function TermsOfServicePage() {
             </h2>
             <p className="mt-2 text-qm-secondary">
               Payments are processed by {PAYMENT.providerName}. By subscribing, you also agree
-              to {PAYMENT.providerName}&apos;s terms. {CONFIG.appName} does not store your card details.
+              to {PAYMENT.providerName}&apos;s terms. <span className="font-brand-name">{CONFIG.appName}</span> does not store your card details.
             </p>
           </section>
 
@@ -217,7 +217,7 @@ export default async function TermsOfServicePage() {
               9. AI-generated content
             </h2>
             <p className="mt-2 text-qm-secondary">
-              Reflections and insights generated by {CONFIG.appName} are produced by AI
+              Reflections and insights generated by <span className="font-brand-name">{CONFIG.appName}</span> are produced by AI
               and are intended as prompts for personal reflection only. They are
               not professional advice — medical, psychological, legal, or
               otherwise. You should not rely on AI-generated content as a
@@ -230,7 +230,7 @@ export default async function TermsOfServicePage() {
               10. Privacy
             </h2>
             <p className="mt-2 text-qm-secondary">
-              Your privacy is fundamental to {CONFIG.appName}. Please read our{" "}
+              Your privacy is fundamental to <span className="font-brand-name">{CONFIG.appName}</span>. Please read our{" "}
               <Link
                 href="/privacy"
                 className="text-qm-accent underline underline-offset-2 transition-colors hover:text-qm-accent-hover"
@@ -246,7 +246,7 @@ export default async function TermsOfServicePage() {
               11. Availability and changes
             </h2>
             <p className="mt-2 text-qm-secondary">
-              We strive to keep {CONFIG.appName} available and reliable, but we do not
+              We strive to keep <span className="font-brand-name">{CONFIG.appName}</span> available and reliable, but we do not
               guarantee uninterrupted access. We may modify, suspend, or
               discontinue features at any time. We will make reasonable efforts to notify you of
               material changes.
@@ -258,7 +258,7 @@ export default async function TermsOfServicePage() {
               12. Limitation of liability
             </h2>
             <p className="mt-2 text-qm-secondary">
-              To the fullest extent permitted by applicable law, {CONFIG.appName} and its
+              To the fullest extent permitted by applicable law, <span className="font-brand-name">{CONFIG.appName}</span> and its
               operators are not liable for any indirect, incidental, special,
               consequential, or punitive damages, or any loss of data, profits,
               or goodwill arising out of or related to your use of the service.
@@ -273,7 +273,7 @@ export default async function TermsOfServicePage() {
               13. Disclaimer of warranties
             </h2>
             <p className="mt-2 text-qm-secondary">
-              {CONFIG.appName} is provided &ldquo;as is&rdquo; and &ldquo;as
+              <span className="font-brand-name">{CONFIG.appName}</span> is provided &ldquo;as is&rdquo; and &ldquo;as
               available&rdquo; without warranties of any kind, whether express or
               implied, including but not limited to implied warranties of
               merchantability, fitness for a particular purpose, and
@@ -289,7 +289,7 @@ export default async function TermsOfServicePage() {
               We may update these terms from time to time. If we make material
               changes, we will update the &ldquo;Last updated&rdquo; date at the
               top and, where appropriate, notify you by email. Continued use of{" "}
-              {CONFIG.appName} after changes are posted constitutes acceptance of the
+              <span className="font-brand-name">{CONFIG.appName}</span> after changes are posted constitutes acceptance of the
               updated terms.
             </p>
           </section>
