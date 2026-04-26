@@ -48,6 +48,7 @@ export interface Translations {
     addTitleOptional:   string;
     titlePlaceholder:   string;
     privacyReminder:    string;
+    privacyReminderShort: string;
     patternsSoon:       (current: number, total: number) => string;
     saveButtonLabel:    string;
     savingLabel:        string;

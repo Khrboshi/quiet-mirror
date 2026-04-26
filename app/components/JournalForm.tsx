@@ -22,29 +22,41 @@ export default function JournalForm(_props: Props) {
   const { t } = useTranslation();
   const searchParams = useSearchParams();
 
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [status, setStatus] = useState<"idle" | "saving" | "error" | "success">("idle");
-  const [error, setError] = useState<string>("");
+  const [title, setTitle]           = useState("");
+  const [content, setContent]       = useState("");
+  const [status, setStatus]         = useState<"idle" | "saving" | "error" | "success">("idle");
+  const [error, setError]           = useState<string>("");
   const [entryProgress, setEntryProgress] = useState(0);
-  const [showTitle, setShowTitle] = useState(false);
+  const [showTitle, setShowTitle]   = useState(false);
+  const [promptsFaded, setPromptsFaded] = useState(false);
+  const [isFocused, setIsFocused]   = useState(false);
 
   const didPrefillRef = useRef(false);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const textareaRef   = useRef<HTMLTextAreaElement>(null);
 
+  // ── Auto-grow textarea ──────────────────────────────────────────────────────
+  useEffect(() => {
+    const el = textareaRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${Math.max(el.scrollHeight, 280)}px`;
+  }, [content]);
+
+  // ── Query-param prefill ────────────────────────────────────────────────────
   useEffect(() => {
     if (didPrefillRef.current) return;
-    const qpTitle = safeSlice(searchParams.get("title") ?? "", 120);
+    const qpTitle  = safeSlice(searchParams.get("title")  ?? "", 120);
     const qpPrompt = safeSlice(searchParams.get("prompt") ?? "", 2000);
-    const qpMood = safeSlice(searchParams.get("mood") ?? "", 32);
-    const nextTitle = qpTitle || (qpMood ? `Mood: ${qpMood}` : "");
+    const qpMood   = safeSlice(searchParams.get("mood")   ?? "", 32);
+    const nextTitle   = qpTitle || (qpMood ? `Mood: ${qpMood}` : "");
     const nextContent = qpPrompt || (qpMood ? `Right now I'm feeling ${qpMood}.\n\n` : "");
-    setTitle((prev) => (prev.trim() ? prev : nextTitle));
+    setTitle((prev)   => (prev.trim() ? prev : nextTitle));
     setContent((prev) => (prev.trim() ? prev : nextContent));
     if (qpPrompt || qpMood) setTimeout(() => textareaRef.current?.focus(), 100);
     didPrefillRef.current = true;
   }, [searchParams]);
 
+  // ── Insight stage ──────────────────────────────────────────────────────────
   useEffect(() => {
     try {
       const stage = Number(sessionStorage.getItem("havenly:insight_stage") || "0");
@@ -57,15 +69,16 @@ export default function JournalForm(_props: Props) {
     [content, status]
   );
 
-  const incomingPrompt = safeSlice(searchParams.get("prompt") ?? "", 200);
+  const incomingPrompt  = safeSlice(searchParams.get("prompt") ?? "", 200);
   const hasIncomingPrompt = Boolean(incomingPrompt);
+  const wordCount = content.trim().split(/\s+/).filter(Boolean).length;
 
   function handleStarterPrompt(prompt: string) {
     setContent((prev) => {
       const trimmed = prev.trim();
-      if (!trimmed) return `${prompt}\n\n`;
-      return prev;
+      return trimmed ? prev : `${prompt}\n\n`;
     });
+    setPromptsFaded(true);
     setTimeout(() => textareaRef.current?.focus(), 50);
   }
 
@@ -81,10 +94,10 @@ export default function JournalForm(_props: Props) {
     setStatus("saving");
     try {
       const res = await fetch("/api/journal/create", {
-        method: "POST",
+        method:  "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title: title.trim() || null, content: contentTrimmed }),
-        cache: "no-store",
+        body:    JSON.stringify({ title: title.trim() || null, content: contentTrimmed }),
+        cache:   "no-store",
       });
       const json = await res.json().catch(() => ({}));
       if (!res.ok) {
@@ -110,35 +123,72 @@ export default function JournalForm(_props: Props) {
     }
   }
 
-  const wordCount = content.trim().split(/\s+/).filter(Boolean).length;
+  // ── Progress bar ──────────────────────────────────────────────────────────
+  const progressPct = (entryProgress / 3) * 100;
 
   return (
     <form onSubmit={onSubmit} className="w-full pb-32">
 
-      {/* Header */}
-      <div className="mb-8 pt-8">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-qm-accent" style={{ opacity: 0.7 }}>
+      {/* ── Ambient top rule ─────────────────────────────────────────────── */}
+      <div className="flex items-end pt-16 pb-1 mb-6">
+        <div
+          className="h-px w-7 rounded-full"
+          style={{ backgroundColor: "var(--qm-accent-border)" }}
+        />
+      </div>
+
+      {/* ── Header ───────────────────────────────────────────────────────── */}
+      <div className="mb-7 animate-fade-in">
+        <p className="qm-eyebrow text-qm-accent" style={{ opacity: 0.65 }}>
           {t.journal.newEntryLabel}
         </p>
-        <h1 className="font-display mt-2 text-2xl font-semibold leading-snug text-qm-primary sm:text-3xl">
+        <h1 className="font-display mt-2.5 text-[1.75rem] font-medium leading-[1.12] tracking-tight text-qm-primary sm:text-[2rem]">
           {hasIncomingPrompt ? incomingPrompt : t.journal.newEntryHeading}
         </h1>
-        <p className="mt-2 text-sm text-qm-secondary">
+        <p className="mt-2 text-[13px] leading-relaxed text-qm-muted">
           {t.journal.newEntrySubheading}
         </p>
       </div>
 
-      {/* Starter prompts */}
-      {!hasIncomingPrompt && content.trim().length === 0 && (
-        <div className="mb-6">
-          <p className="mb-2.5 text-xs text-qm-muted">{t.journal.notSureWhereToStart}</p>
+      {/* ── Starter prompts ──────────────────────────────────────────────── */}
+      {!hasIncomingPrompt && (
+        <div
+          className="mb-7 transition-all duration-500"
+          style={{
+            opacity:    promptsFaded || content.trim().length > 0 ? 0 : 1,
+            pointerEvents: promptsFaded || content.trim().length > 0 ? "none" : "auto",
+            transform:  promptsFaded || content.trim().length > 0
+              ? "translateY(-4px)"
+              : "translateY(0)",
+          }}
+        >
+          <p className="mb-2.5 text-[11px] tracking-wide text-qm-faint">
+            {t.journal.notSureWhereToStart}
+          </p>
           <div className="flex flex-wrap gap-2">
             {t.journal.starterPrompts.map((prompt) => (
               <button
                 key={prompt}
                 type="button"
                 onClick={() => handleStarterPrompt(prompt)}
-                className="rounded-full border border-qm-card bg-qm-card px-3.5 py-2 text-xs text-qm-secondary transition hover:border-qm-accent hover:bg-qm-accent-soft hover:text-white"
+                className="rounded-full px-3.5 py-[7px] text-xs text-qm-muted transition-all duration-150"
+                style={{
+                  border:          "1px solid var(--qm-accent-border)",
+                  backgroundColor: "transparent",
+                  opacity:         0.7,
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.opacity         = "1";
+                  (e.currentTarget as HTMLButtonElement).style.backgroundColor = "var(--qm-accent-soft)";
+                  (e.currentTarget as HTMLButtonElement).style.color           = "var(--qm-text-primary)";
+                  (e.currentTarget as HTMLButtonElement).style.borderColor     = "var(--qm-accent-border)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.opacity         = "0.7";
+                  (e.currentTarget as HTMLButtonElement).style.backgroundColor = "transparent";
+                  (e.currentTarget as HTMLButtonElement).style.color           = "";
+                  (e.currentTarget as HTMLButtonElement).style.borderColor     = "var(--qm-accent-border)";
+                }}
               >
                 {prompt}
               </button>
@@ -147,91 +197,150 @@ export default function JournalForm(_props: Props) {
         </div>
       )}
 
-      {/* Writing area */}
-      <div className="relative">
+      {/* ── Writing surface ───────────────────────────────────────────────── */}
+      <div
+        className="relative rounded-2xl transition-all duration-200"
+        style={{
+          border:     `1px solid ${isFocused ? "var(--qm-accent-border)" : "var(--qm-border-card)"}`,
+          background: "var(--qm-bg-elevated)",
+          boxShadow:  isFocused
+            ? "0 0 0 3px var(--qm-accent-soft)"
+            : "var(--qm-shadow-card)",
+        }}
+      >
         <textarea
           ref={textareaRef}
           value={content}
           onChange={(e) => setContent(e.target.value)}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           placeholder={t.journal.textareaPlaceholder}
           autoFocus={!hasIncomingPrompt}
-          className="qm-input w-full min-h-[50vh] resize-none px-5 py-5 text-base leading-relaxed placeholder:text-qm-faint outline-none sm:text-[17px]"
+          className="w-full resize-none bg-transparent px-6 pb-14 pt-6 text-base leading-[1.8] text-qm-primary placeholder:text-qm-faint outline-none sm:text-[16.5px]"
+          style={{ minHeight: "280px" }}
         />
-        {wordCount > 0 && (
-          <span className="absolute bottom-4 right-4 text-[11px] text-qm-faint pointer-events-none">
-            {wordCount} {wordCount === 1 ? "word" : "words"}
-          </span>
-        )}
+
+        {/* Word count — bottom-right of surface */}
+        <span
+          className="absolute bottom-5 right-5 text-[11px] tracking-wide pointer-events-none transition-opacity duration-300"
+          style={{
+            color:   "var(--qm-text-faint)",
+            opacity: wordCount > 0 ? 0.7 : 0,
+          }}
+        >
+          {t.ui.wordCount(wordCount)}
+        </span>
       </div>
 
-      {/* Optional title */}
-      <div className="mt-4">
+      {/* ── Below-surface row ─────────────────────────────────────────────── */}
+      <div className="mt-3.5 flex items-center justify-between">
         {!showTitle ? (
           <button
             type="button"
             onClick={() => setShowTitle(true)}
-            className="text-xs text-qm-muted transition hover:text-qm-secondary"
+            className="text-xs transition-colors duration-150"
+            style={{ color: "var(--qm-text-faint)", opacity: 0.6 }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.opacity = "1";
+              (e.currentTarget as HTMLButtonElement).style.color   = "var(--qm-text-muted)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.opacity = "0.6";
+              (e.currentTarget as HTMLButtonElement).style.color   = "var(--qm-text-faint)";
+            }}
           >
             {t.journal.addTitleOptional}
           </button>
         ) : (
-          <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder={t.journal.titlePlaceholder}
-            autoFocus
-            className="qm-input w-full px-4 py-3 text-sm placeholder:text-qm-faint outline-none"
-            maxLength={120}
-          />
+          <div className="flex-1" />
         )}
+
+        {/* Privacy note */}
+        <span
+          className="flex items-center gap-1.5 text-[11px]"
+          style={{ color: "var(--qm-text-faint)", opacity: 0.45 }}
+        >
+          {/* Lock icon */}
+          <svg width="9" height="11" viewBox="0 0 9 11" fill="none" aria-hidden="true">
+            <rect x="0.5" y="4.5" width="8" height="6" rx="1"
+              fill="var(--qm-text-faint)" />
+            <path d="M2.5 4.5V3A2 2 0 016.5 3v1.5"
+              stroke="var(--qm-text-faint)" strokeWidth="1.1" fill="none" />
+          </svg>
+          {t.journal.privacyReminderShort}
+        </span>
       </div>
 
-      {/* Privacy reminder */}
-      <p className="mt-4 text-xs text-qm-faint">
-        {t.journal.privacyReminder}
-      </p>
+      {/* Optional title input */}
+      {showTitle && (
+        <input
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder={t.journal.titlePlaceholder}
+          autoFocus
+          className="mt-3 w-full bg-transparent text-sm text-qm-primary placeholder:text-qm-faint outline-none pb-2"
+          style={{ borderBottom: "1px solid var(--qm-border-subtle)" }}
+          maxLength={120}
+        />
+      )}
 
-      {/* Progress nudge */}
+      {/* ── Progress bar ─────────────────────────────────────────────────── */}
       {entryProgress < 3 && (
         <div className="mt-6 flex items-center gap-3">
-          <div className="flex-1 h-0.5 rounded-full bg-qm-card">
+          <div
+            className="flex-1 h-[2px] rounded-full overflow-hidden"
+            style={{ backgroundColor: "var(--qm-accent-soft)" }}
+          >
             <div
-              className="h-0.5 rounded-full bg-qm-accent transition-all"
-              style={{ width: `${(entryProgress / 3) * 100}%`, opacity: 0.5 }}
+              className="h-full rounded-full transition-all duration-500"
+              style={{
+                width:           `${progressPct}%`,
+                backgroundColor: "var(--qm-accent)",
+                opacity:         0.45,
+              }}
             />
           </div>
-          <p className="shrink-0 text-xs text-qm-faint">{entryProgress}/3 entries — patterns emerge soon</p>
+          <p className="shrink-0 text-[11px]" style={{ color: "var(--qm-text-faint)", opacity: 0.5 }}>
+            {t.journal.patternsSoon(entryProgress, 3)}
+          </p>
         </div>
       )}
 
-      {/* Error */}
+      {/* ── Error ────────────────────────────────────────────────────────── */}
       {status === "error" && (
-        <div className="mt-4 rounded-xl border border-qm-danger-border bg-qm-danger-soft px-4 py-3 text-sm text-qm-danger">
+        <div className="mt-4 rounded-xl border border-qm-danger-border bg-qm-danger-bg px-4 py-3 text-sm text-qm-danger">
           {error}
         </div>
       )}
 
-      {/* Fixed bottom save bar */}
+      {/* ── Fixed save bar ────────────────────────────────────────────────── */}
       <div
-        className="fixed bottom-0 inset-x-0 z-40 border-t backdrop-blur-sm px-4 py-3 pb-safe-4"
+        className="fixed inset-x-0 bottom-0 z-40 border-t px-4 py-3 pb-safe-4 backdrop-blur-sm"
         style={{
-          borderColor: "var(--qm-border-card)",
+          borderColor:     "var(--qm-border-card)",
           backgroundColor: "var(--qm-bg-glass-95)",
         }}
       >
-        <div className="mx-auto flex max-w-3xl items-center gap-3">
+        <div className="mx-auto flex max-w-3xl items-center gap-4">
           <button
             type="submit"
             disabled={!canSave}
-            className="qm-btn-primary flex-1 px-6 py-3.5 text-sm disabled:cursor-not-allowed disabled:opacity-40"
+            className="qm-btn-primary flex-1 px-6 py-3.5 text-sm disabled:cursor-not-allowed disabled:opacity-30"
+            style={{ boxShadow: canSave ? "0 6px 20px -4px rgba(139,157,255,0.28)" : "none" }}
           >
             {status === "saving" ? t.journal.savingLabel : t.journal.saveButtonLabel}
           </button>
-          {canSave && (
-            <p className="hidden shrink-0 text-xs text-qm-muted sm:block">
-              {t.journal.saveReflectNudge}
-            </p>
-          )}
+
+          {/* Save nudge — fades in after 10 words */}
+          <p
+            className="hidden shrink-0 max-w-[180px] text-xs leading-snug sm:block transition-opacity duration-500"
+            style={{
+              color:   "var(--qm-text-faint)",
+              opacity: wordCount > 10 ? 0.55 : 0,
+            }}
+          >
+            {t.journal.saveReflectNudge}
+          </p>
         </div>
       </div>
     </form>

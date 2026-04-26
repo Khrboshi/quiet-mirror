@@ -75,6 +75,7 @@ export const uk: Translations = {
     addTitleOptional:    "+ Додати назву (необов'язково)",
     titlePlaceholder:    "Дайте запису назву (необов'язково)",
     privacyReminder:     "твій щоденник є приватним. Ніхто інший не може читати те, що ти пишете. Записи ніколи не використовуються для навчання моделей ШІ.",
+    privacyReminderShort: "Приватно — тільки ти",
     patternsSoon:        (current, total) => `${current}/${total} записів — закономірності скоро з'являться`,
     saveButtonLabel:     "Записати",
     savingLabel:         "Збереження…",

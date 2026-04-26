@@ -51,6 +51,7 @@ export const ro: Translations = {
     addTitleOptional:    "+ Adaugă un titlu (opțional)",
     titlePlaceholder:    "Dați un titlu acestei înregistrări (opțional)",
     privacyReminder:     "Jurnalul tău este privat. Nimeni altcineva nu poate citi ce scrii. Înregistrările nu sunt niciodată folosite pentru a antrena modele AI.",
+    privacyReminderShort: "Privat — doar tu",
     patternsSoon:        (current, total) => `${current}/${total} înregistrări — tiparele vor apărea în curând`,
     saveButtonLabel:     "Scrie",
     savingLabel:         "Se salvează…",

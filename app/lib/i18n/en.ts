@@ -54,6 +54,7 @@ export const en: Translations = {
     addTitleOptional:    "+ Add a title (optional)",
     titlePlaceholder:    "Give this entry a title (optional)",
     privacyReminder:     "Your journal is private. No one else can read what you write. Entries are never used to train AI models.",
+    privacyReminderShort: "Private — only you",
     patternsSoon:        (current, total) => `${current}/${total} entries — patterns emerge soon`,
     saveButtonLabel:     "Write",
     savingLabel:         "Saving…",

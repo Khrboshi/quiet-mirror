@@ -51,6 +51,7 @@ export const nl: Translations = {
     addTitleOptional:    "+ Titel toevoegen (optioneel)",
     titlePlaceholder:    "Geef dit bericht een titel (optioneel)",
     privacyReminder:     "Je dagboek is privé. Niemand anders kan lezen wat je schrijft. Berichten worden nooit gebruikt om AI-modellen te trainen.",
+    privacyReminderShort: "Privé — alleen jij",
     patternsSoon:        (current, total) => `${current}/${total} berichten — patronen komen snel`,
     saveButtonLabel:     "Schrijven",
     savingLabel:         "Opslaan…",
