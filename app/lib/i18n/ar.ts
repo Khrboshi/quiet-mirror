@@ -76,6 +76,7 @@ export const ar: Translations = {
     addTitleOptional:    "+ إضافة عنوان (اختياري)",
     titlePlaceholder:    "أضف عنواناً لهذا المدخل (اختياري)",
     privacyReminder:     "مجلتك خاصة. لا أحد غيرك يستطيع قراءة ما تكتب. لا تُستخدم المدخلات أبداً لتدريب نماذج الذكاء الاصطناعي.",
+    privacyReminderShort: "خاص — أنت فقط",
     patternsSoon:        (current, total) => `${current}/${total} مدخلات — الأنماط تظهر قريباً`,
     saveButtonLabel:     "كتابة",
     savingLabel:         "جارٍ الحفظ…",

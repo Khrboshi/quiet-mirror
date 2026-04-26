@@ -50,6 +50,7 @@ export const fr: Translations = {
     addTitleOptional:    "+ Ajouter un titre (facultatif)",
     titlePlaceholder:    "Donnez un titre à cette entrée (facultatif)",
     privacyReminder:     "Votre journal est privé. Personne d'autre ne peut lire ce que vous écrivez. Les entrées ne sont jamais utilisées pour entraîner des modèles d'IA.",
+    privacyReminderShort: "Privé — vous seul",
     patternsSoon:        (current, total) => `${current}/${total} entrées — des schémas émergent bientôt`,
     saveButtonLabel:     "Écrire",
     savingLabel:         "Enregistrement…",
