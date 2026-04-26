@@ -449,7 +449,9 @@ async function main() {
     console.log(muted("Run with --write to auto-translate and patch the locale files."));
     console.log(muted("  node scripts/i18n-sync.mjs --write"));
     console.log("");
-    return;
+    // Exit code 2 = missing translations found (machine-readable for CI).
+    // Exit code 0 = all in sync.  Exit code 1 = unexpected error (caught below).
+    process.exit(2);
   }
 
   // 3. --write mode: translate and patch each locale
