@@ -49,12 +49,6 @@ function Pill({ label, variant }: { label: string; variant: Variant }) {
  * Synchronous inline variant for use inside <Suspense fallback>.
  * The caller (a server component) passes the already-resolved label.
  */
-/**
- * app/components/LoadingIndicator.tsx
- *
- * Full-screen loading spinner shown during page transitions
- * and async operations. Renders a centred animated dot.
- */
 export function LoadingIndicatorInline({ label }: { label: string }) {
   return <Pill label={label} variant="inline" />;
 }
