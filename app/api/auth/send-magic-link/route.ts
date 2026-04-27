@@ -1,4 +1,11 @@
 // app/api/auth/send-magic-link/route.ts
+/**
+ * app/api/auth/send-magic-link/route.ts
+ *
+ * POST — API route wrapper around sendMagicLink().
+ * Accepts { email } and triggers a Supabase OTP email.
+ * Rate limiting is handled by Supabase Auth on the project level.
+ */
 import { NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 
