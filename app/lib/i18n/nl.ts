@@ -207,6 +207,7 @@ export const nl: Translations = {
     aiSummaryGenerating:     "Genereren…",
     aiSummaryEmpty:          (appName) => `Genereer nog een paar reflecties en ${appName} schrijft een persoonlijke samenvatting van wat het heeft opgemerkt.`,
     aiSummaryTryAgain:       "Opnieuw proberen →",
+    aiSummaryLastUpdated:    "Laatst bijgewerkt",
     // Pattern sections
     patternUnderneathHeading:"Het patroon eronder",
     whatYouKeepComingBackTo: "Waar je steeds op terugkomt",
