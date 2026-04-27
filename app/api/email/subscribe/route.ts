@@ -1,3 +1,13 @@
+/**
+ * app/api/email/subscribe/route.ts
+ *
+ * POST — Subscribes an email address to the Quiet Mirror newsletter.
+ *
+ * Rate limiting: max 3 attempts per IP per hour (tracked in email_subscribe_attempts).
+ * Deduplication: re-subscribing a known address reactivates it (clears unsubscribed_at).
+ * Confirmation: sends a transactional email via Resend on successful new subscription.
+ * Locale-aware: confirmation email language follows the user's qm:locale cookie.
+ */
 // app/api/email/subscribe/route.ts
 import { NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
