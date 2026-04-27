@@ -4,6 +4,12 @@ import { CONFIG } from "@/app/lib/config";
 import type { Metadata } from "next";
 import { getRequestTranslations } from "@/app/lib/i18n/server";
 
+/**
+ * app/magic-login/layout.tsx
+ *
+ * Minimal layout for the magic login flow — no navbar or footer,
+ * just a centred card on a dark background.
+ */
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getRequestTranslations();
   return {
