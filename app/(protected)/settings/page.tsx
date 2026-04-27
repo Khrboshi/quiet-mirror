@@ -1,4 +1,10 @@
 // app/(protected)/settings/page.tsx
+/**
+ * app/(protected)/settings/page.tsx
+ *
+ * Account settings page — profile display name, main focus, locale,
+ * and links to billing and transaction sub-pages. Server-rendered.
+ */
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createServerSupabase } from "@/lib/supabase/server";
