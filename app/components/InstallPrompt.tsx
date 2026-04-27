@@ -1,3 +1,11 @@
+/**
+ * app/components/InstallPrompt.tsx
+ *
+ * PWA install banner — appears after the user has visited 3+ times
+ * and the browser has a deferred beforeinstallprompt event ready.
+ * iOS users see manual Add to Home Screen instructions instead.
+ * Tracks prompt shown/accepted/dismissed via telemetry.
+ */
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
