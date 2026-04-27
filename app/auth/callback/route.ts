@@ -1,4 +1,10 @@
-// app/auth/callback/route.ts
+/**
+ * app/auth/callback/route.ts
+ *
+ * Handles the OAuth / magic-link callback from Supabase Auth.
+ * Exchanges the one-time code for a session, sets auth cookies,
+ * then redirects to /dashboard (or ?next= param if present).
+ */
 import { NextResponse } from "next/server";
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
