@@ -1,3 +1,11 @@
+/**
+ * lib/supabase/server.ts
+ *
+ * Creates an authenticated Supabase client for server-side use
+ * (Server Components, API Routes, Server Actions).
+ * Reads and writes auth cookies via next/headers so the session
+ * stays in sync across RSC and route handler boundaries.
+ */
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 import type { SupabaseClient } from "@supabase/supabase-js";
