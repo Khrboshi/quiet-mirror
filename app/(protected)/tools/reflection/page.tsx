@@ -1,4 +1,11 @@
 // app/(protected)/tools/reflection/page.tsx
+/**
+ * app/(protected)/tools/reflection/page.tsx
+ *
+ * Standalone guided reflection tool — takes a user prompt and returns
+ * a structured AI reflection without requiring a journal entry.
+ * Premium/Trial only.
+ */
 "use client";
 
 export const dynamic = "force-dynamic";
