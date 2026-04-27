@@ -1,7 +1,17 @@
-// app/lib/ai/generateWeeklySummary.ts
-// Shared generation logic used by both the on-demand GET route and the weekly cron.
-// Takes a userId + admin Supabase client, generates a summary, saves it to profiles.
-
+/**
+ * app/lib/ai/generateWeeklySummary.ts
+ *
+ * Shared weekly summary generation logic used by two callers:
+ *   - GET  /api/ai/weekly-summary  — on-demand per-user generation
+ *   - POST /api/cron/weekly-summaries — batch cron for all Premium users
+ *
+ * Reads the user's last 30 days of journal entries with reflections,
+ * builds a prompt with their top themes/emotions/patterns, calls Groq,
+ * and persists the result to profiles.weekly_summary.
+ *
+ * The caller is responsible for passing a service-role Supabase client
+ * (required to write profiles rows bypassing RLS).
+ */
 import { SupabaseClient } from "@supabase/supabase-js";
 import { CONFIG } from "@/app/lib/config";
 import { getGroqConfig } from "@/app/lib/ai/groq";
