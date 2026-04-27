@@ -1,4 +1,11 @@
 "use client";
+/**
+ * app/page.tsx
+ *
+ * Marketing homepage — publicly accessible, server-rendered.
+ * Renders the hero, HomeBelowFold sections, and EmailCapture.
+ * Redirects authenticated users to /dashboard via middleware.
+ */
 import Link from "next/link";
 import HomeBelowFold from "./(home)/HomeBelowFold";
 import { useTranslation } from "@/app/components/I18nProvider";
