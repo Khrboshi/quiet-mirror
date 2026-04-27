@@ -1,3 +1,13 @@
+/**
+ * app/api/journal/[id]/route.ts
+ *
+ * GET  — Fetch a single journal entry by ID (auth required, user must own entry).
+ * PATCH — Update title, content, or ai_response on an existing entry.
+ * DELETE — Permanently delete an entry (user must own it).
+ *
+ * All operations verify ownership via .eq("user_id", user.id) before
+ * reading or writing — RLS provides a second layer of protection.
+ */
 import { NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 
