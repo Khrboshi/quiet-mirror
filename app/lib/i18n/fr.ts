@@ -461,6 +461,7 @@ export const fr: Translations = {
     prompt2Sub:   "Une conversation, un sentiment, un moment.",
     prompt3:      "Qu\u2019est-ce qui a été lourd cette semaine ?",
     prompt3Sub:   "Pas besoin d\u2019expliquer pourquoi.",
+    writingMostOn: (day) => `vous écrivez surtout le ${day}`,
   },
 
   // ── Upgrade trigger nudges ───────────────────────────────────────────────────
