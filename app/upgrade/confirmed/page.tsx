@@ -1,4 +1,10 @@
-// app/upgrade/confirmed/page.tsx
+/**
+ * app/upgrade/confirmed/page.tsx
+ *
+ * Post-payment confirmation page — shown after successful Dodo checkout.
+ * Polls the user plan until Premium is confirmed, then shows success state.
+ * Prevents users seeing a stale FREE plan immediately after payment.
+ */
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PRICING } from "@/app/lib/pricing";
