@@ -1,3 +1,10 @@
+/**
+ * app/api/telemetry/upgrade-intent/route.ts
+ *
+ * POST — Records an upgrade intent event to analytics_events.
+ * Called when a free user views the upgrade trigger modal.
+ * Unauthenticated — user_id is optional (anonymous tracking supported).
+ */
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs"; // safe default
