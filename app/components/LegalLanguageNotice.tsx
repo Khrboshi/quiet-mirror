@@ -12,6 +12,12 @@ type Props = {
   linkLabel: string;
 };
 
+/**
+ * app/components/LegalLanguageNotice.tsx
+ *
+ * Disclaimer shown on privacy and terms pages noting that the
+ * authoritative version of legal documents is in English.
+ */
 export default function LegalLanguageNotice({ notice, linkLabel }: Props) {
   // If the linkLabel placeholder isn't found in the notice string,
   // render the notice as plain text to avoid malformed output.
