@@ -1,8 +1,12 @@
-// app/lib/ai/groq.ts
-//
-// Single source of truth for Groq API configuration.
-// All callGroq() implementations read from here — model changes
-// and key-name updates happen in one place.
+/**
+ * app/lib/ai/groq.ts
+ *
+ * Single source of truth for Groq API configuration.
+ * Exports the shared Groq client and model name used by all AI routes.
+ * Model and key-name changes happen here — all callers update automatically.
+ *
+ * Current model: llama-4-scout-17b-16e-instruct (via CONFIG.groqModel fallback)
+ */
 
 /** Default model when GROQMODEL env var is not set. */
 export const DEFAULT_GROQ_MODEL = "llama-4-scout-17b-16e-instruct";
