@@ -1,9 +1,21 @@
-// app/api/stripe/webhook/route.ts
-// FIX Issue 7: added customer.subscription.updated handler.
-// If a subscription moves to status "past_due" or "unpaid" (not just "deleted"),
-// the user is downgraded to FREE immediately rather than waiting for
-// customer.subscription.deleted which only fires after Stripe exhausts all retries.
-
+/**
+ * app/api/stripe/webhook/route.ts
+ *
+ * Legacy Stripe webhook handler — processes events for subscribers who joined
+ * before the Dodo Payments migration. Must remain active until all pre-migration
+ * Stripe subscriptions have lapsed or been cancelled.
+ *
+ * New subscribers use Dodo Payments (/api/dodo/webhook).
+ *
+ * EVENTS HANDLED:
+ *   checkout.session.completed      → PREMIUM (initial subscription)
+ *   customer.subscription.updated   → FREE if past_due/unpaid; PREMIUM if active
+ *   customer.subscription.deleted   → FREE (final cancellation / expiry)
+ *
+ * ENV VARS REQUIRED (Vercel):
+ *   STRIPE_SECRET_KEY       — sk_live_*
+ *   STRIPE_WEBHOOK_SECRET   — whsec_*
+ */
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createServerClient } from "@supabase/ssr";
