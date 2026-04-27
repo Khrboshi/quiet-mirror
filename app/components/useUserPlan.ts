@@ -1,3 +1,19 @@
+/**
+ * app/components/useUserPlan.ts
+ *
+ * Client-side hook that reads the current user's plan and credit state.
+ * Used by any component that needs to conditionally render based on plan.
+ *
+ * Fetches GET /api/user/plan on mount and exposes:
+ *   planType    — "FREE" | "TRIAL" | "PREMIUM"
+ *   plan        — lowercase alias: "free" | "trial" | "premium"
+ *   credits     — remaining reflections (Infinity for Premium/Trial)
+ *   renewalDate — ISO string or null
+ *   loading     — true until first fetch completes
+ *   refresh()   — force re-fetch (call after upgrade)
+ *
+ * Uses a ref-based deduplication guard to prevent concurrent fetches.
+ */
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
