@@ -1,18 +1,26 @@
-// lib/ai/generateReflection.ts
-// Quiet Mirror V23 — Phase 3 fixes
-// Bug fixes:
+/**
+ * lib/ai/generateReflection.ts
+ *
+ * Core AI reflection engine for Quiet Mirror.
+ *
+ * Responsibilities:
+ * - Domain detection (WORK, RELATIONSHIP, HEALTH, MONEY, GRIEF, PARENTING,
+ *   CREATIVE, IDENTITY, FITNESS, GENERAL) via weighted keyword signals
+ * - Groq/Llama prompt construction and response parsing
+ * - Quality-gate post-processing: banned opener repair, anchor injection,
+ *   emotion normalisation, question generation
+ * - Crisis content detection (always checked before sending to AI)
+ * - Locale-aware output (passes AI language name to model)
+ *
+ * Exports:
+ *   generateReflectionFromEntry(input) — primary entry point
+ *   detectDomain(text)                 — exposed for testing
+ *   detectSecondaryDomains(text, primary)
+ *   detectCrisisContent(text)
+ */
+
 import { CONFIG } from "@/app/lib/config";
 import { getAiLanguageName } from "@/app/lib/i18n";
-// 1) WORK domain detection: added signals for "project lead", "overlooked", "passed over",
-//    "three years here", "nobody asked", "seniority", "recognition" etc.
-// 2) Quality gate: after 3 failed attempts, injectAnchorIntoCarrying now fires on ANY
-//    banned opener (not just GENERAL domain defaults), ensuring no banned line ever
-//    reaches the user regardless of whether it came from the model or fallback.
-// 3) Vivid phrase anchor selection: DOMAIN_ANCHOR_SIGNALS now includes patterns for
-//    emotionally loaded phrases ("behind glass", "proof of something", "almost picked up",
-//    "can't name it", "feel off"). bestAnchor selection scores for vivid phrases first,
-//    then falls back to domain signals, then falls back to anchors[0].
-// 4) Default model updated to llama-4-scout-17b-16e-instruct
 
 export type Reflection = {
   summary: string;
