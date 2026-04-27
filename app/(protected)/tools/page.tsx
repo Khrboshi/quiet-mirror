@@ -1,3 +1,9 @@
+/**
+ * app/(protected)/tools/page.tsx
+ *
+ * Tools hub — server-rendered page listing available Premium tools.
+ * Shows upgrade prompt for free users. Links to Suggestions, Reflection, and Mood.
+ */
 import Link from "next/link";
 import { getRequestTranslations } from "@/app/lib/i18n/server";
 
