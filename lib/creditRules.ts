@@ -1,9 +1,29 @@
+/**
+ * lib/creditRules.ts
+ *
+ * Credit lifecycle management for Quiet Mirror.
+ *
+ * Responsibilities:
+ * - Ensure a user_credits row exists (creates one on first access)
+ * - Monthly reset for FREE users (UTC month boundary)
+ * - Clamp abnormal FREE balances (e.g. leftover PREMIUM 9999 after downgrade)
+ * - Decrement credits atomically and return remaining count
+ * - Set plan type and seed credits on upgrade / downgrade
+ *
+ * All functions accept a Supabase client so they work in both
+ * server-component and edge-route contexts.
+ */
+
 import { SupabaseClient } from "@supabase/supabase-js";
 import { type PlanType, normalizePlan } from "@/lib/planUtils";
 import { PRICING } from "@/app/lib/pricing";
 
 // Trial credits are not in PRICING (trial behaviour differs from free tier)
 const TRIAL_MONTHLY_CREDITS = 10;
+
+// Sentinel value stored for PREMIUM users — high enough to never block access.
+// ensureCreditsFresh clamps FREE users back down if this value leaks through a downgrade.
+const PREMIUM_CREDIT_SENTINEL = 9999;
 
 type CreditsRow = {
   user_id: string;
@@ -175,7 +195,7 @@ export async function setUserPlan(params: {
 
   const remaining_credits =
     planType === "PREMIUM"
-      ? 9999
+      ? PREMIUM_CREDIT_SENTINEL
       : planType === "TRIAL"
       ? TRIAL_MONTHLY_CREDITS
       : PRICING.freeMonthlyCredits;
