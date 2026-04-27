@@ -1,6 +1,12 @@
 // app/components/Footer.tsx
 "use client";
 
+/**
+ * app/components/Footer.tsx
+ *
+ * Site-wide footer — links to legal pages, blog, and social.
+ * Locale-aware via useTranslation(). Rendered on all public pages.
+ */
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
