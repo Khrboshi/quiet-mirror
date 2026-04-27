@@ -1,3 +1,17 @@
+/**
+ * app/components/SupabaseSessionProvider.tsx
+ *
+ * Root auth context — wraps the app and makes the Supabase client and
+ * current session available via useSupabase() throughout the component tree.
+ *
+ * On mount: subscribes to onAuthStateChange so session updates propagate
+ * automatically (login, logout, token refresh).
+ * On sign-in: calls identify() to link the user to PostHog analytics.
+ * On sign-out: calls resetIdentity() to clear the PostHog session.
+ *
+ * Uses a single browser client instance (getSupabaseBrowserClient) to
+ * avoid multiple GoTrue subscriptions.
+ */
 "use client";
 
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
