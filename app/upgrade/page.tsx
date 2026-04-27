@@ -104,7 +104,8 @@ export default function UpgradePage() {
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-qm-border-subtle">
         <div className="pointer-events-none absolute left-1/2 top-0 h-[420px] w-[700px] -translate-x-1/2 rounded-full bg-qm-positive-strong/[0.13] blur-[110px]" />
-        <div className="pointer-events-none absolute right-[-80px] top-24 h-72 w-72 rounded-full bg-cyan-500/[0.08] blur-[90px]" />
+        <div className="pointer-events-none absolute right-[-80px] top-24 h-72 w-72 rounded-full blur-[90px]"
+          style={{ backgroundColor: "var(--qm-accent-soft)" }} />
 
         <div className="relative mx-auto max-w-6xl px-5 pb-16 pt-12 sm:pb-20 sm:pt-16">
           <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(360px,480px)] lg:items-start lg:gap-14">
@@ -377,15 +378,15 @@ export default function UpgradePage() {
             </div>
 
             {/* Card 4 */}
-            <div className="rounded-[1.5rem] border border-sky-500/20 bg-sky-500/[0.04] p-6">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-sky-400">{uf.card4Tag}</p>
+            <div className="rounded-[1.5rem] border border-qm-premium-border bg-qm-premium-strong/[0.04] p-6">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-premium">{uf.card4Tag}</p>
               <p className="mt-3 text-[15px] leading-[1.7] text-qm-primary">
                 {uf.card4Text}{" "}
-                <span className="text-sky-300">{uf.card4TextAccent}</span>
+                <span className="text-qm-premium-strong">{uf.card4TextAccent}</span>
                 {uf.card4TextPost}
               </p>
               <div className="mt-4 flex items-center gap-2 text-xs text-qm-faint">
-                <span className="text-sky-400">↑</span>
+                <span className="text-qm-premium">↑</span>
                 <span>{uf.card4Note}</span>
               </div>
             </div>

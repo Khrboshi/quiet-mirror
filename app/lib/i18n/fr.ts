@@ -497,6 +497,7 @@ export const fr: Translations = {
     modalDesc:            "Premium débloque des réflexions illimitées, des aperçus de tendances dans le temps et un résumé hebdomadaire de ce que Quiet Mirror a remarqué.",
     notNow:               "Pas maintenant",
     perMonth:             "/ mois",
+    premiumFeatureBadge:  "✦ Premium feature",
   },
 
   // ── Upgrade confirmed ────────────────────────────────────────────────────────
@@ -1085,6 +1086,20 @@ export const fr: Translations = {
 
 
   // ── legalPages ──
+
+  // ── legalPagesCta — closing CTAs on terms, privacy, and blog article pages ──
+  legalPagesCta: {
+    readyHeading:    "Ready to try a private check-in?",
+    readyBody:       "Start free. Upgrade only if it genuinely helps you go deeper with insights, timelines, and richer reflections.",
+    startFreeLabel:  "Start free journaling",
+    seePremiumLabel: "See what Premium adds",
+    learnAboutLabel: (appName) => `Learn about ${appName} →`,
+    blogCtaHeading:  "Want to see what keeps returning?",
+    blogCtaBody:     "Premium reads across your entries over time and shows you what quietly repeats — the emotions, themes, and patterns you couldn't see from inside them.",
+    seePremiumBlog:  "See Premium benefits →",
+    refundNote:      (days) => `🛡️ ${days}-day full refund on Premium · Cancel anytime`,
+    backToArticles:  "← Back to all articles",
+  },
   legalPages: {
     languageNotice: "Cette politique est rédigée en anglais. Pour toute question, contactez-nous.",
     contactUs: "contactez-nous",

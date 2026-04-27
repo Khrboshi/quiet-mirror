@@ -492,6 +492,7 @@ export const nl: Translations = {
     modalDesc:            "Premium ontgrendelt onbeperkte reflecties, patrooninzichten over tijd en een wekelijkse samenvatting van wat Quiet Mirror opmerkte.",
     notNow:               "Niet nu",
     perMonth:             "/ maand",
+    premiumFeatureBadge:  "✦ Premium feature",
   },
 
   upgradeConfirmed: {
@@ -1077,6 +1078,20 @@ export const nl: Translations = {
 
 
   // ── legalPages ──
+
+  // ── legalPagesCta — closing CTAs on terms, privacy, and blog article pages ──
+  legalPagesCta: {
+    readyHeading:    "Ready to try a private check-in?",
+    readyBody:       "Start free. Upgrade only if it genuinely helps you go deeper with insights, timelines, and richer reflections.",
+    startFreeLabel:  "Start free journaling",
+    seePremiumLabel: "See what Premium adds",
+    learnAboutLabel: (appName) => `Learn about ${appName} →`,
+    blogCtaHeading:  "Want to see what keeps returning?",
+    blogCtaBody:     "Premium reads across your entries over time and shows you what quietly repeats — the emotions, themes, and patterns you couldn't see from inside them.",
+    seePremiumBlog:  "See Premium benefits →",
+    refundNote:      (days) => `🛡️ ${days}-day full refund on Premium · Cancel anytime`,
+    backToArticles:  "← Back to all articles",
+  },
   legalPages: {
     languageNotice: "Dit beleid is geschreven in het Engels. Voor vragen, neem contact met ons op.",
     contactUs: "neem contact op",

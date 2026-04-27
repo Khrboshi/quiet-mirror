@@ -80,7 +80,7 @@ export default async function BlogArticlePage({ params }: BlogArticlePageProps) 
             href="/blog"
             className="mt-4 text-sm text-qm-accent hover:text-qm-accent-hover"
           >
-            ← Back to all articles
+            {t.legalPagesCta.backToArticles}
           </Link>
         </section>
       </main>
@@ -108,28 +108,26 @@ export default async function BlogArticlePage({ params }: BlogArticlePageProps) 
 
         <div className="mt-10 rounded-2xl border border-qm-border-card bg-qm-card p-5 text-sm">
           <p className="font-semibold text-qm-primary">
-            Want to see what keeps returning?
+            {t.legalPagesCta.blogCtaHeading}
           </p>
           <p className="mt-2 text-xs text-qm-secondary">
-            Premium reads across your entries over time and shows you what
-            quietly repeats — the emotions, themes, and patterns you
-            couldn&apos;t see from inside them.
+            {t.legalPagesCta.blogCtaBody}
           </p>
           <div className="mt-4 flex flex-wrap gap-3 text-xs">
             <Link
               href="/upgrade"
               className="rounded-full bg-qm-accent px-4 py-2 font-semibold text-white hover:bg-qm-accent-hover"
             >
-              See Premium benefits →
+              {t.legalPagesCta.seePremiumBlog}
             </Link>
             <Link
               href="/magic-login"
               className="rounded-full border border-qm-border-subtle px-4 py-2 font-semibold text-qm-primary hover:bg-qm-soft"
             >
-              Start free journaling
+              {t.legalPagesCta.startFreeLabel}
             </Link>
           </div>
-          <p className="mt-3 text-[11px] text-qm-faint">🛡️ {PRICING.trialDays}-day full refund on Premium · Cancel anytime</p>
+          <p className="mt-3 text-[11px] text-qm-faint">{t.legalPagesCta.refundNote(PRICING.trialDays)}</p>
         </div>
 
         <EmailCapture source={`blog-article-${article.slug}`} variant="article-inline" />
@@ -139,7 +137,7 @@ export default async function BlogArticlePage({ params }: BlogArticlePageProps) 
             href="/blog"
             className="text-qm-accent hover:text-qm-accent-hover"
           >
-            ← Back to all articles
+            {t.legalPagesCta.backToArticles}
           </Link>
         </div>
       </section>
