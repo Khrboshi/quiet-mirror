@@ -1,4 +1,19 @@
-// app/api/ai/reflection/route.ts
+/**
+ * app/api/ai/reflection/route.ts
+ *
+ * POST — Generates an AI reflection for a journal entry.
+ *
+ * Flow:
+ * 1. Auth check — must be logged in
+ * 2. Plan check — FREE users must have remaining credits
+ * 3. Crisis detection — checked before any AI call; returns a safe response
+ * 4. generateReflectionFromEntry() — Groq/Llama call with quality-gate post-processing
+ * 5. Persist ai_response to journal_entries and decrement credits
+ *
+ * Credits: decremented atomically via decrementCreditIfAllowed().
+ *          PREMIUM/TRIAL users are never blocked.
+ * Locale:  reads qm:locale cookie and passes language to the AI.
+ */
 import { NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { ensureCreditsFresh } from "@/lib/creditRules";
@@ -8,7 +23,6 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { getLocaleFromCookieString, SUPPORTED_LOCALES } from "@/app/lib/i18n";
 import { PRICING } from "@/app/lib/pricing";
 
-// Local schema type — replace with Supabase generated types when available
 type JournalEntry = {
   id: string;
   title: string | null;
