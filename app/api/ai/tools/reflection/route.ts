@@ -1,3 +1,13 @@
+/**
+ * app/api/ai/tools/reflection/route.ts
+ *
+ * POST — Generates a standalone guided reflection (not tied to a journal entry).
+ *        Used by the Tools → Reflection surface.
+ *
+ * Access: Premium/Trial only.
+ * Takes a user-provided prompt, calls Groq, returns structured reflection
+ * questions and a summary in the user's locale.
+ */
 // app/api/ai/tools/reflection/route.ts
 import { NextResponse } from "next/server";
 import { getGroqConfig } from "@/app/lib/ai/groq";
