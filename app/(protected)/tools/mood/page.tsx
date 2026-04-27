@@ -1,3 +1,9 @@
+/**
+ * app/(protected)/tools/mood/page.tsx
+ *
+ * Mood check-in tool — lets users log a 1–5 mood score with an optional note.
+ * Premium/Trial only. Results feed into the weekly insights summary.
+ */
 "use client";
 export const dynamic = "force-dynamic";
 import { useState } from "react";
