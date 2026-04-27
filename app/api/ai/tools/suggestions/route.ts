@@ -1,3 +1,13 @@
+/**
+ * app/api/ai/tools/suggestions/route.ts
+ *
+ * POST — Generates personalised journal prompt suggestions based on the
+ *        user's recent entry themes and emotions.
+ *
+ * Access: Premium/Trial only.
+ * Reads the last 10 reflected entries, passes top themes/emotions to Groq,
+ * returns 3 contextual writing prompts in the user's locale.
+ */
 // app/api/ai/tools/suggestions/route.ts
 import { NextResponse } from "next/server";
 import { getGroqConfig } from "@/app/lib/ai/groq";
