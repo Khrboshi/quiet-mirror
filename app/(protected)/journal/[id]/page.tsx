@@ -1,3 +1,10 @@
+/**
+ * app/(protected)/journal/[id]/page.tsx
+ *
+ * Server component — fetches a single journal entry by ID,
+ * verifies ownership, then passes data to JournalEntryClient.
+ * Redirects to /journal if entry not found or not owned by user.
+ */
 import { redirect } from "next/navigation";
 import { createServerSupabase } from "@/lib/supabase/server";
 
