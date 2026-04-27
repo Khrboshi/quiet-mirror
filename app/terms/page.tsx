@@ -35,8 +35,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function TermsOfServicePage() {
   const locale    = await getRequestLocale();
-  const lp        = getTranslations(locale).legalPages;
-  const lpc       = getTranslations(locale).legalPagesCta;
+  const { legalPages: lp, legalPagesCta: lpc } = getTranslations(locale);
   const isEnglish = locale === DEFAULT_LOCALE;
 
   return (

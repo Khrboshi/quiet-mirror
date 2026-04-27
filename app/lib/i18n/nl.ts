@@ -1080,6 +1080,7 @@ export const nl: Translations = {
   // ── legalPages ──
 
   // ── legalPagesCta — closing CTAs on terms, privacy, and blog article pages ──
+  // TODO: English placeholders — i18n-auto-translate Action translates these on merge to main.
   legalPagesCta: {
     readyHeading:    "Ready to try a private check-in?",
     readyBody:       "Start free. Upgrade only if it genuinely helps you go deeper with insights, timelines, and richer reflections.",
