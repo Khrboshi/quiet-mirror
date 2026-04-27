@@ -1,3 +1,10 @@
+/**
+ * lib/supabase/browser.ts
+ *
+ * Singleton browser Supabase client — ensures only one GoTrue instance
+ * exists per page load, preventing duplicate auth subscriptions.
+ * Used exclusively in Client Components via getSupabaseBrowserClient().
+ */
 import { createBrowserClient } from "@supabase/ssr";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
