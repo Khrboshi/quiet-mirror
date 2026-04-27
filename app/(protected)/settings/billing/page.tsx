@@ -1,17 +1,22 @@
-// app/settings/billing/page.tsx
+/**
+ * app/(protected)/settings/billing/page.tsx
+ *
+ * Billing detail page — shows current plan, credit usage, renewal date,
+ * and links to the payment portal (Dodo or Stripe depending on origin).
+ * Accessible to all plan types; content is conditional on plan.
+ */
 import { redirect } from "next/navigation";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { ensureCreditsFresh } from "@/lib/creditRules";
 import { PRICING } from "@/app/lib/pricing";
 import { PAYMENT } from "@/app/lib/payment";
 import { CONFIG } from "@/app/lib/config";
+import { type PlanType } from "@/lib/planUtils";
 
 import type { UserCreditsRow } from "@/lib/supabaseTypes";
 import { getRequestTranslations } from "@/app/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
-
-type PlanType = "PREMIUM" | "TRIAL" | "FREE";
 
 function PlanBadge({ plan, labels }: { plan: PlanType; labels: { planPremium: string; planTrial: string; planFree: string } }) {
   if (plan === "PREMIUM") {
