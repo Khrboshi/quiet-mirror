@@ -1,3 +1,15 @@
+/**
+ * app/(protected)/dashboard/DashboardClient.tsx
+ *
+ * Client component for the main dashboard — the first screen users see after login.
+ *
+ * Responsibilities:
+ * - Displays the AI pattern card (most prominent element post-redesign #138)
+ * - Shows recent journal entries, writing streak, and credit status
+ * - Handles the "Write now" CTA and today's entry detection
+ * - Reads plan type from useUserPlan() to conditionally show upgrade prompts
+ * - Receives pre-fetched DashboardData from the server page component
+ */
 // app/(protected)/dashboard/DashboardClient.tsx
 "use client";
 
