@@ -1,9 +1,15 @@
-// app/api/dodo/transactions/route.ts
-// Returns the user's Dodo payment history for display on the billing page.
-//
-// ENV VARS REQUIRED (Vercel):
-//   DODO_PAYMENTS_API_KEY     — Dodo secret API key
-//   DODO_PAYMENTS_ENVIRONMENT — "test_mode" | "live_mode"
+/**
+ * app/api/dodo/transactions/route.ts
+ *
+ * GET — Returns the user's Dodo payment transaction history.
+ * Displayed on the billing settings page as a payment history list.
+ *
+ * Returns empty array (not 404) if no dodo_customer_id exists — covers
+ * legacy Stripe subscribers who have no Dodo record.
+ *
+ * ENV VARS REQUIRED:
+ *   DODO_PAYMENTS_API_KEY, DODO_PAYMENTS_ENVIRONMENT
+ */
 
 import { NextResponse } from "next/server";
 import DodoPayments from "dodopayments";
