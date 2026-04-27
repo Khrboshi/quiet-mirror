@@ -1,5 +1,11 @@
 "use client";
 
+/**
+ * app/blog/page.tsx
+ *
+ * Blog index — lists all published articles from articles.ts.
+ * Statically generated. No auth required.
+ */
 import Link from "next/link";
 import { ARTICLES } from "./articles";
 import EmailCapture from "@/app/components/EmailCapture";
