@@ -1,3 +1,10 @@
+/**
+ * app/components/DeepLinkBootstrap.tsx
+ *
+ * Handles deep link routing on PWA launch — reads a stored
+ * deep link from localStorage and navigates to it on mount,
+ * then clears it so it only fires once.
+ */
 "use client";
 
 import { useEffect } from "react";
