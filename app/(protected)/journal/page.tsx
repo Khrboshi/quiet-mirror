@@ -24,30 +24,22 @@ const DOMAIN_META: Record<string, { emoji: string; color: string }> = {
   GENERAL:      { emoji: "📝", color: QM.textMuted },
 };
 
-// ── Emotion color mapping (matches JournalEntryClient) ─────────────────────────
+// ── Emotion color mapping ──────────────────────────────────────────────────────
 
 const EMOTION_COLORS: Record<string, string> = {
-  // Reds / danger
   fear: QM.dv.fear, panic: QM.dv.fear, terror: QM.dv.fear, dread: QM.dv.fear,
   rage: QM.dv.fear, fury: QM.dv.fear, anger: QM.dv.fear,
-  // Oranges
   anxiety: QM.dv.health, worry: QM.dv.health, stress: QM.dv.health, overwhelmed: QM.dv.health,
   frustration: QM.dv.health, irritation: QM.dv.health,
-  // Yellows
   shame: QM.dv.creative, guilt: QM.dv.creative, embarrassment: QM.dv.creative,
-  // Slates / grey-blue
   sadness: QM.textSecondary, grief: QM.textSecondary, loneliness: QM.textSecondary,
   exhaustion: QM.textSecondary, numbness: QM.textSecondary, emptiness: QM.textSecondary,
   disconnection: QM.textSecondary, resignation: QM.textSecondary,
-  // Purples
   confusion: QM.dv.grief, doubt: QM.dv.grief, uncertainty: QM.dv.grief,
   invisibility: QM.dv.grief, "self-doubt": QM.dv.grief,
-  // Greens
   hope: QM.dv.positive, relief: QM.dv.positive, calm: QM.dv.positive, gratitude: QM.dv.positive,
   pride: QM.dv.positive, joy: QM.dv.positive, contentment: QM.dv.positive,
-  // Blues
   curiosity: QM.dv.work, openness: QM.dv.work, clarity: QM.dv.work,
-  // Pinks
   love: QM.dv.love, connection: QM.dv.love, tenderness: QM.dv.love,
 };
 
@@ -77,19 +69,58 @@ function formatTime(iso: string): string {
 
 function monthKey(iso: string, locale: string): string {
   const d = new Date(iso);
-  return d.toLocaleDateString(getIntlLocale(locale), { month: "long", year: "numeric", timeZone: "UTC" });
+  return d.toLocaleDateString(getIntlLocale(locale), {
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
 }
 
-function entryTitle(title: string | null, content: string | null, fallback: string): string {
+function entryTitle(
+  title: string | null,
+  content: string | null,
+  fallback: string
+): string {
   if (title?.trim()) return title.trim();
-  // Use first sentence of content, capped at 60 chars
   const first = (content ?? "").split(/[.!?\n]/)[0].trim();
   if (first.length > 4) return first.length > 60 ? first.slice(0, 57) + "…" : first;
   return fallback;
 }
 
-function parseAI(raw: string | Record<string, unknown> | null): Record<string, unknown> | null {
+function parseAI(
+  raw: string | Record<string, unknown> | null
+): Record<string, unknown> | null {
   return parseAIResponse(raw);
+}
+
+// Compute which weekday the user writes on most (UTC-based)
+function mostActiveDay(
+  entries: Array<{ created_at: string }>,
+  locale: string
+): string | null {
+  if (entries.length < 5) return null;
+  const counts = new Array<number>(7).fill(0);
+  for (const e of entries) {
+    const d = new Date(e.created_at);
+    counts[d.getUTCDay()]++;
+  }
+  const maxIdx = counts.indexOf(Math.max(...counts));
+  const maxCount = counts[maxIdx];
+  // Only show if that day has at least 1.5× the average
+  const avg = entries.length / 7;
+  if (maxCount < avg * 1.5) return null;
+
+  try {
+    // Sunday = 0, anchor to 2024-01-07 (a Sunday)
+    const ref = new Date("2024-01-07T12:00:00Z");
+    ref.setUTCDate(ref.getUTCDate() + maxIdx);
+    return ref.toLocaleDateString(getIntlLocale(locale), {
+      weekday: "long",
+      timeZone: "UTC",
+    });
+  } catch {
+    return null;
+  }
 }
 
 // ── Page ──────────────────────────────────────────────────────────────────────
@@ -100,7 +131,9 @@ export default async function JournalPage() {
   const t = getTranslations(locale);
   const supabase = await createServerSupabase();
 
-  const { data: { session } } = await supabase.auth.getSession();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
   if (!session) redirect("/magic-login");
 
   const { data: rawEntries } = await supabase
@@ -118,44 +151,53 @@ export default async function JournalPage() {
   }>;
 
   type JournalEntry = (typeof entries)[number];
+
+  // Group by month
   const groups: { month: string; entries: JournalEntry[] }[] = [];
-  for (const entry of entries ?? []) {
+  for (const entry of entries) {
     const month = monthKey(entry.created_at, locale);
     const last = groups[groups.length - 1];
     if (last?.month === month) {
-      last.entries!.push(entry);
+      last.entries.push(entry);
     } else {
       groups.push({ month, entries: [entry] });
     }
   }
 
-  return (
-    <div className="mx-auto max-w-5xl px-6 py-10 space-y-10">
+  const activeDayName = mostActiveDay(entries, locale);
 
-      {/* Header */}
-      <div className="flex items-center justify-between">
+  return (
+    <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6 space-y-10">
+
+      {/* ── Header ── */}
+      <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="font-display text-3xl font-semibold text-qm-primary">{t.journalPage.heading}</h1>
-          {(entries?.length ?? 0) > 0 && (
-            <p className="mt-1 text-sm text-qm-faint">
-              {t.journalPage.entryCount(entries!.length)}
-            </p>
-          )}
+          <h1 className="font-display text-3xl font-semibold text-qm-primary">
+            {t.journalPage.heading}
+          </h1>
+          <p className="mt-1 text-sm text-qm-faint">
+            {entries.length > 0 && t.journalPage.entryCount(entries.length)}
+            {activeDayName && (
+              <> · {t.journalPage.writingMostOn(activeDayName)}</>
+            )}
+          </p>
         </div>
         <Link
           href="/journal/new"
-          className="rounded-full bg-qm-positive-strong px-4 py-2 text-sm font-medium text-qm-faint hover:bg-qm-positive transition-colors"
+          className="shrink-0 rounded-full bg-qm-positive-strong px-4 py-2 text-sm font-medium text-white hover:bg-qm-positive transition-colors"
         >
           {t.journalPage.newEntry}
         </Link>
       </div>
 
-      {/* Empty state */}
-      {entries?.length === 0 && (
+      {/* ── Empty state ── */}
+      {entries.length === 0 && (
         <div className="space-y-6">
           <div className="rounded-xl border border-qm-border-subtle bg-qm-elevated p-8 text-center space-y-2">
             <p className="text-2xl">✦</p>
-            <p className="text-sm text-qm-secondary font-medium">{t.journalPage.emptyHeading}</p>
+            <p className="text-sm text-qm-secondary font-medium">
+              {t.journalPage.emptyHeading}
+            </p>
             <p className="text-xs text-qm-faint">{t.journalPage.emptyBody}</p>
           </div>
           <div>
@@ -164,18 +206,36 @@ export default async function JournalPage() {
             </p>
             <div className="grid gap-3 sm:grid-cols-3">
               {[
-                { q: t.journalPage.prompt1, sub: t.journalPage.prompt1Sub, color: "border-qm-positive-border hover:border-qm-positive" },
-                { q: t.journalPage.prompt2, sub: t.journalPage.prompt2Sub, color: "border-qm-premium-border hover:border-qm-premium" },
-                { q: t.journalPage.prompt3, sub: t.journalPage.prompt3Sub, color: "border-qm-warning-border hover:border-qm-warning" },
+                {
+                  q: t.journalPage.prompt1,
+                  sub: t.journalPage.prompt1Sub,
+                  color: "border-qm-positive-border hover:border-qm-positive",
+                },
+                {
+                  q: t.journalPage.prompt2,
+                  sub: t.journalPage.prompt2Sub,
+                  color: "border-qm-premium-border hover:border-qm-premium",
+                },
+                {
+                  q: t.journalPage.prompt3,
+                  sub: t.journalPage.prompt3Sub,
+                  color: "border-qm-warning-border hover:border-qm-warning",
+                },
               ].map((p) => (
                 <Link
                   key={p.q}
                   href={`/journal/new?prompt=${encodeURIComponent(p.q)}`}
                   className={`group rounded-2xl border bg-white/[0.02] p-5 transition hover:bg-white/[0.05] ${p.color}`}
                 >
-                  <p className="text-sm font-medium leading-snug text-qm-primary transition group-hover:text-white">{p.q}</p>
-                  <p className="mt-1.5 text-xs leading-relaxed text-qm-faint">{p.sub}</p>
-                  <p className="mt-3 text-xs font-medium text-qm-positive group-hover:text-qm-positive-hover transition">{t.journalPage.start}</p>
+                  <p className="text-sm font-medium leading-snug text-qm-primary transition group-hover:text-white">
+                    {p.q}
+                  </p>
+                  <p className="mt-1.5 text-xs leading-relaxed text-qm-faint">
+                    {p.sub}
+                  </p>
+                  <p className="mt-3 text-xs font-medium text-qm-positive group-hover:text-qm-positive-hover transition">
+                    {t.journalPage.start}
+                  </p>
                 </Link>
               ))}
             </div>
@@ -183,96 +243,138 @@ export default async function JournalPage() {
         </div>
       )}
 
-      {/* Month groups */}
+      {/* ── Timeline groups ── */}
       {groups.map(({ month, entries: groupEntries }) => (
-        <section key={month} className="space-y-3">
+        <section key={month}>
 
           {/* Month label */}
-          <h2 className="text-xs font-semibold uppercase tracking-widest text-qm-faint px-0.5">
+          <h2 className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-qm-faint ps-7">
             {month}
           </h2>
 
-          {/* Entry grid */}
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-            {groupEntries!.map((entry) => {
-              const ai = parseAI(entry.ai_response);
-              const hasReflection = Boolean(ai);
-              const domain = (String(ai?.domain ?? "GENERAL")).toUpperCase();
-              const domainMeta = DOMAIN_META[domain] ?? DOMAIN_META.GENERAL;
-              const topEmotion: string = String(ai?.emotions instanceof Array ? (ai.emotions[0] ?? "") : "");
-              const eColor = topEmotion ? emotionColor(topEmotion) : null;
-              const title = entryTitle(entry.title, entry.content, t.journal.untitledEntry);
-              const isUntitled = !entry.title?.trim();
+          {/* Timeline rail */}
+          <div className="relative">
+            <div
+              className="absolute start-[7px] top-0 bottom-0 w-px"
+              style={{ background: "rgba(184,195,219,0.09)" }}
+              aria-hidden="true"
+            />
 
-              return (
-                <Link
-                  key={entry.id}
-                  href={`/journal/${entry.id}`}
-                  className="group relative rounded-xl border border-qm-border-subtle bg-qm-bg p-5 hover:border-qm-border-subtle hover:bg-qm-elevated transition-all"
-                >
-                  {/* Top row: date + domain + reflected badge */}
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <div className="flex items-center gap-2 min-w-0">
-                      {/* Domain emoji */}
+            <div className="space-y-2.5">
+              {groupEntries.map((entry) => {
+                const ai = parseAI(entry.ai_response);
+                const hasReflection = Boolean(ai);
+                const domain = String(ai?.domain ?? "GENERAL").toUpperCase();
+                const domainMeta = DOMAIN_META[domain] ?? DOMAIN_META.GENERAL!;
+                const topEmotion: string = String(
+                  ai?.emotions instanceof Array ? (ai.emotions[0] ?? "") : ""
+                );
+                const eColor = topEmotion ? emotionColor(topEmotion) : null;
+                const title = entryTitle(
+                  entry.title,
+                  entry.content,
+                  t.journal.untitledEntry
+                );
+                const isUntitled = !entry.title?.trim();
+
+                return (
+                  <div key={entry.id} className="relative flex gap-4 ps-7">
+
+                    {/* Timeline dot */}
+                    <div
+                      className="absolute start-0 top-[18px] h-[15px] w-[15px] rounded-full border flex items-center justify-center shrink-0"
+                      style={
+                        hasReflection
+                          ? {
+                              background: "rgba(52,211,153,0.15)",
+                              borderColor: "rgba(52,211,153,0.45)",
+                            }
+                          : {
+                              background: "var(--qm-bg-card)",
+                              borderColor: "rgba(184,195,219,0.18)",
+                            }
+                      }
+                      aria-hidden="true"
+                    >
                       {hasReflection && (
-                        <span className="shrink-0 text-sm" title={domain}>
-                          {domainMeta.emoji}
-                        </span>
-                      )}
-                      <span className="text-xs text-qm-faint tabular-nums">
-                        {formatDay(entry.created_at, locale)}
-                        <span className="text-qm-faint mx-1">·</span>
-                        {formatTime(entry.created_at)}
-                      </span>
-                    </div>
-
-                    {hasReflection ? (
-                      <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-qm-positive-border bg-qm-positive-soft px-2 py-0.5 text-[10px] font-medium text-qm-positive">
-                        <span className="h-1 w-1 rounded-full bg-qm-positive" />
-                        {t.journalPage.reflected}
-                      </span>
-                    ) : (
-                      <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-qm-border-subtle bg-qm-elevated px-2 py-0.5 text-[10px] text-qm-faint">
-                        {t.journalPage.draft}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Title */}
-                  <p className={`text-sm font-medium leading-snug transition group-hover:text-qm-primary ${
-                    isUntitled ? "text-qm-muted italic" : "text-qm-primary"
-                  }`}>
-                    {title}
-                  </p>
-
-                  {/* Content preview */}
-                  <p className="mt-1.5 text-xs leading-relaxed text-qm-faint line-clamp-2">
-                    {entry.content}
-                  </p>
-
-                  {/* Bottom row: emotion pill + arrow */}
-                  <div className="mt-3 flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-1.5 flex-wrap">
-                      {topEmotion && eColor && (
                         <span
-                          className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium border"
-                          style={{
-                            color: eColor,
-                            borderColor: `${eColor}30`,
-                            backgroundColor: `${eColor}12`,
-                          }}
-                        >
-                          {topEmotion}
-                        </span>
+                          className="h-[5px] w-[5px] rounded-full"
+                          style={{ background: "#34d399" }}
+                        />
                       )}
                     </div>
-                    <span className="text-qm-positive text-xs group-hover:text-qm-positive-hover transition shrink-0">
-                      {t.journalPage.open}
-                    </span>
+
+                    {/* Entry card */}
+                    <Link
+                      href={`/journal/${entry.id}`}
+                      className="group flex-1 min-w-0 rounded-xl border border-qm-border-subtle bg-qm-bg p-4 hover:border-qm-border-card hover:bg-qm-elevated transition-all"
+                    >
+                      {/* Top row */}
+                      <div className="flex items-center justify-between gap-2 mb-2">
+                        <div className="flex items-center gap-2 min-w-0">
+                          {hasReflection && (
+                            <span className="shrink-0 text-sm leading-none" title={domain}>
+                              {domainMeta.emoji}
+                            </span>
+                          )}
+                          <span className="text-[11px] text-qm-faint tabular-nums">
+                            {formatDay(entry.created_at, locale)}
+                            <span className="mx-1 text-qm-faint">·</span>
+                            {formatTime(entry.created_at)}
+                          </span>
+                        </div>
+
+                        {hasReflection ? (
+                          <span className="shrink-0 inline-flex items-center gap-1 rounded-full border border-qm-positive-border bg-qm-positive-soft px-2 py-0.5 text-[10px] font-medium text-qm-positive">
+                            <span className="h-1 w-1 rounded-full bg-qm-positive" />
+                            {t.journalPage.reflected}
+                          </span>
+                        ) : (
+                          <span className="shrink-0 inline-flex items-center rounded-full border border-qm-border-subtle bg-qm-elevated px-2 py-0.5 text-[10px] text-qm-faint">
+                            {t.journalPage.draft}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Title */}
+                      <p
+                        className={`text-sm font-medium leading-snug transition group-hover:text-qm-primary ${
+                          isUntitled ? "text-qm-muted italic" : "text-qm-primary"
+                        }`}
+                      >
+                        {title}
+                      </p>
+
+                      {/* Content preview */}
+                      <p className="mt-1 text-xs leading-relaxed text-qm-faint line-clamp-1">
+                        {entry.content}
+                      </p>
+
+                      {/* Bottom row */}
+                      <div className="mt-2.5 flex items-center justify-between gap-2">
+                        <div>
+                          {topEmotion && eColor && (
+                            <span
+                              className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium border"
+                              style={{
+                                color: eColor,
+                                borderColor: `${eColor}30`,
+                                backgroundColor: `${eColor}12`,
+                              }}
+                            >
+                              {topEmotion}
+                            </span>
+                          )}
+                        </div>
+                        <span className="text-qm-positive text-xs group-hover:text-qm-positive-hover transition shrink-0">
+                          {t.journalPage.open}
+                        </span>
+                      </div>
+                    </Link>
                   </div>
-                </Link>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </section>
       ))}

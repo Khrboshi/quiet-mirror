@@ -477,6 +477,7 @@ export const en: Translations = {
     prompt2Sub:   "A conversation, a feeling, a moment.",
     prompt3:      "What felt heavy this week?",
     prompt3Sub:   "No need to explain why.",
+    writingMostOn: (day) => `writing most on ${day}s`,
   },
 
   // ── Upgrade trigger nudges ───────────────────────────────────────────────────

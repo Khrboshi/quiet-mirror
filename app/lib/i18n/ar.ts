@@ -472,6 +472,7 @@ export const ar: Translations = {
     prompt2Sub:   "محادثة، شعور، لحظة.",
     prompt3:      "ما الذي كان ثقيلاً هذا الأسبوع؟",
     prompt3Sub:   "لا داعي لتفسير السبب.",
+    writingMostOn: (day) => `تكتب أكثر يوم ${day}`,
   },
   upgradeTrigger: {
     seeWhatPremium:       "اكتشف ما يعرضه Premium",

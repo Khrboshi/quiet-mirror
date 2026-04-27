@@ -482,6 +482,7 @@ export interface Translations {
     prompt2Sub:       string;
     prompt3:          string;
     prompt3Sub:       string;
+    writingMostOn:    (day: string) => string;
   };
 
   // ── Upgrade trigger nudges ───────────────────────────────────────────────────

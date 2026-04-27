@@ -457,6 +457,7 @@ export const nl: Translations = {
     prompt2Sub:   "Een gesprek, een gevoel, een moment.",
     prompt3:      "Wat voelde zwaar deze week?",
     prompt3Sub:   "Je hoeft niet uit te leggen waarom.",
+    writingMostOn: (day) => `schrijft het meest op ${day}`,
   },
 
   upgradeTrigger: {

@@ -505,6 +505,7 @@ export const uk: Translations = {
     prompt2Sub:   "Розмова, відчуття, момент.",
     prompt3:      "Що відчувалося важким цього тижня?",
     prompt3Sub:   "Не потрібно пояснювати чому.",
+    writingMostOn: (day) => `найчастіше пишете по ${day}х`,
   },
 
   // ── Upgrade trigger nudges ───────────────────────────────────────────────────
