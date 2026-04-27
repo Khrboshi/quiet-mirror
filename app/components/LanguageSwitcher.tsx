@@ -1,3 +1,11 @@
+/**
+ * app/components/LanguageSwitcher.tsx
+ *
+ * Dropdown UI for switching the app locale.
+ * Writes the selected locale to the qm:locale cookie and reloads the page
+ * so server components re-render with the new language.
+ * Closes on outside click via a ref-based event listener.
+ */
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
