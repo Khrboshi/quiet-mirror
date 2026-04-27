@@ -1,3 +1,9 @@
+/**
+ * app/logout/route.ts
+ *
+ * GET — Signs the user out of Supabase, clears auth cookies,
+ * and redirects to the home page. Safe to call from any link or button.
+ */
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createServerClient, type SetAllCookies } from "@supabase/ssr";
