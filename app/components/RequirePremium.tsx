@@ -1,3 +1,12 @@
+/**
+ * app/components/RequirePremium.tsx
+ *
+ * Access-control wrapper component — renders children only for Premium/Trial users.
+ * Free users see an upgrade prompt with credit count and a CTA to /upgrade.
+ *
+ * Used to gate Premium-only surfaces (Insights, Tools) client-side.
+ * Server-side gating is handled separately in each page.tsx via redirect().
+ */
 "use client";
 
 import type { ReactNode } from "react";
