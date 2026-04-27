@@ -222,6 +222,7 @@ export const ar: Translations = {
     aiSummaryGenerating:     "جارٍ التوليد…",
     aiSummaryEmpty:          (appName) => `أنشئ بضع تأملات أخرى وسيكتب ${appName} ملخصًا شخصيًا لما لاحظه.`,
     aiSummaryTryAgain:       "حاول مرة أخرى ←",
+    aiSummaryLastUpdated:    "آخر تحديث",
     // Pattern sections
     patternUnderneathHeading:"النمط الكامن",
     whatYouKeepComingBackTo: "ما تعود إليه دائمًا",
