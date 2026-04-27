@@ -1,3 +1,9 @@
+/**
+ * app/components/ServiceWorkerRegister.tsx
+ *
+ * Registers the PWA service worker on mount (client only).
+ * No-ops if the browser does not support service workers.
+ */
 "use client";
 
 import { useEffect } from "react";
