@@ -506,6 +506,7 @@ export const ar: Translations = {
     modalDesc:            "يفتح Premium تأملات غير محدودة ورؤى الأنماط عبر الزمن وملخصاً أسبوعياً لما لاحظه Quiet Mirror.",
     notNow:               "ليس الآن",
     perMonth:             "/ شهر",
+    premiumFeatureBadge:  "✦ Premium feature",
   },
   upgradeConfirmed: {
     metaTitle:       (appName) => `مرحبًا بك في Premium | ${appName}`,
@@ -1093,6 +1094,21 @@ export const ar: Translations = {
 
 
   // ── legalPages ──
+
+  // ── legalPagesCta — closing CTAs on terms, privacy, and blog article pages ──
+  // TODO: English placeholders — i18n-auto-translate Action translates these on merge to main.
+  legalPagesCta: {
+    readyHeading:    "Ready to try a private check-in?",
+    readyBody:       "Start free. Upgrade only if it genuinely helps you go deeper with insights, timelines, and richer reflections.",
+    startFreeLabel:  "Start free journaling",
+    seePremiumLabel: "See what Premium adds",
+    learnAboutLabel: (appName) => `Learn about ${appName} →`,
+    blogCtaHeading:  "Want to see what keeps returning?",
+    blogCtaBody:     "Premium reads across your entries over time and shows you what quietly repeats — the emotions, themes, and patterns you couldn't see from inside them.",
+    seePremiumBlog:  "See Premium benefits →",
+    refundNote:      (days) => `🛡️ ${days}-day full refund on Premium · Cancel anytime`,
+    backToArticles:  "← Back to all articles",
+  },
   legalPages: {
     languageNotice: "هذه السياسة مكتوبة باللغة الإنجليزية. للاستفسارات، تواصل معنا.",
     contactUs: "تواصل معنا",

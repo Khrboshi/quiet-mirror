@@ -497,6 +497,7 @@ export const ro: Translations = {
     modalDesc:            "Premium deblochează reflecții nelimitate, perspective asupra tiparelor în timp și un rezumat săptămânal a ceea ce a observat Quiet Mirror.",
     notNow:               "Nu acum",
     perMonth:             "/ lună",
+    premiumFeatureBadge:  "✦ Premium feature",
   },
 
   upgradeConfirmed: {
@@ -1082,6 +1083,21 @@ export const ro: Translations = {
 
 
   // ── legalPages ──
+
+  // ── legalPagesCta — closing CTAs on terms, privacy, and blog article pages ──
+  // TODO: English placeholders — i18n-auto-translate Action translates these on merge to main.
+  legalPagesCta: {
+    readyHeading:    "Ready to try a private check-in?",
+    readyBody:       "Start free. Upgrade only if it genuinely helps you go deeper with insights, timelines, and richer reflections.",
+    startFreeLabel:  "Start free journaling",
+    seePremiumLabel: "See what Premium adds",
+    learnAboutLabel: (appName) => `Learn about ${appName} →`,
+    blogCtaHeading:  "Want to see what keeps returning?",
+    blogCtaBody:     "Premium reads across your entries over time and shows you what quietly repeats — the emotions, themes, and patterns you couldn't see from inside them.",
+    seePremiumBlog:  "See Premium benefits →",
+    refundNote:      (days) => `🛡️ ${days}-day full refund on Premium · Cancel anytime`,
+    backToArticles:  "← Back to all articles",
+  },
   legalPages: {
     languageNotice: "Această politică este redactată în engleză. Pentru întrebări, contactează-ne.",
     contactUs: "contactează-ne",

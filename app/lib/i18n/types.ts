@@ -518,6 +518,7 @@ export interface Translations {
     modalDesc:            string;
     notNow:               string;
     perMonth:             string;
+    premiumFeatureBadge:  string;
   };
 
   // ── Upgrade confirmed ────────────────────────────────────────────────────────
@@ -1069,6 +1070,23 @@ export interface Translations {
     f3Label: string; f3Sub: string;
     f4Label: string; f4Sub: string;
     f5Label: string; f5Sub: string;
+  };
+
+  // ── Legal & blog page closing CTAs ───────────────────────────────────────
+  // Closing CTA blocks on terms, privacy, and blog article pages.
+  // All strings are translated so non-English users see consistent copy.
+  legalPagesCta: {
+    readyHeading:    string;
+    readyBody:       string;
+    startFreeLabel:  string;
+    seePremiumLabel: string;
+    learnAboutLabel: (appName: string) => string;
+    // Blog article page
+    blogCtaHeading:  string;
+    blogCtaBody:     string;
+    seePremiumBlog:  string;
+    refundNote:      (days: number) => string;
+    backToArticles:  string;
   };
 
   // ── Legal pages — language notice banner ─────────────────────────────────

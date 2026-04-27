@@ -38,7 +38,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function PrivacyPolicyPage() {
   const locale    = await getRequestLocale();
-  const lp        = getTranslations(locale).legalPages;
+  const { legalPages: lp, legalPagesCta: lpc } = getTranslations(locale);
   const isEnglish = locale === DEFAULT_LOCALE;
 
   return (
@@ -311,30 +311,29 @@ export default async function PrivacyPolicyPage() {
         {/* CTA - updated with design tokens */}
         <div className="mt-6 rounded-2xl border border-qm-border-card bg-qm-elevated p-5 text-sm shadow-qm-card">
           <p className="font-semibold text-qm-primary">
-            Ready to try a private check-in?
+            {lpc.readyHeading}
           </p>
           <p className="mt-2 max-w-2xl text-xs text-qm-secondary">
-            Start free. Upgrade only if it genuinely helps you go deeper with
-            insights, timelines, and richer reflections.
+            {lpc.readyBody}
           </p>
           <div className="mt-4 flex flex-wrap gap-3 text-xs">
             <Link
               href="/magic-login"
               className="qm-btn-primary inline-block px-4 py-2 text-sm"
             >
-              Start free journaling
+              {lpc.startFreeLabel}
             </Link>
             <Link
               href="/upgrade"
               className="qm-btn-secondary inline-block px-4 py-2 text-sm"
             >
-              See what Premium adds
+              {lpc.seePremiumLabel}
             </Link>
             <Link
               href="/about"
               className="qm-btn-secondary inline-block px-4 py-2 text-sm"
             >
-              Learn about <BrandName /> →
+              {lpc.learnAboutLabel(CONFIG.appName)}
             </Link>
           </div>
         </div>

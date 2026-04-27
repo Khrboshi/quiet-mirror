@@ -68,7 +68,7 @@ export default function UpgradeTriggerModal({
         {/* Header */}
         <div className="border-b border-qm-card bg-qm-card px-6 py-5">
           <span className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-qm-accent bg-qm-accent-soft px-2.5 py-1 text-[11px] font-semibold text-qm-accent">
-            ✦ Premium feature
+            {ut.premiumFeatureBadge}
           </span>
           <h3 className="font-display text-xl font-semibold text-qm-primary">
             {finalTitle}

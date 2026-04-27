@@ -513,6 +513,7 @@ export const en: Translations = {
     modalDesc:            "Premium unlocks unlimited reflections, pattern insights across time, and a weekly summary of what Quiet Mirror noticed.",
     notNow:               "Not now",
     perMonth:             "/ month",
+    premiumFeatureBadge:  "✦ Premium feature",
   },
 
   // ── Upgrade confirmed ────────────────────────────────────────────────────────
@@ -1095,6 +1096,21 @@ export const en: Translations = {
     f5Sub:   "Nothing removed — just a deeper layer added",
   },
 
+
+  // ── legalPagesCta — closing CTAs on terms, privacy, and blog article pages ──
+  legalPagesCta: {
+    readyHeading:    "Ready to try a private check-in?",
+    readyBody:       "Start free. Upgrade only if it genuinely helps you go deeper with insights, timelines, and richer reflections.",
+    startFreeLabel:  "Start free journaling",
+    seePremiumLabel: "See what Premium adds",
+    learnAboutLabel: (appName) => `Learn about ${appName} →`,
+    // Blog article page
+    blogCtaHeading:  "Want to see what keeps returning?",
+    blogCtaBody:     "Premium reads across your entries over time and shows you what quietly repeats — the emotions, themes, and patterns you couldn't see from inside them.",
+    seePremiumBlog:  "See Premium benefits →",
+    refundNote:      (days) => `🛡️ ${days}-day full refund on Premium · Cancel anytime`,
+    backToArticles:  "← Back to all articles",
+  },
 
   // ── legalPages ──
   legalPages: {
