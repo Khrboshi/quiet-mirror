@@ -1,4 +1,11 @@
 "use client";
+/**
+ * app/components/I18nProvider.tsx
+ *
+ * Client-side i18n context — reads the locale from the qm:locale cookie
+ * and provides translations to all child components via useTranslation().
+ * Server components use getRequestTranslations() from app/lib/i18n/server.ts instead.
+ */
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Translations } from "@/app/lib/i18n/types";
