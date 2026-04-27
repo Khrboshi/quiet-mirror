@@ -347,7 +347,7 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
           {writingDays > 0 && (
             <>
               <span style={{ opacity: 0.3 }}>·</span>
-              <span>{writingDays} {t.dashboard.writingDays}</span>
+              <span>{t.dashboard.writingDaysLabel(writingDays)}</span>
             </>
           )}
         </div>

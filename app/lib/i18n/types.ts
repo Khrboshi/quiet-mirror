@@ -257,6 +257,7 @@ export interface Translations {
     // History section
     totalEntries:         string;
     writingDays:          string;
+    writingDaysLabel:     (days: number) => string;
     lastEntryLabel:       string;
     yourHistory:          string;
     allEntriesCta:        string;
