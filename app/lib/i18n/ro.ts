@@ -462,6 +462,7 @@ export const ro: Translations = {
     prompt2Sub:   "O conversație, un sentiment, un moment.",
     prompt3:      "Ce a fost greu săptămâna aceasta?",
     prompt3Sub:   "Nu trebuie să explicați de ce.",
+    writingMostOn: (day) => `scrieți cel mai mult ${day}`,
   },
 
   upgradeTrigger: {
