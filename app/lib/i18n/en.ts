@@ -218,6 +218,7 @@ export const en: Translations = {
     aiSummaryGenerating:     "Generating…",
     aiSummaryEmpty:          (appName) => `Generate a few more reflections and ${appName} will write a personal summary of what it's noticed.`,
     aiSummaryTryAgain:       "Try again →",
+    aiSummaryLastUpdated:    "Last updated",
     // Pattern sections
     patternUnderneathHeading:"The pattern underneath",
     whatYouKeepComingBackTo: "What you keep coming back to",
