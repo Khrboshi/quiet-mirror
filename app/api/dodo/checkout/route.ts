@@ -1,9 +1,18 @@
-// app/api/dodo/checkout/route.ts
-// Creates a Dodo Payments checkout session for a new subscription.
-// Returns a checkout_url that the client redirects to (Dodo-hosted checkout page).
-//
-// Flow:
-//   1. Verify user is authenticated and not already Premium
+/**
+ * app/api/dodo/checkout/route.ts
+ *
+ * POST — Creates a Dodo Payments checkout session for a new Premium subscription.
+ * Returns a checkout_url that the client redirects to (Dodo-hosted checkout page).
+ *
+ * Flow:
+ *   1. Verify user is authenticated and not already Premium
+ *   2. Upsert dodo_customer_id on profiles (create Dodo customer if first time)
+ *   3. Create Dodo checkout session with metadata.supabase_user_id
+ *   4. Return checkout_url for client-side redirect
+ *
+ * ENV VARS REQUIRED:
+ *   DODO_PAYMENTS_API_KEY, DODO_PAYMENTS_PRODUCT_ID, DODO_PAYMENTS_ENVIRONMENT
+ */
 //   2. Create a Dodo checkout session with the product + user metadata
 //   3. Return { checkoutUrl } → client does window.location.href = checkoutUrl
 //
