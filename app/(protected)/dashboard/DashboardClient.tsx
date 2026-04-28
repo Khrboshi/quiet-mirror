@@ -107,6 +107,24 @@ const ACCENT_CLASSES: Record<Accent, { border: string; label: string; dot: strin
 // ── Sub-components ────────────────────────────────────────────────────────────
 
 /**
+ * Shared positive-accent card shell — 3px left accent bar, tinted bg, full border.
+ * Used by PatternHero and WelcomePanel to keep the visual treatment consistent.
+ */
+const POSITIVE_ACCENT_STYLE: React.CSSProperties = {
+  background: "var(--qm-positive-bg)",
+  border: "1px solid var(--qm-positive-border)",
+  borderLeft: "3px solid var(--qm-positive)",
+};
+
+function AccentCard({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="rounded-2xl overflow-hidden" style={POSITIVE_ACCENT_STYLE}>
+      {children}
+    </div>
+  );
+}
+
+/**
  * Pattern hero — the centrepiece for premium users with reflection data.
  * Visual: strong left accent bar, display-size quote, emotion+theme tags, CTAs.
  */
@@ -132,14 +150,7 @@ function PatternHero({
     : `${theme} is the theme appearing most in your entries.`;
 
   return (
-    <div
-      className="rounded-2xl overflow-hidden"
-      style={{
-        background: "var(--qm-positive-bg)",
-        border: "1px solid var(--qm-positive-border)",
-        borderLeft: "3px solid var(--qm-positive)",
-      }}
-    >
+    <AccentCard>
       <div className="px-6 py-6 sm:px-7 sm:py-7">
         <p className="qm-eyebrow mb-4 text-qm-positive">
           {t.dashboard.yourPatternNow}
@@ -181,7 +192,7 @@ function PatternHero({
           </Link>
         )}
       </div>
-    </div>
+    </AccentCard>
   );
 }
 
@@ -233,14 +244,7 @@ function FreePatternTeaser({ entryCount, emotion, theme }: { entryCount: number;
 function WelcomePanel() {
   const { t } = useTranslation();
   return (
-    <div
-      className="rounded-2xl overflow-hidden"
-      style={{
-        background: "var(--qm-positive-bg)",
-        border: "1px solid var(--qm-positive-border)",
-        borderLeft: "3px solid var(--qm-positive)",
-      }}
-    >
+    <AccentCard>
       <div className="px-6 py-6 sm:px-7 sm:py-7">
         <p className="qm-eyebrow mb-2 text-qm-positive">{t.dashboard.welcomeTag}</p>
         <h2 className="font-display text-lg font-semibold leading-snug text-qm-primary">
@@ -259,7 +263,7 @@ function WelcomePanel() {
           <p className="text-xs text-qm-faint">{t.dashboard.welcomePrivacy}</p>
         </div>
       </div>
-    </div>
+    </AccentCard>
   );
 }
 
@@ -506,24 +510,24 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
           {/* Stats row */}
           <div className="grid grid-cols-3 divide-x divide-qm-border-card">
             {[
-              { value: entryCount,   label: t.dashboard.totalEntries,  suppressHydrationWarning: false },
-              { value: writingDays,  label: t.dashboard.writingDays,   suppressHydrationWarning: false },
-              {
-                value: lastEntryDate ? friendlyDate(lastEntryDate, mounted, t) : "—",
-                label: t.dashboard.lastEntryLabel,
-                suppressHydrationWarning: true,
-              },
-            ].map(({ value, label, suppressHydrationWarning }) => (
+              { value: entryCount,  label: t.dashboard.totalEntries },
+              { value: writingDays, label: t.dashboard.writingDays  },
+            ].map(({ value, label }) => (
               <div key={label} className="px-4 py-5 text-center sm:px-5">
-                <p
-                  className="text-lg font-semibold text-qm-primary tabular-nums"
-                  suppressHydrationWarning={suppressHydrationWarning}
-                >
-                  {value}
-                </p>
+                <p className="text-lg font-semibold text-qm-primary tabular-nums">{value}</p>
                 <p className="mt-1 text-[11px] text-qm-faint">{label}</p>
               </div>
             ))}
+            {/* Last entry cell — suppressHydrationWarning needed because friendlyDate is client-only */}
+            <div className="px-4 py-5 text-center sm:px-5">
+              <p
+                className="text-lg font-semibold text-qm-primary tabular-nums"
+                suppressHydrationWarning
+              >
+                {lastEntryDate ? friendlyDate(lastEntryDate, mounted, t) : "—"}
+              </p>
+              <p className="mt-1 text-[11px] text-qm-faint">{t.dashboard.lastEntryLabel}</p>
+            </div>
           </div>
 
           {/* Premium footer line */}
