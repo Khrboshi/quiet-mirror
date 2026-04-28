@@ -3,14 +3,17 @@
  *
  * Client component for the main dashboard — the first screen users see after login.
  *
- * Responsibilities:
- * - Displays the AI pattern card (most prominent element post-redesign #138)
- * - Shows recent journal entries, writing streak, and credit status
- * - Handles the "Write now" CTA and today's entry detection
- * - Reads plan type from useUserPlan() to conditionally show upgrade prompts
- * - Receives pre-fetched DashboardData from the server page component
+ * PR #157 — visual refinement only. Zero logic changes.
+ * - Clearer visual hierarchy: greeting → status → pattern → write → history
+ * - Status row replaced with readable sentence form
+ * - Pattern hero elevated with stronger left-accent treatment
+ * - Write CTA section tightened: primary action leads clearly, prompts are secondary
+ * - History strip warmed up: context labels, better spacing
+ * - Consistent section rhythm (space-y-6 between major blocks)
+ * - All existing conditional states preserved exactly
+ *
+ * Logic, i18n keys, data model → unchanged from pre-PR state.
  */
-// app/(protected)/dashboard/DashboardClient.tsx
 "use client";
 
 import Link from "next/link";
@@ -93,17 +96,20 @@ function getDailyPrompts<T extends { q: string; sub: string; accent: string }>(
 type Accent = "emerald" | "violet" | "amber" | "sky" | "rose" | "slate";
 
 const ACCENT_CLASSES: Record<Accent, { border: string; label: string; dot: string }> = {
-  emerald: { border: "border-qm-positive-border hover:border-qm-positive",   label: "text-qm-positive", dot: "bg-qm-positive" },
-  violet:  { border: "border-qm-premium-border hover:border-qm-premium",     label: "text-qm-premium",  dot: "bg-qm-premium" },
-  amber:   { border: "border-qm-warning-border hover:border-qm-warning",     label: "text-qm-warning",  dot: "bg-qm-warning" },
-  sky:     { border: "border-qm-premium-border hover:border-qm-premium",     label: "text-qm-premium",  dot: "bg-qm-premium" },
-  rose:    { border: "border-qm-danger-border hover:border-qm-danger",       label: "text-qm-danger",   dot: "bg-qm-danger" },
-  slate:   { border: "border-qm-border-subtle hover:border-qm-border-subtle", label: "text-qm-faint",   dot: "bg-qm-muted" },
+  emerald: { border: "border-qm-positive-border hover:border-qm-positive",    label: "text-qm-positive", dot: "bg-qm-positive" },
+  violet:  { border: "border-qm-premium-border hover:border-qm-premium",      label: "text-qm-premium",  dot: "bg-qm-premium"  },
+  amber:   { border: "border-qm-warning-border hover:border-qm-warning",      label: "text-qm-warning",  dot: "bg-qm-warning"  },
+  sky:     { border: "border-qm-premium-border hover:border-qm-premium",      label: "text-qm-premium",  dot: "bg-qm-premium"  },
+  rose:    { border: "border-qm-danger-border hover:border-qm-danger",        label: "text-qm-danger",   dot: "bg-qm-danger"   },
+  slate:   { border: "border-qm-border-subtle hover:border-qm-border-subtle", label: "text-qm-faint",    dot: "bg-qm-muted"    },
 };
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 
-// ── Pattern hero — the centrepiece for premium users ─────────────────────────
+/**
+ * Pattern hero — the centrepiece for premium users with reflection data.
+ * Visual: strong left accent bar, display-size quote, emotion+theme tags, CTAs.
+ */
 function PatternHero({
   emotion, theme, corepattern, reflectedThisWeek,
 }: {
@@ -127,40 +133,42 @@ function PatternHero({
 
   return (
     <div
-      className="mb-8 rounded-2xl p-6 sm:p-7"
+      className="rounded-2xl overflow-hidden"
       style={{
-        borderLeft: "2px solid var(--qm-positive)",
         background: "var(--qm-positive-bg)",
-        borderRadius: "0 16px 16px 0",
-        borderTop: "1px solid var(--qm-positive-border)",
-        borderRight: "1px solid var(--qm-positive-border)",
-        borderBottom: "1px solid var(--qm-positive-border)",
+        border: "1px solid var(--qm-positive-border)",
+        borderLeft: "3px solid var(--qm-positive)",
       }}
     >
-      <p className="mb-3 qm-eyebrow text-qm-positive">
-        {t.dashboard.yourPatternNow}
-      </p>
+      <div className="px-6 py-6 sm:px-7 sm:py-7">
+        <p className="qm-eyebrow mb-4 text-qm-positive">
+          {t.dashboard.yourPatternNow}
+        </p>
 
-      <p className="font-display text-[1.2rem] font-medium leading-relaxed text-qm-primary sm:text-[1.3rem]">
-        &ldquo;{bodyText}&rdquo;
-      </p>
+        <p className="font-display text-xl font-medium leading-relaxed text-qm-primary sm:text-[1.3rem]">
+          &ldquo;{bodyText}&rdquo;
+        </p>
 
-      {(emotion || theme) && (
-        <div className="mt-3.5 flex flex-wrap gap-2">
-          {emotion && (
-            <span className="rounded-full border border-qm-premium-border bg-qm-premium-soft px-2.5 py-1 text-xs text-qm-premium">
-              {emotion}
-            </span>
-          )}
-          {theme && (
-            <span className="rounded-full border border-qm-positive-border bg-qm-positive-soft px-2.5 py-1 text-xs text-qm-positive">
-              {theme}
-            </span>
-          )}
-        </div>
-      )}
+        {(emotion || theme) && (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {emotion && (
+              <span className="rounded-full border border-qm-premium-border bg-qm-premium-soft px-3 py-1 text-xs font-medium text-qm-premium">
+                {emotion}
+              </span>
+            )}
+            {theme && (
+              <span className="rounded-full border border-qm-positive-border bg-qm-positive-soft px-3 py-1 text-xs font-medium text-qm-positive">
+                {theme}
+              </span>
+            )}
+          </div>
+        )}
+      </div>
 
-      <div className="mt-5 flex flex-wrap items-center gap-3">
+      <div
+        className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t px-6 py-3.5 sm:px-7"
+        style={{ borderColor: "var(--qm-positive-border)", background: "var(--qm-positive-bg)" }}
+      >
         <Link
           href="/insights"
           className="text-sm font-medium text-qm-positive transition-colors hover:text-qm-positive-hover"
@@ -168,27 +176,26 @@ function PatternHero({
           {t.dashboard.seeFullInsights} →
         </Link>
         {!reflectedThisWeek && (
-          <>
-            <span className="text-qm-faint">·</span>
-            <Link href="/journal" className="text-sm text-qm-faint transition-colors hover:text-qm-muted">
-              {t.dashboard.reflectRecentEntry}
-            </Link>
-          </>
+          <Link href="/journal" className="text-sm text-qm-faint transition-colors hover:text-qm-muted">
+            {t.dashboard.reflectRecentEntry}
+          </Link>
         )}
       </div>
     </div>
   );
 }
 
-// ── Free pattern teaser ───────────────────────────────────────────────────────
+/**
+ * Free pattern teaser — blurred hint for free users with 5+ entries.
+ */
 function FreePatternTeaser({ entryCount, emotion, theme }: { entryCount: number; emotion: string | null; theme: string | null }) {
   const { t } = useTranslation();
   const hasHint = emotion || theme;
 
   if (entryCount < 3) {
     return (
-      <div className="mb-8 rounded-2xl border border-qm-border-card bg-qm-elevated p-5 sm:p-6">
-        <p className="mb-2 qm-eyebrow text-qm-faint">{t.dashboard.yourPatterns}</p>
+      <div className="rounded-2xl border border-qm-border-card bg-qm-elevated px-6 py-5">
+        <p className="qm-eyebrow mb-2 text-qm-faint">{t.dashboard.yourPatterns}</p>
         <p className="text-sm leading-relaxed text-qm-muted">
           {t.dashboard.freeNudge(CONFIG.appName, 3 - entryCount)}
         </p>
@@ -197,8 +204,8 @@ function FreePatternTeaser({ entryCount, emotion, theme }: { entryCount: number;
   }
 
   return (
-    <div className="mb-8 rounded-2xl border border-qm-border-card bg-qm-elevated p-5 sm:p-6">
-      <p className="mb-3 qm-eyebrow text-qm-faint">{t.dashboard.patternForming}</p>
+    <div className="rounded-2xl border border-qm-border-card bg-qm-elevated px-6 py-5">
+      <p className="qm-eyebrow mb-3 text-qm-faint">{t.dashboard.patternForming}</p>
       {hasHint ? (
         <p className="text-sm leading-relaxed text-qm-secondary">
           {t.dashboard.patternTeaser.split("{theme}")[0]}
@@ -220,35 +227,50 @@ function FreePatternTeaser({ entryCount, emotion, theme }: { entryCount: number;
   );
 }
 
-// ── Onboarding states ─────────────────────────────────────────────────────────
+/**
+ * Welcome panel — shown on first visit before any entries.
+ */
 function WelcomePanel() {
   const { t } = useTranslation();
   return (
-    <div className="mb-8 rounded-2xl border border-qm-positive-border bg-qm-positive-bg p-6 sm:p-7">
-      <p className="mb-1.5 qm-eyebrow text-qm-positive">{t.dashboard.welcomeTag}</p>
-      <h2 className="font-display text-lg font-medium leading-snug text-qm-primary">
-        {t.dashboard.welcomeHeading}
-      </h2>
-      <p className="mt-2 text-sm leading-relaxed text-qm-muted">
-        {t.dashboard.welcomeBody(CONFIG.appName)}
-      </p>
-      <Link
-        href="/journal/new"
-        className="mt-5 inline-flex items-center gap-2 rounded-full bg-qm-accent px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-qm-accent-hover"
-        style={{ boxShadow: "0 6px 20px -4px rgba(139,157,255,0.28)" }}
-      >
-        {t.dashboard.writeFirstEntry}
-      </Link>
-      <p className="mt-3 text-xs text-qm-faint">{t.dashboard.welcomePrivacy}</p>
+    <div
+      className="rounded-2xl overflow-hidden"
+      style={{
+        background: "var(--qm-positive-bg)",
+        border: "1px solid var(--qm-positive-border)",
+        borderLeft: "3px solid var(--qm-positive)",
+      }}
+    >
+      <div className="px-6 py-6 sm:px-7 sm:py-7">
+        <p className="qm-eyebrow mb-2 text-qm-positive">{t.dashboard.welcomeTag}</p>
+        <h2 className="font-display text-lg font-semibold leading-snug text-qm-primary">
+          {t.dashboard.welcomeHeading}
+        </h2>
+        <p className="mt-2.5 text-sm leading-relaxed text-qm-muted">
+          {t.dashboard.welcomeBody(CONFIG.appName)}
+        </p>
+        <div className="mt-5 flex flex-wrap items-center gap-4">
+          <Link
+            href="/journal/new"
+            className="qm-btn-primary px-5 py-2.5 text-sm"
+          >
+            {t.dashboard.writeFirstEntry}
+          </Link>
+          <p className="text-xs text-qm-faint">{t.dashboard.welcomePrivacy}</p>
+        </div>
+      </div>
     </div>
   );
 }
 
+/**
+ * Pattern started card — shown after first reflected entry.
+ */
 function PatternStartedCard({ emotion, theme }: { emotion: string | null; theme: string | null }) {
   const { t } = useTranslation();
   return (
-    <div className="mb-8 rounded-2xl border border-qm-premium-border bg-qm-premium-bg p-5 sm:p-6">
-      <p className="mb-1.5 qm-eyebrow text-qm-premium">{t.dashboard.patternStartedTag}</p>
+    <div className="rounded-2xl border border-qm-premium-border bg-qm-premium-bg px-6 py-5">
+      <p className="qm-eyebrow mb-2 text-qm-premium">{t.dashboard.patternStartedTag}</p>
       <p className="text-sm leading-relaxed text-qm-secondary">
         {t.dashboard.patternStartedBody(emotion, theme)}
       </p>
@@ -259,18 +281,24 @@ function PatternStartedCard({ emotion, theme }: { emotion: string | null; theme:
   );
 }
 
+/**
+ * Progress nudge — thin progress bar for 2–4 entries.
+ */
 function ProgressNudge({ entryCount }: { entryCount: number }) {
   const { t } = useTranslation();
   const remaining = 5 - entryCount;
   if (remaining <= 0) return null;
   return (
-    <div className="mb-8 rounded-2xl border border-qm-border-card bg-qm-elevated p-5">
-      <div className="mb-2 flex items-center justify-between">
+    <div className="rounded-2xl border border-qm-border-card bg-qm-elevated px-6 py-5">
+      <div className="mb-3 flex items-center justify-between">
         <p className="qm-eyebrow text-qm-faint">{t.dashboard.patternFormingYours}</p>
-        <p className="text-xs text-qm-faint">{entryCount} / 5</p>
+        <p className="text-xs tabular-nums text-qm-faint">{entryCount} / 5</p>
       </div>
-      <div className="mb-3 h-[2px] w-full rounded-full bg-qm-card">
-        <div className="h-[2px] rounded-full bg-qm-positive-muted transition-all" style={{ width: `${(entryCount / 5) * 100}%` }} />
+      <div className="mb-3.5 h-px w-full rounded-full bg-qm-border-card">
+        <div
+          className="h-px rounded-full bg-qm-positive-muted transition-all duration-500"
+          style={{ width: `${(entryCount / 5) * 100}%` }}
+        />
       </div>
       <p className="text-sm text-qm-muted">
         <span className="text-qm-primary">{t.dashboard.moreEntries(remaining)}</span>{" "}
@@ -306,7 +334,6 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
     ? `${greetingByHour(t)}, ${displayName}`
     : greetingByHour(t);
 
-  // Two prompts per day (rotates daily)
   const [promptA, promptB] = useMemo(() => getDailyPrompts(t.dashboard.prompts), [t.dashboard.prompts]);
 
   const {
@@ -318,7 +345,6 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
   const acA = ACCENT_CLASSES[(promptA.accent as Accent) in ACCENT_CLASSES ? (promptA.accent as Accent) : "slate"];
   const acB = ACCENT_CLASSES[(promptB.accent as Accent) in ACCENT_CLASSES ? (promptB.accent as Accent) : "slate"];
 
-  // Thread prompt for the CTA
   const threadPrompt = wroteToday
     ? t.dashboard.alreadyWroteToday
     : lastTopEmotion
@@ -328,177 +354,190 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
   const lastEntryLabel = lastEntryDate ? friendlyDate(lastEntryDate, mounted, t) : null;
 
   return (
-    <div className="mx-auto max-w-2xl px-5 pb-20 pt-10 text-qm-primary sm:px-6">
+    <div className="mx-auto max-w-2xl px-5 pb-24 pt-10 sm:px-6">
 
       {/* ── Header ─────────────────────────────────────────────────────────── */}
-      <div className="mb-8">
-        <h1 className="font-display text-[1.9rem] font-medium leading-[1.1] tracking-tight text-qm-primary sm:text-[2.2rem]">
+      <header className="mb-8">
+        <h1 className="font-display text-[1.85rem] font-semibold leading-[1.15] tracking-tight text-qm-primary sm:text-[2.15rem]">
           {greeting}
         </h1>
 
-        {/* Status row */}
-        <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-qm-faint">
+        {/* Status — readable sentence, not a data row */}
+        <div className="mt-2.5 text-sm text-qm-muted">
           {isPremium ? (
-            <span style={{ color: "var(--qm-positive)", opacity: 0.9 }}>{t.dashboard.reflUnlimited}</span>
+            <span style={{ color: "var(--qm-positive)", opacity: 0.85 }}>{t.dashboard.reflUnlimited}</span>
           ) : reflectionsPaused ? (
-            <span>{t.dashboard.reflPaused(resetLabel)}</span>
+            <span className="text-qm-faint">{t.dashboard.reflPaused(resetLabel)}</span>
           ) : (
             <span>
               {t.dashboard.reflRemaining}{" "}
-              <span className="text-qm-muted">{planLoading ? "…" : String(credits ?? 0)}</span>
+              <span className="font-medium text-qm-secondary">{planLoading ? "…" : String(credits ?? 0)}</span>
             </span>
           )}
 
           {entryCount > 0 && (
-            <>
-              <span style={{ opacity: 0.3 }}>·</span>
-              <span>{entryCount} {entryCount === 1 ? t.dashboard.entry : t.dashboard.entries}</span>
-            </>
-          )}
-
-          {writingDays > 0 && (
-            <>
-              <span style={{ opacity: 0.3 }}>·</span>
-              <span>{t.dashboard.writingDaysLabel(writingDays)}</span>
-            </>
+            <span className="text-qm-faint">
+              {" "}·{" "}
+              {entryCount} {entryCount === 1 ? t.dashboard.entry : t.dashboard.entries}
+              {writingDays > 0 && (
+                <> · {t.dashboard.writingDaysLabel(writingDays)}</>
+              )}
+            </span>
           )}
         </div>
 
         {/* Credit-wall upgrade CTA */}
         {reflectionsPaused && !isPremium && (
-          <div className="mt-3 flex items-center gap-3">
+          <div className="mt-4 flex flex-wrap items-center gap-3">
             <Link
               href="/upgrade"
-              className="inline-flex items-center rounded-full bg-qm-accent px-4 py-1.5 text-xs font-semibold text-white transition hover:bg-qm-accent-hover"
+              className="qm-btn-primary px-4 py-1.5 text-xs"
             >
               {t.dashboard.unlockUnlimitedCta}
             </Link>
             <span className="text-xs text-qm-faint">{t.dashboard.trialBadgeFull(PRICING.trialDays)}</span>
           </div>
         )}
-      </div>
+      </header>
 
-      {/* ── Onboarding moments ─────────────────────────────────────────────── */}
-      {entryCount === 0 && <WelcomePanel />}
-      {entryCount === 1 && lastEntryHasReflection && <PatternStartedCard emotion={lastTopEmotion} theme={lastTopTheme} />}
-      {entryCount >= 2 && entryCount < 5 && <ProgressNudge entryCount={entryCount} />}
+      {/* ── Main content — stacked sections with consistent rhythm ──────────── */}
+      <div className="space-y-6">
 
-      {/* ── PATTERN HERO (premium) / Teaser (free) ─────────────────────────── */}
-      {isPremium && (lastTopEmotion || lastTopTheme || lastCorepattern) && (
-        <PatternHero
-          emotion={lastTopEmotion}
-          theme={lastTopTheme}
-          corepattern={lastCorepattern}
-          reflectedThisWeek={reflectedThisWeek}
-        />
-      )}
-      {isFree && entryCount >= 5 && (
-        <FreePatternTeaser entryCount={entryCount} emotion={lastTopEmotion} theme={lastTopTheme} />
-      )}
+        {/* ── Onboarding moments ─────────────────────────────────────────────── */}
+        {entryCount === 0 && <WelcomePanel />}
+        {entryCount === 1 && lastEntryHasReflection && (
+          <PatternStartedCard emotion={lastTopEmotion} theme={lastTopTheme} />
+        )}
+        {entryCount >= 2 && entryCount < 5 && <ProgressNudge entryCount={entryCount} />}
 
-      {/* ── Write today ────────────────────────────────────────────────────── */}
-      <div className="mb-8">
-        <p className="mb-3 qm-eyebrow text-qm-faint">
-          {wroteToday ? t.dashboard.wroteToday : t.dashboard.todaysPromptsLabel}
-        </p>
+        {/* ── Pattern hero (premium) / Teaser (free 5+) ─────────────────────── */}
+        {isPremium && (lastTopEmotion || lastTopTheme || lastCorepattern) && (
+          <PatternHero
+            emotion={lastTopEmotion}
+            theme={lastTopTheme}
+            corepattern={lastCorepattern}
+            reflectedThisWeek={reflectedThisWeek}
+          />
+        )}
+        {isFree && entryCount >= 5 && (
+          <FreePatternTeaser entryCount={entryCount} emotion={lastTopEmotion} theme={lastTopTheme} />
+        )}
 
-        <div className="flex flex-col gap-3">
-          {/* Primary write CTA — continues from last entry or starts fresh */}
-          <Link
-            href={buildHref(threadPrompt)}
-            className="group rounded-2xl border bg-qm-elevated p-5 transition-all hover:bg-qm-soft"
-            style={{ borderColor: "var(--qm-accent-border)" }}
-          >
-            <div className="mb-2 flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-qm-accent" />
-              <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-qm-accent">
-                {wroteToday ? t.dashboard.addToToday : t.dashboard.writeNow}
-              </span>
+        {/* ── Write section ──────────────────────────────────────────────────── */}
+        <section aria-label={wroteToday ? t.dashboard.wroteToday : t.dashboard.todaysPromptsLabel}>
+          <p className="qm-eyebrow mb-3 text-qm-faint">
+            {wroteToday ? t.dashboard.wroteToday : t.dashboard.todaysPromptsLabel}
+          </p>
+
+          <div className="space-y-3">
+            {/* Primary write CTA */}
+            <Link
+              href={buildHref(threadPrompt)}
+              className="group block rounded-2xl border bg-qm-elevated p-5 transition-all hover:bg-qm-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--qm-focus-ring-color)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--qm-bg)]"
+              style={{ borderColor: "var(--qm-accent-border)" }}
+            >
+              <div className="mb-2.5 flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-qm-accent flex-shrink-0" />
+                <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-qm-accent">
+                  {wroteToday ? t.dashboard.addToToday : t.dashboard.writeNow}
+                </span>
+              </div>
+              <p className="text-sm font-medium leading-snug text-qm-primary">
+                {wroteToday
+                  ? t.dashboard.dayEvolved
+                  : lastTopEmotion
+                  ? t.dashboard.threadBodyWritten(lastEntryLabel ?? "", lastTopEmotion)
+                  : lastEntryId
+                  ? t.dashboard.threadBodyWrittenNoEmotion(lastEntryLabel ?? "")
+                  : t.dashboard.oneHonestSentence}
+              </p>
+              <p className="mt-3 text-xs font-medium text-qm-accent transition group-hover:text-qm-accent-hover">
+                {wroteToday ? t.dashboard.addToToday : t.dashboard.writeNow} →
+              </p>
+            </Link>
+
+            {/* Two rotating prompts */}
+            <div className="grid grid-cols-2 gap-3">
+              {([{ prompt: promptA, ac: acA }, { prompt: promptB, ac: acB }] as const).map(({ prompt, ac }) => (
+                <Link
+                  key={prompt.q}
+                  href={buildHref(prompt.q)}
+                  className={`group rounded-2xl border bg-qm-elevated p-4 transition-all hover:bg-qm-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--qm-focus-ring-color)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--qm-bg)] ${ac.border}`}
+                >
+                  <span className={`mb-2.5 block h-1.5 w-1.5 rounded-full ${ac.dot}`} />
+                  <p className="text-sm font-medium leading-snug text-qm-primary">{prompt.q}</p>
+                  <p className="mt-1 text-[11px] leading-relaxed text-qm-faint">{prompt.sub}</p>
+                  <p className={`mt-3 text-[11px] font-medium transition ${ac.label}`}>
+                    {t.dashboard.startArrow}
+                  </p>
+                </Link>
+              ))}
             </div>
-            <p className="text-sm font-medium leading-snug text-qm-primary">
-              {wroteToday
-                ? t.dashboard.dayEvolved
-                : lastTopEmotion
-                ? t.dashboard.threadBodyWritten(lastEntryLabel ?? "", lastTopEmotion)
-                : lastEntryId
-                ? t.dashboard.threadBodyWrittenNoEmotion(lastEntryLabel ?? "")
-                : t.dashboard.oneHonestSentence}
-            </p>
-            <p className="mt-3 text-xs font-medium text-qm-accent transition group-hover:text-qm-accent-hover">
-              {wroteToday ? t.dashboard.addToToday : t.dashboard.writeNow} →
-            </p>
-          </Link>
+          </div>
+        </section>
 
-          {/* Two rotating prompts */}
-          <div className="grid grid-cols-2 gap-3">
-            {[{ prompt: promptA, ac: acA }, { prompt: promptB, ac: acB }].map(({ prompt, ac }) => (
+        {/* ── History strip ──────────────────────────────────────────────────── */}
+        <section
+          aria-label={t.dashboard.yourHistory}
+          className="rounded-2xl border border-qm-border-card overflow-hidden"
+          style={{ background: "var(--qm-bg-elevated)" }}
+        >
+          {/* Header row */}
+          <div className="flex items-center justify-between border-b border-qm-border-card px-5 py-3.5">
+            <p className="qm-eyebrow text-qm-faint">{t.dashboard.yourHistory}</p>
+            <div className="flex items-center gap-4">
               <Link
-                key={prompt.q}
-                href={buildHref(prompt.q)}
-                className={`group rounded-2xl border bg-qm-elevated p-4 transition-all hover:bg-qm-soft ${ac.border}`}
+                href="/journal"
+                className="text-xs text-qm-faint transition hover:text-qm-secondary"
               >
-                <span className={`mb-2.5 block h-1.5 w-1.5 rounded-full ${ac.dot}`} />
-                <p className="text-sm font-medium leading-snug text-qm-primary">{prompt.q}</p>
-                <p className="mt-1 text-[11px] leading-relaxed text-qm-faint">{prompt.sub}</p>
-                <p className={`mt-2.5 text-[11px] font-medium transition ${ac.label}`}>
-                  {t.dashboard.startArrow}
-                </p>
+                {t.dashboard.allEntriesCta}
               </Link>
+              {isPremium && (
+                <Link
+                  href="/insights"
+                  className="text-xs text-qm-positive transition hover:text-qm-positive-hover"
+                >
+                  {t.dashboard.viewInsightsCta}
+                </Link>
+              )}
+            </div>
+          </div>
+
+          {/* Stats row */}
+          <div className="grid grid-cols-3 divide-x divide-qm-border-card">
+            {[
+              { value: entryCount,   label: t.dashboard.totalEntries,  suppressHydrationWarning: false },
+              { value: writingDays,  label: t.dashboard.writingDays,   suppressHydrationWarning: false },
+              {
+                value: lastEntryDate ? friendlyDate(lastEntryDate, mounted, t) : "—",
+                label: t.dashboard.lastEntryLabel,
+                suppressHydrationWarning: true,
+              },
+            ].map(({ value, label, suppressHydrationWarning }) => (
+              <div key={label} className="px-4 py-5 text-center sm:px-5">
+                <p
+                  className="text-lg font-semibold text-qm-primary tabular-nums"
+                  suppressHydrationWarning={suppressHydrationWarning}
+                >
+                  {value}
+                </p>
+                <p className="mt-1 text-[11px] text-qm-faint">{label}</p>
+              </div>
             ))}
           </div>
-        </div>
-      </div>
 
-      {/* ── History strip ──────────────────────────────────────────────────── */}
-      <div
-        className="rounded-2xl border border-qm-border-card"
-        style={{ background: "var(--qm-bg-elevated)" }}
-      >
-        <div className="flex items-center justify-between border-b border-qm-border-card px-5 py-3.5">
-          <p className="qm-eyebrow text-qm-faint">{t.dashboard.yourHistory}</p>
-          <div className="flex gap-3">
-            <Link href="/journal" className="text-xs text-qm-faint transition hover:text-qm-secondary">
-              {t.dashboard.allEntriesCta}
-            </Link>
-            {isPremium && (
-              <Link href="/insights" className="text-xs text-qm-positive transition hover:text-qm-positive-hover">
-                {t.dashboard.viewInsightsCta}
-              </Link>
-            )}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-3 divide-x divide-qm-border-card">
-          {[
-            { value: entryCount, label: t.dashboard.totalEntries },
-            { value: writingDays, label: t.dashboard.writingDays },
-            {
-              value: lastEntryDate
-                ? friendlyDate(lastEntryDate, mounted, t)
-                : "—",
-              label: t.dashboard.lastEntryLabel,
-              suppressHydrationWarning: true,
-            },
-          ].map(({ value, label, suppressHydrationWarning }) => (
-            <div key={label} className="px-5 py-4 text-center">
-              <p
-                className="text-lg font-medium text-qm-primary"
-                suppressHydrationWarning={suppressHydrationWarning}
-              >
-                {value}
-              </p>
-              <p className="mt-0.5 text-[11px] text-qm-faint">{label}</p>
+          {/* Premium footer line */}
+          {isPremium && (
+            <div
+              className="border-t border-qm-border-card px-5 py-3 text-center"
+              style={{ background: "var(--qm-positive-bg)" }}
+            >
+              <span className="text-xs font-medium text-qm-positive">{t.dashboard.reflUnlimited}</span>
             </div>
-          ))}
-        </div>
+          )}
+        </section>
 
-        {isPremium && (
-          <div className="border-t border-qm-border-card px-5 py-3 text-center">
-            <span className="text-xs text-qm-positive">{t.dashboard.reflUnlimited}</span>
-          </div>
-        )}
       </div>
-
     </div>
   );
 }
