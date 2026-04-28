@@ -439,16 +439,19 @@ export interface Translations {
 
   // ── Tools page ───────────────────────────────────────────────────────────────
   toolsPage: {
-    pageLabel:        string;
-    pageTitle:        string;
-    pageSubtitle:     string;
-    moodTitle:        string;
-    moodSubtitle:     string;
-    reflectionTitle:  string;
-    reflectionSubtitle:string;
-    suggestionsTitle: string;
-    suggestionsSubtitle:string;
-    openLabel:        string;
+    pageLabel:           string;
+    pageTitle:           string;
+    pageSubtitle:        string;
+    moodTitle:           string;
+    moodTag:             string;
+    moodSubtitle:        string;
+    reflectionTitle:     string;
+    reflectionTag:       string;
+    reflectionSubtitle:  string;
+    suggestionsTitle:    string;
+    suggestionsTag:      string;
+    suggestionsSubtitle: string;
+    openLabel:           string;
   };
 
   // ── Magic login ──────────────────────────────────────────────────────────────

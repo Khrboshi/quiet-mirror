@@ -435,15 +435,18 @@ export const en: Translations = {
 
   // ── Tools page ───────────────────────────────────────────────────────────────
   toolsPage: {
-    pageLabel:          "Your space",
+    pageLabel:          "Premium",
     pageTitle:          "Reflect a little deeper",
-    pageSubtitle:       "Small, focused ways to check in with yourself — separate from your journal entries.",
+    pageSubtitle:       "Three quiet tools — each shaped around what's already showing up in your entries.",
     moodTitle:          "A quiet moment",
-    moodSubtitle:       "Pause and notice where you actually are — no scores, no ratings, just honesty.",
-    reflectionTitle:    "Guided Reflection",
-    reflectionSubtitle: "A prompt shaped around what has been showing up in your entries lately.",
-    suggestionsTitle:   "Small Suggestions",
-    suggestionsSubtitle:"One or two gentle ideas, based on your patterns — not instructions, just invitations.",
+    moodTag:            "Mood",
+    moodSubtitle:       "Pause and notice where you actually are. No scores, no ratings — just an honest look at right now.",
+    reflectionTitle:    "Guided reflection",
+    reflectionTag:      "Reflection",
+    reflectionSubtitle: "A prompt shaped around what has been showing up in your writing lately — not a generic question.",
+    suggestionsTitle:   "Small suggestions",
+    suggestionsTag:     "Suggestions",
+    suggestionsSubtitle:"One or two gentle invitations based on your patterns — not instructions, just something worth trying.",
     openLabel:          "Open →",
   },
 
