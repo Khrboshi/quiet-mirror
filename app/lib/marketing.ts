@@ -62,4 +62,55 @@ export const MARKETING = {
    * Privacy by default — short form used in trust badges.
    */
   privateByDefault: "Private by default",
+
+  // ── Privacy trust line ──────────────────────────────────────────────────
+  /**
+   * Canonical privacy trust sentence — appears in footer.privacyAssurance
+   * and requirePremium.trustLine.
+   * Update here once; both keys update automatically.
+   *
+   * Note: upgradeFull.proofPrivacy is a different, shorter sentence
+   * ("Only you can see this. Never shared, never used to train AI.") and
+   * is intentionally kept separate.
+   */
+  privacyTrustLine:
+    "Your entries are private, never shared, and never used to train AI models.",
+
+  // ── Proof card illustrative data ────────────────────────────────────────
+  // These demo values appear identically in homeBelowFold and upgradeFull.
+  // They are intentionally illustrative (not real user data) — update both
+  // pages by editing here.
+
+  /** Bar label 1 — most prominent pattern signal in the proof card. */
+  proofBar1: "Emotional load",
+  /** Bar label 2 */
+  proofBar2: "Responsibility for others",
+  /** Bar label 3 */
+  proofBar3: "Overwhelm / exhaustion",
+  /** Bar label 4 — rising signal */
+  proofBar4: "Clarity (\u2191 rising)",
+  /** Stat label 1 — shown below the 14/22 number */
+  proofStat1: "entries with\nemotional load",
+  /** Stat label 2 — shown below the 3wks number */
+  proofStat2: "pattern has\nbeen building",
+  /**
+   * The illustrative AI-generated insight quote in the proof card.
+   * Used in both the homepage proof section and the upgrade page proof card.
+   *
+   * Display forms:
+   * - homeBelowFold.proofQuote wraps this in Unicode curly quotes (\u201c…\u201d)
+   *   for the pull-quote display style.
+   * - upgradeFull.proofQuote and card3Quote use it bare (prose context).
+   */
+  proofQuote:
+    "You often sound most overwhelmed when you feel responsible for keeping everything steady for everyone else \u2014 and rarely give yourself the same patience.",
+
+  // ── Insight card section tags ────────────────────────────────────────────
+  // Six section titles used identically in homeBelowFold and upgradeFull.
+  insightTag1: "What shows up most",
+  insightTag2: "What keeps returning",
+  insightTag3: "What may be driving it",
+  insightTag4: "What is shifting",
+  insightTag5: "Your weekly mirror",
+  insightTag6: "A question worth sitting with",
 } as const;

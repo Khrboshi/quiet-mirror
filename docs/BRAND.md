@@ -56,6 +56,11 @@ Atomic trust/positioning phrases that appear in multiple i18n keys are extracted
 | `Never trains AI models` | `MARKETING.neverTrainsAI` | `upgradePage.ctaT2`, `upgrade.trust2` |
 | `Entries never train AI models` | `MARKETING.entriesNeverTrainAI` | `upgrade.trust2` |
 | `Private by default` | `MARKETING.privateByDefault` | `upgradePage.ctaT1`, `upgrade.trust1`, `upgradeFull.freeItem4` |
+| Privacy trust line | `MARKETING.privacyTrustLine` | `footer.privacyAssurance`, `requirePremium.trustLine` |
+| Proof bar labels 1–4 | `MARKETING.proofBar1–4` | `homeBelowFold.proofBar1–4`, `upgradeFull.proofBar1–4` |
+| Proof stat labels | `MARKETING.proofStat1–2` | `homeBelowFold.proofStat1–2`, `upgradeFull.proofStat1–2` |
+| Proof quote | `MARKETING.proofQuote` | `homeBelowFold.proofQuote`, `upgradeFull.proofQuote`, `upgradeFull.card3Quote` |
+| Insight card tags 1–6 | `MARKETING.insightTag1–6` | `homeBelowFold.cardA–FTitle`, `upgradeFull.card1–6Tag` |
 
 > When any of these phrases needs to change, edit `app/lib/marketing.ts` only — do not edit individual keys in `en.ts`.
 > The call-site column above must be kept in sync with `en.ts` when usages are added or removed.
