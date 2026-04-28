@@ -28,6 +28,15 @@ export default function RequirePremium({ children }: RequirePremiumProps) {
   const pf = t.premiumFeatures;
   const { loading, planType } = useUserPlan();
 
+  const isPremium = planType === "PREMIUM" || planType === "TRIAL";
+
+  // Must be declared before any conditional returns (rules-of-hooks)
+  useEffect(() => {
+    if (!loading && !isPremium) {
+      track("paywall_hit", { plan: planType ?? "FREE" });
+    }
+  }, [loading, isPremium, planType]);
+
   if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center bg-qm-bg">
@@ -38,14 +47,6 @@ export default function RequirePremium({ children }: RequirePremiumProps) {
       </div>
     );
   }
-
-  const isPremium = planType === "PREMIUM" || planType === "TRIAL";
-
-  useEffect(() => {
-    if (!loading && !isPremium) {
-      track("paywall_hit", { plan: planType ?? "FREE" });
-    }
-  }, [loading, isPremium, planType]);
 
   if (!isPremium) {
     return (
