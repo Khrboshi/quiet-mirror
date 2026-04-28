@@ -44,6 +44,22 @@
 
 > `CONFIG.appName` is wrapped in `<BrandName />` everywhere it appears in JSX — never hardcoded as a string. The CSS rule `[dir="rtl"] .font-brand-name` keeps the Latin display font on Arabic pages.
 
+### Shared positioning phrases
+
+Atomic trust/positioning phrases that appear in multiple i18n keys are extracted into `app/lib/marketing.ts → MARKETING` so a single edit propagates everywhere. Non-English locale files continue to translate these inline.
+
+| Phrase | Constant | Used in |
+|---|---|---|
+| `No ads` | `MARKETING.noAds` | `footer.noAds`, `upgrade.trust1` |
+| `Subscription supported` | `MARKETING.subscriptionSupported` | `upgrade.trust3Title`, `upgradePage.card2Label` |
+| `No ads — subscription supported` | `MARKETING.noAdsSubscriptionSupported` | `upgrade.trust4`, `upgradePage.ctaT4`, `homeBelowFold.closingTrust` |
+| `Never trains AI models` | `MARKETING.neverTrainsAI` | `upgradePage.ctaT2`, `upgrade.trust2` |
+| `Entries never train AI models` | `MARKETING.entriesNeverTrainAI` | `upgrade.trust2` |
+| `Private by default` | `MARKETING.privateByDefault` | `upgradePage.ctaT1`, `upgrade.trust1`, `upgradeFull.freeItem4` |
+
+> When any of these phrases needs to change, edit `app/lib/marketing.ts` only — do not edit individual keys in `en.ts`.
+> The call-site column above must be kept in sync with `en.ts` when usages are added or removed.
+
 ---
 
 ## 2. Pricing & payment

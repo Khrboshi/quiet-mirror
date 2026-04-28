@@ -7,6 +7,7 @@
 // that copy.ts does not have. When updating a string, update both files.
 
 import type { Translations } from "./types";
+import { MARKETING } from "@/app/lib/marketing";
 
 export const en: Translations = {
   errors: {
@@ -328,7 +329,7 @@ export const en: Translations = {
     termsOfService:    "Terms of Service",
     privacyPolicy:     "Privacy Policy",
     contact:           "Contact",
-    noAds:             "No ads",
+    noAds:             MARKETING.noAds,
     noDataSales:       "No data sales",
     tagline:           "The Journal That Reads Underneath",
     privacyAssurance:  "Your entries stay private and are never used to train AI models.",
@@ -394,7 +395,7 @@ export const en: Translations = {
     freeItem1:            "Unlimited journaling",
     freeItem2:            "Gentle prompts to begin",
     freeItem3:            (n) => `${n} AI reflections per month`,
-    freeItem4:            "Private by default",
+    freeItem4:            MARKETING.privateByDefault,
     priceLabel:           "Price",
     nextBillingLabel:     "Next billing",
     cancellationsLabel:   "Cancellations",
@@ -546,10 +547,10 @@ export const en: Translations = {
     heroCta1:         "Write your first entry free \u2192",
     heroCta2:         "See a real reflection \u2192",
     heroPromise:      "\u2713\u00a0Journal in under 60 seconds \u00b7 \u2713\u00a0First reflection within moments \u00b7 \u2713\u00a0No setup, no quiz",
-    trust1:           "Private by default",
-    trust2:           "Entries never train AI models",
+    trust1:           MARKETING.privateByDefault,
+    trust2:           MARKETING.entriesNeverTrainAI,
     trust3:           "Free plan, no expiry",
-    trust4:           "No ads — subscription supported",
+    trust4:           MARKETING.noAdsSubscriptionSupported,
     previewTag:       "Evening check-in",
     previewPrivate:   "Private \u00b7 Just for you",
     previewWhatYouWrote: "What you wrote",
@@ -638,7 +639,7 @@ export const en: Translations = {
     trustTag:"Built with care",trustH:"A few things worth knowing before you begin.",
     trustDesc:"Quiet Mirror is a small, independent product built around one principle: your inner life belongs to you. Here is what that means in practice.",
     trust1Title:"Private by design",trust1Body:"Your entries are never used to train AI models, never sold, and never seen by anyone but you. Privacy is the foundation this product is built on.",
-    trust3Title:"Subscription supported",trust3Body:"Quiet Mirror earns revenue from Premium subscriptions. That is the current business model — designed so your data is not the product.",
+    trust3Title:MARKETING.subscriptionSupported,trust3Body:"Quiet Mirror earns revenue from Premium subscriptions. That is the current business model — designed so your data is not the product.",
     patternQ1:"Most people don't lack self-awareness.",patternQ2:"They're just too close to their own life to see the pattern clearly.",
     pricingTag:"Free vs Premium",pricingH:"Start privately. Upgrade when you want the deeper picture.",
     pricingDesc:"Free is enough to begin honestly. Premium is for people who want Quiet Mirror to connect the dots across weeks and months.",
@@ -664,7 +665,7 @@ export const en: Translations = {
     ctaTag:"Ready when you are",ctaH1:"Something is trying to become clear.",ctaH2:"Let's help you hear it.",
     ctaDesc:"You don't need to have it figured out to begin. One honest sentence is enough.",
     ctaBtn:"Write your first entry free →",
-    ctaT1:"Private by default",ctaT2:"Never trains AI models",ctaT4:"No ads — subscription supported",
+    ctaT1:MARKETING.privateByDefault,ctaT2:MARKETING.neverTrainsAI,ctaT4:MARKETING.noAdsSubscriptionSupported,
   },
   moodTool: {
     heading:"How are you right now?",choosePrompt:"Choose what fits — it will shape your writing prompt.",
@@ -903,7 +904,7 @@ export const en: Translations = {
     builtIndepTag: "Built independently",
     card1Label:    "No investors",
     card1Body:     (appName) => `${appName} is independently built and funded. No venture capital, no board, no pressure to grow at the expense of the product or your privacy.`,
-    card2Label:    "Subscription supported",
+    card2Label:    MARKETING.subscriptionSupported,
     card2Body:     "Revenue comes from Premium subscriptions. Your data is never sold, shared, or used to train AI models. No ads — that is how the product is built to work.",
     card3Label:    "One person accountable",
     card3Body:     (appName, email) => `${appName} is built by a single independent developer. Every decision about privacy, product, and pricing has one person behind it \u2014 reachable directly at ${email}.`,
