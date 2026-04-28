@@ -14,6 +14,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { PRICING } from "@/app/lib/pricing";
 import { useTranslation } from "@/app/components/I18nProvider";
+import { track } from "@/app/components/telemetry";
 
 export interface UpgradeTriggerModalProps {
   open: boolean;
@@ -44,6 +45,7 @@ export default function UpgradeTriggerModal({
 
   useEffect(() => {
     if (!open) return;
+    track("upgrade_modal_opened", { source: source ?? "unknown" });
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
@@ -110,6 +112,7 @@ export default function UpgradeTriggerModal({
             <Link
               href={finalCtaHref}
               className="inline-flex w-full items-center justify-center rounded-full qm-btn-primary px-5 py-3 text-sm"
+              onClick={() => track("upgrade_modal_cta_clicked", { source: source ?? "unknown", href: finalCtaHref })}
             >
               {finalCtaLabel}
             </Link>

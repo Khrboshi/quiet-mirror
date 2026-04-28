@@ -11,9 +11,11 @@
 
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { useEffect } from "react";
 import { useTranslation } from "@/app/components/I18nProvider";
 import { useUserPlan } from "@/app/components/useUserPlan";
 import { PRICING } from "@/app/lib/pricing";
+import { track } from "@/app/components/telemetry";
 
 interface RequirePremiumProps {
   children: ReactNode;
@@ -38,6 +40,12 @@ export default function RequirePremium({ children }: RequirePremiumProps) {
   }
 
   const isPremium = planType === "PREMIUM" || planType === "TRIAL";
+
+  useEffect(() => {
+    if (!loading && !isPremium) {
+      track("paywall_hit", { plan: planType ?? "FREE" });
+    }
+  }, [loading, isPremium, planType]);
 
   if (!isPremium) {
     return (

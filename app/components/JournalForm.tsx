@@ -15,6 +15,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "@/app/components/I18nProvider";
+import { track } from "@/app/components/telemetry";
 
 type Props = Record<string, never>;
 
@@ -118,6 +119,13 @@ export default function JournalForm(_props: Props) {
         return;
       }
       setStatus("success");
+      track("journal_submitted", {
+        word_count: wordCount,
+        word_count_bucket:
+          wordCount < 50 ? "<50" : wordCount < 150 ? "50-149" : wordCount < 300 ? "150-299" : "300+",
+        has_title: Boolean(title.trim()),
+        had_prompt: hasIncomingPrompt,
+      });
       try {
         sessionStorage.setItem("havenly:show_insight_preview", "1");
         sessionStorage.setItem("havenly:last_seed", pickSeed(title, contentTrimmed));

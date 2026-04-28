@@ -10,6 +10,7 @@
 import { useState } from "react";
 import { CONFIG } from "@/app/lib/config";
 import { useTranslation } from "@/app/components/I18nProvider";
+import { track } from "@/app/components/telemetry";
 
 type Variant = "blog-index" | "article-inline";
 
@@ -32,7 +33,9 @@ export default function EmailCapture({ source = "blog", variant = "blog-index" }
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, source }),
       });
-      setStatus(res.ok ? "success" : "error");
+      const ok = res.ok;
+      setStatus(ok ? "success" : "error");
+      if (ok) track("email_capture_submitted", { source });
     } catch {
       setStatus("error");
     }
