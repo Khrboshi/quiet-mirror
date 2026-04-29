@@ -526,7 +526,7 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
                 ? t.dashboard.historySentence(entryCount, writingDays)
                 : `${entryCount} ${entryCount === 1 ? t.dashboard.entry : t.dashboard.entries}.`}
               {lastEntryDate && (
-                <> {t.dashboard.lastEntryLabel.toLowerCase()}{" "}
+                <> {t.dashboard.lastEntryLabel}{" "}
                   <span suppressHydrationWarning>
                     {friendlyDate(lastEntryDate, mounted, t)}
                   </span>.
