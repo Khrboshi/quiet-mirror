@@ -291,6 +291,10 @@ export const nl: Translations = {
     threadBodyWrittenNoEmotion: (when) => `Je schreef voor het laatst ${when}. Is er iets verzacht sindsdien?`,
     threadPromptEmotion:        (emotion) => `Voortbouwend op je laatste bericht — ${emotion} was aanwezig. Is er iets veranderd?`,
     threadPromptNoEmotion:      "Voortbouwend op je laatste bericht — is er iets verzacht sinds je schreef?",
+    // "It's been a while" state and history sentence — auto-translated on merge
+    aWhileSinceTag:             "It's been a little while",
+    aWhileSinceBody:            (days) => `Your last entry was ${days} days ago. No pressure — but if something has been sitting with you, this is a good place to put it.`,
+    historySentence:            (entries, days) => `${entries} ${entries === 1 ? "entry" : "entries"} across ${days} ${days === 1 ? "day" : "days"} of writing.`,
   },
 
   footer: {

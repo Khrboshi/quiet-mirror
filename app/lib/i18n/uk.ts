@@ -329,6 +329,10 @@ export const uk: Translations = {
     threadBodyWrittenNoEmotion: (when) => `Ти востаннє писав ${when}. Щось пом’якшало відтоді?`,
     threadPromptEmotion:        (emotion) => `Продовжуючи твій останній запис — ${emotion} було присутнє. Щось змінилось?`,
     threadPromptNoEmotion:      "Продовжуючи твій останній запис — щось пом’якшало відтоді, як ти писав?",
+    // "It's been a while" state and history sentence — auto-translated on merge
+    aWhileSinceTag:             "It's been a little while",
+    aWhileSinceBody:            (days) => `Your last entry was ${days} days ago. No pressure — but if something has been sitting with you, this is a good place to put it.`,
+    historySentence:            (entries, days) => `${entries} ${entries === 1 ? "entry" : "entries"} across ${days} ${days === 1 ? "day" : "days"} of writing.`,
   },
 
   // ── Footer ──────────────────────────────────────────────────────────────────

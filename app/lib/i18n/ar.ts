@@ -311,6 +311,10 @@ export const ar: Translations = {
     threadBodyWrittenNoEmotion: (when) => `كتبت آخر مرة ${when}. هل لان شيء منذ ذلك?`,
     threadPromptEmotion:        (emotion) => `متابعةً لمدخلك الأخير — كان ${emotion} حاضراً. هل تغيّر شيء?`,
     threadPromptNoEmotion:      "متابعةً لمدخلك الأخير — هل لان شيء منذ أن كتبت?",
+    // "It's been a while" state and history sentence — auto-translated on merge
+    aWhileSinceTag:             "It's been a little while",
+    aWhileSinceBody:            (days) => `Your last entry was ${days} days ago. No pressure — but if something has been sitting with you, this is a good place to put it.`,
+    historySentence:            (entries, days) => `${entries} ${entries === 1 ? "entry" : "entries"} across ${days} ${days === 1 ? "day" : "days"} of writing.`,
   },
   footer: {
     product:           "المنتج",

@@ -49,6 +49,13 @@ function buildHref(prompt: string) {
   return `/journal/new?prompt=${encodeURIComponent(prompt)}`;
 }
 
+/** Returns whole days since the given ISO date, or null if no date. */
+function daysSince(iso: string | null): number | null {
+  if (!iso) return null;
+  const diff = Date.now() - new Date(iso).getTime();
+  return Math.floor(diff / (1000 * 60 * 60 * 24));
+}
+
 function greetingByHour(t: { dashboard: { goodMorning: string; goodAfternoon: string; goodEvening: string } }) {
   const h = new Date().getHours();
   if (h < 12) return t.dashboard.goodMorning;
@@ -312,6 +319,22 @@ function ProgressNudge({ entryCount }: { entryCount: number }) {
   );
 }
 
+/**
+ * "It's been a while" nudge — shown when last entry is 7+ days ago.
+ * Warm, non-pressuring. No guilt framing (per REQUIREMENTS.md §10).
+ */
+function AWhileSinceCard({ days }: { days: number }) {
+  const { t } = useTranslation();
+  return (
+    <div className="rounded-2xl border border-qm-border-card bg-qm-elevated px-6 py-5">
+      <p className="qm-eyebrow mb-2 text-qm-faint">{t.dashboard.aWhileSinceTag}</p>
+      <p className="text-sm leading-relaxed text-qm-secondary">
+        {t.dashboard.aWhileSinceBody(days)}
+      </p>
+    </div>
+  );
+}
+
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 export default function DashboardClient({ data }: { data: DashboardData }) {
@@ -348,6 +371,12 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
 
   const acA = ACCENT_CLASSES[(promptA.accent as Accent) in ACCENT_CLASSES ? (promptA.accent as Accent) : "slate"];
   const acB = ACCENT_CLASSES[(promptB.accent as Accent) in ACCENT_CLASSES ? (promptB.accent as Accent) : "slate"];
+
+  // Days since last entry — used for the "it's been a while" state.
+  // Only show when user has entries but hasn't written in 7+ days.
+  const daysSinceLastEntry = mounted ? daysSince(lastEntryDate) : null;
+  const showAWhileSince =
+    entryCount > 0 && !wroteToday && daysSinceLastEntry !== null && daysSinceLastEntry >= 7;
 
   const threadPrompt = wroteToday
     ? t.dashboard.alreadyWroteToday
@@ -407,27 +436,18 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
       {/* ── Main content — stacked sections with consistent rhythm ──────────── */}
       <div className="space-y-6">
 
-        {/* ── Onboarding moments ─────────────────────────────────────────────── */}
+        {/* ── Onboarding (WelcomePanel takes full top slot for new users) ─────── */}
         {entryCount === 0 && <WelcomePanel />}
         {entryCount === 1 && lastEntryHasReflection && (
           <PatternStartedCard emotion={lastTopEmotion} theme={lastTopTheme} />
         )}
         {entryCount >= 2 && entryCount < 5 && <ProgressNudge entryCount={entryCount} />}
 
-        {/* ── Pattern hero (premium) / Teaser (free 5+) ─────────────────────── */}
-        {isPremium && (lastTopEmotion || lastTopTheme || lastCorepattern) && (
-          <PatternHero
-            emotion={lastTopEmotion}
-            theme={lastTopTheme}
-            corepattern={lastCorepattern}
-            reflectedThisWeek={reflectedThisWeek}
-          />
-        )}
-        {isFree && entryCount >= 5 && (
-          <FreePatternTeaser entryCount={entryCount} emotion={lastTopEmotion} theme={lastTopTheme} />
-        )}
+        {/* ── "It's been a while" — surfaces when 7+ days without writing ────── */}
+        {showAWhileSince && <AWhileSinceCard days={daysSinceLastEntry!} />}
 
-        {/* ── Write section ──────────────────────────────────────────────────── */}
+        {/* ── Write section — always leads for returning users ──────────────── */}
+        {/* Write comes before the pattern card: the user came to write, not to read. */}
         <section aria-label={wroteToday ? t.dashboard.wroteToday : t.dashboard.todaysPromptsLabel}>
           <p className="qm-eyebrow mb-3 text-qm-faint">
             {wroteToday ? t.dashboard.wroteToday : t.dashboard.todaysPromptsLabel}
@@ -480,15 +500,41 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
           </div>
         </section>
 
-        {/* ── History strip ──────────────────────────────────────────────────── */}
-        <section
-          aria-label={t.dashboard.yourHistory}
-          className="rounded-2xl border border-qm-border-card overflow-hidden"
-          style={{ background: "var(--qm-bg-elevated)" }}
-        >
-          {/* Header row */}
-          <div className="flex items-center justify-between border-b border-qm-border-card px-5 py-3.5">
-            <p className="qm-eyebrow text-qm-faint">{t.dashboard.yourHistory}</p>
+        {/* ── Pattern hero (premium) / Teaser (free 5+) ─────────────────────── */}
+        {isPremium && (lastTopEmotion || lastTopTheme || lastCorepattern) && (
+          <PatternHero
+            emotion={lastTopEmotion}
+            theme={lastTopTheme}
+            corepattern={lastCorepattern}
+            reflectedThisWeek={reflectedThisWeek}
+          />
+        )}
+        {isFree && entryCount >= 5 && (
+          <FreePatternTeaser entryCount={entryCount} emotion={lastTopEmotion} theme={lastTopTheme} />
+        )}
+
+        {/* ── History strip — warm sentence + links ─────────────────────────── */}
+        {entryCount > 0 && (
+          <section
+            aria-label={t.dashboard.yourHistory}
+            className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 rounded-2xl border border-qm-border-card px-5 py-4"
+            style={{ background: "var(--qm-bg-elevated)" }}
+          >
+            {/* Warm contextual sentence */}
+            <p className="text-sm text-qm-muted" suppressHydrationWarning>
+              {writingDays > 0
+                ? t.dashboard.historySentence(entryCount, writingDays)
+                : `${entryCount} ${entryCount === 1 ? t.dashboard.entry : t.dashboard.entries}.`}
+              {lastEntryDate && (
+                <> {t.dashboard.lastEntryLabel}{" "}
+                  <span suppressHydrationWarning>
+                    {friendlyDate(lastEntryDate, mounted, t)}
+                  </span>.
+                </>
+              )}
+            </p>
+
+            {/* Navigation links */}
             <div className="flex items-center gap-4">
               <Link
                 href="/journal"
@@ -505,41 +551,8 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
                 </Link>
               )}
             </div>
-          </div>
-
-          {/* Stats row */}
-          <div className="grid grid-cols-3 divide-x divide-qm-border-card">
-            {[
-              { value: entryCount,  label: t.dashboard.totalEntries },
-              { value: writingDays, label: t.dashboard.writingDays  },
-            ].map(({ value, label }) => (
-              <div key={label} className="px-4 py-5 text-center sm:px-5">
-                <p className="text-lg font-semibold text-qm-primary tabular-nums">{value}</p>
-                <p className="mt-1 text-[11px] text-qm-faint">{label}</p>
-              </div>
-            ))}
-            {/* Last entry cell — suppressHydrationWarning needed because friendlyDate is client-only */}
-            <div className="px-4 py-5 text-center sm:px-5">
-              <p
-                className="text-lg font-semibold text-qm-primary tabular-nums"
-                suppressHydrationWarning
-              >
-                {lastEntryDate ? friendlyDate(lastEntryDate, mounted, t) : "—"}
-              </p>
-              <p className="mt-1 text-[11px] text-qm-faint">{t.dashboard.lastEntryLabel}</p>
-            </div>
-          </div>
-
-          {/* Premium footer line */}
-          {isPremium && (
-            <div
-              className="border-t border-qm-border-card px-5 py-3 text-center"
-              style={{ background: "var(--qm-positive-bg)" }}
-            >
-              <span className="text-xs font-medium text-qm-positive">{t.dashboard.reflUnlimited}</span>
-            </div>
-          )}
-        </section>
+          </section>
+        )}
 
       </div>
     </div>

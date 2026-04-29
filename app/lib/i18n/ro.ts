@@ -296,6 +296,10 @@ export const ro: Translations = {
     threadBodyWrittenNoEmotion: (when) => `Ai scris ultima dată ${when}. S-a înmuiat ceva de atunci?`,
     threadPromptEmotion:        (emotion) => `Continuând ultima ta intrare — ${emotion} era prezent. S-a schimbat ceva?`,
     threadPromptNoEmotion:      "Continuând ultima ta intrare — s-a înmuiat ceva de când ai scris?",
+    // "It's been a while" state and history sentence — auto-translated on merge
+    aWhileSinceTag:             "It's been a little while",
+    aWhileSinceBody:            (days) => `Your last entry was ${days} days ago. No pressure — but if something has been sitting with you, this is a good place to put it.`,
+    historySentence:            (entries, days) => `${entries} ${entries === 1 ? "entry" : "entries"} across ${days} ${days === 1 ? "day" : "days"} of writing.`,
   },
 
   footer: {

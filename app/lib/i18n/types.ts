@@ -292,6 +292,11 @@ export interface Translations {
     threadBodyWrittenNoEmotion: (when: string) => string;
     threadPromptEmotion:        (emotion: string) => string;
     threadPromptNoEmotion:      string;
+    // "It's been a while" state — shown when last entry is 7+ days ago
+    aWhileSinceTag:             string;
+    aWhileSinceBody:            (days: number) => string;
+    // History strip — warm sentence form
+    historySentence:            (entries: number, days: number) => string;
   };
 
   // ── Footer ──────────────────────────────────────────────────────────────────
