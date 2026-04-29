@@ -307,6 +307,11 @@ export const en: Translations = {
     threadBodyWrittenNoEmotion: (when) => `You last wrote ${when}. Has anything softened since?`,
     threadPromptEmotion:        (emotion) => `Following up on your last entry — ${emotion} was present. Has anything shifted?`,
     threadPromptNoEmotion:      "Following up on your last entry — has anything softened since you wrote?",
+    // "It's been a while" state — shown when last entry is 7+ days ago
+    aWhileSinceTag:             "It's been a little while",
+    aWhileSinceBody:            (days) => `Your last entry was ${days} days ago. No pressure — but if something has been sitting with you, this is a good place to put it.`,
+    // History strip — warm sentence form
+    historySentence:            (entries, days) => `${entries} ${entries === 1 ? "entry" : "entries"} across ${days} ${days === 1 ? "day" : "days"} of writing.`,
   },
 
   // ── Footer ──────────────────────────────────────────────────────────────────
