@@ -11,7 +11,7 @@
 
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useTranslation } from "@/app/components/I18nProvider";
 import { useUserPlan } from "@/app/components/useUserPlan";
 import { PRICING } from "@/app/lib/pricing";
@@ -30,9 +30,14 @@ export default function RequirePremium({ children }: RequirePremiumProps) {
 
   const isPremium = planType === "PREMIUM" || planType === "TRIAL";
 
+  // Ref-guard so paywall_hit fires exactly once per mount, even if loading/planType
+  // flickers (e.g. null → "FREE" as useUserPlan resolves).
+  const firedPaywallHit = useRef(false);
+
   // Must be declared before any conditional returns (rules-of-hooks)
   useEffect(() => {
-    if (!loading && !isPremium) {
+    if (!loading && !isPremium && !firedPaywallHit.current) {
+      firedPaywallHit.current = true;
       track("paywall_hit", { plan: planType ?? "FREE" });
     }
   }, [loading, isPremium, planType]);

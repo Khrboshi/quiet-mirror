@@ -16,9 +16,11 @@ export function track(event: string, data?: Record<string, unknown>) {
     }
   } catch {}
 
-  // Fallback: fire-and-forget to server log
+  // Fallback: fire-and-forget to server log.
+  // Sends the event name + full payload so no signal is lost when PostHog
+  // hasn't initialised yet (e.g. first paint before hydration completes).
   try {
-    fetch("/api/telemetry/upgrade-intent", {
+    fetch("/api/telemetry", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ event, data }),

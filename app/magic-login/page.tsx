@@ -152,7 +152,11 @@ function MagicLoginInner() {
     setMessage(null);
     try { window.localStorage.setItem("havenly:auth_next", next); } catch {}
     // Fire before the API call so we capture intent even if the request fails.
-    track("signup_attempted", { mode });
+    // Guard: only fire on the first submission attempt — not on re-sends after
+    // a successful email delivery (status === "success" means email already sent).
+    if (status !== "success") {
+      track("signup_attempted", { mode });
+    }
     const fd = new FormData();
     fd.set("email", email);
     const res = await sendMagicLink(fd);

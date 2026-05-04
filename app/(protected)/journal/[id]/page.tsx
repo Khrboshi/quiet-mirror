@@ -48,13 +48,16 @@ export default async function Page({
     initialReflection = null;
   }
 
-  // Cheap count to detect first-entry moment
+  // Detect first-entry moment for PostHog telemetry.
+  // count === 1 means this is the only entry the user has ever written —
+  // i.e. the one they're viewing right now. Using === 1 (not <= 1) avoids
+  // falsely flagging a user's second entry as is_first_entry: true.
   const { count: entryCount } = await supabase
     .from("journal_entries")
     .select("id", { count: "exact", head: true })
     .eq("user_id", session.user.id);
 
-  const isFirstEntry = (entryCount ?? 0) <= 1;
+  const isFirstEntry = (entryCount ?? 0) === 1;
 
   return (
     <JournalEntryClient
