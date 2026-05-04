@@ -44,11 +44,7 @@ jobs:
         run: npm ci
 
       - name: TypeScript — type-check (tsc --noEmit)
-        # --ignoreDeprecations 6.0 suppresses the TS5101 warning for `baseUrl`
-        # which is a pre-existing configuration issue, not a type error.
-        # Vercel's build uses Next.js's own tsc invocation which handles this
-        # correctly; our CI check aligns with that behaviour.
-        run: npx tsc --noEmit --ignoreDeprecations 6.0
+        run: npx tsc --noEmit
 
       - name: ESLint
         run: npm run lint
