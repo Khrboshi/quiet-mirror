@@ -1,0 +1,88 @@
+name: ✅ CI — type-check, lint, i18n stubs
+
+# Runs on every PR and on direct pushes to main.
+# Three gates, in order of speed:
+#   1. tsc --noEmit   — catches type errors before Vercel sees them
+#   2. eslint         — catches code quality issues
+#   3. i18n stubs     — catches missing non-English locale stubs that would
+#                       cause a Vercel build failure (learned from #158)
+#
+# All three must pass before a PR is mergeable (enforce via branch protection).
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+    paths-ignore:
+      # Translation commits from i18n-auto-translate.yml — no need to re-check
+      - 'app/lib/i18n/ar.ts'
+      - 'app/lib/i18n/fr.ts'
+      - 'app/lib/i18n/nl.ts'
+      - 'app/lib/i18n/ro.ts'
+      - 'app/lib/i18n/uk.ts'
+
+jobs:
+  ci:
+    name: Type-check · Lint · i18n stubs
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript — type-check (tsc --noEmit)
+        # --ignoreDeprecations 6.0 suppresses the TS5101 warning for `baseUrl`
+        # which is a pre-existing configuration issue, not a type error.
+        # Vercel's build uses Next.js's own tsc invocation which handles this
+        # correctly; our CI check aligns with that behaviour.
+        run: npx tsc --noEmit --ignoreDeprecations 6.0
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: i18n — check all non-English locales have stubs for every en.ts key
+        # Uses the existing i18n-sync.mjs in audit mode (exit 0 = clean, exit 2 = missing).
+        # Missing stubs are the #1 cause of Vercel build failures on this repo.
+        run: |
+          set +e
+          node scripts/i18n-sync.mjs 2>&1
+          EXIT=$?
+          set -e
+
+          if [ "$EXIT" -eq 0 ]; then
+            echo "✅ All non-English locales have stubs for every en.ts key."
+          elif [ "$EXIT" -eq 2 ]; then
+            echo ""
+            echo "❌ Missing i18n stubs detected in one or more non-English locales."
+            echo "   Add English-text stubs to ar.ts, fr.ts, nl.ts, ro.ts, uk.ts"
+            echo "   for every key you added to types.ts + en.ts."
+            echo "   They will be auto-translated on merge — stubs just need to exist."
+            exit 1
+          else
+            echo "❌ i18n-sync.mjs exited with unexpected code $EXIT"
+            exit $EXIT
+          fi
+
+      - name: Job summary
+        if: always()
+        run: |
+          echo "## ✅ CI Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| TypeScript | ${{ job.status == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| ESLint | ${{ job.status == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| i18n stubs | ${{ job.status == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
