@@ -494,6 +494,14 @@ export interface Translations {
     writingMostOn:    (day: string) => string;
   };
 
+  // ── First-reflection upgrade nudge ──────────────────────────────────────────
+  firstReflectionNudge: {
+    heading:   string;
+    body:      string;
+    cta:       string;
+    noCharge:  string;
+  };
+
   // ── Upgrade trigger nudges ───────────────────────────────────────────────────
   upgradeTrigger: {
     seeWhatPremium:       string;

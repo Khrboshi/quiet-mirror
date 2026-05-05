@@ -472,6 +472,14 @@ export const fr: Translations = {
     writingMostOn: (day) => `vous écrivez surtout le ${day}`,
   },
 
+  // ── First-reflection upgrade nudge ──────────────────────────────────────────
+  firstReflectionNudge: {
+    heading:  "Your patterns build over time.",
+    body:     "Premium reads across all your entries — not just today's. The longer you write, the more clearly it shows you what keeps repeating and why.",
+    cta:      "Start 3-day free trial \u2192",
+    noCharge: "No charge for 3 days \u00B7 Cancel anytime",
+  },
+
   // ── Upgrade trigger nudges ───────────────────────────────────────────────────
   upgradeTrigger: {
     seeWhatPremium:       "Voir ce que Premium montre",

@@ -473,6 +473,14 @@ export const ro: Translations = {
     writingMostOn: (day) => `scrieți cel mai mult ${day}`,
   },
 
+  // ── First-reflection upgrade nudge ──────────────────────────────────────────
+  firstReflectionNudge: {
+    heading:  "Your patterns build over time.",
+    body:     "Premium reads across all your entries — not just today's. The longer you write, the more clearly it shows you what keeps repeating and why.",
+    cta:      "Start 3-day free trial \u2192",
+    noCharge: "No charge for 3 days \u00B7 Cancel anytime",
+  },
+
   upgradeTrigger: {
     seeWhatPremium:       "Vedeți ce arată Premium",
     noCharge:             (days, word) => `🛡️ Fără taxe pentru ${days} ${word} · Anulează oricând · `,

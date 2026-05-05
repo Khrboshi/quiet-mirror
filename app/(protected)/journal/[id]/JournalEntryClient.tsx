@@ -568,7 +568,39 @@ export default function JournalEntryClient({
                 {t.reflection.seeFullPattern}
               </Link>
             </div>
-          ) : (() => {
+          ) : isFirstEntry ? (() => {
+            // First-entry free users: show the time-span pattern nudge.
+            // This fires at the highest-leverage conversion moment (PRODUCT_BRIEF §6)
+            // — while recognition from the first reflection is still fresh.
+            const frn = t.firstReflectionNudge;
+            return (
+              <div>
+                {/* Thin accent rule — visual breath between reflection and nudge */}
+                <div
+                  className="mb-5 h-px w-8"
+                  style={{ backgroundColor: "var(--qm-accent-border)" }}
+                />
+                <p className="text-sm font-semibold text-white/85">
+                  {frn.heading}
+                </p>
+                <p className="mt-2 text-xs leading-relaxed text-qm-faint">
+                  {frn.body}
+                </p>
+                <div className="mt-5 flex flex-wrap items-center gap-3">
+                  <Link
+                    href="/upgrade"
+                    onClick={() => track("upgrade_modal_opened", { source: "first_reflection_nudge" })}
+                    className="inline-flex items-center gap-2 rounded-full bg-qm-accent px-5 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-qm-accent-hover hover:-translate-y-px"
+                  >
+                    {frn.cta}
+                  </Link>
+                </div>
+                <p className="mt-3 text-[11px] text-qm-faint">
+                  {frn.noCharge}
+                </p>
+              </div>
+            );
+          })() : (() => {
             const domain = reflection.domain ?? "GENERAL";
             const ctaCopy: Record<string, { headline: string; sub: string }> = {
               WORK:         { headline: t.upgradeTrigger.workHeadline,         sub: t.upgradeTrigger.workSub },
