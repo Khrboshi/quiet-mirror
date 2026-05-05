@@ -747,6 +747,7 @@ export const ro: Translations = {
     footerLine1:       (appName: string) => `Primiți asta pentru că te-ai înregistrat la ${appName}.`,
     footerLine2:       "Adresa ta de e-mail nu este niciodată vândută sau partajată.",
     privacyPolicy:     "Politică de confidențialitate",
+    unsubscribeCta:    "Unsubscribe",
   },
 
   insightPreview: {
@@ -1132,6 +1133,17 @@ export const ro: Translations = {
     termsMetaDescription: (appName) => `Termenii care reglementează utilizarea ${appName}. Confidențialitatea și drepturile tale sunt descrise clar aici.`,
     termsOgTitle:         (appName) => `Termeni de serviciu | ${appName}`,
     termsOgDescription:   (appName) => `Citește termenii care reglementează utilizarea ${appName}.`,
+  },
+
+
+  // ── Unsubscribe confirmed page ────────────────────────────────────────────────
+  unsubscribePage: {
+    metaTitle:    "Unsubscribed — Quiet Mirror Letters",
+    heading:      "You've been unsubscribed.",
+    body:         "You won't receive any more emails from Quiet Mirror Letters. If this was a mistake, you can re-subscribe from the homepage.",
+    errorHeading: "Something went wrong.",
+    errorBody:    (email: string) => `We couldn't process your unsubscribe request. Please email ${email} and we'll remove you manually.`,
+    backHome:     "Back to home",
   },
 
 };

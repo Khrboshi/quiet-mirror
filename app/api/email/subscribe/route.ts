@@ -14,6 +14,7 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { Resend } from "resend";
 import { CONFIG } from "@/app/lib/config";
 import { getLocaleFromCookieString, getDir, getTranslations } from "@/app/lib/i18n";
+import { signUnsubscribeToken } from "@/app/lib/unsubscribeToken";
 
 export const runtime = "nodejs";
 
@@ -59,8 +60,9 @@ async function recordAttempt(ip: string): Promise<void> {
   }
 }
 
-function confirmationEmailHtml(locale: string, dir: "ltr" | "rtl"): string {
+function confirmationEmailHtml(locale: string, dir: "ltr" | "rtl", email: string): string {
   const e = getTranslations(locale).email;
+  const unsubscribeUrl = `${CONFIG.siteUrl}/api/email/unsubscribe?token=${signUnsubscribeToken(email)}`;
   return `
 <!DOCTYPE html>
 <html lang="${locale}" dir="${dir}">
@@ -118,7 +120,8 @@ function confirmationEmailHtml(locale: string, dir: "ltr" | "rtl"): string {
               <p style="margin:0;font-size:12px;line-height:1.6;color:#334155;">
                 ${e.footerLine1(CONFIG.appName)}<br />
                 ${e.footerLine2}<br />
-                <a href="${CONFIG.siteUrl}/privacy" style="color:#475569;">${e.privacyPolicy}</a>
+                <a href="${CONFIG.siteUrl}/privacy" style="color:#475569;">${e.privacyPolicy}</a> &middot;
+                <a href="${unsubscribeUrl}" style="color:#475569;">${e.unsubscribeCta}</a>
               </p>
             </td>
           </tr>
@@ -179,7 +182,7 @@ export async function POST(req: Request) {
           from: FROM_ADDRESS,
           to: email,
           subject: CONFIG.emailConfirmSubject,
-          html: confirmationEmailHtml(locale, dir),
+          html: confirmationEmailHtml(locale, dir, email),
         });
         if (emailError) {
           console.error("[email/subscribe] resend error", emailError);

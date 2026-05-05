@@ -721,6 +721,17 @@ export interface Translations {
     footerLine1:       (appName: string) => string;
     footerLine2:       string;
     privacyPolicy:     string;
+    unsubscribeCta:    string;
+  };
+
+  // ── Unsubscribe confirmed page ────────────────────────────────────────────────
+  unsubscribePage: {
+    metaTitle:       string;
+    heading:         string;
+    body:            string;
+    errorHeading:    string;
+    errorBody:       (email: string) => string;
+    backHome:        string;
   };
 
   // ── Insights preview page ────────────────────────────────────────────────────
