@@ -356,7 +356,7 @@ export default function HomeBelowFold() {
             <div className="flex flex-col rounded-2xl border border-qm-border-card bg-qm-elevated p-5 sm:p-6">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-qm-faint">{h.freeLabel}</p>
               <p className="mt-1 font-display text-xl font-semibold text-qm-primary sm:text-2xl">{h.freeTagline}</p>
-              <div className="mt-2 flex items-baseline gap-1.5"><span className="text-3xl font-bold text-qm-primary">$0</span><span className="text-sm text-qm-muted">/ month</span></div>
+              <div className="mt-2 flex items-baseline gap-1.5"><span className="text-3xl font-bold text-qm-primary">{PRICING.free}</span><span className="text-sm text-qm-muted">/ month</span></div>
               <p className="mt-3 text-sm text-qm-faint">{h.freeDesc}</p>
               <ul className="mt-5 space-y-3 text-sm text-qm-secondary">
                 {[

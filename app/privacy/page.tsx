@@ -208,8 +208,25 @@ export default async function PrivacyPolicyPage() {
                 — authentication, database storage, and row-level security.
               </li>
               <li>
-                <span className="font-semibold text-qm-primary">Groq</span>{" "}
-                — AI inference for generating reflections.
+                <Link
+                  href="https://groq.com/privacy-policy/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-qm-primary underline-offset-2 hover:underline"
+                >
+                  Groq
+                </Link>{" "}
+                — AI inference for generating reflections. Groq does not use
+                your data to train models; see their{" "}
+                <Link
+                  href="https://groq.com/privacy-policy/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-qm-accent underline-offset-2 hover:underline"
+                >
+                  Privacy Policy
+                </Link>
+                .
               </li>
               <li>
                 <span className="font-semibold text-qm-primary">
@@ -283,6 +300,59 @@ export default async function PrivacyPolicyPage() {
                 Choose what you write and what you submit for reflection.
               </li>
             </ul>
+          </section>
+
+          <section id="your-rights" aria-labelledby="your-rights-heading">
+            <h2 id="your-rights-heading" className="text-lg font-semibold text-qm-primary">
+              Your rights (UK &amp; EU users)
+            </h2>
+            <p className="mt-2 text-qm-secondary">
+              If you are located in the United Kingdom or European Economic
+              Area, you have the following rights under UK GDPR and GDPR
+              respectively:
+            </p>
+            <ul className="mt-3 list-disc space-y-2 ps-5 text-qm-secondary">
+              <li>
+                <span className="font-medium text-qm-primary">Access</span> —
+                request a copy of the personal data we hold about you.
+              </li>
+              <li>
+                <span className="font-medium text-qm-primary">Erasure</span> —
+                request deletion of your data (right to be forgotten).
+              </li>
+              <li>
+                <span className="font-medium text-qm-primary">Portability</span>{" "}
+                — request your data in a machine-readable format.
+              </li>
+              <li>
+                <span className="font-medium text-qm-primary">Rectification</span>{" "}
+                — request correction of inaccurate personal data.
+              </li>
+              <li>
+                <span className="font-medium text-qm-primary">Objection</span>{" "}
+                — object to processing where we rely on legitimate interests.
+              </li>
+            </ul>
+            <p className="mt-3 text-qm-secondary">
+              To exercise any of these rights, email{" "}
+              <a
+                href={`mailto:${CONFIG.supportEmail}`}
+                className="text-qm-accent underline-offset-2 hover:underline"
+              >
+                {CONFIG.supportEmail}
+              </a>
+              . We will respond within 30 days. UK users may also lodge a
+              complaint with the{" "}
+              <a
+                href="https://ico.org.uk/make-a-complaint/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-qm-accent underline-offset-2 hover:underline"
+              >
+                Information Commissioner&apos;s Office (ICO)
+              </a>
+              . EU users may contact their local supervisory authority.
+            </p>
           </section>
 
           <section id="changes" aria-labelledby="changes-heading">

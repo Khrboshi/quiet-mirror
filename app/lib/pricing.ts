@@ -23,6 +23,12 @@ export const PRICING = {
   /** Display string — price + cadence */
   monthlyCadence: "$19/month",
 
+  /** Display string — free tier price (used wherever "$0" would appear) */
+  free: "$0",
+
+  /** Display string — free tier price + cadence */
+  freeCadence: "$0/month",
+
   // ── Trial ────────────────────────────────────────────────────────────────
 
   // ── Free tier ─────────────────────────────────────────────────────────────
