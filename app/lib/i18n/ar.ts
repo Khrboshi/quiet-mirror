@@ -752,8 +752,19 @@ export const ar: Translations = {
     footerLine1:       (appName: string) => `تلقّيت هذا لأنك اشتركت في ${appName}.`,
     footerLine2:       "عنوان بريدك الإلكتروني لن يُباع أو يُشارك أبداً.",
     privacyPolicy:     "سياسة الخصوصية",
+    unsubscribeCta:    "Unsubscribe",
   },
 
+
+  // ── Unsubscribe confirmed page ────────────────────────────────────────────────
+  unsubscribePage: {
+    metaTitle:    "Unsubscribed — Quiet Mirror Letters",
+    heading:      "You've been unsubscribed.",
+    body:         "You won't receive any more emails from Quiet Mirror Letters. If this was a mistake, you can re-subscribe from the homepage.",
+    errorHeading: "Something went wrong.",
+    errorBody:    (email: string) => `We couldn't process your unsubscribe request. Please email ${email} and we'll remove you manually.`,
+    backHome:     "Back to home",
+  },
 
   // ── Insights preview page ────────────────────────────────────────────────────
   insightPreview: {

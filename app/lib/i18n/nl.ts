@@ -742,6 +742,7 @@ export const nl: Translations = {
     footerLine1:       (appName: string) => `Je ontvangt dit omdat je je hebt aangemeld bij ${appName}.`,
     footerLine2:       "Je e-mailadres wordt nooit verkocht of gedeeld.",
     privacyPolicy:     "Privacybeleid",
+    unsubscribeCta:    "Unsubscribe",
   },
 
   insightPreview: {
@@ -1127,6 +1128,17 @@ export const nl: Translations = {
     termsMetaDescription: (appName) => `Voorwaarden die je gebruik van ${appName} regelen. Je privacy en rechten worden hier duidelijk uiteengezet.`,
     termsOgTitle:         (appName) => `Servicevoorwaarden | ${appName}`,
     termsOgDescription:   (appName) => `Lees de voorwaarden die je gebruik van ${appName} regelen.`,
+  },
+
+
+  // ── Unsubscribe confirmed page ────────────────────────────────────────────────
+  unsubscribePage: {
+    metaTitle:    "Unsubscribed — Quiet Mirror Letters",
+    heading:      "You've been unsubscribed.",
+    body:         "You won't receive any more emails from Quiet Mirror Letters. If this was a mistake, you can re-subscribe from the homepage.",
+    errorHeading: "Something went wrong.",
+    errorBody:    (email: string) => `We couldn't process your unsubscribe request. Please email ${email} and we'll remove you manually.`,
+    backHome:     "Back to home",
   },
 
 };
