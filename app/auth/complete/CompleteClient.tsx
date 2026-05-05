@@ -26,10 +26,18 @@ export default function CompleteClient() {
   const [destination, setDestination] = useState("/dashboard");
 
   useEffect(() => {
-    let dest = "/dashboard";
+    // If the callback detected a first-time user, send them to /journal/new
+    // so they reach their first reflection without extra navigation steps
+    // (PRODUCT_BRIEF §6 — highest-leverage conversion moment).
+    const sp = new URLSearchParams(window.location.search);
+    const isFirstUser = sp.get("firstUser") === "1";
+
+    let dest = isFirstUser ? "/journal/new" : "/dashboard";
     try {
       const stored = window.localStorage.getItem("havenly:auth_next");
-      if (stored) dest = safeNext(stored);
+      // Only use localStorage destination if it was explicitly set to something
+      // other than the default dashboard, and we're not a first-time user.
+      if (!isFirstUser && stored && stored !== "/dashboard") dest = safeNext(stored);
     } catch {}
 
     setDestination(dest);

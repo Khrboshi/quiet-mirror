@@ -40,7 +40,7 @@ export async function GET(request: Request) {
     }
   );
 
-  const { error } = await supabase.auth.exchangeCodeForSession(code);
+  const { data: sessionData, error } = await supabase.auth.exchangeCodeForSession(code);
 
   if (error) {
     const to = new URL("/magic-login", url.origin);
@@ -48,11 +48,27 @@ export async function GET(request: Request) {
     return NextResponse.redirect(to, { status: 303 });
   }
 
-  // Always go to /auth/complete which signals Tab A and handles tab closing.
-  // Destination is hardcoded to /dashboard — email clients mangle query params
-  // so passing next=/dashboard through the redirect chain is unreliable.
-  return NextResponse.redirect(
-    new URL("/auth/complete", url.origin),
-    { status: 303 }
-  );
+  // Detect first-time users: check if they have zero journal entries.
+  // New users should land on /journal/new (the write screen) rather than
+  // /dashboard, so they reach their first reflection in under 2 minutes
+  // (PRODUCT_BRIEF §6 — highest-leverage conversion moment).
+  // The `firstUser` flag is forwarded to CompleteClient, which sets the
+  // localStorage destination before Tab A navigates.
+  let isFirstUser = false;
+  try {
+    const userId = sessionData?.session?.user?.id;
+    if (userId) {
+      const { count } = await supabase
+        .from("journal_entries")
+        .select("id", { count: "exact", head: true })
+        .eq("user_id", userId);
+      isFirstUser = (count ?? 0) === 0;
+    }
+  } catch {
+    // Non-critical — fall back to /dashboard if query fails
+  }
+
+  const completeUrl = new URL("/auth/complete", url.origin);
+  if (isFirstUser) completeUrl.searchParams.set("firstUser", "1");
+  return NextResponse.redirect(completeUrl, { status: 303 });
 }
