@@ -123,15 +123,19 @@ The funnel in order of leverage:
 
 Things that must be true before full public launch:
 
-- [ ] Price updated to $19/month — one line in `app/lib/pricing.ts`, done last
+- [x] **Resend email** — subscribe, one-click unsubscribe (HMAC token), confirmation
+  page, i18n across all 6 locales, e2e tested in production (PR #170, 2026-05-05)
+- [x] **PostHog analytics** — 12 custom events instrumented, localStorage
+  persistence, 3 funnels live on dashboard (Core Conversion, Upgrade Path,
+  Activation), quietmirror.me authorized URL configured (2026-05-05)
+- [x] First-reflection onboarding flow verified end-to-end (PR #168)
 - [ ] **Payment processor confirmed and working** — Dodo Payments is integrated
   for new subscribers but the ability to receive and withdraw funds to a bank
   account must be verified end-to-end before charging real users. This is the
   most critical pre-launch gate after the product itself.
-- [ ] First-reflection onboarding flow verified end-to-end on mobile
-- [ ] PostHog funnel reviewed — understand where users drop off today
 - [ ] Reflection quality spot-checked across all 10 domains (WORK, RELATIONSHIP,
   HEALTH, MONEY, GRIEF, PARENTING, CREATIVE, IDENTITY, FITNESS, GENERAL)
+- [ ] **Price updated to $19/month** — one line in `app/lib/pricing.ts`, ship last
 
 ---
 

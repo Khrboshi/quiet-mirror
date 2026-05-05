@@ -4,7 +4,13 @@
 > Quiet Mirror fires. Use it to verify the funnel in the PostHog dashboard,
 > build Insights/Funnels, and confirm event data looks correct.
 >
-> **Last audited:** 2026-05-05 against commit `ebf610b` (PR #164)
+> **Last audited:** 2026-05-05 against commit `1f52fd7` (PR #170)
+>
+> **Dashboard status:** All 3 funnels built and live on the Quiet Mirror PostHog
+> dashboard — Core Conversion Funnel, Upgrade Path, Activation.
+> Authorized URL `https://quietmirror.me` configured. Health: Ingestion ✅
+> SDKs ✅ Data modeling ✅ Pipelines ✅ Web analytics 4/6 (reverse proxy +
+> $web_vitals are optional post-launch improvements, not launch blockers).
 
 ---
 
