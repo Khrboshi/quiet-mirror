@@ -568,6 +568,9 @@ export const ar: Translations = {
     previewTag3:      "إشارة الإرهاق",
     previewNeverLeaves:"لا يغادر حسابك أبداً.",
     previewSeeExample:"اطّلع على المثال الكامل \u2192",
+    credStrip1:       "Built independently — no investors, no board",
+    credStrip2:       "One person accountable for every decision",
+    credStrip3:       "Questions? hello@quietmirror.me",
   },
 
   languagePage: {

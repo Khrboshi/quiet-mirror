@@ -11,7 +11,7 @@ import LegalLanguageNotice from "@/app/components/LegalLanguageNotice";
 import BrandName from "@/app/components/BrandName";
 
 // ─── Update this date whenever the policy changes ────────────────────────────
-const LAST_UPDATED = "June 1, 2025";
+const LAST_UPDATED = "May 5, 2026";
 
 // ─── SEO metadata ────────────────────────────────────────────────────────────
 // Localised per-request so the browser tab title and social previews match the

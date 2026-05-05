@@ -87,6 +87,17 @@ export default function HomePage() {
                 </span>
               ))}
             </div>
+
+            {/* Indie credibility strip */}
+            <div className="animate-fade-in anim-delay-600 mt-6 flex flex-col gap-1.5 border-t pt-5 text-xs text-qm-faint"
+              style={{ borderColor: "var(--qm-border-subtle)" }}>
+              {[hp.credStrip1, hp.credStrip2, hp.credStrip3].map((line) => (
+                <span key={line} className="flex items-center gap-2">
+                  <span className="mt-px h-px w-3 shrink-0" style={{ backgroundColor: "var(--qm-border-subtle)" }} />
+                  {line}
+                </span>
+              ))}
+            </div>
           </div>
 
           {/* ─── RIGHT — Product preview card ────────────────────── */}

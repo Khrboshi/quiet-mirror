@@ -23,7 +23,9 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
-      allow: "/",
+      // /insights/preview is a public marketing page — must stay crawlable.
+      // The explicit allow must appear before the blanket /insights disallow.
+      allow: ["/", "/insights/preview"],
       disallow: [
         // Protected user routes (require authentication)
         "/dashboard",

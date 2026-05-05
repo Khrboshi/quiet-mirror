@@ -555,6 +555,9 @@ export const nl: Translations = {
     previewTag3:      "Burn-outsignaal",
     previewNeverLeaves:"Verlaat je account nooit.",
     previewSeeExample:"Volledig voorbeeld bekijken \u2192",
+    credStrip1:       "Built independently — no investors, no board",
+    credStrip2:       "One person accountable for every decision",
+    credStrip3:       "Questions? hello@quietmirror.me",
   },
 
   languagePage: {

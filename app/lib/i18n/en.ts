@@ -578,6 +578,9 @@ export const en: Translations = {
     previewTag3:      "Burnout signal",
     previewNeverLeaves:"Never leaves your account.",
     previewSeeExample:"See full example \u2192",
+    credStrip1:       "Built independently \u2014 no investors, no board",
+    credStrip2:       "One person accountable for every decision",
+    credStrip3:       "Questions? hello@quietmirror.me",
   },
 
   languagePage: {
@@ -651,7 +654,7 @@ export const en: Translations = {
     ex3W:"I've been snapping at people I care about and I don't fully understand why. I'm not angry at them. I think I'm just running on empty.",
     ex3R:"You're running on empty and everything feels like one more thing — the snapping isn't anger, it's what happens when there's nothing left to absorb with.",
     ex3T1:"exhaustion",ex3T2:"frustration",ex3T3:"helplessness",
-    exCta:"Write your first entry free →",exNote:"No card required. Free is fully usable.",
+    exCta:"Write your first entry free →",exNote:"No card required. 3 reflections free each month.",
     trustTag:"Built with care",trustH:"A few things worth knowing before you begin.",
     trustDesc:"Quiet Mirror is a small, independent product built around one principle: your inner life belongs to you. Here is what that means in practice.",
     trust1Title:"Private by design",trust1Body:"Your entries are never used to train AI models, never sold, and never seen by anyone but you. Privacy is the foundation this product is built on.",
@@ -922,7 +925,7 @@ export const en: Translations = {
     subheadline:   (appName) => `Not a productivity tool. Not a mood tracker. ${appName} is a place to write honestly, receive a gentle reflection back, and \u2014 over time \u2014 see the patterns that have quietly been shaping your weeks.`,
     ctaStart:      "Start journaling free",
     ctaPricing:    "See Pricing \u2192",
-    noCreditCard:  "No credit card required. Free is fully usable on its own.",
+    noCreditCard:  "No credit card required. Free plan includes 3 reflections per month.",
     whyNameTag:    (appName) => `Why \u201c${appName}\u201d`,
     why1:          "A mirror doesn\u2019t advise. It doesn\u2019t judge. It simply reflects back what\u2019s already there \u2014 clearly, without distortion, without noise. That is exactly what this product is meant to do.",
     why2:          "The \u201cquiet\u201d part matters too. When you\u2019re carrying something heavy, the last thing you need is another loud surface. You need somewhere still \u2014 where you can write honestly, see yourself clearly, and leave a little lighter.",

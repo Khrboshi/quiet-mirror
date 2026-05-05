@@ -583,6 +583,9 @@ export interface Translations {
     previewTag3:      string;
     previewNeverLeaves:string;
     previewSeeExample:string;
+    credStrip1:       string;
+    credStrip2:       string;
+    credStrip3:       string;
   };
 
   // ── Language selection page ───────────────────────────────────────────────────

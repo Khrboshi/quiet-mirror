@@ -561,6 +561,9 @@ export const fr: Translations = {
     previewTag3:      "Signal d'épuisement",
     previewNeverLeaves:"Ne quitte jamais votre compte.",
     previewSeeExample:"Voir l'exemple complet \u2192",
+    credStrip1:       "Built independently — no investors, no board",
+    credStrip2:       "One person accountable for every decision",
+    credStrip3:       "Questions? hello@quietmirror.me",
   },
 
   languagePage: {

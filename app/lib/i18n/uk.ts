@@ -604,6 +604,9 @@ export const uk: Translations = {
     previewTag3:      "Сигнал вигорання",
     previewNeverLeaves:"Ніколи не залишає твій акаунт.",
     previewSeeExample:"Переглянути повний приклад \u2192",
+    credStrip1:       "Built independently — no investors, no board",
+    credStrip2:       "One person accountable for every decision",
+    credStrip3:       "Questions? hello@quietmirror.me",
   },
 
   languagePage: {
