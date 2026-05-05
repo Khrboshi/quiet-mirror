@@ -123,7 +123,7 @@ The funnel in order of leverage:
 
 Things that must be true before full public launch:
 
-- [x] **Resend email** — subscribe, one-click unsubscribe (HMAC token), confirmed
+- [x] **Resend email** — subscribe, one-click unsubscribe (HMAC token), confirmation
   page, i18n across all 6 locales, e2e tested in production (PR #170, 2026-05-05)
 - [x] **PostHog analytics** — 12 custom events instrumented, localStorage
   persistence, 3 funnels live on dashboard (Core Conversion, Upgrade Path,
