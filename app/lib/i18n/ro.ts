@@ -545,6 +545,7 @@ export const ro: Translations = {
     heroCta1:         "Scrie prima înregistrare gratuit \u2192",
     heroCta2:         "Vedeți o reflecție reală \u2192",
     heroPromise:      "\u2713\u00a0Jurnal în mai puțin de 60 de secunde \u00b7 \u2713\u00a0Prima reflecție în câteva momente \u00b7 \u2713\u00a0Fără configurare, fără chestionar",
+    heroDevices:      "Available in browser on any device — no app required",
     trust1:           "Privat implicit",
     trust2:           "Înregistrările nu antrenează niciodată modele AI",
     trust3:           "Plan gratuit, fără expirare",
