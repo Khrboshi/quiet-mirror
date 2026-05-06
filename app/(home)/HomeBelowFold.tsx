@@ -99,7 +99,8 @@ export default function HomeBelowFold() {
             ].map(({ quote, accent, dot }) => (
               <div key={quote} className={`rounded-2xl border p-5 ${accent}`}>
                 <span className={`mb-3 block h-1.5 w-1.5 rounded-full ${dot}`} />
-                <p className="text-sm italic leading-relaxed text-qm-secondary">&ldquo;{quote}&rdquo;</p>
+                <p className="text-sm leading-relaxed text-qm-secondary">{quote}</p>
+                <p className="mt-3 text-[10px] font-medium uppercase tracking-[0.15em] text-qm-faint">{h.recCardLabel}</p>
               </div>
             ))}
           </ScrollReveal>
