@@ -17,8 +17,8 @@ Quiet Mirror is a live, production SaaS journaling product built and run
 by a solo founder. It has been in development for over a year and is
 approaching its first full commercial launch. The product earns revenue
 through a monthly Premium subscription. The near-term goal is to reach
-**$5,000 net profit per month**. At $19/month that requires approximately
-274 paying subscribers — a focused, achievable number for the right niche.
+**$5,000 net profit per month**. At $25/month that requires approximately
+200 paying subscribers — a focused, achievable number for the right niche.
 
 Current monthly running costs: ~$110 (AI inference, domain, tooling).
 
@@ -66,7 +66,7 @@ are too close to see.
 
 ## 4. What "value for money" means here
 
-At $19/month, the user is not paying for cloud storage or a prettier textarea.
+At $25/month, the user is not paying for cloud storage or a prettier textarea.
 They are paying for the AI layer that reads across weeks of entries and shows
 them something real. Value is communicated through:
 
@@ -85,24 +85,19 @@ inside the app, or "you're getting X worth of Y" framing.
 | Tier | Price | What it includes |
 |---|---|---|
 | Free | $0 | Unlimited journaling · 3 AI reflections/month · Gentle prompts |
-| Premium | $19/month | Unlimited reflections · Full pattern insights · Weekly summary · Why-this-keeps-happening layer |
+| Premium | $25/month | Unlimited reflections · Full pattern insights · Weekly summary · Why-this-keeps-happening layer |
 
 **Trial:** 3 days full access, no charge until day 4. Cancel anytime.
 
 Free users are real users, not a conversion funnel to be pressured.
 Premium is depth added — not features locked away punitively.
 
-> **Note on pricing:** The product currently shows $9/month. The price is
-> confirmed to move to $19/month — this is a single one-line change in
-> `app/lib/pricing.ts` that propagates everywhere. It will be made immediately
-> before full public launch, not before.
-
 ---
 
 ## 6. The path to $5k/month net
 
-- **Target:** 274 paying subscribers at $19/month = ~$5,106 gross
-- **After costs (~$110):** ~$4,996 net
+- **Target:** 200 paying subscribers at $25/month = ~$5,000 gross
+- **After costs (~$110):** ~$4,890 net
 - **What that requires:** A steady conversion funnel from free → paid,
   driven by the first reflection experience being genuinely compelling
 
@@ -121,21 +116,12 @@ The funnel in order of leverage:
 
 ## 7. Launch readiness checklist
 
-Things that must be true before full public launch:
-
-- [x] **Resend email** — subscribe, one-click unsubscribe (HMAC token), confirmation
-  page, i18n across all 6 locales, e2e tested in production (PR #170, 2026-05-05)
-- [x] **PostHog analytics** — 12 custom events instrumented, localStorage
-  persistence, 3 funnels live on dashboard (Core Conversion, Upgrade Path,
-  Activation), quietmirror.me authorized URL configured (2026-05-05)
+- [x] **Resend email** — subscribe, one-click unsubscribe (HMAC token), confirmation page, i18n across all 6 locales, e2e tested in production (PR #170, 2026-05-05)
+- [x] **PostHog analytics** — 12 custom events instrumented, localStorage persistence, 3 funnels live on dashboard (Core Conversion, Upgrade Path, Activation), quietmirror.me authorized URL configured (2026-05-05)
 - [x] First-reflection onboarding flow verified end-to-end (PR #168)
-- [ ] **Payment processor confirmed and working** — Dodo Payments is integrated
-  for new subscribers but the ability to receive and withdraw funds to a bank
-  account must be verified end-to-end before charging real users. This is the
-  most critical pre-launch gate after the product itself.
-- [ ] Reflection quality spot-checked across all 10 domains (WORK, RELATIONSHIP,
-  HEALTH, MONEY, GRIEF, PARENTING, CREATIVE, IDENTITY, FITNESS, GENERAL)
-- [ ] **Price updated to $19/month** — one line in `app/lib/pricing.ts`, ship last
+- [x] **Conversion copy** — safeguarding note (PR #179), desktop signal + privacy date (PR #177), narrative pattern preview on /insights/preview (PR #178), rec cards reframed as observations (PR #180)
+- [x] **Price updated to $25/month** — live in `app/lib/pricing.ts` (PR #181, 2026-05-06)
+- [ ] **Payment processor confirmed end-to-end** — Dodo Payments is integrated for new subscribers. A real test transaction + withdrawal to bank account must be verified in the Dodo dashboard before charging real users. This is the final pre-launch gate.
 
 ---
 
