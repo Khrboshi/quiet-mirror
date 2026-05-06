@@ -201,9 +201,9 @@ Your job: translate ONLY the human-readable text inside each value. Preserve the
 
 Rules:
 1. String values like "Back to dashboard" → translate the text, keep the quotes: "Înapoi la panou"
-2. Arrow functions like (n) => \`${n} reflections\` → translate only the text parts, keep the JS: (n) => \`${n} reflecții\`
-3. Arrow functions with ternary like (n) => \`${n} \${n===1?"word":"words"}\` → translate "word" and "words", keep the ternary
-4. Template literals with ${placeholders} → keep all \${...} expressions untouched, translate surrounding text
+2. Arrow functions like (n) => \`\${n} reflections\` → translate only the text parts, keep the JS: (n) => \`\${n} reflecții\`
+3. Arrow functions with ternary like (n) => \`\${n} \${n===1?"word":"words"}\` → translate "word" and "words", keep the ternary
+4. Template literals with \${placeholders} → keep all \${...} expressions untouched, translate surrounding text
 5. Arrays like ["string1","string2"] → translate each string inside
 6. The brand name "Quiet Mirror" → NEVER translate, keep exactly as "Quiet Mirror"
 7. Punctuation like "…" "←" "→" "·" → keep as-is unless the target language convention differs
