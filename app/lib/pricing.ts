@@ -15,13 +15,13 @@ export const PRICING = {
    * needs numeric input (arithmetic, analytics payloads, currency
    * formatters); use `monthly` or `monthlyCadence` for display.
    */
-  monthlyUsd: 19,
+  monthlyUsd: 25,
 
   /** Display string — price only */
-  monthly: "$19",
+  monthly: "$25",
 
   /** Display string — price + cadence */
-  monthlyCadence: "$19/month",
+  monthlyCadence: "$25/month",
 
   /** Display string — free tier price (used wherever "$0" would appear) */
   free: "$0",
