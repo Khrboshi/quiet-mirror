@@ -278,79 +278,105 @@ export default async function InsightsPreviewPage() {
           )}
         </div>
 
-        {/* ── The pattern underneath ──────────────────────────────────────── */}
-        <div className="rounded-2xl border border-qm-border-subtle bg-gradient-to-br from-slate-950 to-slate-900/40 p-7">
-          <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-qm-faint">{ip.patternSectionLabel}</p>
+        {/* ── Narrative patterns — partially locked ───────────────────────── */}
+        <div className="relative overflow-hidden rounded-2xl border border-qm-border-subtle bg-gradient-to-br from-qm-elevated to-qm-bg">
 
-          {hasData && topEmotion && topTheme ? (
-            <>
-              <p className="text-lg leading-relaxed text-qm-secondary">
-                {ip.patternHasData(sc(topEmotion!), topTheme!)}
-              </p>
-              <div className="mt-4 flex flex-wrap items-center gap-2">
-                <span className="text-xs text-qm-faint">{ip.patternRecentlyLabel}</span>
-                <span className="inline-flex items-center gap-1 rounded-full border border-qm-positive-border bg-qm-positive-soft px-2.5 py-0.5 text-xs font-medium text-qm-positive">
-                  ↑ {topEmotion}
-                </span>
+          {/* Header */}
+          <div className="px-6 pt-6 pb-4 border-b border-qm-border-subtle">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-qm-faint">{ip.patternSectionLabel}</p>
+                <p className="mt-0.5 text-xs text-qm-faint">{ip.corepatternSub}</p>
               </div>
-              <p className="mt-4 text-xs text-qm-faint">{ip.patternNote}</p>
-            </>
-          ) : (
-            <>
-              <p className="text-base leading-relaxed text-qm-muted">{ip.patternNoDataBody}</p>
-              <div className="mt-4 flex flex-wrap items-center gap-2 opacity-30 pointer-events-none select-none">
-                <span className="text-xs text-qm-faint">{ip.patternRecentlyLabel}</span>
-                <span className="inline-flex items-center gap-1 rounded-full border border-qm-positive-border bg-qm-positive-soft px-2.5 py-0.5 text-xs font-medium text-qm-positive">
-                  ↑ emotion
-                </span>
-              </div>
-              <p className="mt-4 text-xs text-qm-faint">{ip.patternNoDataAfter}</p>
-            </>
-          )}
-        </div>
-
-        {/* ── What you keep coming back to — locked ───────────────────────── */}
-        <div className="relative overflow-hidden rounded-2xl border border-qm-border-subtle bg-qm-bg p-6">
-          <h2 className="text-xs font-semibold uppercase tracking-widest text-qm-faint mb-1">{ip.corepatternLabel}</h2>
-          <p className="mb-5 text-xs text-qm-faint">{ip.corepatternSub}</p>
-
-          <div className="mb-4 rounded-xl border border-qm-positive-border bg-qm-positive-bg p-4">
-            <div className="flex items-start justify-between gap-3">
-              <p className="text-sm font-medium leading-relaxed text-qm-primary">
-                <span className="me-2 inline-block h-1.5 w-1.5 rounded-full bg-qm-positive align-middle" />
-                {hasData && topTheme
-                  ? ip.corepatternHasData(sc(topTheme))
-                  : ip.corepatternNoData}
-              </p>
-              <span className="shrink-0 rounded-full bg-qm-positive-soft px-2 py-0.5 text-xs tabular-nums text-qm-positive">
-                {hasData ? `${sortedThemes[0]?.[1] ?? 1}×` : "·"}
+              <span className="shrink-0 rounded-full border border-qm-positive-border bg-qm-positive-soft px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-qm-positive">
+                {ip.upgradePremiumLabel}
               </span>
             </div>
-            <p className="mt-2 ps-4 text-xs text-qm-faint">
-              {hasData ? ip.corepatternSubHasData : ip.corepatternSubNoData}
-            </p>
           </div>
 
-          <div className="pointer-events-none select-none space-y-3 blur-sm">
-            {[ip.corepatternBlur1, ip.corepatternBlur2, ip.corepatternBlur3].map((p, i) => (
-              <div key={i} className="space-y-1.5">
+          <div className="px-6 py-5 space-y-3">
+
+            {/* Row 1 — real data or plausible example, always visible */}
+            <div className="rounded-xl border border-qm-positive-border bg-qm-positive-bg p-4">
+              <div className="flex items-start justify-between gap-3">
+                <p className="text-sm font-medium leading-relaxed text-qm-primary">
+                  <span className="me-2 inline-block h-1.5 w-1.5 rounded-full bg-qm-positive align-middle" />
+                  {hasData && topTheme
+                    ? ip.corepatternHasData(sc(topTheme))
+                    : ip.corepatternNoData}
+                </p>
+                <span className="shrink-0 rounded-full bg-qm-positive-soft px-2 py-0.5 text-xs tabular-nums text-qm-positive">
+                  {hasData ? `${sortedThemes[0]?.[1] ?? 1}×` : "·"}
+                </span>
+              </div>
+              <p className="mt-2 ps-4 text-xs text-qm-faint">
+                {hasData ? ip.corepatternSubHasData : ip.corepatternSubNoData}
+              </p>
+            </div>
+
+            {/* Row 2 — surface the top emotion pattern if available, else blur */}
+            {hasData && topEmotion && topTheme ? (
+              <div className="rounded-xl border border-qm-border-subtle bg-qm-bg p-4 blur-[2px] pointer-events-none select-none">
                 <div className="flex items-start justify-between gap-3">
-                  <p className="text-xs leading-relaxed text-qm-muted">{p}</p>
-                  <span className="shrink-0 pt-0.5 tabular-nums text-xs text-qm-faint">{i + 1}×</span>
+                  <p className="text-sm leading-relaxed text-qm-muted">
+                    <span className="me-2 inline-block h-1.5 w-1.5 rounded-full bg-qm-muted align-middle" />
+                    {ip.patternHasData(sc(topEmotion), topTheme)}
+                  </p>
+                  <span className="shrink-0 tabular-nums text-xs text-qm-faint pt-0.5">
+                    {sortedEmotions[0]?.[1] ?? 1}×
+                  </span>
                 </div>
-                <div className="h-[2px] w-full overflow-hidden rounded-full bg-qm-card">
-                  <div className="h-full rounded-full bg-qm-soft" style={{ width: `${70 - i * 20}%` }} />
+                <div className="mt-3 h-[2px] w-full overflow-hidden rounded-full bg-qm-card">
+                  <div className="h-full rounded-full bg-qm-soft" style={{ width: "72%" }} />
                 </div>
               </div>
-            ))}
+            ) : (
+              <div className="rounded-xl border border-qm-border-subtle bg-qm-bg p-4 blur-[2px] pointer-events-none select-none">
+                <div className="flex items-start justify-between gap-3">
+                  <p className="text-sm leading-relaxed text-qm-muted">
+                    <span className="me-2 inline-block h-1.5 w-1.5 rounded-full bg-qm-muted align-middle" />
+                    {ip.corepatternBlur1}
+                  </p>
+                  <span className="shrink-0 tabular-nums text-xs text-qm-faint pt-0.5">3×</span>
+                </div>
+                <div className="mt-3 h-[2px] w-full overflow-hidden rounded-full bg-qm-card">
+                  <div className="h-full rounded-full bg-qm-soft" style={{ width: "68%" }} />
+                </div>
+              </div>
+            )}
+
+            {/* Rows 3–4 — always blurred placeholders */}
+            <div className="space-y-3 blur-sm pointer-events-none select-none">
+              {[ip.corepatternBlur2, ip.corepatternBlur3].map((text, i) => (
+                <div key={i} className="rounded-xl border border-qm-border-subtle bg-qm-bg p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="text-xs leading-relaxed text-qm-muted">
+                      <span className="me-2 inline-block h-1.5 w-1.5 rounded-full bg-qm-muted align-middle" />
+                      {text}
+                    </p>
+                    <span className="shrink-0 tabular-nums text-xs text-qm-faint pt-0.5">{2 - i}×</span>
+                  </div>
+                  <div className="mt-3 h-[2px] w-full overflow-hidden rounded-full bg-qm-card">
+                    <div className="h-full rounded-full bg-qm-soft" style={{ width: `${50 - i * 18}%` }} />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className="absolute bottom-0 inset-x-0 h-32 flex items-end justify-center bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent pb-5">
-            <Link href="/upgrade?from=insights-preview"
-              className="inline-flex items-center gap-2 rounded-full border border-qm-positive-border bg-qm-positive-strong/[0.06] px-4 py-2 text-xs font-semibold text-qm-positive transition hover:bg-qm-positive-strong/[0.12]">
+          {/* Gradient fade + unlock CTA */}
+          <div className="absolute bottom-0 inset-x-0 h-40 flex flex-col items-center justify-end gap-3 bg-gradient-to-t from-qm-bg via-qm-bg/90 to-transparent pb-6">
+            <p className="px-4 text-center text-xs text-qm-faint">{ip.patternNote}</p>
+            <Link
+              href="/upgrade?from=insights-preview"
+              className="inline-flex items-center gap-2 rounded-full border border-qm-positive-border bg-qm-positive-strong/[0.06] px-5 py-2 text-xs font-semibold text-qm-positive transition hover:bg-qm-positive-strong/[0.12]"
+            >
               {ip.corepatternLockCta}
             </Link>
           </div>
+
+          {/* Bottom padding so gradient has room */}
+          <div className="h-20" />
         </div>
 
         {/* ── Recurring themes + Emotions ─────────────────────────────────── */}
