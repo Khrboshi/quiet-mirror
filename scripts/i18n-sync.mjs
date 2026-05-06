@@ -222,7 +222,7 @@ Target language: ${targetLang}`;
       "Authorization": `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model:       process.env.GROQMODEL || "llama-4-scout-17b-16e-instruct",
+      model:       process.env.GROQMODEL || "meta-llama/llama-4-scout-17b-16e-instruct",
       max_tokens:  8192,
       temperature: 0.1,   // low — we want consistent, accurate translation, not creativity
       messages: [

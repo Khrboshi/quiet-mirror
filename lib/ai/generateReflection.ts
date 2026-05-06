@@ -1504,8 +1504,8 @@ export async function generateReflectionFromEntry(input: Input): Promise<Reflect
   const apiKey = process.env.GROQAPIKEY || process.env.GROQ_API_KEY;
   if (!apiKey) throw new Error("Missing GROQAPIKEY");
 
-  // FIX: updated default model to llama-4-scout-17b-16e-instruct
-  const model = process.env.GROQMODEL || "llama-4-scout-17b-16e-instruct";
+  // model resolved via getGroqConfig() — uses meta-llama/ prefix required by Groq API
+  const model = process.env.GROQMODEL || "meta-llama/llama-4-scout-17b-16e-instruct";
   const plan = normalizePlan(input.plan);
   const locale = (input.locale ?? "en").trim() || "en";
 
