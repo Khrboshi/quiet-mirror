@@ -546,6 +546,7 @@ export const fr: Translations = {
     heroCta1:         "Écrivez votre première entrée gratuitement \u2192",
     heroCta2:         "Voir une vraie réflexion \u2192",
     heroPromise:      "\u2713\u00a0Journal en moins de 60 secondes \u00b7 \u2713\u00a0Première réflexion en quelques instants \u00b7 \u2713\u00a0Pas de configuration, pas de quiz",
+    heroDevices:      "Available in browser on any device — no app required",
     trust1:           "Privé par défaut",
     trust2:           "Les entrées n'entraînent jamais les modèles d'IA",
     trust3:           "Plan gratuit, sans expiration",

@@ -589,6 +589,7 @@ export const uk: Translations = {
     heroCta1:         "Написати перший запис безкоштовно \u2192",
     heroCta2:         "Побачити справжнє відображення \u2192",
     heroPromise:      "\u2713\u00a0Щоденник за 60 секунд \u00b7 \u2713\u00a0Перше відображення миттєво \u00b7 \u2713\u00a0Без налаштувань",
+    heroDevices:      "Available in browser on any device — no app required",
     trust1:           "Приватно за замовчуванням",
     trust2:           "Записи ніколи не навчають AI",
     trust3:           "Безкоштовний план без обмежень часу",

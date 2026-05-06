@@ -80,7 +80,7 @@ export default function HomePage() {
 
             {/* Trust signals */}
             <div className="animate-fade-in anim-delay-600 mt-5 flex flex-wrap gap-x-4 gap-y-2 text-xs text-qm-muted">
-              {[hp.trust1, hp.trust2, hp.trust3, hp.trust4].map((label) => (
+              {[hp.trust1, hp.trust2, hp.trust3, hp.trust4, hp.heroDevices].map((label) => (
                 <span key={label} className="flex items-center gap-2">
                   <span className="h-1.5 w-1.5 rounded-full bg-qm-accent" />
                   {label}

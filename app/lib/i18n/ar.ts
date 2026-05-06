@@ -553,6 +553,7 @@ export const ar: Translations = {
     heroCta1:         "اكتب أول مدخل مجاناً \u2192",
     heroCta2:         "اطّلع على تأمل حقيقي \u2192",
     heroPromise:      "\u2713\u00a0مجلة في أقل من 60 ثانية \u00b7 \u2713\u00a0أول تأمل في لحظات \u00b7 \u2713\u00a0بدون إعداد",
+    heroDevices:      "Available in browser on any device — no app required",
     trust1:           "خاص بشكل افتراضي",
     trust2:           "المدخلات لا تُستخدم لتدريب الذكاء الاصطناعي",
     trust3:           "خطة مجانية بدون انتهاء",

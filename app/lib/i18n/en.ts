@@ -563,6 +563,7 @@ export const en: Translations = {
     heroCta1:         "Write your first entry free \u2192",
     heroCta2:         "See what Premium unlocks \u2192",
     heroPromise:      "\u2713\u00a0Journal in under 60 seconds \u00b7 \u2713\u00a0First reflection within moments \u00b7 \u2713\u00a0No setup, no quiz",
+    heroDevices:      "Available in browser on any device — no app required",
     trust1:           MARKETING.privateByDefault,
     trust2:           MARKETING.entriesNeverTrainAI,
     trust3:           "Free plan, no expiry",

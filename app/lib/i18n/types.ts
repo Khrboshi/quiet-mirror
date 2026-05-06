@@ -568,6 +568,7 @@ export interface Translations {
     heroCta1:         string;
     heroCta2:         string;
     heroPromise:      string;
+    heroDevices:      string;
     trust1:           string;
     trust2:           string;
     trust3:           string;
