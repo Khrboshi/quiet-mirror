@@ -163,7 +163,7 @@ Rules:
       "Authorization": `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model:       process.env.GROQMODEL || "llama-4-scout-17b-16e-instruct",
+      model:       process.env.GROQMODEL || "meta-llama/llama-4-scout-17b-16e-instruct",
       max_tokens:  4096,
       temperature: 0.1,
       messages: [
