@@ -7,6 +7,7 @@
 // │  USAGE:                                                          │
 // │    node scripts/i18n-sync.mjs                 ← audit missing keys (safe) │
 // │    node scripts/i18n-sync.mjs --write         ← translate & write         │
+// │    node scripts/i18n-sync.mjs --translate-stubs ← translate EN stubs      │
 // │    node scripts/i18n-sync.mjs --audit-values  ← flag values still in EN   │
 // │                                                                  │
 // │  REQUIRES:                                                       │
@@ -34,8 +35,9 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT      = path.join(__dirname, "..");
 const I18N_DIR  = path.join(ROOT, "app", "lib", "i18n");
-const WRITE         = process.argv.includes("--write");
-const AUDIT_VALUES  = process.argv.includes("--audit-values");
+const WRITE            = process.argv.includes("--write");
+const AUDIT_VALUES     = process.argv.includes("--audit-values");
+const TRANSLATE_STUBS  = process.argv.includes("--translate-stubs");
 
 // Words that are legitimately identical across languages — international tech/brand terms,
 // letter labels, symbols, and words borrowed from English into most target languages.
@@ -365,7 +367,7 @@ function patchLocaleFile(filePath, translations, enKeyValues) {
 async function main() {
   console.log("\n" + bold("Quiet Mirror — i18n sync tool"));
   console.log(muted("─".repeat(60)));
-  console.log(muted(`Mode: ${WRITE ? "WRITE (translate + patch files)" : "AUDIT (read-only)"}\n`));
+  console.log(muted(`Mode: ${TRANSLATE_STUBS ? "TRANSLATE-STUBS (find & translate English stubs)" : WRITE ? "WRITE (translate + patch files)" : "AUDIT (read-only)"}\n`));
 
   // 1. Parse en.ts
   const enPath = path.join(I18N_DIR, "en.ts");
@@ -436,6 +438,121 @@ async function main() {
     }
     console.log("");
     return;
+  }
+
+  // ── --translate-stubs mode ────────────────────────────────────────────────────
+  // Finds keys where the locale value is identical to en.ts (i.e. English stubs
+  // left by the PR stub-insertion step) and translates them via Groq.
+  // This is the complement to --write: --write fills structurally MISSING keys,
+  // --translate-stubs fills keys that EXIST but haven't been translated yet.
+  // Exit codes: 0 = nothing to do, 2 = stubs translated, 1 = error.
+  if (TRANSLATE_STUBS) {
+    console.log("");
+    console.log(bold("Scanning for untranslated English stubs across all locales..."));
+    console.log(muted("(Keys already present in a locale but still holding their English source value)"));
+    console.log("");
+
+    let totalStubs = 0;
+    let totalFixed = 0;
+
+    for (const locale of LOCALES) {
+      const filePath   = path.join(I18N_DIR, `${locale.code}.ts`);
+      const localeKeys = extractKeyValues(fs.readFileSync(filePath, "utf8"));
+      const stubs      = [];
+
+      for (const [k, enVal] of Object.entries(enKeys)) {
+        const locVal = localeKeys[k];
+        if (!locVal || locVal !== enVal) continue;
+        const stripped = enVal.replace(/["'`]/g, "").replace(/,\s*$/, "").trim();
+        if (stripped.length < 3)              continue; // symbols
+        if (/^\(/.test(stripped))             continue; // arrow functions
+        if (/^(readonly )?\[/.test(stripped)) continue; // arrays
+        if (INTL_OK.has(stripped))            continue; // whitelisted
+        stubs.push(k);
+      }
+
+      totalStubs += stubs.length;
+
+      if (stubs.length === 0) {
+        console.log(ok(`  ✅ ${locale.code} (${locale.label}) — no stubs found`));
+        continue;
+      }
+
+      console.log(warn(`  ⚠  ${locale.code} (${locale.label}) — ${stubs.length} stub(s) need translation:`));
+      stubs.forEach((k) => console.log(muted(`       • ${k}`)));
+
+      // Translate the stubs
+      console.log(info(`  → Translating ${stubs.length} stub(s) for ${locale.code}...`));
+      let translated;
+      try {
+        translated = await translateBatch(stubs, enKeys, locale.label, locale.code);
+      } catch (e) {
+        console.error(err(`  ✗ Translation failed for ${locale.code}: ${e.message}`));
+        continue;
+      }
+
+      // Validate response
+      const requestedSet = new Set(stubs);
+      const filtered     = Object.fromEntries(
+        Object.entries(translated).filter(([k]) => requestedSet.has(k))
+      );
+      const missed = stubs.filter((k) => !(k in filtered));
+      if (missed.length > 0) {
+        console.warn(warn(`  ⚠ Groq didn't return ${missed.length} key(s) — skipping:`));
+        missed.forEach((k) => console.warn(muted(`    • ${k}`)));
+      }
+
+      // Patch: stubs already exist in the file, so we do an in-place value replacement
+      // rather than patchLocaleFile() (which inserts new lines).
+      let src  = fs.readFileSync(filePath, "utf8");
+      let hits = 0;
+      for (const [fullKey, newVal] of Object.entries(filtered)) {
+        const parts  = fullKey.split(".");
+        const leafKey = parts[parts.length - 1];
+        // Match the exact line for this leaf key with its English stub value
+        // so we never accidentally replace a key with the same name in a different namespace
+        const enVal  = enKeys[fullKey] ?? "";
+        const enEscaped = enVal.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        // Match: <whitespace><key>:<whitespace><englishValue><optional comma><EOL>
+        const lineRe = new RegExp(
+          `([ \\t]+${leafKey}[ \\t]*:[ \\t]*)${enEscaped}(,?)`,
+          ""
+        );
+        const cleaned = newVal.replace(/,\s*$/, ""); // strip trailing comma — we add it back
+        const replacement = `$1${cleaned}$2`;
+        const patched = src.replace(lineRe, replacement);
+        if (patched !== src) {
+          src = patched;
+          hits++;
+          const display = cleaned.replace(/\n/g, " ").slice(0, 60);
+          console.log(muted(`    ${fullKey}: ${display}`));
+        } else {
+          console.warn(warn(`    ⚠ Could not patch ${fullKey} in ${locale.code}.ts — skipping`));
+        }
+      }
+
+      if (hits > 0) {
+        fs.writeFileSync(filePath, src, "utf8");
+        console.log(ok(`  ✓ Patched ${hits} stub(s) in ${locale.code}.ts`));
+        totalFixed += hits;
+      }
+      console.log("");
+    }
+
+    console.log("");
+    if (totalStubs === 0) {
+      console.log(ok(bold("No untranslated stubs found — all locales look good.")));
+      console.log("");
+      process.exit(0);
+    } else {
+      console.log(ok(bold(`Done. Translated ${totalFixed} of ${totalStubs} stub(s) across all locales.`)));
+      if (totalFixed < totalStubs) {
+        console.log(warn(`${totalStubs - totalFixed} stub(s) could not be patched — check warnings above.`));
+      }
+      console.log("");
+      // Exit 2 = work was done (mirrors --write convention so the workflow can detect it)
+      process.exit(totalFixed > 0 ? 2 : 0);
+    }
   }
 
   if (totalMissing === 0) {

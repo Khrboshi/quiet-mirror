@@ -83,8 +83,35 @@ jobs:
           echo "Translation complete. Changed locale files:"
           git diff --name-only app/lib/i18n/
 
+      - name: Translate English stubs via Groq
+        id: stubs
+        env:
+          GROQAPIKEY: ${{ secrets.GROQAPIKEY }}
+        run: |
+          # This step handles keys that EXIST in locale files but still hold their
+          # English stub value — a blind spot in the missing-key check above.
+          # Keys added via PR stubs pass CI (key is present) but are never detected
+          # as "missing", so --write skips them. --translate-stubs closes that gap.
+          set +e
+          node scripts/i18n-sync.mjs --translate-stubs 2>&1 | tee stubs.log
+          EXIT=$?
+          set -e
+
+          echo "Script exit code: $EXIT"
+
+          if [ "$EXIT" -eq 0 ]; then
+            echo "stubs_fixed=false" >> $GITHUB_OUTPUT
+            echo "✅ No English stubs found — all locale values are translated."
+          elif [ "$EXIT" -eq 2 ]; then
+            echo "stubs_fixed=true" >> $GITHUB_OUTPUT
+            echo "✅ English stubs translated and patched."
+          else
+            echo "❌ --translate-stubs exited with unexpected code $EXIT — failing."
+            exit $EXIT
+          fi
+
       - name: Commit and push translations
-        if: steps.audit.outputs.missing == 'true'
+        if: steps.audit.outputs.missing == 'true' || steps.stubs.outputs.stubs_fixed == 'true'
         run: |
           if git diff --quiet app/lib/i18n/; then
             echo "No locale file changes after translation — nothing to commit."
@@ -129,5 +156,12 @@ jobs:
             echo "### Translations written" >> $GITHUB_STEP_SUMMARY
             echo '```' >> $GITHUB_STEP_SUMMARY
             cat translate.log >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ -f stubs.log ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### Stub translations" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            cat stubs.log >> $GITHUB_STEP_SUMMARY
             echo '```' >> $GITHUB_STEP_SUMMARY
           fi
