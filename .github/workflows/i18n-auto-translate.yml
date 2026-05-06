@@ -24,6 +24,12 @@ on:
     paths:
       - 'app/lib/i18n/en.ts'
       - 'app/lib/i18n/types.ts'
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for manual run (e.g. clear existing stubs)'
+        required: false
+        default: 'Manual stub translation pass'
 
 jobs:
   translate:
