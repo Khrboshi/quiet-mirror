@@ -931,6 +931,9 @@ export interface Translations {
     privacy1:          string;
     privacy2:          (appName: string) => string;
     privacyLink:       string;
+    safeguardTag:      string;
+    safeguardBody:     string;
+    safeguardCrisisLine: string;
     footerNote:        (appName: string) => string;
     ctaStartFree:      string;
     ctaBlog:           string;
