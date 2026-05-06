@@ -73,7 +73,7 @@ Atomic trust/positioning phrases that appear in multiple i18n keys are extracted
 
 | Decision | Current value | Where to change |
 |---|---|---|
-| Monthly price | `$9` | `app/lib/pricing.ts` → `PRICING.monthlyUsd` + `PRICING.monthly` |
+| Monthly price | `$25` | `app/lib/pricing.ts` → `PRICING.monthlyUsd` + `PRICING.monthly` |
 | Trial length | `3 days` | `app/lib/pricing.ts` → `TRIAL_DAYS` (the one constant at the top) |
 | Free plan monthly reflections | `3` | `app/lib/pricing.ts` → `PRICING.freeMonthlyCredits` |
 | Payment provider display name | `Dodo Payments` | `app/lib/payment.ts` → `PAYMENT.providerName` |
