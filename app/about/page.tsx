@@ -170,6 +170,19 @@ export default function AboutPage() {
             </div>
           </div>
 
+          {/* Safeguarding note */}
+          <div className="max-w-4xl rounded-[1.5rem] border border-qm-border-card bg-qm-elevated px-6 py-5">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-qm-faint">
+              {ap.safeguardTag}
+            </p>
+            <p className="mt-3 text-sm leading-relaxed text-qm-muted">
+              {ap.safeguardBody}
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-qm-faint">
+              {ap.safeguardCrisisLine}
+            </p>
+          </div>
+
           {/* Bottom CTA */}
           <div className="flex flex-col gap-4 border-t border-qm-border-subtle pt-8 sm:flex-row sm:items-center sm:justify-between">
             <p className="max-w-md text-sm leading-relaxed text-qm-faint">
