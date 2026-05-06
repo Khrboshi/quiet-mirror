@@ -607,7 +607,7 @@ export interface Translations {
     proofBar1: string; proofBar2: string; proofBar3: string; proofBar4: string;
     proofStat1: string; proofStat2: string;
     proofNote: string; proofUnlock: string; proofSeeEx: string;
-    recTag: string; rec1: string; rec2: string; rec3: string;
+    recTag: string; rec1: string; rec2: string; rec3: string; recCardLabel: string;
     demoTag: string; demoH1: string; demoH2: string; demoDesc: string;
     step: string;
     demoInput: string; demoTime: string; demoEntry: string;
