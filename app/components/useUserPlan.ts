@@ -24,6 +24,7 @@ type PlanStateInternal = {
   planType: PlanType;
   credits: number;
   renewalDate: string | null;
+  trialEndsAt: string | null;
 };
 
 type PlanState = PlanStateInternal & {
@@ -72,6 +73,7 @@ export function useUserPlan(): PlanState {
               planType: "FREE",
               credits: 0,
               renewalDate: null,
+              trialEndsAt: null,
             };
             cachedData = fallback;
             cachedAtMs = Date.now();
@@ -89,6 +91,7 @@ export function useUserPlan(): PlanState {
           planType: normalizedPlan,
           credits: typeof data?.credits === "number" ? data.credits : 0,
           renewalDate: typeof data?.renewalDate === "string" ? data.renewalDate : null,
+          trialEndsAt: typeof data?.trialEndsAt === "string" ? data.trialEndsAt : null,
         };
 
         cachedData = next;
