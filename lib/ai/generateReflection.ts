@@ -355,9 +355,7 @@ function isPracticalNeutralEntry(text: string): boolean {
 function practicalReflection(content: string): Reflection {
   const sentences = content.split(/(?<=[.!?])\s+/).map((s) => s.trim()).filter(Boolean);
   const context = sentences.find((s) => /\b(schedule|routine|weekly|time|recurring)\b/i.test(s)) ?? sentences[0] ?? "You are considering a small change to your routine.";
-  const experiment = sentences.find((s) => /\b(try|move|change|adjust|reschedule|tomorrow)\b/i.test(s)) ?? sentences[sentences.length - 1] ?? "You are considering one small experiment.";
   const carrying = toSecondPerson(context);
-  const nextStep = toSecondPerson(experiment);
 
   return {
     summary: [
@@ -368,7 +366,7 @@ function practicalReflection(content: string): Reflection {
     corepattern: "You are testing change without abandoning stability.",
     themes: ["routine", "time", "small experiment"],
     emotions: ["neutral", "calm", "thoughtful"],
-    gentlenextstep: `Option A: Try the smallest reversible version of the change you named. Option B: Write one sentence about what makes the change difficult to explain. Script line: "${nextStep}"`,
+    gentlenextstep: `Option A: Try the smallest reversible version of the change you named. Option B: Write one sentence about what makes the change difficult to explain. Script line: "I’m trying one small adjustment, not making a permanent decision."`,
     questions: [
       "What makes the current routine worth keeping?",
       "What would the uninterrupted time make room for?",
