@@ -30,7 +30,7 @@ export default function RequirePremium({ children }: RequirePremiumProps) {
 
   // During early-access mode all signed-up users get premium features for free.
   // When PRICING.earlyAccess is false this line has no effect.
-  const isPremium = planType === "PREMIUM" || planType === "TRIAL" || PRICING.earlyAccess;
+  const isPremium = planType === "PREMIUM" || planType === "TRIAL" || planType === "EARLY_ACCESS" || PRICING.earlyAccess;
 
   // Ref-guard so paywall_hit fires exactly once per mount, even if loading/planType
   // flickers (e.g. null → "FREE" as useUserPlan resolves).
