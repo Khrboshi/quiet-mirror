@@ -139,9 +139,10 @@ const DOMAIN_SIGNALS: Record<Domain, WeightedSignal[]> = {
   ],
   CREATIVE: [
     { re: /\b(writing|write|drawing|painting|music|art|design|creative|creativity)\b/i, w: 3 },
-    { re: /\b(project|portfolio|novel|song|screenplay|poem|blog)\b/i, w: 2 },
-    { re: /\b(block|stuck|inspired|creating|making|building|coding)\b/i, w: 2 },
-    { re: /\b(blank page|draft|publish|share|audience|staring)\b/i, w: 2 },
+    // Generic words such as "project", "making", and "building" are not creative evidence by themselves.
+    { re: /\b(portfolio|novel|song|screenplay|poem|blog|manuscript|canvas|rehearsal|lyrics)\b/i, w: 3 },
+    { re: /\b(creative block|blank page|first draft|drafting|publishing|audience|staring at the blank)\b/i, w: 3 },
+    { re: /\b(writing|draw(ing)?|paint(ing)?|compose|rehears(e|al)|record(ing)?|photograph(y)?|sculpt)\b/i, w: 3 },
   ],
   IDENTITY: [
     { re: /\b(who I am|who am I|identity|purpose|meaning|direction)\b/i, w: 3 },
@@ -300,7 +301,10 @@ function detectPrimaryPressureDomain(text: string): Domain | null {
 }
 
 export function detectDomain(text: string): Domain {
+  const practicalEntry = /\b(schedule|routine|weekly|recurring|task|tasks|calendar|time|day|week|adjustment|change one|move one|reschedule)\b/i.test(text) &&
+    !/\b(novel|song|screenplay|poem|manuscript|creative block|blank page|writing|draw(ing)?|paint(ing)?|compose|rehears|record(ing)?|photograph|sculpt)\b/i.test(text);
   const pressure = detectPrimaryPressureDomain(text);
+  if (!pressure && practicalEntry) return "GENERAL";
   if (pressure) return pressure;
 
   const scores = scoreDomain(text);
