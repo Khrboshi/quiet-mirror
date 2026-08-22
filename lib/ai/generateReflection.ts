@@ -146,7 +146,7 @@ const DOMAIN_SIGNALS: Record<Domain, WeightedSignal[]> = {
   IDENTITY: [
     { re: /\b(who I am|who am I|identity|purpose|meaning|direction)\b/i, w: 3 },
     { re: /\b(belong|belonging|authentic|real self|mask)\b/i, w: 2 },
-    { re: /\b(values?|belief|change|transition|quarter.?life|mid.?life)\b/i, w: 2 },
+    { re: /\b(values?|beliefs?|life transition|personal transition|identity transition|quarter.?life|mid.?life|changing who I am)\b/i, w: 2 },
     { re: /\b(perform|performing|version of myself|showing up)\b/i, w: 2 },
   ],
   GENERAL: [],
