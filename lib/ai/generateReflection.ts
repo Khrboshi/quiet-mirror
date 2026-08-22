@@ -1477,8 +1477,9 @@ async function callGroq(opts: {
       },
       body: JSON.stringify({
         model,
-        temperature,
-        max_tokens: maxTokens,
+        ...(model.startsWith("openai/gpt-oss")
+          ? { max_completion_tokens: maxTokens, reasoning_effort: "low" }
+          : { temperature, max_tokens: maxTokens }),
         messages: [
           { role: "system", content: system },
           { role: "user", content: user },
@@ -1505,7 +1506,7 @@ export async function generateReflectionFromEntry(input: Input): Promise<Reflect
   if (!apiKey) throw new Error("Missing GROQAPIKEY");
 
   // model resolved via getGroqConfig() — uses meta-llama/ prefix required by Groq API
-  const model = process.env.GROQMODEL || "meta-llama/llama-4-scout-17b-16e-instruct";
+  const model = process.env.GROQMODEL || "openai/gpt-oss-20b";
   const plan = normalizePlan(input.plan);
   const locale = (input.locale ?? "en").trim() || "en";
 
