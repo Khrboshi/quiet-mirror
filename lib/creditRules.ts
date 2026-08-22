@@ -119,8 +119,8 @@ async function ensureCreditRowExists(params: {
       remaining_credits: PRICING.freeMonthlyCredits,
       updated_at: nowIso,
       renewal_date: null,
-      trial_started_at: trialStartedAt,
-      trial_ends_at: trialEndsAt,
+      trial_started_at: null,
+      trial_ends_at: null,
       early_access_ends_at: null,
       plan_changed_at: nowIso,
     } as UserCreditsInsert,
@@ -232,6 +232,10 @@ export async function setUserPlan(params: {
       remaining_credits,
       updated_at: nowIso,
       renewal_date: null,
+      trial_started_at: trialStartedAt,
+      trial_ends_at: trialEndsAt,
+      early_access_ends_at: null,
+      plan_changed_at: nowIso,
     } as UserCreditsInsert,
     { onConflict: "user_id" }
   );
