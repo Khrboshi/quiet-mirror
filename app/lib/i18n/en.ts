@@ -581,7 +581,7 @@ export const en: Translations = {
     previewTag3:      "Burnout signal",
     previewNeverLeaves:"Stays in your account.",
     previewSeeExample:"See full example \u2192",
-    credStrip1:       "Used by people carrying more than they\u2019ve named out loud",
+    credStrip1:       "Built for people carrying more than they\u2019ve named out loud",
     credStrip2:       "Built independently \u2014 one person accountable, no investors",
     credStrip3:       "Questions? hello@quietmirror.me \u2014 you\u2019re writing to the person who built it",
   },
