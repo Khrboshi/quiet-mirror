@@ -9,7 +9,7 @@
  */
 
 /** Default model when GROQMODEL env var is not set. */
-export const DEFAULT_GROQ_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct";
+export const DEFAULT_GROQ_MODEL = "openai/gpt-oss-20b";
 
 /**
  * Returns the resolved Groq API key and model name.
