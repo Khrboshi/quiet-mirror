@@ -105,6 +105,7 @@ export function useUserPlan(): PlanState {
             planType: "FREE",
             credits: 0,
             renewalDate: null,
+            trialEndsAt: null,
           };
           cachedData = fallback;
           cachedAtMs = Date.now();
