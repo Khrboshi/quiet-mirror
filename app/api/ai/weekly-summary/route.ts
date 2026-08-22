@@ -60,8 +60,9 @@ async function callGroq(system: string, user: string): Promise<string> {
       },
       body: JSON.stringify({
         model,
-        temperature: 0.7,
-        max_tokens: 400,
+        ...(model.startsWith("openai/gpt-oss")
+          ? { max_completion_tokens: 400, reasoning_effort: "low" }
+          : { temperature: 0.7, max_tokens: 400 }),
         messages: [
           { role: "system", content: system },
           { role: "user", content: user },
