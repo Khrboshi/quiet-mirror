@@ -54,3 +54,11 @@ export const createServerSupabase = async (): Promise<SupabaseClient> => {
     },
   });
 };
+
+/** Server-only admin client. Never import this into client components. */
+export function createAdminSupabase() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !serviceRoleKey) throw new Error("Supabase admin credentials are not configured");
+  return createServerClient(url, serviceRoleKey, { cookies: { get() { return undefined; }, set() {}, remove() {} } });
+}
