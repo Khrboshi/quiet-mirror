@@ -334,3 +334,12 @@ These are hard stops. If a PR introduces any of the following, it must be revise
 | Any change to Stripe webhook handler | NEVER TOUCH |
 | Supabase RLS policy edits outside migration | NEVER TOUCH |
 | Editing non-English locale files directly | Auto-translated on merge — NEVER TOUCH |
+
+### Entitlement and billing requirements
+
+- Keep early access non-billable and separate from PREMIUM.
+- Do not describe the current early-access experience as an active 3-day trial.
+- Enforce plan changes server-side; never trust client plan values.
+- Plan changes must preserve journal entries, reflections, and Insights history.
+- Do not enable paid checkout until provider trials, webhooks, cancellation, and failed-payment handling are tested.
+- See ENTITLEMENTS.md for the full contract.
