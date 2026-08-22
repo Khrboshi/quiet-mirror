@@ -170,7 +170,7 @@ export async function decrementCreditIfAllowed(params: {
   const { row, err } = await getCreditsRow({ supabase, userId });
   if (err || !row) return { ok: false, reason: "credits_unavailable" };
 
-  if (row.plan_type === "PREMIUM" || row.plan_type === "TRIAL") return { ok: true };
+  if (row.plan_type === "PREMIUM" || row.plan_type === "TRIAL" || row.plan_type === "EARLY_ACCESS") return { ok: true };
 
   if (row.remaining_credits <= 0) return { ok: false, reason: "limit_reached" };
 
