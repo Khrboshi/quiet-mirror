@@ -357,22 +357,46 @@ function practicalReflection(content: string): Reflection {
   const context = sentences.find((s) => /\b(schedule|routine|weekly|time|recurring)\b/i.test(s)) ?? sentences[0] ?? "You are considering a small change to your routine.";
   const carrying = toSecondPerson(context);
 
+  // Stable variation prevents the safe practical mode from becoming a visible template.
+  // The same entry remains deterministic, while different entries rotate wording.
+  const hash = Array.from(content).reduce((sum, ch) => (sum * 31 + ch.charCodeAt(0)) >>> 0, 0);
+  const variant = hash % 3;
+  const happening = [
+    "You are weighing a modest adjustment against a routine that currently feels comfortable, while accounting for the conversation needed to make room.",
+    "The decision is about making space inside a workable routine, not throwing the whole week away; one recurring commitment is the practical constraint.",
+    "You have identified a tradeoff between keeping the week familiar and opening time for something important, with a small change available to test it.",
+  ][variant];
+  const direction = [
+    "A low-risk experiment can show you what the change gives back before you decide whether to keep it.",
+    "You can gather evidence with one reversible adjustment instead of demanding a final answer from yourself today.",
+    "The next useful move is small enough to test and specific enough to teach you something about the week.",
+  ][variant];
+  const nextSteps = [
+    ["Try the smallest reversible version of the change you named.", "Write one sentence about what you want the extra time to protect or make possible.", "I’m testing one small adjustment, not making a permanent decision."],
+    ["Move one recurring task and observe the effect before changing anything else.", "Note what makes explaining the change feel worth getting right.", "I’m making room to learn what works, not committing to a complete redesign."],
+    ["Choose one day to run the schedule experiment and leave the rest unchanged.", "Write down the tradeoff in plain terms: what stays comfortable and what gains room.", "One small change can give me information before I decide what comes next."],
+  ][variant];
+  const questions = [
+    ["What does the current routine give you that you do not want to lose?", "What would more uninterrupted time make possible?", "What would make the proposed change feel worth explaining?", "Next time, notice what the one adjustment changes in the rest of the week."],
+    ["Which part of the existing week is working well enough to preserve?", "What project or activity would benefit most from the time you free up?", "What is the clearest practical reason for moving that recurring task?", "Next time, compare what you expected the change to do with what it actually did."],
+    ["What are you protecting by keeping the routine as it is?", "Where would the new space matter most?", "What information would help you decide whether to keep the adjustment?", "Next time, record one concrete effect of trying the smaller version."],
+  ][variant];
+
   return {
     summary: [
       `What you're carrying: ${carrying}`,
-      `What's really happening: You are weighing a small change against the comfort of the current routine, with a practical constraint to consider before acting.`,
-      `Deeper direction: A reversible experiment can give you useful information without turning this into a permanent decision.`,
+      `What's really happening: ${happening}`,
+      `Deeper direction: ${direction}`,
     ].join("\n"),
-    corepattern: "You are testing change without abandoning stability.",
-    themes: ["routine", "time", "small experiment"],
+    corepattern: [
+      "You are testing change without abandoning stability.",
+      "You are making room without rejecting what already works.",
+      "You are using a small decision to learn what the week needs.",
+    ][variant],
+    themes: ["routine", "time", "decision"],
     emotions: ["neutral", "calm", "thoughtful"],
-    gentlenextstep: `Option A: Try the smallest reversible version of the change you named. Option B: Write one sentence about what makes the change difficult to explain. Script line: "I’m trying one small adjustment, not making a permanent decision."`,
-    questions: [
-      "What makes the current routine worth keeping?",
-      "What would the uninterrupted time make room for?",
-      "What part of explaining the change feels important to get right?",
-      "Next time, note what changes after one small adjustment — more room, more friction, or both?",
-    ],
+    gentlenextstep: `Option A: ${nextSteps[0]} Option B: ${nextSteps[1]} Script line: "${nextSteps[2]}"`,
+    questions,
     domain: "GENERAL",
     secondaryDomains: [],
   };
