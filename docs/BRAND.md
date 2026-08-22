@@ -1,3 +1,5 @@
+> **Current operating state — 2026-08-22:** Quiet Mirror is in non-billable early access. The public offer is full access at no charge. Do not show trial duration, monthly price, Premium upgrade prompts, or payment CTAs on early-access surfaces. Premium language remains documented below for the future paid state.
+
 # Brand & Marketing — Quiet Mirror
 
 > **This is your editorial layer.**
