@@ -353,7 +353,21 @@ export default function HomeBelowFold() {
             <h2 className="mt-3 font-display text-2xl font-semibold text-qm-primary sm:text-3xl">{h.pricingH}</h2>
             <p className="mt-3 text-sm leading-relaxed text-qm-muted">{h.pricingDesc}</p>
           </ScrollReveal>
-          <ScrollReveal stagger className="flex flex-col-reverse gap-4 md:grid md:grid-cols-2 md:gap-5">
+          {PRICING.earlyAccess ? (
+            <ScrollReveal className="rounded-2xl border border-qm-positive-border bg-qm-positive-strong/[0.04] p-6 sm:p-8">
+              <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-qm-positive">Early access · full access</p>
+                  <p className="mt-2 font-display text-2xl font-semibold text-qm-primary">Everything is included while we learn.</p>
+                  <p className="mt-3 max-w-xl text-sm leading-relaxed text-qm-muted">Write privately, receive grounded reflections, and see patterns across your entries. There is no charge during this early-access period.</p>
+                  <div className="mt-5 grid gap-2 text-sm text-qm-secondary sm:grid-cols-3">
+                    <span>✓ Unlimited reflections</span><span>✓ Full pattern insights</span><span>✓ Private by design</span>
+                  </div>
+                </div>
+                <Link href="/magic-login" className="inline-flex items-center justify-center rounded-full bg-qm-accent px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px">Start early access →</Link>
+              </div>
+            </ScrollReveal>
+          ) : (<ScrollReveal stagger className="flex flex-col-reverse gap-4 md:grid md:grid-cols-2 md:gap-5">
             <div className="flex flex-col rounded-2xl border border-qm-border-card bg-qm-elevated p-5 sm:p-6">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-qm-faint">{h.freeLabel}</p>
               <p className="mt-1 font-display text-xl font-semibold text-qm-primary sm:text-2xl">{h.freeTagline}</p>
@@ -413,7 +427,7 @@ export default function HomeBelowFold() {
               </div>
               <p className="mt-3 text-center text-xs text-qm-faint">{PAYMENT.checkoutTrustLine}</p>
             </div>
-          </ScrollReveal>
+          )}          </ScrollReveal>
         </div>
       </section>
 
