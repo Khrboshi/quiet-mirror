@@ -127,8 +127,9 @@ export default async function SettingsPage() {
   const storedPlan = normalizePlan(creditsRow?.plan_type);
   const plan: PlanType = PRICING.earlyAccess && storedPlan === "FREE" ? "EARLY_ACCESS" : storedPlan;
 
-  const isPremium = plan === "PREMIUM" || plan === "TRIAL" || plan === "EARLY_ACCESS";
-  const remainingCredits: number = isPremium
+  const isPaid = plan === "PREMIUM" || plan === "TRIAL";
+  const hasFullAccess = isPaid || plan === "EARLY_ACCESS";
+  const remainingCredits: number = hasFullAccess
     ? Infinity
     : typeof creditsRow?.remaining_credits === "number"
     ? creditsRow.remaining_credits
@@ -162,7 +163,7 @@ export default async function SettingsPage() {
         1
       ).toLocaleDateString(undefined, { month: "short", day: "numeric" });
 
-  const creditsUsed = isPremium ? null : PRICING.freeMonthlyCredits - remainingCredits;
+  const creditsUsed = hasFullAccess ? null : PRICING.freeMonthlyCredits - remainingCredits;
 
   const portalReturn = "/settings";
 
@@ -180,14 +181,14 @@ export default async function SettingsPage() {
           </div>
           <div className="flex items-center gap-3">
             <PlanBadge plan={plan} labels={s} />
-            {isPremium ? (
+            {isPaid ? (
               <ActionLink
                 href={PAYMENT.portalUrl(portalReturn)}
                 variant="secondary"
               >
                 {PAYMENT.manageLabel}
               </ActionLink>
-            ) : (
+            ) : PRICING.earlyAccess ? null : (
               <ActionLink href="/upgrade" variant="primary">
                 {s.upgradeLabel}
               </ActionLink>
@@ -234,12 +235,14 @@ export default async function SettingsPage() {
           <Card
             title={s.planTitle}
             subtitle={
-              isPremium
+              plan === "EARLY_ACCESS"
+                ? "Full access during early access · no charge"
+                : isPaid
                 ? s.planActivePremium
                 : s.planActiveFree
             }
             right={
-              isPremium ? (
+              isPaid ? (
                 <ActionLink href="/settings/billing" variant="secondary">
                   {s.billingTitle}
                 </ActionLink>
@@ -250,8 +253,8 @@ export default async function SettingsPage() {
               )
             }
           >
-            {isPremium ? (
-              // Premium state
+            {hasFullAccess ? (
+              // Full-access state
               <div className="rounded-xl border border-qm-positive-border bg-qm-positive-bg px-5 py-1">
                 <DataRow label={s.planLabel} value={<PlanBadge plan={plan} labels={s} />} />
                 <DataRow label={s.reflectionsLabel} value={<span className="text-qm-positive">{s.reflectionsUnlimited}</span>} />
