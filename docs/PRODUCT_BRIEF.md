@@ -1,3 +1,5 @@
+> **Current operating state — 2026-08-22:** The product is in internal, non-billable early access. The current goal is not revenue or acquisition; it is validating reflection quality, repeat use, and willingness to recommend. Payments remain disabled, and early access must never be represented as PREMIUM or an active trial.
+
 # Product Brief — Quiet Mirror
 
 > **What this file is:** The business and product context for Quiet Mirror.
@@ -207,7 +209,7 @@ long-term path.
 
 ## 9. AI infrastructure
 
-Model: `meta-llama/llama-4-scout-17b-16e-instruct` via Groq
+Model: `openai/gpt-oss-20b` via Groq
 The `meta-llama/` prefix is required — omitting it silently breaks inference (fixed #186).
 Shared via `getGroqConfig()` in `app/lib/ai/groq.ts`. Every AI call goes through this helper.
 
@@ -239,7 +241,7 @@ Things that would feel like progress but are not the constraint right now:
 - More journaling prompts — the product has starter prompts; blank pages are not the problem
 - Social features — fundamentally off-brand; the user chose this because it is private
 - Mobile app (native) — the PWA is sufficient for launch; native is a post-revenue investment
-- More AI models / providers — Groq/Llama 4 Scout is working well
+- More AI models / providers — Groq GPT OSS 20B is the current model
 - Blog content — only valuable once there is organic traffic to capture
 
 The constraint right now is: **get the first 200 people to pay and stay.**
