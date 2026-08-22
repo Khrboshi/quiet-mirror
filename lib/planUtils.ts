@@ -4,7 +4,7 @@
  * Single source of truth for plan type definitions and shared row shapes.
  *
  * Exports:
- *   PlanType              — union "FREE" | "TRIAL" | "PREMIUM"
+ *   PlanType              — union "FREE" | "TRIAL" | "PREMIUM" | "EARLY_ACCESS"
  *   normalizePlan(v)      — coerce any DB value to PlanType, defaults to "FREE"
  *   parseAIResponse(raw)  — safely parse ai_response column (string | object | null)
  *   UserCreditsRow        — narrow row shape for user_credits queries
@@ -16,7 +16,7 @@
  * all routes update automatically.
  */
 
-export type PlanType = "FREE" | "TRIAL" | "PREMIUM";
+export type PlanType = "FREE" | "TRIAL" | "PREMIUM" | "EARLY_ACCESS";
 
 /**
  * Coerces any unknown value from the database into a valid PlanType.
@@ -29,7 +29,7 @@ export type PlanType = "FREE" | "TRIAL" | "PREMIUM";
  */
 export function normalizePlan(v: unknown): PlanType {
   const p = String(v ?? "FREE").toUpperCase();
-  return p === "PREMIUM" || p === "TRIAL" ? (p as PlanType) : "FREE";
+  return p === "PREMIUM" || p === "TRIAL" || p === "EARLY_ACCESS" ? (p as PlanType) : "FREE";
 }
 
 // ── Shared Supabase row shapes ────────────────────────────────────────────────
