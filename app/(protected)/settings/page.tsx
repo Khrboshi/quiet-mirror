@@ -246,7 +246,7 @@ export default async function SettingsPage() {
                 <ActionLink href="/settings/billing" variant="secondary">
                   {s.billingTitle}
                 </ActionLink>
-              ) : (
+              ) : PRICING.earlyAccess ? null : (
                 <ActionLink href="/upgrade" variant="primary">
                   {s.upgradeLabel}
                 </ActionLink>
