@@ -107,3 +107,7 @@ The Stripe webhook handler must remain active until all legacy Stripe subscripti
 | [`docs/I18N.md`](docs/I18N.md) | i18n architecture, locale workflow, how to add translations |
 | [`docs/POSTHOG_FUNNEL.md`](docs/POSTHOG_FUNNEL.md) | All 12 PostHog events, 3 funnel specs, healthy benchmarks |
 | [`docs/PRODUCT_BRIEF.md`](docs/PRODUCT_BRIEF.md) | Business context, target user, revenue model, launch checklist |
+
+## Entitlements and payment readiness
+
+Quiet Mirror is currently in non-billable early access. The product distinguishes FREE, TRIAL, PREMIUM, and EARLY_ACCESS; early access grants full product access but is not a paid subscription. The displayed 3-day trial is configuration-driven marketing copy until an explicit provider trial and server-side trial timer are enabled. See docs/ENTITLEMENTS.md for the plan contract, safe shutdown procedure, no-retroactive-charge guarantee, and data-retention rules.
