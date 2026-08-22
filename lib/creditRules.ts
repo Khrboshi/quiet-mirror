@@ -127,7 +127,7 @@ export async function ensureCreditsFresh(params: {
   if (err || !row) return;
 
   // PREMIUM/TRIAL: do nothing here
-  if (row.plan_type === "PREMIUM" || row.plan_type === "TRIAL") return;
+  if (row.plan_type === "PREMIUM" || row.plan_type === "TRIAL" || row.plan_type === "EARLY_ACCESS") return;
 
   const now = new Date();
 
@@ -194,7 +194,7 @@ export async function setUserPlan(params: {
   const nowIso = new Date().toISOString();
 
   const remaining_credits =
-    planType === "PREMIUM"
+    planType === "PREMIUM" || planType === "EARLY_ACCESS"
       ? PREMIUM_CREDIT_SENTINEL
       : planType === "TRIAL"
       ? TRIAL_MONTHLY_CREDITS
