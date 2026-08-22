@@ -31,6 +31,12 @@ type CreditsRow = {
   remaining_credits: number;
   updated_at: string | null;
   renewal_date: string | null;
+  trial_started_at: string | null;
+  trial_ends_at: string | null;
+  early_access_ends_at: string | null;
+  billing_provider: string | null;
+  subscription_id: string | null;
+  plan_changed_at: string | null;
 };
 
 // Local schema types for Supabase write operations.
@@ -41,6 +47,12 @@ type UserCreditsInsert = {
   remaining_credits: number;
   updated_at: string;
   renewal_date: string | null;
+  trial_started_at?: string | null;
+  trial_ends_at?: string | null;
+  early_access_ends_at?: string | null;
+  billing_provider?: string | null;
+  subscription_id?: string | null;
+  plan_changed_at?: string | null;
 };
 
 type UserCreditsUpdate = {
@@ -63,7 +75,7 @@ async function getCreditsRow(params: {
 
   const { data, error } = await supabase
     .from("user_credits")
-    .select("user_id, plan_type, remaining_credits, updated_at, renewal_date")
+    .select("user_id, plan_type, remaining_credits, updated_at, renewal_date, trial_started_at, trial_ends_at, early_access_ends_at, billing_provider, subscription_id, plan_changed_at")
     .eq("user_id", userId)
     .maybeSingle();
 
@@ -77,6 +89,12 @@ async function getCreditsRow(params: {
       remaining_credits: typeof data.remaining_credits === "number" ? data.remaining_credits : 0,
       updated_at: typeof data.updated_at === "string" ? data.updated_at : null,
       renewal_date: typeof data.renewal_date === "string" ? data.renewal_date : null,
+      trial_started_at: typeof data.trial_started_at === "string" ? data.trial_started_at : null,
+      trial_ends_at: typeof data.trial_ends_at === "string" ? data.trial_ends_at : null,
+      early_access_ends_at: typeof data.early_access_ends_at === "string" ? data.early_access_ends_at : null,
+      billing_provider: typeof data.billing_provider === "string" ? data.billing_provider : null,
+      subscription_id: typeof data.subscription_id === "string" ? data.subscription_id : null,
+      plan_changed_at: typeof data.plan_changed_at === "string" ? data.plan_changed_at : null,
     },
     err: null,
   };
@@ -101,6 +119,10 @@ async function ensureCreditRowExists(params: {
       remaining_credits: PRICING.freeMonthlyCredits,
       updated_at: nowIso,
       renewal_date: null,
+      trial_started_at: trialStartedAt,
+      trial_ends_at: trialEndsAt,
+      early_access_ends_at: null,
+      plan_changed_at: nowIso,
     } as UserCreditsInsert,
     { onConflict: "user_id" }
   );
@@ -199,6 +221,9 @@ export async function setUserPlan(params: {
       : planType === "TRIAL"
       ? TRIAL_MONTHLY_CREDITS
       : PRICING.freeMonthlyCredits;
+
+  const trialStartedAt = planType === "TRIAL" ? nowIso : null;
+  const trialEndsAt = planType === "TRIAL" ? new Date(Date.now() + PRICING.trialDays * 86400000).toISOString() : null;
 
   const { error: upsertErr } = await supabase.from("user_credits").upsert(
     {
