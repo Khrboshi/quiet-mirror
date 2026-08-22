@@ -1,3 +1,5 @@
+> **Current operating state — 2026-08-22:** Instagram is an organic acquisition experiment, not a separate product project. Link to the main Quiet Mirror homepage. During early access, use “full access · no charge” and never advertise an active trial or payment CTA.
+
 # docs/IG_SYNC.md
 ### Cross-project sync — Quiet Mirror Dev ↔ Quiet Mirror IG
 **Last updated: May 14, 2026**
