@@ -92,6 +92,6 @@ export async function GET() {
     });
   } catch (err) {
     console.error("GET /api/user/plan failed:", err);
-    return safeJson({ planType: "FREE", credits: 0, renewalDate: null });
+    return safeJson({ planType: "FREE", credits: 0, renewalDate: null, trialEndsAt: null, earlyAccessEndsAt: null, storedPlanType: "FREE", effectivePlanType: PRICING.earlyAccess ? "EARLY_ACCESS" : "FREE" });
   }
 }
