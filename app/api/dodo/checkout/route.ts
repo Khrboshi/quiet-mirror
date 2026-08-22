@@ -19,6 +19,7 @@
 
 import { NextResponse } from "next/server";
 import DodoPayments from "dodopayments";
+import { PRICING } from "@/app/lib/pricing";
 import { createServerSupabase } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -46,6 +47,11 @@ export async function POST() {
 
     if (userErr || !user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Early-access mode is non-billable. Fail closed if a client calls this endpoint directly.
+    if (PRICING.earlyAccess) {
+      return NextResponse.json({ error: "Payments are not active during early access" }, { status: 409 });
     }
 
     // Guard: never open a second checkout for an already-Premium user
