@@ -164,7 +164,7 @@ export default function Footer() {
             </span>
             <span className="inline-flex items-center gap-1 text-qm-accent">
               <span aria-hidden="true">✨</span>
-              <span>{ps.trialLabel(PRICING.trialDays)}</span>
+              <span>{PRICING.earlyAccess ? "Early access · full access" : ps.trialLabel(PRICING.trialDays)}</span>
             </span>
           </div>
         </div>
