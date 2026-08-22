@@ -9,7 +9,7 @@ Live site: https://quietmirror.me · Repo: Khrboshi/quiet-mirror
 ## Stack
 
 Next.js 15 (App Router) · TypeScript · Tailwind CSS · Supabase (Postgres + Auth)
-Groq / Llama 4 Scout (`meta-llama/llama-4-scout-17b-16e-instruct`) · Resend (transactional + newsletter email)
+Groq / OpenAI GPT OSS 20B (`openai/gpt-oss-20b`) · Resend (transactional + newsletter email)
 Dodo Payments (new subscribers) · Stripe webhook (legacy — **never touch**) · Vercel Hobby · PostHog EU cloud
 
 ---
@@ -70,7 +70,7 @@ NEXT_PUBLIC_SUPABASE_URL=...
 NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 SUPABASE_SERVICE_ROLE_KEY=...
 
-GROQ_API_KEY=...            # Llama 4 Scout via Groq
+GROQ_API_KEY=...            # OpenAI GPT OSS 20B via Groq
 
 RESEND_API_KEY=...          # Transactional + newsletter email
 UNSUBSCRIBE_SECRET=...      # HMAC-SHA256 key for one-click unsubscribe tokens
