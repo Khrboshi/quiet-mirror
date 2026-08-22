@@ -110,4 +110,4 @@ The Stripe webhook handler must remain active until all legacy Stripe subscripti
 
 ## Entitlements and payment readiness
 
-Quiet Mirror is currently in non-billable early access. The product distinguishes FREE, TRIAL, PREMIUM, and EARLY_ACCESS; early access grants full product access but is not a paid subscription. The displayed 3-day trial is configuration-driven marketing copy until an explicit provider trial and server-side trial timer are enabled. See docs/ENTITLEMENTS.md for the plan contract, safe shutdown procedure, no-retroactive-charge guarantee, and data-retention rules.
+Quiet Mirror is currently in non-billable early access. The product distinguishes FREE, TRIAL, PREMIUM, and EARLY_ACCESS; early access grants full product access but is not a paid subscription. The 3-day trial is a future billing configuration, not the current early-access offer; do not present it as active while earlyAccess is true. See docs/ENTITLEMENTS.md for the plan contract, safe shutdown procedure, no-retroactive-charge guarantee, and data-retention rules.
