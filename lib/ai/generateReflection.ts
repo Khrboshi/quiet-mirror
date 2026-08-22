@@ -341,6 +341,45 @@ function isShortEntry(text: string): boolean {
   return text.trim().split(/\s+/).length < 12;
 }
 
+/**
+ * Practical notes about routines, schedules, and small reversible decisions are
+ * not invitations to infer hidden distress. Route them to a deterministic,
+ * fact-led reflection instead of asking the model to manufacture depth.
+ */
+function isPracticalNeutralEntry(text: string): boolean {
+  const practical = /\b(schedule|routine|weekly|recurring|calendar|move one|reschedule|small adjustment|small change|time for|uninterrupted time)\b/i.test(text);
+  const explicitDistress = /\b(anxious|anxiety|afraid|scared|panic|ashamed|angry|frustrated|hurt|lonely|exhausted|overwhelmed|identity|purpose|creative block|blank page|grief|diagnosis)\b/i.test(text);
+  return practical && !explicitDistress;
+}
+
+function practicalReflection(content: string): Reflection {
+  const sentences = content.split(/(?<=[.!?])\s+/).map((s) => s.trim()).filter(Boolean);
+  const context = sentences.find((s) => /\b(schedule|routine|weekly|time|recurring)\b/i.test(s)) ?? sentences[0] ?? "You are considering a small change to your routine.";
+  const experiment = sentences.find((s) => /\b(try|move|change|adjust|reschedule|tomorrow)\b/i.test(s)) ?? sentences[sentences.length - 1] ?? "You are considering one small experiment.";
+  const carrying = toSecondPerson(context);
+  const nextStep = toSecondPerson(experiment);
+
+  return {
+    summary: [
+      `What you're carrying: ${carrying}`,
+      `What's really happening: You are weighing a small change against the comfort of the current routine, with a practical constraint to consider before acting.`,
+      `Deeper direction: A reversible experiment can give you useful information without turning this into a permanent decision.`,
+    ].join("\n"),
+    corepattern: "You are testing change without abandoning stability.",
+    themes: ["routine", "time", "small experiment"],
+    emotions: ["neutral", "calm", "thoughtful"],
+    gentlenextstep: `Option A: Try the smallest reversible version of the change you named. Option B: Write one sentence about what makes the change difficult to explain. Script line: "${nextStep}"`,
+    questions: [
+      "What makes the current routine worth keeping?",
+      "What would the uninterrupted time make room for?",
+      "What part of explaining the change feels important to get right?",
+      "Next time, note what changes after one small adjustment — more room, more friction, or both?",
+    ],
+    domain: "GENERAL",
+    secondaryDomains: [],
+  };
+}
+
 /* ── Domain Defaults ────────────────────────────────────────────────────── */
 
 type DomainDefaults = {
@@ -1520,6 +1559,10 @@ export async function generateReflectionFromEntry(input: Input): Promise<Reflect
   const entryBody = (input.content || "").trim();
   const titleLine = input.title?.trim() ? `Title: ${input.title.trim()}\n` : "";
   const entryText = `${titleLine}Entry:\n${entryBody}`;
+
+  if (isPracticalNeutralEntry(`${input.title || ""}\n${entryBody}`)) {
+    return practicalReflection(entryBody);
+  }
 
   const detectedDomain = detectDomain(`${input.title || ""}\n${entryBody}`);
   const positive = isPositiveEntry(`${input.title || ""} ${entryBody}`);
