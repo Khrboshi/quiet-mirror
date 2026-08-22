@@ -202,6 +202,12 @@ export interface Database {
           remaining_credits: number;
           updated_at: string | null;
           renewal_date: string | null;
+          trial_started_at: string | null;
+          trial_ends_at: string | null;
+          early_access_ends_at: string | null;
+          billing_provider: string | null;
+          subscription_id: string | null;
+          plan_changed_at: string | null;
         };
         Insert: {
           user_id: string;
@@ -209,12 +215,24 @@ export interface Database {
           remaining_credits?: number;
           updated_at?: string | null;
           renewal_date?: string | null;
+          trial_started_at?: string | null;
+          trial_ends_at?: string | null;
+          early_access_ends_at?: string | null;
+          billing_provider?: string | null;
+          subscription_id?: string | null;
+          plan_changed_at?: string | null;
         };
         Update: {
           plan_type?: string;
           remaining_credits?: number;
           updated_at?: string | null;
           renewal_date?: string | null;
+          trial_started_at?: string | null;
+          trial_ends_at?: string | null;
+          early_access_ends_at?: string | null;
+          billing_provider?: string | null;
+          subscription_id?: string | null;
+          plan_changed_at?: string | null;
         };
       };
       user_plans: {
