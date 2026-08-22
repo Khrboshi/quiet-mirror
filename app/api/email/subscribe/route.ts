@@ -10,7 +10,7 @@
  */
 // app/api/email/subscribe/route.ts
 import { NextResponse } from "next/server";
-import { createServerSupabase } from "@/lib/supabase/server";
+import { createAdminSupabase } from "@/lib/supabase/server";
 import { Resend } from "resend";
 import { CONFIG } from "@/app/lib/config";
 import { getLocaleFromCookieString, getDir, getTranslations } from "@/app/lib/i18n";
@@ -33,7 +33,7 @@ function getClientIp(req: Request): string {
 
 async function isRateLimited(ip: string): Promise<boolean> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = createAdminSupabase();
     const windowStart = new Date(Date.now() - RATE_LIMIT_WINDOW_MS).toISOString();
 
     const { count, error } = await supabase
@@ -51,7 +51,7 @@ async function isRateLimited(ip: string): Promise<boolean> {
 
 async function recordAttempt(ip: string): Promise<void> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = createAdminSupabase();
     await supabase
       .from("email_subscribe_attempts")
       .insert({ ip, created_at: new Date().toISOString() });
@@ -156,7 +156,7 @@ export async function POST(req: Request) {
     }
     await recordAttempt(ip);
 
-    const supabase = await createServerSupabase();
+    const supabase = createAdminSupabase();
 
     const { error: dbError, data: upsertData } = await supabase
       .from("email_subscribers")
