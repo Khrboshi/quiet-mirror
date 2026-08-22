@@ -427,7 +427,8 @@ export default function HomeBelowFold() {
               </div>
               <p className="mt-3 text-center text-xs text-qm-faint">{PAYMENT.checkoutTrustLine}</p>
             </div>
-          )}          </ScrollReveal>
+          </ScrollReveal>
+          )}
         </div>
       </section>
 
