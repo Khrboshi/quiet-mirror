@@ -470,7 +470,7 @@ export default function HomeBelowFold() {
             </div>
             <div className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs text-qm-faint">
               <span>✓ {h.ctaT1}</span><span>✓ {h.ctaT2}</span>
-              <span>✓ {ps.trialLabel(PRICING.trialDays)}</span><span>✓ {h.ctaT4}</span>
+              <span>✓ {PRICING.earlyAccess ? "Early access · full access" : ps.trialLabel(PRICING.trialDays)}</span><span>✓ {h.ctaT4}</span>
             </div>
           </ScrollReveal>
         </div>
