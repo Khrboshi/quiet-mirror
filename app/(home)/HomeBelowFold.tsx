@@ -37,7 +37,7 @@ export default function HomeBelowFold() {
                   <span className="h-2 w-2 rounded-full bg-qm-positive shadow-sm" />
                   <p className="text-sm font-medium text-qm-positive">{h.proofCardTitle}</p>
                 </div>
-                <span className="rounded-full border border-qm-positive-border bg-qm-positive-soft px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-qm-positive">{h.proofBadge}</span>
+                <span className="rounded-full border border-qm-positive-border bg-qm-positive-soft px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-qm-positive">{PRICING.earlyAccess ? "Pattern example" : h.proofBadge}</span>
               </div>
               <div className="bg-qm-elevated px-6 py-7 sm:px-8 sm:py-8">
                 <p className="font-display text-xl font-medium leading-relaxed text-qm-primary sm:text-2xl">{h.proofQuote}</p>
@@ -80,7 +80,7 @@ export default function HomeBelowFold() {
           </ScrollReveal>
           <ScrollReveal>
             <p className="mt-6 text-center text-sm text-qm-faint">
-              {h.proofUnlock}{" "}
+              {PRICING.earlyAccess ? "This is an example of the patterns Quiet Mirror can surface across entries." : h.proofUnlock}{" "}
               <Link href="/insights/preview" className="text-qm-positive transition-colors hover:text-qm-positive-hover">{h.proofSeeEx}</Link>
             </p>
           </ScrollReveal>
@@ -212,7 +212,7 @@ export default function HomeBelowFold() {
             <div className="relative rounded-[1.5rem] border border-qm-warning-border bg-qm-warning-strong/[0.04] p-6 sm:col-span-2 lg:col-span-1">
               <div className="flex items-start justify-between gap-3">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-warning">{h.cardCTitle}</p>
-                <span className="shrink-0 rounded-full border border-qm-warning-border bg-qm-warning-soft px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-qm-warning">{t.settingsPage.planPremium}</span>
+                <span className="shrink-0 rounded-full border border-qm-warning-border bg-qm-warning-soft px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-qm-warning">{PRICING.earlyAccess ? "Included in early access" : t.settingsPage.planPremium}</span>
               </div>
               <p className="mt-3 text-[15px] leading-[1.7] text-qm-primary">{h.cardCHead}</p>
               <div className="mt-4 rounded-xl border border-qm-warning-border bg-qm-warning-strong/[0.04] p-3"><p className="text-xs leading-relaxed text-qm-muted">{h.cardCNote}</p></div>
