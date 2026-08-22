@@ -1379,7 +1379,7 @@ BANNED question patterns: "what could be causing your symptoms" (self-diagnosis)
     RELATIONSHIP: `DOMAIN: RELATIONSHIP\nHARD RULE: Use the person's exact sensory or metaphorical language (e.g. "behind glass", "watching from the outside", "completely invisible"). This exact phrase MUST appear in the reflection if it's in the entry.`,
     GENERAL: domain === "GENERAL" && positive
       ? `DOMAIN: GENERAL — POSITIVE ENTRY\nHARD RULE: This entry is celebratory or grateful. Do NOT probe for hidden darkness or deeper pain. Reflect the win or gratitude back warmly and specifically. Use THEIR words. Ask what this moment means to them or what made it possible — not what's wrong underneath it.`
-      : `DOMAIN: GENERAL\nHARD RULE: Do NOT become vague. Use the most specific phrase from the entry — 'feel off', 'slightly wrong', 'can't name it' — whatever they wrote. 'You wrote something real down' is BANNED.`,
+      : `DOMAIN: GENERAL\nHARD RULE: Do NOT become vague. Use the most specific phrase from the entry — 'feel off', 'slightly wrong', 'can't name it' — whatever they wrote. For neutral or practical entries, stay literal and curious; do not add anxiety, hidden pain, identity conflict, or a deeper need that the entry does not support. 'You wrote something real down' is BANNED.`,
   };
 
   const secondaryText = mixed
@@ -1402,6 +1402,9 @@ CORE RULES:
 - Write to "you" — never "the user", "this person", or "the person"
 - corepattern MUST start with "You" — never "The person's mind" or "This person"
 - Never invent events not in the entry
+- Treat the entry's stated emotional tone as authoritative; if it is neutral or practical, preserve that tone
+- Do not infer hidden anxiety, restlessness, longing, identity conflict, pain, or unmet needs unless the entry explicitly states them or provides multiple concrete signals
+- For practical decisions, reflect the decision, options, constraints, or values stated — never turn an ordinary choice into an identity crisis
 - Use at least ONE verbatim phrase from the entry in the SUMMARY
 - Avoid templates, generic openings, and cliches
 - Prioritize the PRIMARY pressure driver over contextual mentions
