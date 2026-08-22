@@ -75,7 +75,7 @@ export default function HomePage() {
 
             {/* Price hint — surfaces cost before users invest emotional energy */}
             <p className="animate-fade-in anim-delay-450 mt-3 text-xs text-qm-faint">
-              {hp.heroPriceHint(PRICING.monthly, PRICING.trialDays)}
+              {PRICING.earlyAccess ? "Early access · full access · no charge" : hp.heroPriceHint(PRICING.monthly, PRICING.trialDays)}
             </p>
 
             {/* Promise strip */}
