@@ -698,14 +698,14 @@ export function detectCrisisContent(text: string): boolean {
 /* ── Positive Entry Detection ───────────────────────────────────────────── */
 
 const POSITIVE_SIGNALS =
-  /\b(finally|so proud|really proud|really happy|so happy|amazing|incredible|wonderful|best day|great news|promotion|got the job|offer letter|accepted|got in|passed my|achieved|accomplished|celebrated|celebrate|thrilled|excited about|joy|overjoyed|blessed|relieved|made it|succeeded|nailed it|big win|huge win|milestone|breakthrough|breakthrough|couldn't believe it|couldn't stop smiling|grateful for|full of gratitude|feeling grateful|feel grateful)\b/i;
+  /\b(finally|so proud|really proud|really happy|so happy|amazing|incredible|wonderful|best day|great news|promotion|got the job|offer letter|accepted|got in|passed my|achieved|accomplished|celebrated|celebrate|thrilled|excited about|joy|overjoyed|blessed|relieved|made it|succeeded|nailed it|big win|huge win|milestone|breakthrough|breakthrough|couldn't believe it|couldn't stop smiling|grateful for|full of gratitude|feeling grateful|feel grateful|calm|peaceful|content|satisfied|feel okay|feeling okay)\b/gi;
 
 const NEGATIVE_SIGNALS =
-  /\b(stressed|anxious|worried|sad|angry|frustrated|hurt|lost|failed|scared|afraid|hopeless|stuck|overwhelmed|ashamed|depressed|exhausted|panic|lonely|empty|dread|hate|awful|terrible|miserable|destroyed|crying|cried|broke down)\b/i;
+  /\b(stressed|anxious|worried|sad|angry|frustrated|hurt|lost|failed|scared|afraid|hopeless|stuck|overwhelmed|ashamed|depressed|exhausted|panic|lonely|empty|dread|hate|awful|terrible|miserable|destroyed|crying|cried|broke down)\b/gi;
 
 function isPositiveEntry(text: string): boolean {
-  const positiveCount = (text.match(POSITIVE_SIGNALS) || []).length;
-  const negativeCount = (text.match(NEGATIVE_SIGNALS) || []).length;
+  const positiveCount = [...text.matchAll(POSITIVE_SIGNALS)].length;
+  const negativeCount = [...text.matchAll(NEGATIVE_SIGNALS)].length;
   return positiveCount >= 2 && positiveCount > negativeCount * 1.5;
 }
 
