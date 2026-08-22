@@ -91,7 +91,7 @@ function FooterLinks({ isSignedIn }: { isSignedIn: boolean }) {
             <>
               <FooterLink href="/magic-login">{t.footer.signIn}</FooterLink>
               <FooterLink href="/upgrade">{t.footer.startFree}</FooterLink>
-              <FooterLink href="/upgrade">{t.footer.goPremium}</FooterLink>
+              {PRICING.earlyAccess ? null : <FooterLink href="/upgrade">{t.footer.goPremium}</FooterLink>}
             </>
           )}
         </FooterSection>
