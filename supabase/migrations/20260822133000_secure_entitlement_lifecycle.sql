@@ -1,0 +1,49 @@
+-- Quiet Mirror: entitlement lifecycle metadata and audit protections
+-- Applied to production 2026-08-22.
+
+ALTER TABLE public.user_credits ADD COLUMN IF NOT EXISTS trial_started_at timestamptz;
+ALTER TABLE public.user_credits ADD COLUMN IF NOT EXISTS trial_ends_at timestamptz;
+ALTER TABLE public.user_credits ADD COLUMN IF NOT EXISTS early_access_ends_at timestamptz;
+ALTER TABLE public.user_credits ADD COLUMN IF NOT EXISTS billing_provider text;
+ALTER TABLE public.user_credits ADD COLUMN IF NOT EXISTS subscription_id text;
+ALTER TABLE public.user_credits ADD COLUMN IF NOT EXISTS plan_changed_at timestamptz;
+ALTER TABLE public.user_plans ADD COLUMN IF NOT EXISTS trial_started_at timestamptz;
+ALTER TABLE public.user_plans ADD COLUMN IF NOT EXISTS trial_ends_at timestamptz;
+ALTER TABLE public.user_plans ADD COLUMN IF NOT EXISTS early_access_ends_at timestamptz;
+ALTER TABLE public.user_plans ADD COLUMN IF NOT EXISTS billing_provider text;
+ALTER TABLE public.user_plans ADD COLUMN IF NOT EXISTS subscription_id text;
+ALTER TABLE public.user_plans ADD COLUMN IF NOT EXISTS plan_changed_at timestamptz;
+
+DROP POLICY IF EXISTS "Users can insert their own plan history" ON public.plan_history;
+DROP POLICY IF EXISTS "Users can view their own plan history" ON public.plan_history;
+CREATE POLICY "authenticated users can view own plan history" ON public.plan_history FOR SELECT TO authenticated USING (auth.uid() = user_id);
+REVOKE INSERT, UPDATE, DELETE ON TABLE public.plan_history FROM anon, authenticated;
+
+CREATE OR REPLACE FUNCTION public.protect_entitlement_fields()
+RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp
+AS $$
+begin
+  if auth.uid() is not null then
+    if TG_OP = 'INSERT' and new.plan_type <> 'FREE' then raise exception 'plan_changes_must_be_server_authorized'; end if;
+    if TG_OP = 'UPDATE' and (new.plan_type is distinct from old.plan_type or new.trial_started_at is distinct from old.trial_started_at or new.trial_ends_at is distinct from old.trial_ends_at or new.early_access_ends_at is distinct from old.early_access_ends_at or new.billing_provider is distinct from old.billing_provider or new.subscription_id is distinct from old.subscription_id or new.plan_changed_at is distinct from old.plan_changed_at) then raise exception 'plan_changes_must_be_server_authorized'; end if;
+  end if;
+  return new;
+end;
+$$;
+DROP TRIGGER IF EXISTS protect_user_credits_entitlement_fields ON public.user_credits;
+CREATE TRIGGER protect_user_credits_entitlement_fields BEFORE INSERT OR UPDATE ON public.user_credits FOR EACH ROW EXECUTE FUNCTION public.protect_entitlement_fields();
+REVOKE EXECUTE ON FUNCTION public.protect_entitlement_fields() FROM PUBLIC, anon, authenticated;
+
+CREATE OR REPLACE FUNCTION public.record_plan_change()
+RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp
+AS $$
+begin
+  if TG_OP = 'UPDATE' and new.plan_type is distinct from old.plan_type then
+    insert into public.plan_history(user_id, old_plan_type, new_plan_type, reason, changed_by) values (new.user_id, old.plan_type, new.plan_type, null, 'SYSTEM');
+  end if;
+  return new;
+end;
+$$;
+DROP TRIGGER IF EXISTS record_user_credits_plan_change ON public.user_credits;
+CREATE TRIGGER record_user_credits_plan_change AFTER UPDATE ON public.user_credits FOR EACH ROW EXECUTE FUNCTION public.record_plan_change();
+REVOKE EXECUTE ON FUNCTION public.record_plan_change() FROM PUBLIC, anon, authenticated;
