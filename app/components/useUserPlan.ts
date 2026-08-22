@@ -6,7 +6,7 @@
  *
  * Fetches GET /api/user/plan on mount and exposes:
  *   planType    — "FREE" | "TRIAL" | "PREMIUM"
- *   plan        — lowercase alias: "free" | "trial" | "premium"
+ *   plan        — lowercase alias: "free" | "trial" | "premium" | "early_access"
  *   credits     — remaining reflections (Infinity for Premium/Trial)
  *   renewalDate — ISO string or null
  *   loading     — true until first fetch completes
@@ -27,7 +27,7 @@ type PlanStateInternal = {
 };
 
 type PlanState = PlanStateInternal & {
-  plan: "free" | "premium" | "trial";
+  plan: "free" | "premium" | "trial" | "early_access";
   refresh: () => Promise<void>;
 };
 
@@ -133,7 +133,7 @@ export function useUserPlan(): PlanState {
   }, [load]);
 
   const lowercasePlan =
-    state.planType === "PREMIUM" ? "premium" : state.planType === "TRIAL" ? "trial" : "free";
+    state.planType === "PREMIUM" ? "premium" : state.planType === "TRIAL" ? "trial" : state.planType === "EARLY_ACCESS" ? "early_access" : "free";
 
   return {
     ...state,
