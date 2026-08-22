@@ -11,6 +11,7 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { ensureCreditsFresh } from "@/lib/creditRules";
 import { PAYMENT } from "@/app/lib/payment";
 import { PRICING } from "@/app/lib/pricing";
+import { normalizePlan, type PlanType } from "@/lib/planUtils";
 import { CONFIG } from "@/app/lib/config";
 
 import type { UserCreditsRow } from "@/lib/supabaseTypes";
@@ -20,8 +21,8 @@ export const dynamic = "force-dynamic";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-function PlanBadge({ plan, labels }: { plan: "PREMIUM" | "TRIAL" | "FREE"; labels: { planPremium: string; planTrial: string; planFree: string } }) {
-  const isPremium = plan === "PREMIUM" || plan === "TRIAL";
+function PlanBadge({ plan, labels }: { plan: PlanType; labels: { planPremium: string; planTrial: string; planFree: string } }) {
+  const isPremium = plan === "PREMIUM" || plan === "TRIAL" || plan === "EARLY_ACCESS";
   return (
     <span
       className={[
@@ -31,7 +32,7 @@ function PlanBadge({ plan, labels }: { plan: "PREMIUM" | "TRIAL" | "FREE"; label
           : "border-qm-border-subtle bg-qm-elevated text-qm-secondary",
       ].join(" ")}
     >
-      {plan === "TRIAL" ? labels.planTrial : plan === "PREMIUM" ? labels.planPremium : labels.planFree}
+      {plan === "EARLY_ACCESS" ? "Early access · full access" : plan === "TRIAL" ? labels.planTrial : plan === "PREMIUM" ? labels.planPremium : labels.planFree}
     </span>
   );
 }
@@ -123,11 +124,10 @@ export default async function SettingsPage() {
     .maybeSingle();
   const creditsRow = creditsData as UserCreditsRow | null;
 
-  const planType = String(creditsRow?.plan_type ?? "FREE").toUpperCase();
-  const plan = (["PREMIUM", "TRIAL"].includes(planType) ? planType : "FREE") as
-    | "PREMIUM" | "TRIAL" | "FREE";
+  const storedPlan = normalizePlan(creditsRow?.plan_type);
+  const plan: PlanType = PRICING.earlyAccess && storedPlan === "FREE" ? "EARLY_ACCESS" : storedPlan;
 
-  const isPremium = plan === "PREMIUM" || plan === "TRIAL";
+  const isPremium = plan === "PREMIUM" || plan === "TRIAL" || plan === "EARLY_ACCESS";
   const remainingCredits: number = isPremium
     ? Infinity
     : typeof creditsRow?.remaining_credits === "number"
