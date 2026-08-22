@@ -1,3 +1,5 @@
+> **Current operating state — 2026-08-22:** Requirements for the future paid state remain below, but current early access is full, free, and non-billable. Any new public copy must make that distinction explicit. Practical journal entries must remain grounded in stated facts; do not infer hidden distress or identity conflict.
+
 # Product Requirements & UI Standards — Quiet Mirror
 
 > **How this file relates to the others:**
