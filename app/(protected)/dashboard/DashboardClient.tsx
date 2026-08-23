@@ -24,6 +24,7 @@ import type { DashboardData } from "./page";
 import { PRICING } from "@/app/lib/pricing";
 import { CONFIG } from "@/app/lib/config";
 import { useTranslation } from "@/app/components/I18nProvider";
+import { track } from "@/app/components/telemetry";
 import type { User } from "@supabase/supabase-js";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -344,7 +345,21 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
 
   const [displayName, setDisplayName] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
-  useEffect(() => { setMounted(true); }, []);
+  useEffect(() => {
+    setMounted(true);
+
+    // Count one return visit per browser session, only after a prior dashboard visit.
+    const visitKey = "qm_dashboard_last_visit";
+    const sessionKey = "qm_dashboard_return_tracked";
+    const previous = window.localStorage.getItem(visitKey);
+    const alreadyTracked = window.sessionStorage.getItem(sessionKey);
+    if (previous && !alreadyTracked) {
+      const daysSinceLastVisit = Math.max(0, Math.floor((Date.now() - Number(previous)) / 86_400_000));
+      track("return_visit", { days_since_last_visit: daysSinceLastVisit });
+      window.sessionStorage.setItem(sessionKey, "1");
+    }
+    window.localStorage.setItem(visitKey, String(Date.now()));
+  }, []);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data: d }) => {
