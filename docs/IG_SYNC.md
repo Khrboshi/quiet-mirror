@@ -191,3 +191,18 @@ Instagram should bring people into Quiet Mirror through a useful prompt, not thr
 ### Success criteria
 
 The first test is not follower count. It is whether an Instagram visitor completes a first entry, receives a reflection, and returns within 3–7 days. Only build broader sharing or referral mechanics if the first-entry experience is trusted and retained.
+
+## Direct profile audit — August 23, 2026
+
+Screenshots show the existing account now has 14 posts, 3 followers, and 20 following. The dark, cream, and muted green visual system is coherent. The profile already communicates private journaling, grounded reflection, patterns over time, and a free start. The current UTM homepage link is present.
+
+### Manual polish actions
+
+1. Refine the bio to: “Private journaling for honest reflection. Write → reflect → notice patterns. Early access: full access at no charge ↓”
+2. Keep the current handle, profile image, and visual palette. Do not delete the existing posts.
+3. Rename “What it is” to “Start here” and add highlights for Prompts, How it works, Privacy, and Early access. Remove or fill the empty “New” highlight.
+4. Pin three posts: the clearest product explanation, the strongest prompt, and the privacy/private-journal post.
+5. Check future post text inside the safe center area so Instagram’s grid crop does not cut off words.
+6. Publish three posts per week for four weeks: two useful prompts and one product/trust post. Ask people to save or share a prompt, not merely to follow.
+
+The page is ready for controlled organic publishing after the homepage custom-domain check and the internal 3–7 day retention test.
