@@ -111,3 +111,11 @@ The Stripe webhook handler must remain active until all legacy Stripe subscripti
 ## Entitlements and payment readiness
 
 Quiet Mirror is currently in non-billable early access. The product distinguishes FREE, TRIAL, PREMIUM, and EARLY_ACCESS; early access grants full product access but is not a paid subscription. The 3-day trial is a future billing configuration, not the current early-access offer; do not present it as active while earlyAccess is true. See docs/ENTITLEMENTS.md for the plan contract, safe shutdown procedure, no-retroactive-charge guarantee, and data-retention rules.
+
+## Current beta status
+
+Quiet Mirror is in a controlled, non-billable early-access beta. Payments are disabled; early access grants full access at no charge and is separate from the future Premium plan. QA and fictional records are not user traction.
+
+Verified: journal and reflection persistence, conservative sparse Insights through five entries, grounded practical-entry handling, Neutral-label cleanup, and six locales with 1,029 keys passing the deterministic localization audit. AI grammar review is report-only by default.
+
+Next: run a clean-account 3–7 day retention test, then complete mobile, accessibility, failure/retry, account-isolation, and broader fictional AI testing before outside recruitment or payment activation.
