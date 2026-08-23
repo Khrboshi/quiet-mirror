@@ -99,3 +99,9 @@ Outside beta is approved only when all **Must pass before outside testers** item
 The latest Supabase performance advisor review found optimization notices, not correctness failures: RLS policies can wrap `auth.uid()` in a scalar `select`, some foreign keys lack covering indexes, and several tables have overlapping permissive policies. These should be consolidated or indexed in a planned migration after functional QA, with special care not to weaken isolation. They are not a reason to enable payments or invite outside testers by themselves, but they remain technical-debt items before scale.
 
 The security review continues to show only the documented server-only RLS notices, the intentional credit-consumption SECURITY DEFINER warning, and Free-plan leaked-password protection limitations.
+
+## Verified state and next actions — August 2026
+
+Verified: early access is non-billable, payments are disabled, QA data is excluded from traction claims, journal/reflection persistence works, sparse Insights are cautious through five entries, Neutral is hidden from prominent Insights UI, practical entries use grounded handling, and all six locales with 1,029 keys pass the deterministic localization audit. AI grammar review is report-only by default.
+
+Next: deploy and smoke-test the latest commits; create a clean internal account; run a 3–7 day retention test; complete mobile, accessibility, failure/retry, account-isolation, and broader fictional AI tests. Do not recruit outside testers or enable payments until these gates pass.
