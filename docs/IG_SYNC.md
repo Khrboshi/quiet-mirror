@@ -131,3 +131,17 @@ Use a tracked homepage URL for Instagram traffic and measure profile visits, lin
 ## Operating correction
 
 Instagram is a channel, not a separate project. All product changes, homepage changes, tracking, and source-of-truth documentation remain in Quiet Mirror. Instagram preparation uses the content starter pack in docs/IG_CONTENT_STARTER.md. The cancelled Instagram integration stays disconnected unless explicitly requested.
+
+## Existing account baseline — checked August 23, 2026
+
+The existing public account is @quietmirror.me at https://www.instagram.com/quietmirror.me/. Public search currently reports 3 followers, 20 following, and 13 posts. Its visible bio direction is: “A private journal that reads underneath. Write honestly. See what keeps returning.”
+
+This account should be improved in place, not replaced. Preserve the reflective tone and evolve the bio only enough to clarify the product, the existing homepage destination, and free early access. The follower/post counts are a baseline only, not evidence of product traction. Recheck the profile directly in Instagram before publishing because public search data can lag.
+
+### Account-specific next actions
+
+1. Keep the current handle and reflective positioning.
+2. Review the existing 13 posts for visual consistency, repeated themes, and any claims that need correction.
+3. Update the link-in-bio to the existing homepage with Instagram UTM tracking.
+4. Add or refine highlights: Start here, Prompts, How it works, Privacy, Early access.
+5. Publish the three prepared launch posts only after homepage/mobile checks and the clean-account retention gate.
