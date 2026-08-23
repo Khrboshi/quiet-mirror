@@ -143,6 +143,9 @@ Rules:
 - Do NOT list emotions or themes by name in a row — weave them into sentences that describe what they feel like together.
 - Do NOT use therapy-speak, jargon, or prescriptive advice ("you should", "try to", "consider").
 - Do NOT write bullet points or headers.
+- Stay strictly within the supplied signals. Do not invent feelings, motives, conflicts, or outcomes that the entries do not support.
+- When the signals are neutral or practical, describe routines, choices, time, or tradeoffs; do not turn them into distress, burnout, satisfaction, assurance, or other emotional claims unless explicitly supported.
+- When there are fewer than 3 entries, call the result an early signal rather than a recurring pattern, and avoid strong frequency claims such as "often" or "keeps".
 - Keep the whole summary under 180 words.
 - BANNED: any first-person narration from your perspective — this means constructions equivalent to "I notice", "I sense", "I can see", "I've noticed", "I've seen", "I'm curious", "I think", "I wonder", "Looking at your entries", "Based on your entries", "As I read", "It seems like", "emotions that surface include", "themes that appear", "recurring themes include" — banned in English AND in any other language you are responding in. The equivalent construction in Ukrainian, Arabic, or any other language is equally forbidden.`;
 
