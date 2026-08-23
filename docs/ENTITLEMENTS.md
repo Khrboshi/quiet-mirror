@@ -74,3 +74,7 @@ Before payment launch, add and audit:
 - Payment transitions: app/api/dodo/webhook/ and legacy app/api/stripe/webhook/
 - Checkout protection: app/api/dodo/checkout/
 - Database hardening and plan constraints: supabase/migrations/20260822131000_security_and_entitlements.sql
+
+## Current beta contract
+
+Early access is full access at no charge while payments are disabled. It is separate from Premium; expired trials resolve to FREE; checkout remains blocked. Plan changes never delete entries, reflections, or Insights. Future paid rollout requires explicit cohort and expiry controls.
