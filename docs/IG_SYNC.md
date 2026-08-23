@@ -157,3 +157,37 @@ The current source contains early-access guards, so the likely action is to depl
 ### Deployment handoff
 
 The latest application change affecting the homepage is commit 761cb54610c3815a69664c45fc8788aba9a25db7 (marketing: clarify private grounded early access offer). The current main branch also contains the documentation updates and ends at the latest branch head recorded in GitHub. Deploy main, then verify the live page against the early-access checklist before publishing.
+
+## Privacy-first product growth loop
+
+Instagram should bring people into Quiet Mirror through a useful prompt, not through pressure to follow or claims about results.
+
+### Recommended loop
+
+1. An Instagram post presents one reflective prompt.
+2. The link opens the existing Quiet Mirror homepage or a future public prompt page.
+3. The visitor creates an account and writes one private entry.
+4. Quiet Mirror returns a grounded reflection.
+5. After the reflection, the app offers a safe way to share the prompt or a generic branded card—not the journal entry, private reflection, or personal Insights.
+6. The shared card links back to Quiet Mirror with a referral or campaign marker.
+7. Measure first entry, reflection received, referral click, signup completion, and 3–7 day return.
+
+### Product features worth building, in order
+
+1. **Shareable prompt cards:** one-tap image or link sharing for prompts only; private content is excluded by default.
+2. **Prompt-specific landing pages:** a public page for each strong Instagram prompt, with a clear start-writing CTA.
+3. **Post-reflection referral prompt:** ask only after the user receives a reflection; keep it optional and low-pressure.
+4. **Referral attribution:** preserve a referral marker from the shared link through signup without sending journal text to analytics.
+5. **Return loop:** after a user returns, show a gentle reminder of the last prompt or a new prompt—not a notification campaign that creates pressure.
+
+### Do not build yet
+
+- Public journals or public reflections
+- Automatic sharing of personal Insights
+- Follow-gating or forced social invites
+- Leaderboards, streak pressure, or competitive wellness claims
+- Paid Instagram acquisition before retention is proven
+
+### Success criteria
+
+The first test is not follower count. It is whether an Instagram visitor completes a first entry, receives a reflection, and returns within 3–7 days. Only build broader sharing or referral mechanics if the first-entry experience is trusted and retained.
