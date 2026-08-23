@@ -35,7 +35,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT      = path.join(__dirname, "..");
 const I18N_DIR  = path.join(ROOT, "app", "lib", "i18n");
 
-const DRY_RUN   = process.argv.includes("--dry-run");
+// Never mutate translations unless an operator explicitly opts in.
+const DRY_RUN   = !process.argv.includes("--apply");
 const LANG_IDX  = process.argv.indexOf("--lang");
 const _rawLang  = LANG_IDX !== -1 ? process.argv[LANG_IDX + 1] : null;
 const VALID_CODES = new Set(["uk", "ar", "fr", "nl", "ro"]);
@@ -267,7 +268,7 @@ function applyCorrections(src, corrections, enKeys) {
 async function main() {
   console.log("\n" + bold("Quiet Mirror — i18n grammar & translation quality check"));
   console.log(muted("─".repeat(65)));
-  console.log(muted(`Mode: ${DRY_RUN ? "DRY RUN (report only, no file writes)" : "WRITE (corrections applied)"}`));
+  console.log(muted(`Mode: ${DRY_RUN ? "ADVISORY REVIEW (report only, no file writes)" : "APPLY (corrections applied)"}`));
   if (ONLY_LANG) console.log(info(`Language filter: ${ONLY_LANG}`));
   console.log("");
 
