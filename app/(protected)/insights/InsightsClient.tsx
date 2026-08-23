@@ -726,7 +726,8 @@ export default function InsightsClient() {
     [data]
   );
 
-  const topEmotion = allEmotions[0]?.[0];
+  // Neutral is an internal fallback tone, not a useful personal emotion label.
+  const topEmotion = allEmotions.find(([name]) => name.toLowerCase() !== "neutral")?.[0];
   const topTheme = allThemes[0]?.[0];
   const entryCount = data?.entryCount ?? 0;
   const totalEntryCount = data?.totalEntryCount ?? entryCount;
