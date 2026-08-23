@@ -323,3 +323,7 @@ The dashboard emits `return_visit` only when the browser has a prior dashboard v
 | `days_since_last_visit` | integer | Whole days since the previous recorded dashboard visit, floored at zero |
 
 A refresh does not count as a new return visit in the same browser session. Clearing browser storage or switching browsers can make a visit appear new, so retention analysis should use signed-in PostHog identity where available and treat this event as directional.
+
+## Beta measurement boundary
+
+Exclude QA, fictional, and developer accounts from retention and traction analysis. The useful early signal is voluntary return over 3–7 days, using journal_submitted, reflection_received, insights_viewed, and return_visit events. Payments are disabled, so do not infer willingness to pay.
