@@ -50,3 +50,57 @@ Use Quiet Mirror’s existing homepage palette and typography. Keep compositions
 ## Measurement
 
 Use Instagram UTM tracking and record profile visits, link clicks, signup completion, first journal entry, reflection received, and 3–7 day return. Do not scale reach until the clean internal retention test passes.
+
+## First three publish-ready posts
+
+### Post 1 — A question worth keeping
+
+**On-image text**
+
+What did you carry today that nobody saw?
+
+**Caption**
+
+Some parts of a day never make it into conversation.
+
+Take a quiet minute tonight and write one honest sentence about what you carried. No polished answer needed.
+
+Save this prompt for later.
+
+**CTA**
+
+Start with one private entry at quietmirror.me/?utm_source=instagram&utm_medium=social&utm_campaign=early_access
+
+### Post 2 — How Quiet Mirror works
+
+**On-image text**
+
+Write it down.
+See it differently.
+Notice what returns.
+
+**Caption**
+
+Quiet Mirror begins with a journal entry.
+
+It offers a thoughtful reflection, then helps surface patterns across entries over time. It is not a diagnosis, a score, or a replacement for professional care—just a calmer way to look back at your own words.
+
+**CTA**
+
+Explore the existing homepage through the link in bio.
+
+### Post 3 — Notice, don’t judge
+
+**On-image text**
+
+What felt easy today—and why?
+
+**Caption**
+
+Not every useful reflection starts with a problem.
+
+Sometimes the detail worth remembering is the thing that felt lighter, clearer, or more natural than usual. Write it down while it is still close.
+
+**CTA**
+
+Early access is currently full access at no charge while Quiet Mirror is being shaped. Link in bio.
