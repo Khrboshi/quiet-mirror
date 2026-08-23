@@ -93,3 +93,9 @@ Quiet Mirror remains in internal, non-billable early access. Users receive full 
 ## Release decision
 
 Outside beta is approved only when all **Must pass before outside testers** items are checked or explicitly waived in writing. Instagram content and acquisition experiments begin only after the product, data, and measurement gates pass.
+
+## Database advisor backlog
+
+The latest Supabase performance advisor review found optimization notices, not correctness failures: RLS policies can wrap `auth.uid()` in a scalar `select`, some foreign keys lack covering indexes, and several tables have overlapping permissive policies. These should be consolidated or indexed in a planned migration after functional QA, with special care not to weaken isolation. They are not a reason to enable payments or invite outside testers by themselves, but they remain technical-debt items before scale.
+
+The security review continues to show only the documented server-only RLS notices, the intentional credit-consumption SECURITY DEFINER warning, and Free-plan leaked-password protection limitations.
