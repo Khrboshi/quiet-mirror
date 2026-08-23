@@ -92,3 +92,38 @@ When this happens in the dev project:
 **In the IG project:** Paste at session start. Check "What earlyAccess:true means for IG copy" before writing any caption. Check bridge items for testimonial status.
 
 **Updating:** Copy this file from the repo, edit the relevant section, paste back as a new version. The repo is the source of truth — `docs/IG_SYNC.md`.
+
+## Instagram readiness plan — August 2026
+
+### Positioning
+
+Instagram should introduce Quiet Mirror as a calm, private journaling tool that helps people notice patterns without pretending to diagnose them. The profile should link to the existing Quiet Mirror homepage and describe early access accurately: full access at no charge while the product is being shaped.
+
+### Content pillars
+
+- **Reflective prompts:** short, useful questions people can try immediately.
+- **Pattern awareness:** gentle examples of noticing routines, emotions, and boundaries without clinical claims.
+- **Product clarity:** show the journal-to-reflection-to-Insights loop using fictional examples only.
+- **Trust and privacy:** explain what Quiet Mirror does and does not claim, without implying medical treatment or guaranteed transformation.
+- **Build-in-public learning:** share improvements based on testing, never fabricated testimonials or traction.
+
+### Launch rules
+
+- Use the existing homepage as the only destination; do not create a separate Instagram product or landing page.
+- Keep payments and Premium promotion inactive while early access is free.
+- Do not recruit outside testers until the beta-readiness gate and clean-account retention test pass.
+- Do not use QA records, fictional entries, or invented testimonials as social proof.
+- Do not reconnect the cancelled Instagram integration unless explicitly requested.
+- Avoid diagnostic, therapeutic, crisis-resolution, or guaranteed-outcome language.
+
+### Measurement
+
+Use a tracked homepage URL for Instagram traffic and measure profile visits, link clicks, signup completion, first journal entry, reflection received, and 3–7 day return. Treat Instagram as an acquisition experiment only after a clean internal retention signal exists.
+
+### Readiness checklist
+
+1. Confirm the homepage messaging, language selector, mobile layout, and early-access CTA.
+2. Prepare the profile bio, avatar, highlights, and first 9–12 posts from the content pillars above.
+3. Add a stable Instagram UTM link to the existing homepage.
+4. Complete the clean-account retention run and remaining beta reliability checks.
+5. Publish organically, review real-user language feedback, and improve the product before scaling reach.
