@@ -87,9 +87,9 @@ When this happens in the dev project:
 
 ## How to use this file
 
-**In the dev project:** Paste at session start after SKILL.md. Check bridge items before writing any user-facing copy. If earlyAccess changes, update this file as part of the PR.
+**In the Quiet Mirror project:** Paste at session start after SKILL.md. Check bridge items before writing any user-facing copy. If earlyAccess changes, update this file as part of the PR.
 
-**In the IG project:** Paste at session start. Check "What earlyAccess:true means for IG copy" before writing any caption. Check bridge items for testimonial status.
+**For Instagram operations:** Paste at session start. Check "What earlyAccess:true means for IG copy" before writing any caption. Check bridge items for testimonial status.
 
 **Updating:** Copy this file from the repo, edit the relevant section, paste back as a new version. The repo is the source of truth — `docs/IG_SYNC.md`.
 
@@ -127,3 +127,7 @@ Use a tracked homepage URL for Instagram traffic and measure profile visits, lin
 3. Add a stable Instagram UTM link to the existing homepage.
 4. Complete the clean-account retention run and remaining beta reliability checks.
 5. Publish organically, review real-user language feedback, and improve the product before scaling reach.
+
+## Operating correction
+
+Instagram is a channel, not a separate project. All product changes, homepage changes, tracking, and source-of-truth documentation remain in Quiet Mirror. Instagram preparation uses the content starter pack in docs/IG_CONTENT_STARTER.md. The cancelled Instagram integration stays disconnected unless explicitly requested.
