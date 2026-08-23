@@ -60,6 +60,8 @@ const INTL_OK = new Set([
   "Suggestions",   // French cognate — identical spelling and meaning in French; nl uses "Suggesties"
   // Symbols and placeholders — legitimately same in all languages
   "you@example.com",
+  "hello@quietmirror.me",
+  "Week 1", // same natural spelling in Dutch
   "/ mo",
   // Brand name fragments that must stay Latin
   "Quiet Mirror is",
