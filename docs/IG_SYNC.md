@@ -153,3 +153,7 @@ The live homepage at https://quietmirror.me/ is currently behind the approved so
 The current source contains early-access guards, so the likely action is to deploy the latest approved application commit, then recheck the homepage in an incognito browser. Confirm that the live page says full access at no charge, does not imply user traction, and does not send Instagram visitors into an active payment flow.
 
 **Owner action required:** trigger or confirm the application deployment, then report back with the deployed URL/version. Do not publish Instagram acquisition posts until this check passes.
+
+### Deployment handoff
+
+The latest application change affecting the homepage is commit 761cb54610c3815a69664c45fc8788aba9a25db7 (marketing: clarify private grounded early access offer). The current main branch also contains the documentation updates and ends at the latest branch head recorded in GitHub. Deploy main, then verify the live page against the early-access checklist before publishing.
