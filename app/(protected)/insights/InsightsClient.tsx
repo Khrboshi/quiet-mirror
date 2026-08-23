@@ -732,8 +732,9 @@ export default function InsightsClient() {
   const entryCount = data?.entryCount ?? 0;
   const totalEntryCount = data?.totalEntryCount ?? entryCount;
   const hasRealData = data?.hasRealData ?? false;
-  const hasTrend =
-    (data?.trend?.up?.length ?? 0) + (data?.trend?.down?.length ?? 0) > 0;
+  const meaningfulTrendUp = (data?.trend?.up ?? []).filter((e) => e.toLowerCase() !== "neutral");
+  const meaningfulTrendDown = (data?.trend?.down ?? []).filter((e) => e.toLowerCase() !== "neutral");
+  const hasTrend = meaningfulTrendUp.length + meaningfulTrendDown.length > 0;
   const hasWeeklyData =
     (data?.weeklyTrend?.weeks?.length ?? 0) >= 2 &&
     (Object.keys(data?.weeklyTrend?.themes ?? {}).length > 0 ||
@@ -883,10 +884,10 @@ export default function InsightsClient() {
             {hasTrend && (
               <div className="mt-4 flex flex-wrap items-center gap-2">
                 <span className="text-xs text-qm-faint me-0.5">{t.insights.recentlyLabel}</span>
-                {data.trend?.up?.map((e) => (
+                {meaningfulTrendUp.map((e) => (
                   <TrendPill key={`u-${e}`} label={e} dir="up" />
                 ))}
-                {data.trend?.down?.map((e) => (
+                {meaningfulTrendDown.map((e) => (
                   <TrendPill key={`d-${e}`} label={e} dir="down" />
                 ))}
               </div>
