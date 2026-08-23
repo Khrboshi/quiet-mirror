@@ -752,9 +752,9 @@ export default function InsightsClient() {
     if (topEmotion && topTheme) {
       return (
         <>
-          <span className="text-qm-primary font-semibold">{topEmotion}</span>{" "}
-          keeps showing up — often alongside{" "}
-          <span className="text-qm-primary font-semibold">{topTheme}</span>.
+          {entryCount < 3 ? "Early signal: " : ""}<span className="text-qm-primary font-semibold">{topEmotion}</span>{" "}
+          {entryCount < 3 ? "appears alongside" : "keeps showing up — often alongside"}{" "}
+          <span className="text-qm-primary font-semibold">{topTheme}</span>{entryCount < 3 ? " in the current reflection." : "."}
         </>
       );
     }
