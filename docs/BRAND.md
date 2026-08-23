@@ -450,3 +450,7 @@ These concepts appear in more than one namespace by design (different pages, dif
 **Changing what Premium promises (features):**
 → `app/lib/i18n/en.ts` → `premiumFeatures { … }` — 5 features, each with a label and subtitle.
 → The same 6 files that consume this namespace update automatically.
+
+## Current messaging boundary
+
+Active homepage and beta messaging must describe full early access at no charge. Do not present Premium pricing as active, use QA records as social proof, or imply confirmed traction.
