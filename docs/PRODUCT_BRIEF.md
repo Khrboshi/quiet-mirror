@@ -279,3 +279,7 @@ that require action in both.
 ### Commercial state and transition
 
 The current product is a free, non-billable early-access beta. EARLY_ACCESS means full access without a subscription; PREMIUM is reserved for a verified paid subscription. The 3-day trial setting currently drives copy and future payment configuration, but it is not a signup timer until explicit trial start/end timestamps and provider configuration are implemented. Early-access shutdown is a controlled deployment followed by payment-flow verification, never a retroactive charge. User plan changes preserve journal and reflection history. See ENTITLEMENTS.md.
+
+## Current verified state
+
+Quiet Mirror is a controlled, non-billable early-access beta. QA and fictional records are not traction. Payments remain disabled. Verified work includes persistence, conservative sparse Insights, grounded practical reflections, Neutral-label cleanup, and deterministic localization checks for six locales. The next decision depends on a clean-account 3–7 day retention test rather than additional feature volume.
