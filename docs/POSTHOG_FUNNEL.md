@@ -313,3 +313,13 @@ Once meaningful traffic flows, these benchmarks are reasonable starting targets:
 | `upgrade_page_viewed → subscription_started` | < 60% (page conversion) |
 
 Tune these benchmarks once you have 50+ users through the full funnel.
+
+## Return-visit event semantics
+
+The dashboard emits `return_visit` only when the browser has a prior dashboard visit and only once per browser session. It stores timestamps and a session marker in browser storage; it does not include journal text, email, or other sensitive content.
+
+| Property | Type | Meaning |
+|---|---|---|
+| `days_since_last_visit` | integer | Whole days since the previous recorded dashboard visit, floored at zero |
+
+A refresh does not count as a new return visit in the same browser session. Clearing browser storage or switching browsers can make a visit appear new, so retention analysis should use signed-in PostHog identity where available and treat this event as directional.
