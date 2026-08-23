@@ -397,8 +397,8 @@ export async function GET(req: Request) {
   });
 
   let summary: string;
-  if (entryCount < 3 && !aiLang) {
-    // Sparse data gets a deterministic description: one entry must not become
+  if (entryCount < 6 && !aiLang) {
+    // Early beta data gets a deterministic description: a small sample must not become
     // a recurring pattern or an unsupported emotional interpretation.
     const focus = topThemes[0] ?? topDomains[0]?.toLowerCase() ?? "the shape of your day";
     summary = "This early reflection is centered on " + focus + ". It offers one view of what is on your mind right now, without enough history to identify a recurring pattern.\n\nThere is more to learn from the way this topic develops across future entries. For now, this is a starting point rather than a conclusion.\n\nWhat would you add to this picture tomorrow?";
