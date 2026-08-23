@@ -301,7 +301,7 @@ function detectPrimaryPressureDomain(text: string): Domain | null {
 }
 
 export function detectDomain(text: string): Domain {
-  const practicalEntry = /\b(schedule|routine|weekly|recurring|task|tasks|calendar|time|day|week|adjustment|change one|move one|reschedule)\b/i.test(text) &&
+  const practicalEntry = /\b(schedule|routine|weekly|recurring|task|tasks|calendar|time|day|week|adjustment|change one|move one|reschedule|evening|personal time|for myself|falling behind|protect(ing|ed)? time|available|unfamiliar)\b/i.test(text) &&
     !/\b(novel|song|screenplay|poem|manuscript|creative block|blank page|writing|draw(ing)?|paint(ing)?|compose|rehears|record(ing)?|photograph|sculpt)\b/i.test(text);
   const pressure = detectPrimaryPressureDomain(text);
   if (!pressure && practicalEntry) return "GENERAL";
@@ -347,7 +347,7 @@ function isShortEntry(text: string): boolean {
  * fact-led reflection instead of asking the model to manufacture depth.
  */
 function isPracticalNeutralEntry(text: string): boolean {
-  const practical = /\b(schedule|routine|weekly|recurring|calendar|move one|reschedule|small adjustment|small change|time for|uninterrupted time)\b/i.test(text);
+  const practical = /\b(schedule|routine|weekly|recurring|calendar|move one|reschedule|small adjustment|small change|time for|uninterrupted time|evening|personal time|for myself|falling behind|protect(ing|ed)? time|available|unfamiliar)\b/i.test(text);
   const explicitDistress = /\b(anxious|anxiety|afraid|scared|panic|ashamed|angry|frustrated|hurt|lonely|exhausted|overwhelmed|identity|purpose|creative block|blank page|grief|diagnosis)\b/i.test(text);
   return practical && !explicitDistress;
 }
