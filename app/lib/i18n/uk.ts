@@ -1130,9 +1130,9 @@ export const uk: Translations = {
     depthH:                 "Картина стає чіткішою, чим більше ви пишете.",
     depthDesc:              "Кожен запис додається до того, що Quiet Mirror вже знає про вас. Через кілька тижнів він читає не один запис — він читає форму вашого внутрішнього життя протягом місяців.",
     longitudinalNote:       "Кожна картка вище створена на основі всієї історії ваших записів — не тільки вашого останнього запису.",
-    earlyAccessBanner:      "Pricing is paused while we're getting started — all premium features are free right now.",
-    earlyAccessCta:         "Sign up free →",
-    earlyAccessSubline:     "$25/month when pricing goes live · No card needed now",
+    earlyAccessBanner: "Ціни призупинено, поки ми розпочинаємо роботу — усі функції Premium зараз безкоштовні.",
+    earlyAccessCta: "Зареєструватися безкоштовно →",
+    earlyAccessSubline: "$25/місяць після запуску цін · Картка зараз не потрібна",
   },
 
   // ── blogPage ────────────────────────────────────────────────
