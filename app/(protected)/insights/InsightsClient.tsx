@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "@/app/components/I18nProvider";
+import { track } from "@/app/components/telemetry";
 import { DOMAIN_COLOR, QM } from "@/app/lib/colors";
 import { CONFIG } from "@/app/lib/config";
 
@@ -686,7 +687,9 @@ export default function InsightsClient() {
           );
           return;
         }
-        setData(await res.json());
+        const json = await res.json();
+        setData(json);
+        track("insights_viewed", { entry_count: json.entryCount ?? null });
       } catch {
         setError(t.errors.insightsFailed);
       }
