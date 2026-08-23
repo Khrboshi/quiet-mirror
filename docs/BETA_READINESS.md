@@ -105,3 +105,9 @@ The security review continues to show only the documented server-only RLS notice
 Verified: early access is non-billable, payments are disabled, QA data is excluded from traction claims, journal/reflection persistence works, sparse Insights are cautious through five entries, Neutral is hidden from prominent Insights UI, practical entries use grounded handling, and all six locales with 1,029 keys pass the deterministic localization audit. AI grammar review is report-only by default.
 
 Next: deploy and smoke-test the latest commits; create a clean internal account; run a 3–7 day retention test; complete mobile, accessibility, failure/retry, account-isolation, and broader fictional AI tests. Do not recruit outside testers or enable payments until these gates pass.
+
+## Manual smoke test recorded — August 23, 2026
+
+A fresh internal test account successfully completed sign-in, created one fictional journal entry, received a reflection, saw it marked as saved to history, found it in the Journal list, and saw the first pattern on the Dashboard. This confirms the basic first-entry funnel in the preview deployment. It is not a retention or traction result.
+
+Next check: return to the same account tomorrow and again around day 3. Confirm the account remains accessible, the original entry remains present, a second entry can be added, and Insights continue to load.
