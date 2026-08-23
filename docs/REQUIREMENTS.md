@@ -345,3 +345,7 @@ These are hard stops. If a PR introduces any of the following, it must be revise
 - Plan changes must preserve journal entries, reflections, and Insights history.
 - Do not enable paid checkout until provider trials, webhooks, cancellation, and failed-payment handling are tested.
 - See ENTITLEMENTS.md for the full contract.
+
+## Current validation gate
+
+Before outside recruitment, complete clean-account retention, mobile/accessibility, failure/retry, duplicate-submit, account-isolation, and broader fictional AI tests. Localization must pass the deterministic audit; AI grammar review remains report-only unless corrections are explicitly approved.
