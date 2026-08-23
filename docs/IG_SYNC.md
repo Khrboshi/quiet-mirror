@@ -145,3 +145,11 @@ This account should be improved in place, not replaced. Preserve the reflective 
 3. Update the link-in-bio to the existing homepage with Instagram UTM tracking.
 4. Add or refine highlights: Start here, Prompts, How it works, Privacy, Early access.
 5. Publish the three prepared launch posts only after homepage/mobile checks and the clean-account retention gate.
+
+## Live homepage check — August 23, 2026
+
+The live homepage at https://quietmirror.me/ is currently behind the approved source state: it still displays $25/month, a 3-day free trial, Premium-forward CTAs, and “Used by people carrying more than they’ve named out loud.” This must be treated as a launch blocker because payments are disabled and there are no confirmed real users.
+
+The current source contains early-access guards, so the likely action is to deploy the latest approved application commit, then recheck the homepage in an incognito browser. Confirm that the live page says full access at no charge, does not imply user traction, and does not send Instagram visitors into an active payment flow.
+
+**Owner action required:** trigger or confirm the application deployment, then report back with the deployed URL/version. Do not publish Instagram acquisition posts until this check passes.
