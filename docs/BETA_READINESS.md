@@ -121,3 +121,7 @@ Next check: open Insights today, then perform one final return check around day 
 ## Sparse-data Insights check recorded — August 24, 2026
 
 With two fictional entries, Insights loaded successfully and used appropriate safeguards. It stated that there was not enough history to identify a recurring pattern, described the result as an early signal, and clarified that the patterns are not diagnoses. This confirms the cautious sparse-data behavior in the deployed experience.
+
+## Third-entry test recorded — August 24, 2026
+
+A third fictional entry was created successfully. The reflection was generated and saved, the Journal showed 3 entries, and the Dashboard moved to 3/5 while still reporting only 2 writing days. The gradual pattern state remains appropriately cautious.
