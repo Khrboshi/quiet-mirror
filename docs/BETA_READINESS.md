@@ -125,3 +125,7 @@ With two fictional entries, Insights loaded successfully and used appropriate sa
 ## Third-entry test recorded — August 24, 2026
 
 A third fictional entry was created successfully. The reflection was generated and saved, the Journal showed 3 entries, and the Dashboard moved to 3/5 while still reporting only 2 writing days. The gradual pattern state remains appropriately cautious.
+
+## Three-entry Insights check recorded — August 24, 2026
+
+With three fictional entries, Insights loaded successfully and remained appropriately cautious. It continued to say there was not enough history for a firm recurring pattern, described the result as an early reflection, and limited the displayed pattern signal to 1× across 3 entries. The page did not present the result as a diagnosis or certainty.
