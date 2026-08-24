@@ -111,3 +111,9 @@ Next: deploy and smoke-test the latest commits; create a clean internal account;
 A fresh internal test account successfully completed sign-in, created one fictional journal entry, received a reflection, saw it marked as saved to history, found it in the Journal list, and saw the first pattern on the Dashboard. This confirms the basic first-entry funnel in the preview deployment. It is not a retention or traction result.
 
 Next check: return to the same account tomorrow and again around day 3. Confirm the account remains accessible, the original entry remains present, a second entry can be added, and Insights continue to load.
+
+## Day 2 return test recorded — August 24, 2026
+
+The same dedicated fictional test account returned successfully. The two journal entries remained available, the second reflection was generated and saved, the Journal list showed 2 entries across 2 writing days, and the Dashboard showed a cautious 2/5 pattern-forming state. This is positive product evidence, but not yet a retention or market result.
+
+Next check: open Insights today, then perform one final return check around day 3.
