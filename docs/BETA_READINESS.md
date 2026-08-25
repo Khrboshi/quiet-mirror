@@ -129,3 +129,9 @@ A third fictional entry was created successfully. The reflection was generated a
 ## Three-entry Insights check recorded — August 24, 2026
 
 With three fictional entries, Insights loaded successfully and remained appropriately cautious. It continued to say there was not enough history for a firm recurring pattern, described the result as an early reflection, and limited the displayed pattern signal to 1× across 3 entries. The page did not present the result as a diagnosis or certainty.
+
+## Day 3 return test recorded — August 25, 2026
+
+The dedicated fictional test account returned on the third day through the real quietmirror.me domain. All three entries remained accessible, the Journal loaded, and the Dashboard retained the cautious 3/5 pattern-forming state across 2 writing days. This completes the initial internal 3-day return check. It is positive product evidence, not market traction.
+
+Next: begin one controlled organic Instagram post, keep payment disabled, and measure the path from link click to signup, first entry, reflection received, and return.
