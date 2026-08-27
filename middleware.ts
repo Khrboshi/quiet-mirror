@@ -43,7 +43,7 @@ export async function middleware(req: NextRequest) {
     },
   });
 
-  // â Use getSession() in middleware â reads JWT from cookie locally,
+  // Ã¢ÂÂ Use getSession() in middleware Ã¢ÂÂ reads JWT from cookie locally,
   // no network call to Supabase Auth servers. Fast on every navigation.
   // Individual page routes still call getUser() for secure server actions.
   const { data: { session } } = await supabase.auth.getSession();
@@ -57,7 +57,7 @@ export async function middleware(req: NextRequest) {
   }
 
 
-  // Security headers — added by Auditor & Researcher
+  // Security headers â added by Auditor & Researcher
   const csp = [
     "default-src 'self'",
     "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live",
@@ -72,6 +72,7 @@ export async function middleware(req: NextRequest) {
   res.headers.set('X-Frame-Options', 'DENY');
   res.headers.set('X-Content-Type-Options', 'nosniff');
   res.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()');
   return res;
 }
 
