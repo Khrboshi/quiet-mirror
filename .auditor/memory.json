@@ -69,14 +69,26 @@
       "date": "2026-08-27",
       "title": "Root layout crashes still show a blank page",
       "buildTime": "~40s"
+    },
+    "permissions-policy": {
+      "file": "middleware.ts",
+      "date": "2026-08-27",
+      "title": "Browser features like camera and microphone are not explicitly disabled",
+      "buildTime": "~40s"
     }
   },
   "failedAttempts": {},
   "appliedFindings": [
     "error-boundaries",
-    "global-error"
+    "global-error",
+    "permissions-policy"
   ],
   "auditHistory": [
+    {
+      "date": "2026-08-27",
+      "finding": "permissions-policy",
+      "outcome": "merged"
+    },
     {
       "date": "2026-08-27",
       "finding": "global-error",
