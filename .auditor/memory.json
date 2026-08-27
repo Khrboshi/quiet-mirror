@@ -63,13 +63,25 @@
       "date": "2026-08-27",
       "title": "Users see a blank page when something goes wrong",
       "buildTime": "~40s"
+    },
+    "global-error": {
+      "file": "app/global-error.tsx",
+      "date": "2026-08-27",
+      "title": "Root layout crashes still show a blank page",
+      "buildTime": "~40s"
     }
   },
   "failedAttempts": {},
   "appliedFindings": [
-    "error-boundaries"
+    "error-boundaries",
+    "global-error"
   ],
   "auditHistory": [
+    {
+      "date": "2026-08-27",
+      "finding": "global-error",
+      "outcome": "merged"
+    },
     {
       "date": "2026-08-27",
       "finding": "error-boundaries",
