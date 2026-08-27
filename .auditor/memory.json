@@ -1,0 +1,80 @@
+{
+  "version": "1.0",
+  "app": {
+    "name": "quiet-mirror",
+    "url": "https://quietmirror.me",
+    "stack": "Next.js + Supabase + Vercel",
+    "middlewarePattern": "res-variable",
+    "packageManager": "npm",
+    "nodeVersion": "24.x"
+  },
+  "knownServices": [
+    "supabase.co",
+    "anthropic.com",
+    "posthog.com",
+    "fonts.googleapis.com",
+    "fonts.gstatic.com",
+    "vercel.live",
+    "va.vercel-scripts.com"
+  ],
+  "cspPolicy": {
+    "default-src": [
+      "'self'"
+    ],
+    "script-src": [
+      "'self'",
+      "'unsafe-inline'",
+      "'unsafe-eval'",
+      "https://vercel.live"
+    ],
+    "style-src": [
+      "'self'",
+      "'unsafe-inline'",
+      "https://fonts.googleapis.com"
+    ],
+    "connect-src": [
+      "'self'",
+      "https://*.supabase.co",
+      "https://api.anthropic.com",
+      "https://*.posthog.com",
+      "https://fonts.googleapis.com",
+      "https://vercel.live"
+    ],
+    "img-src": [
+      "'self'",
+      "data:",
+      "blob:"
+    ],
+    "font-src": [
+      "'self'",
+      "https://fonts.gstatic.com"
+    ],
+    "frame-src": [
+      "'self'",
+      "https://vercel.live"
+    ],
+    "frame-ancestors": [
+      "'none'"
+    ]
+  },
+  "successfulFixes": {
+    "error-boundaries": {
+      "file": "app/error.tsx",
+      "date": "2026-08-27",
+      "title": "Users see a blank page when something goes wrong",
+      "buildTime": "~40s"
+    }
+  },
+  "failedAttempts": {},
+  "appliedFindings": [
+    "error-boundaries"
+  ],
+  "auditHistory": [
+    {
+      "date": "2026-08-27",
+      "finding": "error-boundaries",
+      "outcome": "merged"
+    }
+  ],
+  "lastUpdated": "2026-08-27"
+}
