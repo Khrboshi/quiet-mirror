@@ -323,7 +323,9 @@ export default function HomeBelowFold() {
           <ScrollReveal stagger className="mt-10 grid gap-4 sm:grid-cols-3">
             {[
               { icon:"🔒", title:h.trust1Title, body:h.trust1Body, border:"border-qm-positive-border", bg:"bg-qm-positive-strong/[0.03]" },
-              { icon:"🛡️", title:ps.trialLabel(PRICING.trialDays), body:`${ps.trialFreeFor(PRICING.trialDays)} — ${ps.fullAccess}. ${ps.trialNoChargeUntil(PRICING.trialDays + 1).charAt(0).toUpperCase()+ps.trialNoChargeUntil(PRICING.trialDays + 1).slice(1)}.`, border:"border-qm-premium-border", bg:"bg-qm-premium-strong/[0.03]" },
+              PRICING.earlyAccess
+                ? { icon:"🛡️", title:h.pricingTag, body:h.pricingDesc, border:"border-qm-premium-border", bg:"bg-qm-premium-strong/[0.03]" }
+                : { icon:"🛡️", title:ps.trialLabel(PRICING.trialDays), body:`${ps.trialFreeFor(PRICING.trialDays)} — ${ps.fullAccess}. ${ps.trialNoChargeUntil(PRICING.trialDays + 1).charAt(0).toUpperCase()+ps.trialNoChargeUntil(PRICING.trialDays + 1).slice(1)}.`, border:"border-qm-premium-border", bg:"bg-qm-premium-strong/[0.03]" },
               { icon:"✦", title:h.trust3Title, body:h.trust3Body, border:"border-qm-premium-border", bg:"bg-qm-premium-strong/[0.03]" },
             ].map(({ icon, title, body, border, bg })=>(
               <div key={title} className={`rounded-2xl border p-5 ${border} ${bg}`}>
