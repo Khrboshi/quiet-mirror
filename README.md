@@ -119,3 +119,4 @@ Quiet Mirror is in a controlled, non-billable early-access beta. Payments are di
 Verified: journal and reflection persistence, conservative sparse Insights through five entries, grounded practical-entry handling, Neutral-label cleanup, and six locales with 1,029 keys passing the deterministic localization audit. AI grammar review is report-only by default.
 
 Next: run a clean-account 3–7 day retention test, then complete mobile, accessibility, failure/retry, account-isolation, and broader fictional AI testing before outside recruitment or payment activation.
+ 
