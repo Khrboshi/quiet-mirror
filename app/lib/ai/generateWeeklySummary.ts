@@ -1,13 +1,17 @@
 /**
  * app/lib/ai/generateWeeklySummary.ts
  *
- * Shared weekly summary generation logic used by two callers:
- *   - GET  /api/ai/weekly-summary  — on-demand per-user generation
- *   - POST /api/cron/weekly-summaries — batch cron for all Premium users
+ * Weekly summary generation used by the batch cron:
+ *   - GET /api/cron/weekly-summaries
  *
- * Reads the user's last 30 days of journal entries with reflections,
- * builds a prompt with their top themes/emotions/patterns, calls Groq,
- * and persists the result to profiles.weekly_summary.
+ * NOTE: the on-demand route (GET /api/ai/weekly-summary) does NOT use this
+ * function — it carries its own copy of the same logic. Any behavioural fix
+ * made here should be checked against that route too, and vice versa.
+ *
+ * Reads all of the user's journal entries that have a reflection (most recent
+ * 2000, no date window), builds a prompt with their top themes/emotions/
+ * patterns, calls Groq, and persists the result to profiles.weekly_summary
+ * along with the locale it was generated in.
  *
  * The caller is responsible for passing a service-role Supabase client
  * (required to write profiles rows bypassing RLS).
@@ -45,8 +49,14 @@ async function callGroq(system: string, user: string): Promise<string> {
       },
       body: JSON.stringify({
         model,
-        temperature: 0.7,
-        max_tokens: 400,
+        // gpt-oss models are reasoning models: max_completion_tokens is an upper
+        // bound covering BOTH hidden reasoning tokens and visible output, and the
+        // default reasoning effort is "medium". Sending a flat max_tokens: 400
+        // let reasoning consume the whole budget and returned empty content.
+        // This branch mirrors app/api/ai/weekly-summary/route.ts.
+        ...(model.startsWith("openai/gpt-oss")
+          ? { max_completion_tokens: 1200, reasoning_effort: "low" }
+          : { temperature: 0.7, max_tokens: 400 }),
         messages: [
           { role: "system", content: system },
           { role: "user", content: user },
@@ -124,7 +134,7 @@ Rules:
 - When the signals are neutral or practical, describe routines, choices, time, or tradeoffs; do not turn them into distress, burnout, satisfaction, assurance, or other emotional claims unless explicitly supported.
 - When there are fewer than 3 entries, call the result an early signal rather than a recurring pattern, and avoid strong frequency claims such as "often" or "keeps".
 - Keep the whole summary under 180 words.
-- BANNED phrases: "I notice", "I sense", "I can see", "I've noticed", "I wonder", "Looking at your entries", "Based on your entries", "It seems like", "It appears that", "emotions that surface include", "themes that appear", "recurring themes include"`;
+- BANNED: any first-person narration from your perspective — this means constructions equivalent to "I notice", "I sense", "I can see", "I've noticed", "I've seen", "I'm curious", "I think", "I wonder", "Looking at your entries", "Based on your entries", "As I read", "It seems like", "It appears that", "emotions that surface include", "themes that appear", "recurring themes include" — banned in English AND in any other language you are responding in. The equivalent construction in Ukrainian, Arabic, or any other language is equally forbidden.`;
 
   const parts: string[] = [`You have written ${entryCount} journal entries since ${since}.`];
   if (domainLabels) parts.push(`The areas of life you write about most: ${domainLabels}.`);
@@ -146,7 +156,11 @@ Rules:
 
 // ── Voice sanitizer ───────────────────────────────────────────────────────────
 // Programmatically removes first-person "I" constructions that the model
-// produces despite prompt instructions. Runs after every generation.
+// produces despite prompt instructions.
+//
+// ENGLISH ONLY. These patterns can never match Ukrainian, Arabic, French, Dutch
+// or Romanian output, so applying them to a non-English summary does nothing but
+// look like protection that is not there. The caller must gate this on locale.
 
 function sanitizeSummaryVoice(text: string): string {
   return text
@@ -206,6 +220,9 @@ export async function generateWeeklySummaryForUser(
   adminClient: SupabaseClient,
   locale: string = "en"
 ): Promise<GenerateResult> {
+  // null for English, a language name ("Ukrainian", "Arabic", ...) otherwise
+  const aiLang = getAiLanguageName(locale);
+
   // Fetch reflected entries
   const { data: rows } = await adminClient
     .from("journal_entries")
@@ -308,19 +325,41 @@ export async function generateWeeklySummaryForUser(
     return { ok: false, reason: "groq_failed" };
   }
 
-  if (!summary || summary.length < 50) return { ok: false, reason: "groq_failed" };
+  // Groq can return 200 with empty or near-empty content — on reasoning models
+  // this happens when the token budget is exhausted before any visible output.
+  // Log it explicitly: the previous silent return made this indistinguishable
+  // from a genuine API failure in the logs.
+  if (!summary || summary.length < 50) {
+    console.error(
+      `[weekly-summary] Empty or too-short output for user ${userId} — ` +
+      `length ${summary.length}, locale ${locale}`
+    );
+    return { ok: false, reason: "groq_failed" };
+  }
 
   // Post-process: strip first-person "I" constructions the model keeps generating
-  // despite prompt instructions. These replacements run on every summary before
-  // it's saved or shown to the user.
-  summary = sanitizeSummaryVoice(summary);
+  // despite prompt instructions. English only — see sanitizeSummaryVoice.
+  if (!aiLang) {
+    summary = sanitizeSummaryVoice(summary);
+  } else {
+    summary = summary.replace(/\s{2,}/g, " ").trim();
+  }
 
-  // Save to profiles
+  // Save to profiles.
+  // weekly_summary_locale MUST be written here. The on-demand route decides
+  // whether its cache is fresh by comparing that column to the request locale;
+  // if this write leaves it untouched, an English summary generated here can be
+  // served to a non-English user as though it were already in their language.
   const generatedAt = new Date().toISOString();
   const { error: saveErr } = await adminClient
     .from("profiles")
     .upsert(
-      { id: userId, weekly_summary: summary, weekly_summary_generated_at: generatedAt },
+      {
+        id: userId,
+        weekly_summary: summary,
+        weekly_summary_generated_at: generatedAt,
+        weekly_summary_locale: locale,
+      },
       { onConflict: "id" }
     );
 
