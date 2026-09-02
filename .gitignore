@@ -10,3 +10,11 @@ out/
 npm-debug.log*
 # TypeScript incremental build info
 tsconfig.tsbuildinfo
+
+# database dumps — NEVER commit these
+# this repo is public; dumps contain every user's journal entries
+*.sql
+!supabase/migrations/*.sql
+*.dump
+*.backup
+/backups/
