@@ -1,0 +1,88 @@
+name: Database backup
+
+# Runs every day at 03:00 UTC, and can be started by hand from the Actions tab.
+#
+# What it does:
+#   1. Installs PostgreSQL 17 client tools (the server is 17.6; pg_dump must
+#      be 17 or newer or it refuses to run)
+#   2. Dumps the schema and the data as two separate files
+#   3. FAILS LOUDLY if either dump is empty or missing tables
+#   4. Uploads both as a private artifact, kept for 90 days
+#
+# The dumps are NEVER committed to the repository. This repo is public and the
+# data dump contains every user's journal entries in plain text.
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Install PostgreSQL 17 client
+        run: |
+          curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc \
+            | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/pgdg.gpg
+          echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" \
+            | sudo tee /etc/apt/sources.list.d/pgdg.list
+          sudo apt-get update -qq
+          sudo apt-get install -y postgresql-client-17
+          /usr/lib/postgresql/17/bin/pg_dump --version
+
+      - name: Dump schema
+        env:
+          DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          mkdir -p out
+          /usr/lib/postgresql/17/bin/pg_dump "$DB_URL" \
+            --schema-only --schema=public --no-owner --no-privileges \
+            -f "out/schema_$(date -u +%Y-%m-%d).sql"
+
+      - name: Dump data
+        env:
+          DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          /usr/lib/postgresql/17/bin/pg_dump "$DB_URL" \
+            --data-only --schema=public --no-owner --no-privileges \
+            -f "out/data_$(date -u +%Y-%m-%d).sql"
+
+      # A dump that ran without error can still be empty. Check the contents,
+      # not the exit code. If these thresholds are not met the job fails and
+      # GitHub emails the repository owner.
+      - name: Verify the backup is real
+        run: |
+          SCHEMA="out/schema_$(date -u +%Y-%m-%d).sql"
+          DATA="out/data_$(date -u +%Y-%m-%d).sql"
+
+          TABLES=$(grep -c "CREATE TABLE" "$SCHEMA" || true)
+          POLICIES=$(grep -c "CREATE POLICY" "$SCHEMA" || true)
+          COPIES=$(grep -c "^COPY" "$DATA" || true)
+
+          echo "Tables:   $TABLES"
+          echo "Policies: $POLICIES"
+          echo "COPY blocks: $COPIES"
+          ls -lh out/
+
+          FAILED=0
+          [ "$TABLES"   -ge 10 ] || { echo "::error::Only $TABLES tables — expected at least 10"; FAILED=1; }
+          [ "$POLICIES" -ge 25 ] || { echo "::error::Only $POLICIES policies — expected at least 25"; FAILED=1; }
+          [ "$COPIES"   -ge 10 ] || { echo "::error::Only $COPIES COPY blocks — expected at least 10"; FAILED=1; }
+
+          if [ "$FAILED" -eq 1 ]; then
+            echo "::error::Backup verification failed. The dump ran but the contents are wrong."
+            exit 1
+          fi
+
+          echo "Backup verified."
+
+      - name: Upload backup artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: db-backup-${{ github.run_number }}
+          path: out/
+          retention-days: 90
+          if-no-files-found: error
