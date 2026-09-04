@@ -19,24 +19,24 @@
     "beta:production-check": "node scripts/check-production-beta.mjs"
   },
   "dependencies": {
-    "@dodopayments/nextjs": "^0.3.5",
+    "@dodopayments/nextjs": "^0.3.9",
     "@supabase/ssr": "^0.12.5",
     "@supabase/supabase-js": "^2.43.4",
     "@vercel/speed-insights": "^1.0.12",
-    "autoprefixer": "10.4.17",
+    "autoprefixer": "10.5.4",
     "clsx": "^2.0.0",
     "dodopayments": "^2.28.0",
     "framer-motion": "^11.0.3",
     "groq-sdk": "^0.4.0",
-    "lucide-react": "^1.8.0",
+    "lucide-react": "^1.39.0",
     "next": "^15.5.24",
-    "postcss": "8.5.23",
-    "posthog-js": "^1.422.5",
+    "postcss": "8.5.26",
+    "posthog-js": "^1.423.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "resend": "^4.0.0",
     "sharp": "^0.35.4",
-    "standardwebhooks": "^1.0.0",
+    "standardwebhooks": "^1.1.1",
     "stripe": "^16.0.0",
     "tailwind-merge": "^2.2.1",
     "tailwindcss": "3.3.3"
@@ -53,6 +53,6 @@
     "protobufjs": "7.5.5",
     "glob": "10.5.0",
     "dompurify": "3.4.1",
-    "postcss": "8.5.23"
+    "postcss": "8.5.26"
   }
 }
