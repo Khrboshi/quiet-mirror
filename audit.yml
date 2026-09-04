@@ -1,0 +1,146 @@
+# ══════════════════════════════════════════════════════════════
+# PLACE THIS FILE IN THE quiet-mirror REPOSITORY, at:
+#     .github/workflows/audit.yml
+#
+# Delivered as a proposal. Nothing has been committed to quiet-mirror.
+#
+# ONE-TIME SETUP — the audit will not run without this:
+#   quiet-mirror-auditor is a PRIVATE repository. The automatic GITHUB_TOKEN is
+#   scoped to the repository the workflow runs in, so it cannot read another
+#   private repo even under the same account.
+#
+#   1. Create a fine-grained personal access token:
+#        Resource owner:  Khrboshi
+#        Repository:      Khrboshi/quiet-mirror-auditor  (that one only)
+#        Permissions:     Contents -> Read-only          (nothing else)
+#        Expiry:          set one, and diarise the renewal
+#   2. Add it to quiet-mirror:
+#        Settings -> Secrets and variables -> Actions -> New repository secret
+#        Name: AUDITOR_REPO_TOKEN
+#
+#   If the secret is absent the workflow says so in the job summary and stops
+#   cleanly. It does not fail the run, because a setup gap must not look like a
+#   code problem on your pull request.
+#
+# WHAT THIS JOB CAN AND CANNOT DO
+#   Reports only. audit-cli.js refuses every write verb before the request leaves
+#   the process, and never calls a model. It cannot commit, branch, merge, or
+#   raise a finding that no deterministic check confirmed. It never blocks a merge.
+name: Auditor
+
+on:
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 6 * * 1'      # Mondays 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: auditor-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # Runs BEFORE the checkout it protects. A missing secret otherwise
+      # surfaces as an opaque git authentication error.
+      - name: Check the auditor token is present
+        id: guard
+        env:
+          TOKEN: ${{ secrets.AUDITOR_REPO_TOKEN }}
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "have_token=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "### Auditor did not run"
+              echo ""
+              echo "\`AUDITOR_REPO_TOKEN\` is not set in this repository."
+              echo "The auditor lives in a private repo and cannot be read without it."
+              echo "See the setup notes at the top of \`.github/workflows/audit.yml\`."
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "have_token=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check out the auditor
+        if: steps.guard.outputs.have_token == 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: Khrboshi/quiet-mirror-auditor
+          ref: main
+          path: auditor
+          token: ${{ secrets.AUDITOR_REPO_TOKEN }}
+          persist-credentials: false
+
+      - name: Set up Node
+        if: steps.guard.outputs.have_token == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # An auditor that fails its own 222 tests has no business commenting on
+      # your pull requests.
+      - name: Verify the auditor's own tests pass
+        if: steps.guard.outputs.have_token == 'true'
+        working-directory: auditor
+        run: node run-tests.js
+
+      - name: Run the deterministic checks
+        if: steps.guard.outputs.have_token == 'true'
+        working-directory: auditor
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node audit-cli.js --json --out ../audit.json
+
+      - name: Comment on the pull request
+        if: steps.guard.outputs.have_token == 'true' && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('audit.json', 'utf8'));
+            const MARKER = '<!-- quiet-mirror-auditor -->';
+            const body = MARKER + '\n' + report.markdown;
+
+            // One comment, edited in place, rather than a new one per push.
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              per_page: 100
+            });
+            const existing = comments.find(c => c.body && c.body.includes(MARKER));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                comment_id: existing.id, body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: context.issue.number, body
+              });
+            }
+
+      - name: Job summary
+        if: steps.guard.outputs.have_token == 'true'
+        run: |
+          if [ -f audit.json ]; then
+            node -e "console.log(require('./audit.json').markdown)" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'The audit produced no report. See the step logs above.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: steps.guard.outputs.have_token == 'true'
+        with:
+          name: audit-report
+          path: audit.json
+          retention-days: 30
