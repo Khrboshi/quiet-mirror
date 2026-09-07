@@ -21,7 +21,7 @@
   "dependencies": {
     "@dodopayments/nextjs": "^0.3.9",
     "@supabase/ssr": "^0.12.5",
-    "@supabase/supabase-js": "^2.43.4",
+    "@supabase/supabase-js": "^2.115.0",
     "@vercel/speed-insights": "^1.0.12",
     "autoprefixer": "10.5.4",
     "clsx": "^2.0.0",
