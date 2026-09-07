@@ -10,9 +10,10 @@ export const dynamic = "force-dynamic";
 export default async function NewJournalPage() {
   const supabase = await createServerSupabase();
 
-  // ✅ getSession reads from cookie locally — no network call
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session?.user) redirect("/magic-login");
+  // ✅ Use getUser() — authenticates the token with Supabase Auth.
+  // getSession() reads the cookie without verifying it, which Supabase warns about.
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/magic-login");
 
   const t = await getRequestTranslations();
 
@@ -23,11 +24,11 @@ export default async function NewJournalPage() {
     supabase
       .from("journal_entries")
       .select("id", { count: "exact", head: true })
-      .eq("user_id", session.user.id),
+      .eq("user_id", user.id),
     supabase
       .from("journal_entries")
       .select("created_at")
-      .eq("user_id", session.user.id)
+      .eq("user_id", user.id)
       .order("created_at", { ascending: false })
       .limit(1),
   ]);
