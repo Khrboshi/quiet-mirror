@@ -372,7 +372,30 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
   const reflectionsPaused = isFree && (credits ?? 0) === 0;
   const resetLabel = startOfNextMonth();
 
-  const greeting = displayName
+  // ── Hydration: the greeting depends on the reader's clock ───────────────────
+  // greetingByHour() reads the local hour. Vercel's server runs in UTC and the
+  // browser runs in the reader's own zone, so for nine hours a day the two
+  // produce different words. React compares the server HTML against the FIRST
+  // browser render, finds "Good morning" where it expected "Good afternoon",
+  // and discards the whole dashboard to rebuild it client-side. That is what
+  // production reported as Minified React error #418.
+  //
+  // Confirmed 7 Sep 2026 (owner at UTC+3): at 14:29 local, view-source showed
+  // the server had sent "Good morning" while the browser displayed "Good
+  // afternoon", and the console carried #418. At 15:13, with both clocks in the
+  // same bucket, the console was clean.
+  //
+  // Fix: render a non-breaking space until the mount effect has run. `mounted`
+  // is false on the server AND on the first browser render, so both produce
+  // identical markup and React has nothing to disagree about. The real greeting
+  // appears on the next render, computed from the browser's own clock.
+  //
+  // Do NOT replace this with suppressHydrationWarning alone. That stops React
+  // comparing the text, so it keeps the server's word and the reader is left
+  // looking at the wrong greeting.
+  const greeting = !mounted
+    ? "\u00A0"
+    : displayName
     ? `${greetingByHour(t)}, ${displayName}`
     : greetingByHour(t);
 
