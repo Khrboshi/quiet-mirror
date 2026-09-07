@@ -131,15 +131,17 @@ export default async function JournalPage() {
   const t = getTranslations(locale);
   const supabase = await createServerSupabase();
 
+  // ✅ Use getUser() — authenticates the token with Supabase Auth.
+  // getSession() reads the cookie without verifying it, which Supabase warns about.
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  if (!session) redirect("/magic-login");
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/magic-login");
 
   const { data: rawEntries } = await supabase
     .from("journal_entries")
     .select("id, created_at, title, content, ai_response")
-    .eq("user_id", session.user.id)
+    .eq("user_id", user.id)
     .order("created_at", { ascending: false });
 
   const entries = (rawEntries ?? []) as Array<{
