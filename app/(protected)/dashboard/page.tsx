@@ -68,10 +68,12 @@ export type DashboardData = {
 export default async function DashboardPage() {
   const supabase = await createServerSupabase();
 
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session?.user) redirect("/magic-login?reason=not_authenticated");
+  // ✅ Use getUser() — authenticates the token with Supabase Auth.
+  // getSession() reads the cookie without verifying it, which Supabase warns about.
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/magic-login?reason=not_authenticated");
 
-  const userId = session.user.id;
+  const userId = user.id;
 
   // ── Fetch last 30 entries with ai_response for personalisation ────────────
   const { data: rows } = await supabase
