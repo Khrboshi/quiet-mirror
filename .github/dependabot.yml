@@ -43,20 +43,28 @@ updates:
       prefix: "chore(deps)"
       prefix-development: "chore(deps-dev)"
       include: "scope"
-    ignore:
-      # posthog-js 1.423.1 throws on every app page:
-      #   Uncaught TypeError: Cannot read properties of undefined
-      #   (reading 'startTime') at et.reportAllChanges
-      # Confirmed on the PR #241 preview (Dashboard and Insights) on 4 Sep 2026,
-      # and confirmed ABSENT on production, which runs 1.422.5. Of the seven
-      # packages in that group it is the only one that touches the browser
-      # performance API — reportAllChanges is a web-vitals option and PostHog
-      # captures web vitals. The page still renders; what breaks is analytics.
-      #
-      # Only this one version is held back. 1.423.2 and later will still be
-      # offered. Delete this block once a later release is confirmed working.
-      - dependency-name: "posthog-js"
-        versions: ["1.423.1"]
+    # NO IGNORE BLOCK — and do not re-add one for posthog-js.
+    #
+    # An entry holding back posthog-js 1.423.1 sat here from 4 to 7 Sep 2026.
+    # It was added against this crash:
+    #   Uncaught TypeError: Cannot read properties of undefined
+    #   (reading 'startTime') at et.reportAllChanges
+    # and it blamed posthog-js. That diagnosis was wrong, and it survived two
+    # sessions before anyone checked it against anything external.
+    #
+    # The crash is Chrome DevTools' own embedded copy of the web-vitals library,
+    # injected as an anonymous VM script. See GoogleChrome/web-vitals issue #792,
+    # which reports the identical error and reproduces in apps that do not import
+    # web-vitals at all. The evidence here:
+    #   - every stack frame is <anonymous>; not one points at a bundle file
+    #   - the VM number changes every session (VM76, VM156, VM329 observed)
+    #   - the error survived three deployments, including a preview on a
+    #     different domain running a different build
+    #   - it appears only on soft navigation with DevTools open, never on a
+    #     hard page load, which is the documented trigger in #792
+    #   - posthog-js kept reporting events throughout the crash
+    #
+    # No user is affected on any version. Nothing needs holding back.
 
     groups:
       # Next, React and friends move together. Splitting them produces PRs that
