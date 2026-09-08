@@ -24,10 +24,21 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // the last two groups can split a long run of dots many ways, so a single
 // unauthenticated request can pin the event loop. Measured on 8 Sep 2026:
 // a 250 KB value blocked for 44 seconds, a 125 KB value for 9.3 seconds.
-// The length check below runs FIRST and short-circuits, capping worst-case
-// matching at well under a millisecond. 254 is the RFC 5321 maximum address
-// length (256-octet path minus the two angle brackets).
-// Found by CodeQL (alert #6, High). Do not reorder these two checks.
+//
+// TWO length checks guard this. Both must stay exactly where they are:
+//   1. rawEmail is checked BEFORE trim()/toLowerCase(), so an oversized payload
+//      is never normalised. Halves the remaining per-request cost.
+//   2. The check inside the if() runs BEFORE EMAIL_RE and short-circuits it,
+//      capping worst-case matching at well under a millisecond.
+//
+// This does NOT make the route bounded. req.json() has already parsed the whole
+// body by that point (38.6 ms at 4.39 MB), and rejections happen before the IP
+// rate limiter, so that parse cost is unlimited. The ceiling is the platform
+// body-size limit, not this validation.
+//
+// 254 is the RFC 5321 maximum address length (256-octet path minus the two
+// angle brackets). Found by CodeQL (alert #6, High); check 1 added from a
+// Sourcery review on PR #257.
 const MAX_EMAIL_LENGTH = 254;
 const FROM_ADDRESS = CONFIG.emailFromAddress;
 
@@ -151,7 +162,8 @@ export async function POST(req: Request) {
     try { body = await req.json(); } catch { body = {}; }
     const bodyObj = (typeof body === "object" && body !== null) ? body as Record<string, unknown> : {};
 
-    const email = typeof bodyObj.email === "string" ? bodyObj.email.trim().toLowerCase() : "";
+    const rawEmail = typeof bodyObj.email === "string" ? bodyObj.email : "";
+    const email = rawEmail.length > MAX_EMAIL_LENGTH ? "" : rawEmail.trim().toLowerCase();
     const source = typeof bodyObj.source === "string" ? bodyObj.source : "blog";
 
     if (!email || email.length > MAX_EMAIL_LENGTH || !EMAIL_RE.test(email)) {
