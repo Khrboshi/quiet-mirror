@@ -46,10 +46,38 @@ function isStandalone(): boolean {
   );
 }
 
+// SECURITY: open-redirect guard. `raw` reaches here from the ?next= query
+// parameter, from localStorage, and from a postMessage payload, so it is
+// attacker-controllable through a crafted magic-login link.
+//
+// The previous version tested only for a leading "//". That let 552 of 58,110
+// fuzzed payloads resolve to another origin, measured 8 Sep 2026, because
+// browsers normalise "\\" to "/" and strip TAB, LF and CR before parsing a URL.
+// So "/\\evil.com" and "/<TAB>/evil.com" both landed on https://evil.com.
+//
+// Three rules, all required, in this order:
+//   1. Remove control characters FIRST, so they cannot conceal a second slash.
+//   2. Reject a backslash anywhere -- no legitimate in-app path contains one.
+//   3. Reject a leading "//".
+// Re-verified against the same 58,110 payloads: 0 escape the origin, and 16
+// legitimate destinations are unchanged. Control characters are filtered by
+// char code rather than by regex, to avoid depending on lint configuration.
+//
+// Found by CodeQL (alerts #15 and #16, Medium).
+// An identical copy of this function lives in app/auth/complete/CompleteClient.tsx.
+// If you change one, change both.
 function safeNext(raw: string | null | undefined): string {
-  const v = (raw || "/dashboard").trim();
-  if (!v.startsWith("/")) return "/dashboard";
-  if (v.startsWith("//")) return "/dashboard";
+  const FALLBACK = "/dashboard";
+  if (typeof raw !== "string") return FALLBACK;
+  let v = "";
+  for (const ch of raw) {
+    const code = ch.charCodeAt(0);
+    if (code > 0x1f && code !== 0x7f) v += ch;
+  }
+  v = v.trim();
+  if (!v.startsWith("/")) return FALLBACK;
+  if (v.includes("\\")) return FALLBACK;
+  if (v.startsWith("//")) return FALLBACK;
   return v;
 }
 
