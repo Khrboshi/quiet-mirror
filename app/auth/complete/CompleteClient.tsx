@@ -11,9 +11,9 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useTranslation } from "@/app/components/I18nProvider";
 
-// SECURITY: open-redirect guard. `raw` reaches here from the ?next= query
-// parameter, from localStorage, and from a postMessage payload, so it is
-// attacker-controllable through a crafted magic-login link.
+// SECURITY: open-redirect guard. `raw` reaches here only from the
+// `localStorage.getItem("qm:auth_next")` value, which may be attacker-
+// controllable through a crafted magic-login link.
 //
 // The previous version tested only for a leading "//". That let 552 of 58,110
 // fuzzed payloads resolve to another origin, measured 8 Sep 2026, because
