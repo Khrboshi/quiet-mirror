@@ -6,6 +6,24 @@ on:
 jobs:
   analyze:
     runs-on: ubuntu-latest
+
+    # SECURITY: this job checks out the repository, installs dependencies and
+    # runs read-only analysis (knip, grep sweeps), writing its output to the
+    # job summary and one artifact. It commits nothing and opens nothing, so
+    # contents: read is what it needs. Checkout is why this job keeps a
+    # contents scope where db-backup.yml and weekly-summaries.yml use
+    # permissions: {}.
+    #
+    # This constrains the token explicitly regardless of the repository's
+    # default setting. That default was "Read repository contents and packages
+    # permissions" when checked on 9 September 2026, so the practical effect
+    # here is to drop the packages scope. It is a settings-page value that can
+    # change without any change to this file, which is the point of stating it
+    # in the workflow.
+    # Found by CodeQL ("Workflow does not contain permissions", Medium).
+    permissions:
+      contents: read
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v7

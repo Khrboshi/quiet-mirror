@@ -12,6 +12,25 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
+    # SECURITY: nothing in this job uses GITHUB_TOKEN. It runs a single curl
+    # against quietmirror.me with CRON_SECRET. It uses no actions, checks out
+    # nothing, and calls no GitHub API. An empty block disables every scope,
+    # which is the minimal starting point CodeQL itself recommends in the
+    # alert text.
+    #
+    # This constrains the token explicitly regardless of the repository's
+    # default setting. That default was "Read repository contents and packages
+    # permissions" when checked on 9 September 2026, but it is a settings-page
+    # value that can change without any change to this file.
+    #
+    # NOT dispatch-tested: this workflow is Disabled in the Actions tab, and a
+    # disabled workflow cannot be run manually. The identical change was
+    # measured on db-backup.yml instead, where the runner reported
+    # "Contents: read / Metadata: read" before and "Metadata: read" alone
+    # after, with the artifact upload unaffected.
+    # Found by CodeQL ("Workflow does not contain permissions", Medium).
+    permissions: {}
+
     steps:
       - name: Trigger weekly summary generation
         run: |
