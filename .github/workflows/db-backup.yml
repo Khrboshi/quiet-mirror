@@ -22,6 +22,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
+    # SECURITY: this job never touches the repository. It installs pg_dump,
+    # dumps Supabase using SUPABASE_DB_URL, verifies the dump has content and
+    # uploads it as a private artifact. It does not check out any code and it
+    # pushes nothing, so it needs no write access. Without this block it is
+    # handed the default broad GITHUB_TOKEN -- on a job that holds a database
+    # credential and produces a dump of every user's journal entries.
+    # Found by CodeQL ("Workflow does not contain permissions", Medium).
+    permissions:
+      contents: read
+
     steps:
       - name: Install PostgreSQL 17 client
         run: |
