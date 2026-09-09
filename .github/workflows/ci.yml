@@ -28,10 +28,18 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
-    # SECURITY: this job only reads the repository and runs tsc, eslint and
+    # SECURITY: this job checks out the repository and runs tsc, eslint and
     # i18n-sync. It writes nothing back to git and calls no GitHub API, so
-    # read access to contents is all it needs. Without this block it is
-    # handed the default broad GITHUB_TOKEN.
+    # contents: read is what it needs -- read, and nothing else. Checkout is
+    # why this job keeps a contents scope where db-backup.yml and
+    # weekly-summaries.yml use permissions: {}.
+    #
+    # This constrains the token explicitly regardless of the repository's
+    # default setting. That default was "Read repository contents and packages
+    # permissions" when checked on 9 September 2026, so the practical effect
+    # here is to drop the packages scope. It is a settings-page value that can
+    # change without any change to this file, which is the point of stating it
+    # in the workflow.
     # Found by CodeQL ("Workflow does not contain permissions", Medium).
     permissions:
       contents: read
