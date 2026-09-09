@@ -169,7 +169,24 @@ const COREPATTERN_REPLACEMENTS: Array<[RegExp, string]> = [
 function norm(s: string): string {
   return String(s ?? "")
     .toLowerCase()
-    .replace(/[']/g, "'")
+    // Smart apostrophes -> ASCII apostrophe. Written as \u escapes on purpose.
+    // This line previously read .replace(/[']/g, "'"), replacing a straight
+    // apostrophe with itself: a literal curly character had been flattened to a
+    // straight one at some point, which silently turned the line into a no-op.
+    // Escapes cannot be flattened the same way.
+    //
+    // It matters because all four FALLBACK_CP_PREFIXES begin with "you're" and
+    // models emit U+2019 in prose by default. Without this, norm() turned
+    // "You\u2019re in the middle of something" into "you re in the middle of
+    // something", startsWith() failed, and the placeholder text this module
+    // exists to strip reached the Insights dashboard instead.
+    //
+    // Scope is deliberately single-quote only: of the 106 strings compared
+    // against norm() output in this file, the only four containing an
+    // apostrophe are those prefixes. No theme or emotion target has one, so
+    // this cannot change theme or emotion matching.
+    // Found by CodeQL ("Replacement of a substring with itself", Medium).
+    .replace(/[\u2018\u2019\u02BC\u2032]/g, "'")
     .replace(/[_]/g, " ")
     .replace(/[^a-z0-9\s-'"]/g, " ")
     .replace(/\s+/g, " ")
