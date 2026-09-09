@@ -12,6 +12,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
+    # SECURITY: this job makes no GitHub API call at all. It curls
+    # quietmirror.me with CRON_SECRET and reads the response. It needs no
+    # write access of any kind, and without this block it is handed the
+    # default broad GITHUB_TOKEN.
+    # Found by CodeQL ("Workflow does not contain permissions", Medium).
+    permissions:
+      contents: read
+
     steps:
       - name: Trigger weekly summary generation
         run: |
