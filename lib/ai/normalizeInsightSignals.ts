@@ -216,7 +216,12 @@ function isFallbackEmotion(k: string): boolean {
 
 export function isFallbackCorepattern(k: string): boolean {
   const lower = norm(k);
-  return FALLBACK_CP_PREFIXES.some((prefix) => lower.startsWith(prefix));
+  // Normalise the prefix as well as the input. norm() rewrites punctuation to
+  // spaces, so "you're proud of progress, but still learning the line" arrived
+  // here as "...progress but still..." while the constant kept its comma, and
+  // startsWith() could never match it. That prefix has never been filtered.
+  // Normalising both sides makes any future prefix punctuation-safe.
+  return FALLBACK_CP_PREFIXES.some((prefix) => lower.startsWith(norm(prefix)));
 }
 
 export function normalizeTheme(raw: string): string | null {
