@@ -6,6 +6,16 @@ on:
 jobs:
   analyze:
     runs-on: ubuntu-latest
+
+    # SECURITY: this job checks out the repository, installs dependencies and
+    # runs read-only analysis (knip, grep sweeps), writing its output to the
+    # job summary and one artifact. It commits nothing and opens nothing, so
+    # read access to contents is all it needs. Without this block it is handed
+    # the default broad GITHUB_TOKEN.
+    # Found by CodeQL ("Workflow does not contain permissions", Medium).
+    permissions:
+      contents: read
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v7
