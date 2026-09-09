@@ -28,6 +28,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
+    # SECURITY: this job only reads the repository and runs tsc, eslint and
+    # i18n-sync. It writes nothing back to git and calls no GitHub API, so
+    # read access to contents is all it needs. Without this block it is
+    # handed the default broad GITHUB_TOKEN.
+    # Found by CodeQL ("Workflow does not contain permissions", Medium).
+    permissions:
+      contents: read
+
     steps:
       - name: Checkout
         uses: actions/checkout@v7
