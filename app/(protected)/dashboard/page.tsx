@@ -9,6 +9,7 @@ import { redirect } from "next/navigation";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { parseAIResponse } from "@/lib/planUtils";
 import DashboardClient from "./DashboardClient";
+import { isFallbackCorepattern } from "@/lib/ai/normalizeInsightSignals";
 
 export const dynamic = "force-dynamic";
 
@@ -25,22 +26,21 @@ const FALLBACK_EMOTIONS = new Set([
   "frustration", "hurt", "longing", "confusion",
 ]);
 
-// All 4 domain template fallback corepatterns (prefix match, case-insensitive)
-const FALLBACK_CP_PREFIXES = [
-  "you're in the middle of something",
-  "you're proud of progress, but still learning the line",
-  "you're navigating a tension between your professional self-worth",
-  "you're trying to protect your self-respect while staying connected",
-];
-
 function isFallback(set: Set<string>, k: string) {
   return set.has((k || "").toLowerCase().trim());
 }
 
-function isFallbackCorepattern(k: string): boolean {
-  const lower = k.toLowerCase().trim();
-  return FALLBACK_CP_PREFIXES.some((p) => lower.startsWith(p));
-}
+// isFallbackCorepattern is imported from lib/ai/normalizeInsightSignals rather
+// than duplicated here. The local copy lowercased and trimmed but did not
+// normalise U+2018/U+2019, so an AI corepattern beginning "You\u2019re" was never
+// recognised as a placeholder and reached lastCorepattern and the dashboard
+// personalization card. Found by Sourcery on PR #260.
+//
+// NOTE: FALLBACK_THEMES and FALLBACK_EMOTIONS above are still local copies and
+// have drifted from lib/ai -- this file filters frustration, hurt and longing,
+// which lib/ai deliberately preserves as real user emotions, and covers 12 of
+// its 37 themes. Deliberately left alone here: reconciling them changes what
+// users see and needs its own decision.
 
 function parseAiResponse(raw: string | Record<string, unknown> | null) {
   return parseAIResponse(raw);
