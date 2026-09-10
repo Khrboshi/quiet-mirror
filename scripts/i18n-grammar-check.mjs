@@ -214,7 +214,7 @@ function applyCorrections(src, corrections, enKeys) {
     const leafKey = parts[parts.length - 1];
 
     // Step 1: find the top-level namespace block in the source
-    const nsRegex = new RegExp(`^  ${topNs}:\s*\{`, "m");
+    const nsRegex = new RegExp(`^  ${topNs}:\\s*\\{`, "m");
     const nsStart = patched.search(nsRegex);
     if (nsStart === -1) {
       console.warn(warn(`  ⚠ Namespace "${topNs}" not found — skipping "${fullKey}"`));
@@ -238,7 +238,7 @@ function applyCorrections(src, corrections, enKeys) {
     // Step 3: within the namespace block, match exactly this leaf key
     const region   = patched.slice(nsStart, nsEnd);
     const leafRegex = new RegExp(
-      `^([ \t]+${leafKey}\s*:\s*)("(?:[^"\\\\]|\\\\.)*"|'(?:[^'\\\\]|\\\\.)*'),?`,
+      `^([ \\t]+${leafKey}\\s*:\\s*)("(?:[^"\\\\]|\\\\.)*"|'(?:[^'\\\\]|\\\\.)*'),?`,
       "m"
     );
     const match = leafRegex.exec(region);

@@ -296,7 +296,7 @@ function patchLocaleFile(filePath, translations, enKeyValues) {
     let searchFrom = 0;
     let nsStart    = -1;
     for (const segment of nsParts) {
-      const segRegex = new RegExp(`(^|\n)([ \t]*)${segment}\s*:\s*\{`);
+      const segRegex = new RegExp(`(^|\\n)([ \\t]*)${segment}\\s*:\\s*\\{`);
       const match    = src.slice(searchFrom).match(segRegex);
       if (!match) { nsStart = -1; break; }
       nsStart    = searchFrom + src.slice(searchFrom).indexOf(match[0]) + match[0].indexOf(segment);
