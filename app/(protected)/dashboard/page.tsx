@@ -23,7 +23,7 @@ const FALLBACK_THEMES = new Set([
 const FALLBACK_EMOTIONS = new Set([
   "uncertainty", "restlessness", "quiet courage",
   "pride", "tiredness", "determination",
-  "frustration", "hurt", "longing", "confusion",
+  "confusion",
 ]);
 
 function isFallback(set: Set<string>, k: string) {
@@ -36,11 +36,23 @@ function isFallback(set: Set<string>, k: string) {
 // recognised as a placeholder and reached lastCorepattern and the dashboard
 // personalization card. Found by Sourcery on PR #260.
 //
-// NOTE: FALLBACK_THEMES and FALLBACK_EMOTIONS above are still local copies and
-// have drifted from lib/ai -- this file filters frustration, hurt and longing,
-// which lib/ai deliberately preserves as real user emotions, and covers 12 of
-// its 37 themes. Deliberately left alone here: reconciling them changes what
-// users see and needs its own decision.
+// FALLBACK_EMOTIONS above no longer filters frustration, hurt or longing.
+// lib/ai/normalizeInsightSignals.ts carries an explicit comment naming those
+// three as real user emotions that must not be filtered, and this file was
+// filtering them. Because the filter below SELECTS the first surviving word,
+// a user who wrote about frustration got either the wrong emotion or no
+// pattern card at all. Removing the three is the whole change; the remaining
+// seven are unchanged and still filter.
+//
+// STILL DIVERGED, DELIBERATELY. These are local copies and lib/ai is the
+// canonical set. Two gaps remain, both left for a separate decision:
+//   1. FALLBACK_THEMES here holds 12 of lib/ai's 37, so 25 themes lib/ai
+//      treats as filler still reach this dashboard.
+//   2. isFallback() below matches on toLowerCase().trim() while lib/ai uses
+//      its norm(), which also folds curly apostrophes and punctuation. A
+//      variant spelling still slips past here.
+// Closing either one removes pattern cards some users currently see, which is
+// a product decision, not a defect fix.
 
 function parseAiResponse(raw: string | Record<string, unknown> | null) {
   return parseAIResponse(raw);
