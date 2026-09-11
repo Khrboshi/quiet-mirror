@@ -11,7 +11,10 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { createServerSupabase } from "@/lib/supabase/server";
 import UpgradeIntentTracker from "@/app/components/UpgradeIntentTracker";
+import { CONFIG } from "@/app/lib/config";
 import { PRICING } from "@/app/lib/pricing";
+import { OFFER } from "@/app/lib/offer";
+import { ROUTES } from "@/app/lib/routes";
 import { getRequestTranslations } from "@/app/lib/i18n/server";
 
 // ── Data fetching ─────────────────────────────────────────────────────────────
@@ -144,6 +147,13 @@ export default async function InsightsPreviewPage() {
 
   const hasData = isDemoMode || (entryCount >= 2 && (topTheme || topEmotion));
 
+  // This is the homepage's main proof destination, so logged-out visitors
+  // land here first. Before 2026-09-11 it contained zero early-access checks:
+  // five "$25/month" CTAs and a refund line rendered while checkout was
+  // blocked. Signed-in users keep the normal upgrade path.
+  const showPaidCta = !isDemoMode || OFFER.showPriceOnProofSurfaces;
+  const ctaHref = showPaidCta ? OFFER.proofCta : ROUTES.startFree;
+
   // DOMAIN_LABELS built from translations — no hardcoded strings
   const DOMAIN_LABELS: Record<string, { label: string; emoji: string }> = {
     MONEY:        { label: ip.domainMoney,        emoji: "💰" },
@@ -191,7 +201,7 @@ export default async function InsightsPreviewPage() {
             {" "}{ip.bannerText}
           </p>
           <Link
-            href="/upgrade?from=insights-preview"
+            href={ctaHref}
             className="shrink-0 rounded-full bg-qm-accent px-4 py-1.5 text-xs font-semibold text-white transition hover:bg-qm-accent-hover"
           >
             {ip.bannerCta}
@@ -263,7 +273,7 @@ export default async function InsightsPreviewPage() {
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-qm-bg backdrop-blur-[1px]">
             <p className="px-4 text-center text-sm font-medium text-qm-secondary">{ip.weeklyLockTitle}</p>
             <p className="max-w-xs px-4 text-center text-xs text-qm-faint">{ip.weeklyLockBody}</p>
-            <Link href="/upgrade?from=insights-preview"
+            <Link href={ctaHref}
               className="mt-1 rounded-full bg-qm-accent px-5 py-2 text-xs font-semibold text-white transition hover:bg-qm-accent-hover">
               {ip.weeklyLockCta}
             </Link>
@@ -418,7 +428,7 @@ export default async function InsightsPreviewPage() {
           <div className="absolute bottom-0 inset-x-0 h-40 flex flex-col items-center justify-end gap-3 bg-gradient-to-t from-qm-bg via-qm-bg/90 to-transparent pb-6">
             <p className="px-4 text-center text-xs text-qm-faint">{ip.patternNote}</p>
             <Link
-              href="/upgrade?from=insights-preview"
+              href={ctaHref}
               className="inline-flex items-center gap-2 rounded-full border border-qm-positive-border bg-qm-positive-strong/[0.06] px-5 py-2 text-xs font-semibold text-qm-positive transition hover:bg-qm-positive-strong/[0.12]"
             >
               {ip.corepatternLockCta}
@@ -558,21 +568,26 @@ export default async function InsightsPreviewPage() {
           </p>
           <div className="flex flex-wrap gap-3">
             <Link
-              href="/upgrade?from=insights-preview"
+              href={ctaHref}
               className="inline-flex items-center gap-2 rounded-full bg-qm-accent px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-qm-accent-hover"
             >
-              {ip.upgradeCta(ps.perMonth(PRICING.monthly))}
+              {showPaidCta ? ip.upgradeCta(ps.perMonth(PRICING.monthly)) : t.homepage.heroCta1}
             </Link>
             {!isDemoMode && (
               <Link
-                href="/dashboard"
+                href={ROUTES.dashboard}
                 className="inline-flex items-center rounded-full border border-white/[0.08] px-6 py-3 text-sm font-medium text-qm-muted transition hover:border-white/[0.15] hover:text-qm-primary"
               >
                 {ip.upgradeBack}
               </Link>
             )}
           </div>
-          <p className="mt-4 text-xs text-qm-faint">{ip.upgradeRefund(PRICING.trialDays)}</p>
+          {/* Refund copy describes a charge that cannot occur while checkout
+              is blocked. README: "do not present [the trial] as active while
+              earlyAccess is true." */}
+          <p className="mt-4 text-xs text-qm-faint">
+            {showPaidCta ? ip.upgradeRefund(PRICING.trialDays) : t.earlyAccess.freeNote(CONFIG.appName)}
+          </p>
         </div>
 
         <p className="text-center text-xs text-qm-faint">{ip.footerNote}</p>

@@ -15,8 +15,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PRICING } from "@/app/lib/pricing";
+import { OFFER } from "@/app/lib/offer";
 import { PAYMENT } from "@/app/lib/payment";
-// PRICING.earlyAccess — when true, paid CTAs are replaced with a free sign-up
+// OFFER.isEarlyAccess — when true, paid CTAs are replaced with a free sign-up
 // button and an early-access banner. Flip to false in pricing.ts to resume
 // the normal paid trial flow. No other files need changing.
 import { CONFIG } from "@/app/lib/config";
@@ -54,12 +55,26 @@ export default async function UpgradePage() {
   const btnRedirecting = up.redirecting;
   const btnErrorPrefix = t.errors.entryGenericFail;
 
+  // Three FAQs describe billing that cannot happen while checkout is blocked:
+  //   faq2 — quotes a monthly free-reflection cap that is not enforced
+  //   faq3 — "Every new subscription starts with a 3-day free trial"
+  //   faq5 — "Will I be charged automatically every month? Yes."
+  // The CTAs on this page were already gated; the FAQ array was not, so the
+  // button said "sign up free" while the FAQ below it promised a trial.
+  // faq7 (why the price will be $25) stays: it is honest about future pricing,
+  // which the early-access subline already discloses.
+  const billingFaqs = OFFER.showPaidFaqs
+    ? [
+        { q: uf.faq2Q, a: uf.faq2A(PRICING.freeMonthlyCredits) },
+        { q: uf.faq3Q, a: uf.faq3A(ps.trialLabel(PRICING.trialDays), ps.trialNoChargeUntil(PRICING.trialDays + 1), CONFIG.supportEmail) },
+        { q: uf.faq5Q, a: uf.faq5A },
+      ]
+    : [];
+
   const faqs = [
     { q: uf.faq1Q(CONFIG.appName), a: uf.faq1A },
-    { q: uf.faq2Q, a: uf.faq2A(PRICING.freeMonthlyCredits) },
-    { q: uf.faq3Q, a: uf.faq3A(ps.trialLabel(PRICING.trialDays), ps.trialNoChargeUntil(PRICING.trialDays + 1), CONFIG.supportEmail) },
+    ...billingFaqs,
     { q: uf.faq4Q, a: uf.faq4A },
-    { q: uf.faq5Q, a: uf.faq5A },
     { q: uf.faq6Q, a: uf.faq6A(CONFIG.appName) },
     { q: uf.faq7Q(ps.perMonth(PRICING.monthly)), a: uf.faq7A(CONFIG.appName, ps.perMonth(PRICING.monthly)) },
     { q: uf.faq8Q, a: uf.faq8A(CONFIG.supportEmail) },
@@ -152,7 +167,7 @@ export default async function UpgradePage() {
 
               {/* Price + CTA — conditional on early access mode */}
               <div className="mt-8">
-                {PRICING.earlyAccess ? (
+                {OFFER.isEarlyAccess ? (
                   /* ── Early access mode ─────────────────────────────────── */
                   <div className="flex flex-col gap-3 sm:max-w-sm">
                     {/* Banner */}
@@ -441,7 +456,7 @@ export default async function UpgradePage() {
             <span className="text-qm-positive">{uf.midAccent}</span>
           </p>
           <div className="flex flex-col items-center gap-2">
-            {PRICING.earlyAccess ? (
+            {OFFER.isEarlyAccess ? (
               <>
                 <Link
                   href="/magic-login"
@@ -662,7 +677,7 @@ export default async function UpgradePage() {
             {uf.closingDesc(CONFIG.appName)}
           </p>
           <div className="mt-7 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-            {PRICING.earlyAccess ? (
+            {OFFER.isEarlyAccess ? (
               <>
                 <Link
                   href="/magic-login"

@@ -21,7 +21,7 @@ export const dynamic = "force-dynamic";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-function PlanBadge({ plan, labels }: { plan: PlanType; labels: { planPremium: string; planTrial: string; planFree: string } }) {
+function PlanBadge({ plan, labels, earlyAccessLabel }: { plan: PlanType; labels: { planPremium: string; planTrial: string; planFree: string }; earlyAccessLabel: string }) {
   const isPremium = plan === "PREMIUM" || plan === "TRIAL" || plan === "EARLY_ACCESS";
   return (
     <span
@@ -32,7 +32,7 @@ function PlanBadge({ plan, labels }: { plan: PlanType; labels: { planPremium: st
           : "border-qm-border-subtle bg-qm-elevated text-qm-secondary",
       ].join(" ")}
     >
-      {plan === "EARLY_ACCESS" ? "Early access · full access" : plan === "TRIAL" ? labels.planTrial : plan === "PREMIUM" ? labels.planPremium : labels.planFree}
+      {plan === "EARLY_ACCESS" ? earlyAccessLabel : plan === "TRIAL" ? labels.planTrial : plan === "PREMIUM" ? labels.planPremium : labels.planFree}
     </span>
   );
 }
@@ -180,7 +180,7 @@ export default async function SettingsPage() {
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <PlanBadge plan={plan} labels={s} />
+            <PlanBadge plan={plan} labels={s} earlyAccessLabel={t.earlyAccess.badge} />
             {isPaid ? (
               <ActionLink
                 href={PAYMENT.portalUrl(portalReturn)}
@@ -256,7 +256,7 @@ export default async function SettingsPage() {
             {hasFullAccess ? (
               // Full-access state
               <div className="rounded-xl border border-qm-positive-border bg-qm-positive-bg px-5 py-1">
-                <DataRow label={s.planLabel} value={<PlanBadge plan={plan} labels={s} />} />
+                <DataRow label={s.planLabel} value={<PlanBadge plan={plan} labels={s} earlyAccessLabel={t.earlyAccess.badge} />} />
                 <DataRow label={s.reflectionsLabel} value={<span className="text-qm-positive">{s.reflectionsUnlimited}</span>} />
                 <DataRow label={s.insightsLabel} value={s.insightsFull} />
                 <DataRow label={s.weeklySummaryLabel} value={s.weeklySummaryIncluded} />
@@ -265,7 +265,7 @@ export default async function SettingsPage() {
               // Free state — show credits used/remaining
               <div className="space-y-3">
                 <div className="rounded-xl border border-qm-border-subtle bg-qm-bg px-5 py-1">
-                  <DataRow label={s.planLabel} value={<PlanBadge plan={plan} labels={s} />} />
+                  <DataRow label={s.planLabel} value={<PlanBadge plan={plan} labels={s} earlyAccessLabel={t.earlyAccess.badge} />} />
                   <DataRow
                     label={s.reflectionsLabel}
                     value={

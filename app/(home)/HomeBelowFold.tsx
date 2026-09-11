@@ -8,7 +8,11 @@
 "use client";
 import Link from "next/link";
 import ScrollReveal from "@/app/components/ScrollReveal";
+import EmailCapture from "@/app/components/EmailCapture";
 import { PRICING } from "@/app/lib/pricing";
+import { OFFER } from "@/app/lib/offer";
+import { ROUTES } from "@/app/lib/routes";
+import { CONFIG } from "@/app/lib/config";
 import { useTranslation } from "@/app/components/I18nProvider";
 import { PAYMENT } from "@/app/lib/payment";
 
@@ -37,7 +41,7 @@ export default function HomeBelowFold() {
                   <span className="h-2 w-2 rounded-full bg-qm-positive shadow-sm" />
                   <p className="text-sm font-medium text-qm-positive">{h.proofCardTitle}</p>
                 </div>
-                <span className="rounded-full border border-qm-positive-border bg-qm-positive-soft px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-qm-positive">{PRICING.earlyAccess ? "Pattern example" : h.proofBadge}</span>
+                <span className="rounded-full border border-qm-positive-border bg-qm-positive-soft px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-qm-positive">{OFFER.showPremiumUpsell ? h.proofBadge : t.earlyAccess.exampleLabel}</span>
               </div>
               <div className="bg-qm-elevated px-6 py-7 sm:px-8 sm:py-8">
                 <p className="font-display text-xl font-medium leading-relaxed text-qm-primary sm:text-2xl">{h.proofQuote}</p>
@@ -80,8 +84,8 @@ export default function HomeBelowFold() {
           </ScrollReveal>
           <ScrollReveal>
             <p className="mt-6 text-center text-sm text-qm-faint">
-              {PRICING.earlyAccess ? "This is an example of the patterns Quiet Mirror can surface across entries." : h.proofUnlock}{" "}
-              <Link href="/insights/preview" className="text-qm-positive transition-colors hover:text-qm-positive-hover">{h.proofSeeEx}</Link>
+              {OFFER.showPremiumUpsell ? h.proofUnlock : t.earlyAccess.exampleNote(CONFIG.appName)}{" "}
+              <Link href={ROUTES.proofExample} className="text-qm-positive transition-colors hover:text-qm-positive-hover">{h.proofSeeEx}</Link>
             </p>
           </ScrollReveal>
         </div>
@@ -161,7 +165,7 @@ export default function HomeBelowFold() {
             ))}
           </ScrollReveal>
           <div className="mt-8 text-center">
-            <Link href="/magic-login" className="inline-flex items-center justify-center rounded-full bg-qm-accent px-6 py-3.5 text-sm font-semibold text-white shadow transition-all hover:bg-qm-accent-hover hover:-translate-y-px">{h.demoCta}</Link>
+            <Link href={ROUTES.startFree} className="inline-flex items-center justify-center rounded-full bg-qm-accent px-6 py-3.5 text-sm font-semibold text-white shadow transition-all hover:bg-qm-accent-hover hover:-translate-y-px">{h.demoCta}</Link>
           </div>
         </div>
       </section>
@@ -212,7 +216,7 @@ export default function HomeBelowFold() {
             <div className="relative rounded-[1.5rem] border border-qm-warning-border bg-qm-warning-strong/[0.04] p-6 sm:col-span-2 lg:col-span-1">
               <div className="flex items-start justify-between gap-3">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-warning">{h.cardCTitle}</p>
-                <span className="shrink-0 rounded-full border border-qm-warning-border bg-qm-warning-soft px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-qm-warning">{PRICING.earlyAccess ? "Included in early access" : t.settingsPage.planPremium}</span>
+                <span className="shrink-0 rounded-full border border-qm-warning-border bg-qm-warning-soft px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-qm-warning">{OFFER.showPremiumUpsell ? t.settingsPage.planPremium : t.earlyAccess.includedLabel}</span>
               </div>
               <p className="mt-3 text-[15px] leading-[1.7] text-qm-primary">{h.cardCHead}</p>
               <div className="mt-4 rounded-xl border border-qm-warning-border bg-qm-warning-strong/[0.04] p-3"><p className="text-xs leading-relaxed text-qm-muted">{h.cardCNote}</p></div>
@@ -243,7 +247,7 @@ export default function HomeBelowFold() {
             </div>
           </ScrollReveal>
           <ScrollReveal className="mt-8 text-center">
-            <Link href="/insights/preview" className="inline-flex items-center justify-center gap-2 text-sm font-medium text-qm-positive transition-colors hover:text-qm-positive-hover">{h.insightsSeeMore}</Link>
+            <Link href={ROUTES.proofExample} className="inline-flex items-center justify-center gap-2 text-sm font-medium text-qm-positive transition-colors hover:text-qm-positive-hover">{h.insightsSeeMore}</Link>
           </ScrollReveal>
         </div>
       </section>
@@ -306,8 +310,10 @@ export default function HomeBelowFold() {
             ))}
           </div>
           <ScrollReveal className="mt-8 text-center">
-            <Link href="/magic-login" className="inline-flex items-center justify-center rounded-full bg-qm-accent px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px">{h.exCta}</Link>
-            <p className="mt-3 text-xs text-qm-faint">{h.exNote}</p>
+            <Link href={ROUTES.startFree} className="inline-flex items-center justify-center rounded-full bg-qm-accent px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px">{h.exCta}</Link>
+            <p className="mt-3 text-xs text-qm-faint">
+              {OFFER.showFreeCreditCap ? h.exNote : t.earlyAccess.noCardNote}
+            </p>
           </ScrollReveal>
         </div>
       </section>
@@ -323,7 +329,7 @@ export default function HomeBelowFold() {
           <ScrollReveal stagger className="mt-10 grid gap-4 sm:grid-cols-3">
             {[
               { icon:"🔒", title:h.trust1Title, body:h.trust1Body, border:"border-qm-positive-border", bg:"bg-qm-positive-strong/[0.03]" },
-              PRICING.earlyAccess
+              OFFER.isEarlyAccess
                 ? { icon:"🛡️", title:h.pricingTag, body:h.pricingDesc, border:"border-qm-premium-border", bg:"bg-qm-premium-strong/[0.03]" }
                 : { icon:"🛡️", title:ps.trialLabel(PRICING.trialDays), body:`${ps.trialFreeFor(PRICING.trialDays)} — ${ps.fullAccess}. ${ps.trialNoChargeUntil(PRICING.trialDays + 1).charAt(0).toUpperCase()+ps.trialNoChargeUntil(PRICING.trialDays + 1).slice(1)}.`, border:"border-qm-premium-border", bg:"bg-qm-premium-strong/[0.03]" },
               { icon:"✦", title:h.trust3Title, body:h.trust3Body, border:"border-qm-premium-border", bg:"bg-qm-premium-strong/[0.03]" },
@@ -355,7 +361,7 @@ export default function HomeBelowFold() {
             <h2 className="mt-3 font-display text-2xl font-semibold text-qm-primary sm:text-3xl">{h.pricingH}</h2>
             <p className="mt-3 text-sm leading-relaxed text-qm-muted">{h.pricingDesc}</p>
           </ScrollReveal>
-          {PRICING.earlyAccess ? (
+          {OFFER.isEarlyAccess ? (
             <ScrollReveal className="rounded-2xl border border-qm-positive-border bg-qm-positive-strong/[0.04] p-6 sm:p-8">
               <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
                 <div>
@@ -366,7 +372,7 @@ export default function HomeBelowFold() {
                     <span>✓ Unlimited reflections</span><span>✓ Full pattern insights</span><span>✓ Private by design</span>
                   </div>
                 </div>
-                <Link href="/magic-login" className="inline-flex items-center justify-center rounded-full bg-qm-accent px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px">Start early access →</Link>
+                <Link href={ROUTES.startFree} className="inline-flex items-center justify-center rounded-full bg-qm-accent px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px">Start early access →</Link>
               </div>
             </ScrollReveal>
           ) : (<ScrollReveal stagger className="flex flex-col-reverse gap-4 md:grid md:grid-cols-2 md:gap-5">
@@ -389,7 +395,7 @@ export default function HomeBelowFold() {
                 ))}
               </ul>
               <div className="mt-auto pt-6">
-                <Link href="/magic-login" className="inline-flex w-full items-center justify-center rounded-full border border-qm-border-card bg-qm-elevated px-5 py-3 text-sm font-medium text-qm-secondary transition-colors hover:bg-qm-soft">{h.freeCta}</Link>
+                <Link href={ROUTES.startFree} className="inline-flex w-full items-center justify-center rounded-full border border-qm-border-card bg-qm-elevated px-5 py-3 text-sm font-medium text-qm-secondary transition-colors hover:bg-qm-soft">{h.freeCta}</Link>
                 <p className="mt-2 text-center text-xs text-qm-faint">{h.freeNote}</p>
               </div>
             </div>
@@ -420,12 +426,12 @@ export default function HomeBelowFold() {
                 ))}
               </ul>
               <div className="mt-auto flex flex-col gap-2 pt-6">
-                <Link href="/upgrade" className="inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-5 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px">{h.premiumCta}</Link>
+                <Link href={ROUTES.pricing} className="inline-flex w-full items-center justify-center rounded-full bg-qm-accent px-5 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-qm-accent-hover hover:-translate-y-px">{h.premiumCta}</Link>
                 <div className="rounded-xl border border-qm-positive-border bg-qm-positive-strong/[0.04] px-4 py-2.5 text-center">
                   <p className="text-xs font-medium text-qm-secondary">🛡️ {ps.trialLabel(PRICING.trialDays)} — {ps.noChargeToday}</p>
                   <p className="mt-0.5 text-[11px] leading-relaxed text-qm-faint">{ps.trialFreeFor(PRICING.trialDays)} · {ps.thenPerMonth(ps.perMonth(PRICING.monthly))} · {h.premiumCancelNote}</p>
                 </div>
-                <Link href="/insights/preview" className="inline-flex w-full items-center justify-center rounded-full border border-qm-border-card px-5 py-2.5 text-xs font-medium text-qm-secondary transition-colors hover:bg-qm-soft">{h.premiumPreview}</Link>
+                <Link href={ROUTES.proofExample} className="inline-flex w-full items-center justify-center rounded-full border border-qm-border-card px-5 py-2.5 text-xs font-medium text-qm-secondary transition-colors hover:bg-qm-soft">{h.premiumPreview}</Link>
               </div>
               <p className="mt-3 text-center text-xs text-qm-faint">{PAYMENT.checkoutTrustLine}</p>
             </div>
@@ -441,7 +447,11 @@ export default function HomeBelowFold() {
           <div className="mt-6 space-y-5 sm:mt-7 sm:space-y-6">
             {[
               {q:h.faq1Q,a:h.faq1A},{q:h.faq2Q,a:h.faq2A},{q:h.faq3Q,a:h.faq3A},
-              {q:h.faq4Q,a:h.faq4A},{q:h.faq5Q,a:h.faq5A(PRICING.freeMonthlyCredits)},
+              {q:h.faq4Q,a:h.faq4A},
+              // faq5 ("Why would someone pay for Premium?") quotes the monthly
+              // free-credit cap and sells a tier that is not gated during early
+              // access. Returns automatically when OFFER.showPaidFaqs flips.
+              ...(OFFER.showPaidFaqs ? [{q:h.faq5Q,a:h.faq5A(PRICING.freeMonthlyCredits)}] : []),
             ].map(({q,a})=>(
               <ScrollReveal key={q}>
                 <div className="border-b border-qm-border-subtle pb-5">
@@ -468,12 +478,25 @@ export default function HomeBelowFold() {
             </h2>
             <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-qm-muted">{h.ctaDesc}</p>
             <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
-              <Link href="/magic-login" className="inline-flex items-center justify-center rounded-full bg-qm-accent px-8 py-4 text-base font-semibold text-white shadow-xl transition-all hover:bg-qm-accent-hover hover:-translate-y-0.5">{h.ctaBtn}</Link>
+              <Link href={ROUTES.startFree} className="inline-flex items-center justify-center rounded-full bg-qm-accent px-8 py-4 text-base font-semibold text-white shadow-xl transition-all hover:bg-qm-accent-hover hover:-translate-y-0.5">{h.ctaBtn}</Link>
             </div>
             <div className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs text-qm-faint">
               <span>✓ {h.ctaT1}</span><span>✓ {h.ctaT2}</span>
-              <span>✓ {PRICING.earlyAccess ? "Early access · full access" : ps.trialLabel(PRICING.trialDays)}</span><span>✓ {h.ctaT4}</span>
+              <span>✓ {OFFER.showTrialCopy ? ps.trialLabel(PRICING.trialDays) : t.earlyAccess.badge}</span><span>✓ {h.ctaT4}</span>
             </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* Second conversion path. Signup is magic-link only, which is a real
+          commitment for a first-time visitor being asked to trust us with
+          private writing. This gives the not-yet-ready visitor somewhere to
+          go other than the back button. The component and /api/email/subscribe
+          already existed; they were only wired into /blog. */}
+      <section className="bg-qm-bg pb-14 sm:pb-16">
+        <div className="mx-auto max-w-3xl px-5">
+          <ScrollReveal>
+            <EmailCapture source="homepage" variant="blog-index" />
           </ScrollReveal>
         </div>
       </section>

@@ -113,6 +113,16 @@ export const en: Translations = {
     tryAgain:           "Try again →",
   },
 
+  earlyAccess: {
+    badge:         "Early access \u00b7 full access",
+    badgeNoCharge: "Early access \u00b7 full access \u00b7 no charge",
+    exampleLabel:  "Pattern example",
+    exampleNote:   (appName) => `This is an example of the patterns ${appName} can surface across entries.`,
+    includedLabel: "Included in early access",
+    seeExampleCta: "See a real example \u2192",
+    noCardNote:    "No card required. Full access at no charge during early access.",
+    freeNote:      (appName) => `Free while ${appName} is in early access. No card, no charge.`,
+  },
   ui: {
     loading:          "…",
     loadingLabel:     "Loading…",

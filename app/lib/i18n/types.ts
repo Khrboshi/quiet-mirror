@@ -106,6 +106,21 @@ export interface Translations {
     tryAgain:           string;
   };
 
+  /**
+   * Early-access copy. Every string here is shown only while
+   * PRICING.earlyAccess is true. Gate with OFFER (app/lib/offer.ts),
+   * never with a raw PRICING.earlyAccess ternary in a component.
+   */
+  earlyAccess: {
+    badge:          string;
+    badgeNoCharge:  string;
+    exampleLabel:   string;
+    exampleNote:    (appName: string) => string;
+    includedLabel:  string;
+    seeExampleCta:  string;
+    noCardNote:     string;
+    freeNote:       (appName: string) => string;
+  };
   ui: {
     loading:          string;
     loadingLabel:     string;
