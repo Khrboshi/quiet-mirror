@@ -109,6 +109,16 @@ export const nl: Translations = {
     tryAgain:           "Opnieuw proberen →",
   },
 
+  earlyAccess: {
+    badge:         "Vroege toegang \u00b7 volledige toegang",
+    badgeNoCharge: "Vroege toegang \u00b7 volledige toegang \u00b7 geen kosten",
+    exampleLabel:  "Voorbeeld van een patroon",
+    exampleNote:   (appName) => `Dit is een voorbeeld van de patronen die ${appName} in je notities kan herkennen.`,
+    includedLabel: "Inbegrepen bij vroege toegang",
+    seeExampleCta: "Bekijk een echt voorbeeld \u2192",
+    noCardNote:    "Geen kaart nodig. Volledige toegang zonder kosten tijdens vroege toegang.",
+    freeNote:      (appName) => `Gratis zolang ${appName} in vroege toegang is. Geen kaart, geen kosten.`,
+  },
   ui: {
     loading:          "…",
     loadingLabel:     "Laden…",

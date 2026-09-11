@@ -109,6 +109,16 @@ export const ro: Translations = {
     tryAgain:           "Încercați din nou →",
   },
 
+  earlyAccess: {
+    badge:         "Acces timpuriu \u00b7 acces complet",
+    badgeNoCharge: "Acces timpuriu \u00b7 acces complet \u00b7 f\u0103r\u0103 costuri",
+    exampleLabel:  "Exemplu de tipar",
+    exampleNote:   (appName) => `Acesta este un exemplu de tipare pe care ${appName} le poate scoate la suprafa\u021b\u0103 din not\u0103rile tale.`,
+    includedLabel: "Inclus \u00een accesul timpuriu",
+    seeExampleCta: "Vezi un exemplu real \u2192",
+    noCardNote:    "Nu este necesar niciun card. Acces complet f\u0103r\u0103 costuri \u00een perioada de acces timpuriu.",
+    freeNote:      (appName) => `Gratuit c\u00e2t timp ${appName} este \u00een acces timpuriu. F\u0103r\u0103 card, f\u0103r\u0103 costuri.`,
+  },
   ui: {
     loading:          "…",
     loadingLabel:     "Se încarcă…",

@@ -10,6 +10,8 @@ import Link from "next/link";
 import HomeBelowFold from "./(home)/HomeBelowFold";
 import { useTranslation } from "@/app/components/I18nProvider";
 import { PRICING } from "@/app/lib/pricing";
+import { OFFER } from "@/app/lib/offer";
+import { ROUTES } from "@/app/lib/routes";
 
 export default function HomePage() {
   const { t } = useTranslation();
@@ -62,20 +64,20 @@ export default function HomePage() {
 
             {/* CTAs */}
             <div className="animate-fade-in-up anim-delay-400 mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Link href="/magic-login"
+              <Link href={ROUTES.startFree}
                 className="qm-btn-primary inline-flex items-center justify-center px-6 py-4 text-base sm:py-3.5 sm:text-sm"
                 style={{ boxShadow: "0 10px 30px -5px rgba(139, 157, 255, 0.30)" }}>
                 {hp.heroCta1}
               </Link>
-              <Link href="/insights/preview"
+              <Link href={ROUTES.proofExample}
                 className="qm-btn-secondary inline-flex items-center justify-center px-6 py-4 text-base sm:py-3.5 sm:text-sm">
-                {hp.heroCta2}
+                {OFFER.showPremiumUpsell ? hp.heroCta2 : t.earlyAccess.seeExampleCta}
               </Link>
             </div>
 
             {/* Price hint — surfaces cost before users invest emotional energy */}
             <p className="animate-fade-in anim-delay-450 mt-3 text-xs text-qm-faint">
-              {PRICING.earlyAccess ? "Early access · full access · no charge" : hp.heroPriceHint(PRICING.monthly, PRICING.trialDays)}
+              {OFFER.showPriceOnProofSurfaces ? hp.heroPriceHint(PRICING.monthly, PRICING.trialDays) : t.earlyAccess.badgeNoCharge}
             </p>
 
             {/* Promise strip */}
@@ -167,7 +169,7 @@ export default function HomePage() {
 
                 <div className="mt-4 flex items-center justify-between">
                   <p className="text-[11px] text-qm-faint">{hp.previewNeverLeaves}</p>
-                  <Link href="/insights/preview"
+                  <Link href={ROUTES.proofExample}
                     className="text-[11px] font-medium text-qm-accent transition-colors hover:opacity-80">
                     {hp.previewSeeExample}
                   </Link>

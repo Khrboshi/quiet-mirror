@@ -12,6 +12,8 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { CONFIG } from "@/app/lib/config";
 import { PRICING } from "@/app/lib/pricing";
+import { OFFER } from "@/app/lib/offer";
+import { ROUTES } from "@/app/lib/routes";
 import { useSupabase } from "@/app/components/SupabaseSessionProvider";
 import { useTranslation } from "@/app/components/I18nProvider";
 
@@ -74,7 +76,7 @@ function FooterLinks({ isSignedIn }: { isSignedIn: boolean }) {
       <div className="grid grid-cols-2 gap-x-8 gap-y-8 sm:flex sm:flex-wrap sm:gap-x-12">
         <FooterSection title={t.footer.product}>
           <FooterLink href="/about">{t.footer.about}</FooterLink>
-          <FooterLink href="/upgrade">{t.footer.pricing}</FooterLink>
+          <FooterLink href={ROUTES.pricing}>{t.footer.pricing}</FooterLink>
           <FooterLink href="/blog">{t.footer.blog}</FooterLink>
           <FooterLink href="/install">{t.footer.installApp}</FooterLink>
         </FooterSection>
@@ -89,9 +91,11 @@ function FooterLinks({ isSignedIn }: { isSignedIn: boolean }) {
             </>
           ) : (
             <>
-              <FooterLink href="/magic-login">{t.footer.signIn}</FooterLink>
-              <FooterLink href="/upgrade">{t.footer.startFree}</FooterLink>
-              {PRICING.earlyAccess ? null : <FooterLink href="/upgrade">{t.footer.goPremium}</FooterLink>}
+              <FooterLink href={ROUTES.signIn}>{t.footer.signIn}</FooterLink>
+              {/* "Start free" is a conversion action, not a navigation
+                  destination. It must never point at the pricing page. */}
+              <FooterLink href={ROUTES.startFree}>{t.footer.startFree}</FooterLink>
+              {OFFER.showPremiumUpsell && <FooterLink href={ROUTES.pricing}>{t.footer.goPremium}</FooterLink>}
             </>
           )}
         </FooterSection>
@@ -164,7 +168,7 @@ export default function Footer() {
             </span>
             <span className="inline-flex items-center gap-1 text-qm-accent">
               <span aria-hidden="true">✨</span>
-              <span>{PRICING.earlyAccess ? "Early access · full access" : ps.trialLabel(PRICING.trialDays)}</span>
+              <span>{OFFER.showTrialCopy ? ps.trialLabel(PRICING.trialDays) : t.earlyAccess.badge}</span>
             </span>
           </div>
         </div>

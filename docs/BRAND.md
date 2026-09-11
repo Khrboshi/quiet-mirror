@@ -16,6 +16,7 @@
 
 1. [Brand constants](#1-brand-constants)
 2. [Pricing & payment](#2-pricing--payment)
+2b. [Offer state & routes](#2b-offer-state--routes-added-2026-09-11)
 3. [Voice & tone](#3-voice--tone)
 4. [Core positioning](#4-core-positioning)
 5. [Homepage hero](#5-homepage-hero)
@@ -85,6 +86,66 @@ Atomic trust/positioning phrases that appear in multiple i18n keys are extracted
 > Stripe legacy webhook (`app/api/stripe/webhook/`) is NEVER TOUCH — keep until all legacy subscriptions expire.
 
 ---
+
+---
+
+## 2b. Offer state & routes  *(added 2026-09-11)*
+
+**`PRICING.earlyAccess` is still the one value to edit. These two files name its consequences so no component has to re-derive them.**
+
+### Why they exist
+
+The 2026-09-11 audit found `PRICING.earlyAccess` wired into 9 files and missing from the two that mattered most. `app/upgrade/page.tsx` had 10 checks but its FAQ array sat outside every one of them, so the button said "sign up free" while the FAQ below promised a 3-day trial. `app/(protected)/insights/preview/page.tsx` — the homepage's main proof destination — had **zero** checks and showed five `$25/month` CTAs plus a refund line while checkout was blocked.
+
+The values were centralised. The *consequences* of the flag, and the *destinations* of the buttons, were not.
+
+### `app/lib/offer.ts` → `OFFER`
+
+| Flag | True when | Governs |
+|---|---|---|
+| `OFFER.isEarlyAccess` | `earlyAccess` | Raw state — prefer a named flag below |
+| `OFFER.showPaidFaqs` | paid | Refund, auto-renewal, free-credit-cap FAQs |
+| `OFFER.showTrialCopy` | paid | Trial length, trial badges, "no charge until day N" |
+| `OFFER.showPriceOnProofSurfaces` | paid | Price + refund copy on homepage and `/insights/preview` |
+| `OFFER.showPremiumUpsell` | paid | "Premium" as an upsell label or gate |
+| `OFFER.showFreeCreditCap` | paid | The monthly free-reflection number |
+| `OFFER.conversionCta` | always | Where a primary CTA sends a visitor |
+| `OFFER.proofCta` | always | Same, from `/insights/preview`, with attribution |
+
+> **Rule:** never write `PRICING.earlyAccess ? … : …` inside a component. If you need a consequence that is not listed, add it to `OFFER` and use it everywhere.
+>
+> `OFFER` governs **presentation only.** Entitlement logic in `app/api/**` continues to read `PRICING.earlyAccess` directly — that is deliberate, and the two must not be merged.
+
+### `app/lib/routes.ts` → `ROUTES`
+
+| Route | Value | Notes |
+|---|---|---|
+| `ROUTES.signIn` | `/magic-login` | |
+| `ROUTES.startFree` | `/magic-login` | Any CTA using "free", "start", or "begin" |
+| `ROUTES.pricing` | `/upgrade` | A navigation destination, **never** a "start free" target |
+| `ROUTES.proofExample` | `/insights/preview` | Public logged-out proof surface |
+| `ROUTES.dashboard` | `/dashboard` | |
+
+> **Rule:** no internal href as a string literal in a component.
+>
+> `startFree` and `pricing` intentionally hold the same class of value but must never be collapsed. Before this file existed, the footer link labelled "Start free" pointed at `/upgrade` — a page titled "Quiet Mirror Premium · $25/month" — so a visitor who clicked the word *free* landed on a price. No single file could have caught it.
+
+### Early-access copy → `earlyAccess` namespace in `en.ts`
+
+Eight strings, previously hardcoded English in seven call sites across five files (invisible to all five non-English locales). Now translated in all six.
+
+| Key | English |
+|---|---|
+| `earlyAccess.badge` | Early access · full access |
+| `earlyAccess.badgeNoCharge` | Early access · full access · no charge |
+| `earlyAccess.exampleLabel` | Pattern example |
+| `earlyAccess.exampleNote(appName)` | This is an example of the patterns {app} can surface across entries. |
+| `earlyAccess.includedLabel` | Included in early access |
+| `earlyAccess.seeExampleCta` | See a real example → |
+| `earlyAccess.noCardNote` | No card required. Full access at no charge during early access. |
+| `earlyAccess.freeNote(appName)` | Free while {app} is in early access. No card, no charge. |
+
+> `exampleNote` and `freeNote` take `appName` rather than embedding the brand. The previous hardcoded version contained the literal string "Quiet Mirror", which silently broke the `CONFIG.appName` rebrand guarantee in section 1.
 
 ## 3. Voice & tone
 

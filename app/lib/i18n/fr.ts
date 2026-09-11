@@ -108,6 +108,16 @@ export const fr: Translations = {
     tryAgain:           "Réessayer →",
   },
 
+  earlyAccess: {
+    badge:         "Acc\u00e8s anticip\u00e9 \u00b7 acc\u00e8s complet",
+    badgeNoCharge: "Acc\u00e8s anticip\u00e9 \u00b7 acc\u00e8s complet \u00b7 sans frais",
+    exampleLabel:  "Exemple de sch\u00e9ma",
+    exampleNote:   (appName) => `Voici un exemple des sch\u00e9mas que ${appName} peut faire appara\u00eetre au fil de vos entr\u00e9es.`,
+    includedLabel: "Inclus dans l'acc\u00e8s anticip\u00e9",
+    seeExampleCta: "Voir un exemple concret \u2192",
+    noCardNote:    "Aucune carte n\u00e9cessaire. Acc\u00e8s complet sans frais pendant l'acc\u00e8s anticip\u00e9.",
+    freeNote:      (appName) => `Gratuit pendant que ${appName} est en acc\u00e8s anticip\u00e9. Aucune carte, aucun frais.`,
+  },
   ui: {
     loading:          "…",
     loadingLabel:     "Chargement…",
