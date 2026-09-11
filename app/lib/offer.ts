@@ -93,6 +93,6 @@ export const OFFER = {
 
   /** Same, from the logged-out /insights/preview surface, with attribution. */
   proofCta: EARLY_ACCESS
-    ? ROUTES.startFree
+    ? withSource(ROUTES.startFree, "insights-preview")
     : withSource(ROUTES.pricing, "insights-preview"),
 } as const;
