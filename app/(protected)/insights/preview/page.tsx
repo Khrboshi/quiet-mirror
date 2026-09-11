@@ -151,7 +151,7 @@ export default async function InsightsPreviewPage() {
   // land here first. Before 2026-09-11 it contained zero early-access checks:
   // five "$25/month" CTAs and a refund line rendered while checkout was
   // blocked. Signed-in users keep the normal upgrade path.
-  const showPaidCta = !isDemoMode || OFFER.showPriceOnProofSurfaces;
+  const showPaidCta = OFFER.showPriceOnProofSurfaces;
   const ctaHref = showPaidCta ? OFFER.proofCta : ROUTES.startFree;
 
   // DOMAIN_LABELS built from translations — no hardcoded strings
