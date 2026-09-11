@@ -182,7 +182,7 @@ export default function HomeBelowFold() {
                 </h2>
                 <p className="mt-3 max-w-lg text-sm leading-relaxed text-qm-muted">{h.insightsDesc}</p>
               </div>
-              <div className="shrink-0"><span className="inline-flex items-center gap-1.5 rounded-full border border-qm-positive-border bg-qm-positive-soft px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-qm-positive">{h.insightsBadge}</span></div>
+              <div className="shrink-0"><span className="inline-flex items-center gap-1.5 rounded-full border border-qm-positive-border bg-qm-positive-soft px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-qm-positive">{OFFER.showPremiumUpsell ? h.insightsBadge : t.earlyAccess.includedLabel}</span></div>
             </div>
           </ScrollReveal>
           <ScrollReveal stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -225,7 +225,7 @@ export default function HomeBelowFold() {
             <div className="relative rounded-[1.5rem] border border-qm-premium-border bg-qm-premium-strong/[0.04] p-6">
               <div className="flex items-start justify-between gap-3">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-premium">{h.cardDTitle}</p>
-                <span className="shrink-0 rounded-full border border-qm-premium-border bg-qm-premium-soft px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-qm-premium">{t.settingsPage.planPremium}</span>
+                <span className="shrink-0 rounded-full border border-qm-premium-border bg-qm-premium-soft px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-qm-premium">{OFFER.showPremiumUpsell ? t.settingsPage.planPremium : t.earlyAccess.includedLabel}</span>
               </div>
               <p className="mt-3 text-[15px] leading-[1.7] text-qm-primary">{h.cardDHead}</p>
               <div className="mt-4 flex items-center gap-2 text-xs text-qm-faint"><span className="text-qm-premium">↑</span><span>{h.cardDNote}</span></div>
@@ -234,7 +234,7 @@ export default function HomeBelowFold() {
             <div className="relative rounded-[1.5rem] border border-qm-danger-border bg-qm-danger-strong/[0.04] p-6">
               <div className="flex items-start justify-between gap-3">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-qm-danger">{h.cardETitle}</p>
-                <span className="shrink-0 rounded-full border border-qm-danger-border bg-qm-danger-soft px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-qm-danger">{t.settingsPage.planPremium}</span>
+                <span className="shrink-0 rounded-full border border-qm-danger-border bg-qm-danger-soft px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-qm-danger">{OFFER.showPremiumUpsell ? t.settingsPage.planPremium : t.earlyAccess.includedLabel}</span>
               </div>
               <p className="mt-3 text-[15px] leading-[1.7] text-qm-primary">{h.cardEHead}</p>
               <p className="mt-3 text-[11px] text-qm-faint">{h.cardENote}</p>
@@ -247,7 +247,7 @@ export default function HomeBelowFold() {
             </div>
           </ScrollReveal>
           <ScrollReveal className="mt-8 text-center">
-            <Link href={ROUTES.proofExample} className="inline-flex items-center justify-center gap-2 text-sm font-medium text-qm-positive transition-colors hover:text-qm-positive-hover">{h.insightsSeeMore}</Link>
+            <Link href={ROUTES.proofExample} className="inline-flex items-center justify-center gap-2 text-sm font-medium text-qm-positive transition-colors hover:text-qm-positive-hover">{OFFER.showPremiumUpsell ? h.insightsSeeMore : t.earlyAccess.seeExampleCta}</Link>
           </ScrollReveal>
         </div>
       </section>

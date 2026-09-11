@@ -1077,7 +1077,7 @@ export const en: Translations = {
     faq6Q:                "Is my data safe and private?",
     faq6A:                (appName) => `Yes. Your entries stay private, are not sold, not shared, and not used to train AI models. ${appName} is built around that principle.`,
     faq7Q:                (cadence) => `Why is Premium ${cadence}?`,
-    faq7A:                (appName, cadence) => `Most journaling tools charge for storage or templates. ${appName} charges for the AI layer that reads across weeks of your entries and surfaces what you couldn\u2019t see from inside your own life \u2014 the kind of perspective that would otherwise cost considerably more from a coach or therapist. ${cadence} keeps that sustainable without ads, without selling your data, and without investors to answer to. If it doesn\u2019t feel worth it after the trial, email us and we\u2019ll refund you.`,
+    faq7A:                (appName, cadence) => `Most journaling tools charge for storage or templates. ${appName} charges for the AI layer that reads across weeks of your entries and surfaces what you couldn\u2019t see from inside your own life \u2014 the kind of perspective that would otherwise cost considerably more from a coach or therapist. ${cadence} keeps that sustainable without ads, without selling your data, and without investors to answer to.`,
     faq8Q:                "Can I export my data?",
     faq8A:                (email) => `Yes. Your journal entries belong to you. You can request a full export of your entries as a JSON file at any time by emailing ${email} \u2014 you will receive it within 48 hours. Self-serve export from Settings is on the roadmap.`,
     faqTerms:             "Terms of Service \u2192",
