@@ -32,8 +32,8 @@
     "next": "^15.5.25",
     "postcss": "8.5.28",
     "posthog-js": "^1.427.0",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
     "resend": "^4.0.0",
     "sharp": "^0.35.4",
     "standardwebhooks": "^1.1.1",
@@ -43,8 +43,8 @@
   },
   "devDependencies": {
     "@types/node": "20.11.24",
-    "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.7",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "eslint": "8.57.0",
     "eslint-config-next": "^15.5.15",
     "typescript": "5.3.3"
