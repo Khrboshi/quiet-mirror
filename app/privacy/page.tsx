@@ -11,7 +11,7 @@ import LegalLanguageNotice from "@/app/components/LegalLanguageNotice";
 import BrandName from "@/app/components/BrandName";
 
 // ─── Update this date whenever the policy changes ────────────────────────────
-const LAST_UPDATED = "May 7, 2026";
+const LAST_UPDATED = "September 25, 2026";
 
 // ─── SEO metadata ────────────────────────────────────────────────────────────
 // Localised per-request so the browser tab title and social previews match the
@@ -130,7 +130,12 @@ export default async function PrivacyPolicyPage() {
                 </span>{" "}
                 limited technical data needed for reliability, abuse prevention,
                 and troubleshooting (for example, timestamps and basic request
-                metadata).
+                metadata), plus page-view analytics and session recordings of
+                our public pages as described under{" "}
+                <Link href="#cookies" className="underline hover:text-qm-primary">
+                  Cookies and analytics
+                </Link>
+                .
               </li>
               <li>
                 <span className="font-semibold text-qm-primary">
@@ -301,12 +306,35 @@ export default async function PrivacyPolicyPage() {
               Cookies and analytics
             </h2>
             <p className="mt-2 text-qm-secondary">
-              We use essential cookies for login and session handling. We may
-              use privacy-focused analytics to understand broad usage patterns
-              (such as page views and feature adoption). Analytics data is
-              aggregated and is not used to identify, profile, or target
-              individual users. We do not use advertising cookies or third-party
-              tracking pixels.
+              We use essential cookies for login and session handling.
+            </p>
+            <p className="mt-3 text-qm-secondary">
+              We use{" "}
+              <Link
+                href="https://posthog.com/privacy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-qm-primary"
+              >
+                PostHog
+              </Link>{" "}
+              (EU-hosted) to understand how people find and use <BrandName />.
+              Page views and product events are recorded across the site,
+              including signed-in pages such as the journal and insights. These
+              record that a page was opened or an action taken — never the
+              content of what you wrote.
+            </p>
+            <p className="mt-3 text-qm-secondary">
+              Session recordings are limited to our public pages — the home
+              page, About, Blog, Pricing, and the sign-in page. Recording is
+              switched off on every signed-in page, including where you write
+              entries and view your reflections. All text and images in
+              recordings are masked, so even on public pages we see interactions
+              rather than readable content. Recordings are deleted after 30 days.
+            </p>
+            <p className="mt-3 text-qm-secondary">
+              We do not use advertising cookies or third-party tracking pixels,
+              and we do not sell analytics data.
             </p>
           </section>
 
