@@ -13,6 +13,40 @@ import { PostHogProvider as PHProvider, usePostHog } from "posthog-js/react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, Suspense } from "react";
 
+// Routes where session recording must never run. Kept in sync with the URL
+// blocklist in PostHog project settings — this is the in-code equivalent, so
+// protection does not depend on remote config loading successfully.
+const NO_RECORDING_PREFIXES = [
+  "/journal",
+  "/dashboard",
+  "/insights",
+  "/settings",
+  "/tools",
+];
+
+function isNoRecordingPath(pathname: string): boolean {
+  return NO_RECORDING_PREFIXES.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+  );
+}
+
+// Stops session recording as soon as the user reaches a protected route.
+// Deliberately one-way: we never call startSessionRecording() to resume, so a
+// session that has touched the journal stays un-recorded for its remainder.
+function PostHogRecordingGuard() {
+  const pathname = usePathname();
+  const ph = usePostHog();
+
+  useEffect(() => {
+    if (!pathname || !ph) return;
+    if (isNoRecordingPath(pathname)) {
+      ph.stopSessionRecording();
+    }
+  }, [pathname, ph]);
+
+  return null;
+}
+
 // Tracks page views on client-side navigation
 function PostHogPageView() {
   const pathname = usePathname();
@@ -47,6 +81,15 @@ function PostHogInit() {
       capture_pageleave: true,
       autocapture: false,                 // privacy: no automatic click tracking
       persistence: "localStorage",       // survives client-side navigation; stores only anon ID, no PII
+      // Session replay masking, enforced in code as well as in PostHog project
+      // settings. The project settings already block /journal, /dashboard,
+      // /insights, /settings and /tools and set "Total privacy" masking — this
+      // block is a second line of defence so entry text can never be captured
+      // if that remote config fails to load or is changed by accident.
+      session_recording: {
+        maskAllInputs:   true,
+        maskTextSelector: "*",           // mask every text node, not just inputs
+      },
       loaded: (ph) => {
         if (process.env.NODE_ENV === "development") ph.debug();
       },
@@ -60,6 +103,9 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
   return (
     <PHProvider client={posthog}>
       <PostHogInit />
+      <Suspense fallback={null}>
+        <PostHogRecordingGuard />
+      </Suspense>
       <Suspense fallback={null}>
         <PostHogPageView />
       </Suspense>
