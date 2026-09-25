@@ -325,12 +325,13 @@ export default async function PrivacyPolicyPage() {
               content of what you wrote.
             </p>
             <p className="mt-3 text-qm-secondary">
-              Session recordings are limited to our public pages — the home
-              page, About, Blog, Pricing, and the sign-in page. Recording is
-              switched off on every signed-in page, including where you write
-              entries and view your reflections. All text and images in
-              recordings are masked, so even on public pages we see interactions
-              rather than readable content. Recordings are deleted after 30 days.
+              Session recordings are limited to our public pages — the pages
+              you can view without signing in, such as the home page, About,
+              Blog, Pricing, and the sign-in page. Recording is switched off on
+              every signed-in page, including where you write entries and view
+              your reflections. All text and images in recordings are masked, so
+              even on public pages we see interactions rather than readable
+              content. Recordings are deleted after 30 days.
             </p>
             <p className="mt-3 text-qm-secondary">
               We do not use advertising cookies or third-party tracking pixels,
